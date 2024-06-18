@@ -1,0 +1,91 @@
+/* definde variables of primary colors */
+
+:root {
+    --bg: #181B26;
+    --white: #FFFFFF;
+    --success-color: #CA33FF;
+    --pink: #CA33FF;
+    --bg2: #191C28;
+    --border-color1: #262730;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+body {
+    background-color: var(--bg);
+}
+
+layout-wrraper {
+    display: flex;
+    
+}
+
+layout-wrraper > .sidebar_ {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    border-right: 1px solid var(--border-color1);
+    width: 70px;
+    height: 100vh;
+    align-items: center;
+    background-color: var(--bg2);
+}
+
+layout-wrraper > .sidebar_ > .sidebar_links {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    width: 100%;
+    text-align: center;
+}
+
+layout-wrraper > .sidebar_ > .logo_ > img {
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+    object-fit: contain;
+}
+layout-wrraper > .sidebar_ > .sidebar_links > a {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active_link::before {
+    content: "";
+    width: 6px;
+    height: 50px;
+    background: linear-gradient(#01F2FF, #2687F9);
+    position: absolute;
+    left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+layout-wrraper > .sidebar_ > .sidebar_links > a > img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+
+}
+layout-wrraper > .content_ {
+    flex : 1;
+    width: 100%;
+    /* border: 1px solid white; */
+}
+
+layout-wrraper > .content_ > .navbar_ {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    background-color: var(--bg);
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to left,#191C28,#4B4B4D, #191C28);
+    border-image-slice: 2;
+}
