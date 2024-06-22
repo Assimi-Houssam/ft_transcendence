@@ -13,6 +13,7 @@
     padding: 0;
     margin: 0;
     color: white;
+    font-family: 'Poppins', sans-serif; /* todo : change the font Poppins to the font in figma */
 }
 
 body {
@@ -83,9 +84,110 @@ layout-wrraper > .content_ > .navbar_ {
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    height: 60px;
+    height: 80px;
     background-color: var(--bg);
     border-bottom: 1px solid transparent;
     border-image: linear-gradient(to left,#191C28,#4B4B4D, #191C28);
     border-image-slice: 2;
+}
+
+layout-wrraper > .content_ > .content_body_ {
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.navbar_ > .nav_search_ > input {
+    border: none;
+    flex : 1;
+    outline: none;
+    background: none;
+    width: 100%;
+}
+
+.navbar_ > .nav_search_ > img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    user-select: none;
+}
+
+.navbar_ > .navbar_right_elements  > .nav_username {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 50px;
+    height: 43px;
+    padding-left: 10px;
+    padding-right: 2px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.navbar_ > .navbar_right_elements > .nav_username > p { 
+    color: #63656F;
+}
+
+.navbar_ > .navbar_right_elements  > .nav_username img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 50%;
+    border-radius: 50%;
+}
+
+.gradient-dark-bg {
+    background: rgb(36,39,53);
+    background: linear-gradient(0deg, rgba(36,39,53,1) 0%, rgba(28,31,44,1) 100%);
+}
+
+.gradient-dark-border {
+    border: 1px solid var(--border-color1);
+    border-image: linear-gradient(from right,#181B26, #2D2F3D);
+    border-image-slice: 2;
+}
+
+
+.navbar_ > .nav_search_ {
+    display: flex;
+    align-items: center;
+    width:  650px;
+    gap: 10px;
+    height: 43px;
+    border-radius: 50px;
+    padding-left: 5px;
+    /* flex : 1; */
+}
+
+.navbar_ .navbar_right_elements {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar_ .navbar_right_elements > .navbar_notification_btn {
+    position: relative;
+    cursor: pointer;
+    width: 43px;
+    height: 43px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar_ .navbar_right_elements > .navbar_notification_btn > img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    rotate: 10deg;
+}
+
+.navbar_ .navbar_right_elements > .navbar_notification_btn > .dot_ {
+    position: absolute;
+    top : 5px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--success-color);
+    border-radius: 50%;
+    z-index: 1;
 }
