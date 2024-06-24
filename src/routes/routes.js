@@ -17,7 +17,7 @@ class Router {
     }
 
     render() {
-        const layout = document.querySelector("layout-wrraper");
+        const layout = document.querySelector("layout-wrapper");
         const content_ = layout.querySelector(".content_body_");
         content_.innerHTML = this.route.component().outerHTML;
     }
