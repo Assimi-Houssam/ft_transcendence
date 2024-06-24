@@ -18,12 +18,12 @@ export class LayoutWrapper extends HTMLElement {
   }
 }
 
-customElements.define("layout-wrraper", LayoutWrraper);
+customElements.define("layout-wrapper", LayoutWrapper);
 customElements.define('sidebar-component', Sidebar);
 customElements.define('navbar-component', Navbar);
 
 const root = document.getElementById("root");
-const layout = document.createElement("layout-wrraper");
+const layout = document.createElement("layout-wrapper");
 
 root.appendChild(layout);
 router.render();

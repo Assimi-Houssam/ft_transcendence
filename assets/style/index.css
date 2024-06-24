@@ -20,12 +20,12 @@ body {
     background-color: var(--bg);
 }
 
-layout-wrraper {
+layout-wrapper {
     display: flex;
     
 }
 
-layout-wrraper > .sidebar_ {
+.sidebar_ {
     display: flex;
     flex-direction: column;
     gap: 50px;
@@ -36,7 +36,7 @@ layout-wrraper > .sidebar_ {
     background-color: var(--bg2);
 }
 
-layout-wrraper > .sidebar_ > .sidebar_links {
+.sidebar_ > .sidebar_links {
     display: flex;
     flex-direction: column;
     gap: 50px;
@@ -44,13 +44,13 @@ layout-wrraper > .sidebar_ > .sidebar_links {
     text-align: center;
 }
 
-layout-wrraper > .sidebar_ > .logo_ > img {
+.sidebar_ > .logo_ > img {
     width: 50px;
     height: 50px;
     margin-top: 20px;
     object-fit: contain;
 }
-layout-wrraper > .sidebar_ > .sidebar_links > a {
+.sidebar_ > .sidebar_links > a {
     height: 50px;
     display: flex;
     align-items: center;
@@ -67,19 +67,19 @@ layout-wrraper > .sidebar_ > .sidebar_links > a {
     border-radius: 0 5px 5px 0;
 }
 
-layout-wrraper > .sidebar_ > .sidebar_links > a > img {
+.sidebar_ > .sidebar_links > a > img {
     width: 30px;
     height: 30px;
     object-fit: contain;
 
 }
-layout-wrraper > .content_ {
+.content_ {
     flex : 1;
     width: 100%;
     /* border: 1px solid white; */
 }
 
-layout-wrraper > .content_ > .navbar_ {
+.content_ > .navbar_ {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -91,7 +91,7 @@ layout-wrraper > .content_ > .navbar_ {
     border-image-slice: 2;
 }
 
-layout-wrraper > .content_ > .content_body_ {
+.content_ > .content_body_ {
     padding: 0 20px;
     margin-top: 20px;
 }
