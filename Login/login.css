@@ -37,6 +37,7 @@ body
     margin: 0;
 	margin-left: 0;
 	flex-grow: 1;
+	color:white;
 }
 .password-btn
 {
@@ -93,19 +94,13 @@ input
 {
 	display: block;
     width: 100%;
-    /* padding: 15px 20px 15px 20px; */
-	padding-top: 15px;
-	padding-bottom: 15px;
+    padding: 15px 20px 15px 20px;
 	margin-top: 20px;
 	margin-bottom: 20px;
     border-radius: 15px;
-    /* border: 1px solid #3b3b4f; */
-    border: none; 
-    background: linear-gradient(to right, #242735, #1E293A);
-    color: #f5f6f7;
+    border: none;
+    background: linear-gradient(to top, #1E293A, #242735);
 }
-
-
 
 .container 
 {
@@ -173,7 +168,7 @@ input
 
 .secondary-btn
 {
-	color: gray;
+	color: #697185;
 	padding-left: 50px;
 	padding-right: 50px;
 	padding-top: 15px;
@@ -194,10 +189,10 @@ input
 {
 	content: "";
 	position:absolute;
-	top:2px;
-	right:2px;
-	bottom: 2px;
-	left:2px;
+	top:1px;
+	right:1px;
+	bottom: 1px;
+	left:1px;
 	border-radius: 10px;
 	background: linear-gradient(to right, #242735, #1E293A);
 	z-index: -1;
@@ -220,7 +215,8 @@ input
 .secondary-btn:hover::after
 {
 	color: white;
-  }
+}
+
 a
 {
 	text-decoration: none;
@@ -229,12 +225,12 @@ a
 
 p
 {
-	color: gray;
+	color: #697185;
 	font-size: large;
 }
 
 .ref
 {
-	color: gray;
+	color: #697185;
 	font-size: small;
 }

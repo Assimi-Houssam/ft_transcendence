@@ -21,7 +21,6 @@ input
     border-radius: 15px;
     border: none;
     background: linear-gradient(to top, #1E293A, #242735);
-    color: #f5f6f7;
 }
 
 body 
@@ -105,5 +104,5 @@ a
 
 p
 {
-    color: gray;
+    color: #697185;
 }
