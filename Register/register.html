@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Create your Account</title>
+        <link rel="stylesheet" href="../Register/register.css">
+    </head>
+    <body>
+    <div class="container">
+        <img src="../images/icon.png" alt="Icon" class="icon">
+        <h1>Create your Account</h1>
+        <p>Please enter your data to continue</p>
+        <form>
+			<div>
+				Full Name
+				<input id="name" type="text" name="name" placeholder="Dummy noob" required>
+			</div>
+            <div>
+                Email
+                <input id="email" type="email" name="email" placeholder="e.g.dummy@domain.com" required>
+            </div>
+            <div>
+				Password
+				<input id="password" type="password" name="password" pattern="[a-z0-5]{8,}" placeholder="************">
+            </div>
+			<div>
+				Repeat Password
+				<input id="password" type="password" name="password" pattern="[a-z0-5]{8,}" placeholder="************">
+			</div>
+			<div class="buttons">
+				<button type="submit" class="btn" data="Create Account"></button>
+			</div>
+        </form>
+        <p>Already have account ? login <a href="../Login/login.html">here</a></p>
+    </div>
+    </body>
+</html>
