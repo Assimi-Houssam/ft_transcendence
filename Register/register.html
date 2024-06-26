@@ -4,13 +4,14 @@
         <meta charset="utf-8"/>
         <title>Create your Account</title>
         <link rel="stylesheet" href="../Register/register.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
     <div class="container">
         <img src="../images/icon.png" alt="Icon" class="icon">
         <h1>Create your Account</h1>
         <p>Please enter your data to continue</p>
-        <form>
+        <form class="login-form">
 			<div>
 				Full Name
 				<input id="name" type="text" name="name" placeholder="Dummy noob" required>
@@ -21,17 +22,17 @@
             </div>
             <div>
 				Password
-				<input id="password" type="password" name="password" pattern="[a-z0-5]{8,}" placeholder="************">
+				<input id="password" type="password" name="password" pattern="[a-z0-5]{8,}" placeholder="************" required>
             </div>
 			<div>
 				Repeat Password
-				<input id="password" type="password" name="password" pattern="[a-z0-5]{8,}" placeholder="************">
+				<input id="password" type="password" name="password" pattern="[a-z0-5]{8,}" placeholder="************" required>
 			</div>
 			<div class="buttons">
 				<button type="submit" class="btn" data="Create Account"></button>
 			</div>
         </form>
-        <p>Already have account ? login <a href="../Login/login.html">here</a></p>
+        <p class="ref">Already have account ? login <a href="../Login/login.html">here</a></p>
     </div>
     </body>
 </html>
