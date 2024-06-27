@@ -1,4 +1,4 @@
-#HOW TO USE CUSTOM ROUTER : 
+# HOW TO USE CUSTOM ROUTER : 
 <hr>
 <p>First create your page Component, for the clean working directory, you can add your page in the directory ./src/pages</p>
 
