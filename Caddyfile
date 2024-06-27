@@ -1,0 +1,10 @@
+:80 {
+  handle {
+    root * /usr/share/caddy
+    file_server
+  }
+}
+
+:8000 {
+    reverse_proxy backend:8000
+}
