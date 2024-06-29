@@ -4,6 +4,7 @@ export default function Home () {
   home.innerHTML = `
       <div class="home_header_">
           <h1> Home </h1>
+          <a href="/login"> Login </a>
       </div>
   `
   return home;

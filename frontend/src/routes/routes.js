@@ -33,9 +33,14 @@ class Router {
 
     render() {
         window.history.pushState({}, "", this.active_path);
-        const layout = document.querySelector("layout-wrapper");
-        const content_ = layout.querySelector(".content_body_");
-        content_.innerHTML = this.route.component().outerHTML;
+        if (this.route.path === '/login' || this.route.path === '/register' || this.route.path === '/reset-password') {
+            const root = document.getElementById("root");
+            root.innerHTML = this.route.component().outerHTML;
+        }else {
+            const layout = document.querySelector("layout-wrapper");
+            const content_ = layout.querySelector(".content_body_");
+            content_.innerHTML = this.route.component().outerHTML;
+        }
     }
 
     navigate(path) {
