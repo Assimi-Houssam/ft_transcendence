@@ -23,5 +23,4 @@ linkes_sidbar.forEach((link) => {
   });
 });
 
-// check if the page fully loaded and render the current page
 // router.navigate("/login");
