@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: trans
+      POSTGRES_USER: trans_adm
+      POSTGRES_PASSWORD: test_passwd
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    restart: always
+  caddy-serv:
+    image: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./frontend/:/usr/share/caddy
+    ports:
+      - "80:80"
+      - "8000:8000"
+    depends_on:
+      - backend

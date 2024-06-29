@@ -5,7 +5,7 @@
     font-weight: bold;
 }
 
-body 
+.login-page
 {
 	display: flex;
 	flex-direction: row;
@@ -22,12 +22,18 @@ body
 	align-items: center;
 }
 
+.login-container
+{
+	margin: 200px auto;
+	padding: 100px;
+}
+
 .login-form 
 {
     width: 350px;
 }
 
-.icon, .fortyTwo 
+.logo, .fortyTwo 
 {
     width: 100px;
     margin-bottom: 10px;
@@ -45,6 +51,7 @@ body
 	font-family: sans-serif;
 	font-style: normal;
 	font-size: small;
+	color: #004e98;
 }
 
 .password
@@ -106,7 +113,7 @@ body
 	color: white;
 }
 
-input
+.input
 {
 	display: block;
     width: 100%;
@@ -118,11 +125,7 @@ input
     background: linear-gradient(to top, #1E293A, #242735);
 }
 
-.container 
-{
-	margin: 200px auto;
-	padding: 100px;
-}
+
 
 .buttons 
 {
@@ -221,8 +224,6 @@ input
 
 .secondary-btn::after
 {
-	/* content: attr(data);
-	 */
 	content : "";
 	font-size: 10px;
 }
@@ -241,13 +242,13 @@ input
 	color: white;
 }
 
-a
+.anchor
 {
 	text-decoration: none;
 	color: #004e98;
 }
 
-p
+.paragraph
 {
 	color: #697185;
 	font-size: large;

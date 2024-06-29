@@ -10,26 +10,30 @@
     width: 400px;
 }
 
-body 
+.registration-page 
 {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
 	font-family: my_font;
 	font-size:16px;
 	width: 100%;
 	background :#181B26;
 	color:#f5f6f7;
     display: flex;
+	justify-content: center;
 	align-items: center;
 }
 
-.icon
+.logo
 {
 	width: 100px;
 	margin-bottom: 10px;
 }
 
-input
+.input
 {
 	display: block;
     width: 100%;
@@ -42,12 +46,10 @@ input
 	color: white;
 }
 
-.container 
+.Registration-container
 {
 	margin: 200px auto;
 	padding: 100px;
-	flex-direction: column;
-    align-items: stretch;
 }
 
 .btn
@@ -97,13 +99,13 @@ input
 	color: white;
 }
 
-a
+.anchor
 {
 	text-decoration: none;
 	color: #004e98;
 }
 
-p
+.paragraph
 {
     color: #697185;
 	font-size: x-large;
@@ -114,3 +116,4 @@ p
 	color: #697185;
 	font-size: 10px;
 }
+
