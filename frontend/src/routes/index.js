@@ -9,6 +9,7 @@ document.body.addEventListener("click", (event) => {
   }
 });
 
+
 //set an event for the sidebar links to change the active link style
 const linkes_sidbar = document.querySelectorAll(".sidebar_links a");
 linkes_sidbar.forEach((link) => {
