@@ -29,5 +29,5 @@ linkes_sidbar.forEach((link) => {
   });
 });
 
-if (!checkAuth())
+if (!checkAuth() && window.location.pathname !== "/login" && window.location.pathname !== "/register" && window.location.pathname !== "/reset-password")
   router.navigate("/login");
