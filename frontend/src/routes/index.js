@@ -1,15 +1,13 @@
 import { router } from "./routes.js";
 
-// remove the default behavior of the anchor (<a>) tags and added a event to navigate to the clicked link
-document.querySelectorAll("a").forEach((a) => {
-  a.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.history.pushState({}, "", a.getAttribute("href"));
-    router.navigate(a.getAttribute("href"));
-    console.log("test");
-  });
-});
 
+// remove the default behavior of the anchor (<a>) tags and added a event to navigate to the clicked link
+document.body.addEventListener("click", (event) => {
+  if (event.target.tagName.toLowerCase() === "a") {
+    event.preventDefault();
+    router.navigate(event.target.getAttribute("href"));
+  }
+});
 
 //set an event for the sidebar links to change the active link style
 const linkes_sidbar = document.querySelectorAll(".sidebar_links a");
@@ -24,5 +22,5 @@ linkes_sidbar.forEach((link) => {
   });
 });
 
+// check if the page fully loaded and render the current page
 router.navigate("/login");
-console.log(router.route)
