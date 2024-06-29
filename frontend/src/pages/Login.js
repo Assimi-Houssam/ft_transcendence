@@ -13,7 +13,7 @@ export function LoginPage() {
 						<input class="input" id="email" type="email" name="email" placeholder="e.g.dummy@domain.com" required>
 					</div>
 					<div>
-						<p class="password"><span>Password</span><span><a href="reset-password" class="forgot-password-link">Forgot password?</a></span></p>
+						<p class="password"><span>Password</span><span><a href="/reset-password" class="forgot-password-link">Forgot password?</a></span></p>
 						<input class = "input" id="password" type="password" name="password" pattern="[a-z0-5]{8,}" placeholder="************" required>
 					</div>
 					<div class="buttons">
