@@ -1,12 +1,12 @@
 import { router } from "./routes.js";
 
+
 // remove the default behavior of the anchor (<a>) tags and added a event to navigate to the clicked link
-document.querySelectorAll("a").forEach((a) => {
-  a.addEventListener("click", (e) => {
-    window.history.pushState({}, "", a.getAttribute("href"));
-    e.preventDefault();
-    router.navigate(a.getAttribute("href"));
-  });
+document.body.addEventListener("click", (event) => {
+  if (event.target.tagName.toLowerCase() === "a") {
+    event.preventDefault();
+    router.navigate(event.target.getAttribute("href"));
+  }
 });
 
 
@@ -22,3 +22,6 @@ linkes_sidbar.forEach((link) => {
     link.querySelector("img").src = router.route.icon_ac;
   });
 });
+
+// check if the page fully loaded and render the current page
+router.navigate("/login");

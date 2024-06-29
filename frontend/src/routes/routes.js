@@ -1,4 +1,7 @@
+import { ForgetPasswordPage } from "../components/ForgotPassword.js";
 import Home from "../pages/Home.js"
+import { LoginPage } from "../pages/Login.js";
+import { RegistrationPage } from "../pages/Registration.js";
 
 export const Routes = [
     {
@@ -6,6 +9,18 @@ export const Routes = [
         icon : '../assets/icons/home.png',
         icon_ac : '../assets/icons/active_home.png',
         component : Home
+    },
+    {
+        path : '/login',
+        component : LoginPage
+    },
+    {
+        path : '/register',
+        component : RegistrationPage
+    },
+    {
+        path : '/reset-password',
+        component : ForgetPasswordPage
     }
 ]
 
@@ -17,6 +32,7 @@ class Router {
     }
 
     render() {
+        window.history.pushState({}, "", this.active_path);
         const layout = document.querySelector("layout-wrapper");
         const content_ = layout.querySelector(".content_body_");
         content_.innerHTML = this.route.component().outerHTML;
