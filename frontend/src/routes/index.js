@@ -1,3 +1,4 @@
+import { checkAuth } from "../services/checkAuth.js";
 import { router } from "./routes.js";
 
 
@@ -5,7 +6,12 @@ import { router } from "./routes.js";
 document.body.addEventListener("click", (event) => {
   if (event.target.tagName.toLowerCase() === "a") {
     event.preventDefault();
-    router.navigate(event.target.getAttribute("href"));
+    if (checkAuth() || event.target.getAttribute("href") === "/login" 
+      || event.target.getAttribute("href") === "/register" 
+      || event.target.getAttribute("href") === "/reset-password")
+        router.navigate(event.target.getAttribute("href"));
+    else
+      router.navigate("/login");
   }
 });
 
@@ -23,4 +29,5 @@ linkes_sidbar.forEach((link) => {
   });
 });
 
-// router.navigate("/login");
+if (!checkAuth())
+  router.navigate("/login");

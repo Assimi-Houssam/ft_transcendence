@@ -23,6 +23,7 @@ export function LoginPage() {
 					</div>
 				</form>
 				<p class="ref">You are new here? create account by clicking <a class="anchor" href="/register">here</a></p>
+				<a href="/home" class="anchor">Back to Home</a>
 			</div>
 		</div>
 	`
