@@ -1,11 +1,19 @@
+import { synchronousFetch } from "../utils/utils.js";
+
 export class Navbar extends HTMLElement {
     constructor() {
         super();
         this.classList.add("navbar_");
     }
 
-    connectedCallback() {
-        let log_username = "mamazzal1337425555555";
+    async connectedCallback() {
+        const req_headers = {
+          "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+          "Content-Type": "application/json"
+        };
+        const resp = await synchronousFetch("http://localhost:8000/me", "GET", null, req_headers);
+        const json = await resp.json();
+        let log_username = json.username;
         this.innerHTML = `
               <div class="nav_search_ gradient-dark-bg gradient-dark-border">
                   <img src="../../assets/icons/search.png" />
@@ -33,3 +41,4 @@ export class Navbar extends HTMLElement {
           `;
     }
 }
+customElements.define('navbar-component', Navbar);

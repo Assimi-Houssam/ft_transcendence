@@ -1,5 +1,9 @@
-/* definde variables of primary colors */
+@font-face {
+    font-family: 'nasalization';
+    src: url('../fonts/nasalization-rg.otf') format('opentype');
+}
 
+/* definde variables of primary colors */
 :root {
     --bg: #181B26;
     --white: #FFFFFF;
