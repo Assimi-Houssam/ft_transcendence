@@ -12,7 +12,6 @@ if (window.location.pathname === "/")
 else
   router.navigate(window.location.pathname);
 
-// todo?: fix this since clicking an img tag in the sidebar would result in a page redirect
 // remove the default behavior of the anchor (<a>) tags and added a event to navigate to the clicked link
 document.body.addEventListener("click", (event) => {
   if (event.target.closest("a")) {
