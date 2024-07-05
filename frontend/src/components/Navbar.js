@@ -30,9 +30,11 @@ export class Navbar extends HTMLElement {
                   <div class="nav_username gradient-dark-bg gradient-dark-border">
                     <p class="nav_username_id">
                     ${
-                      log_username.length > 10
-                        ? log_username.slice(0, 13) + "..."
-                        : log_username
+                      log_username && 
+                        (log_username.length > 10
+                          ? log_username.slice(0, 13) + "..."
+                          : log_username) 
+                        || "loading" // temporary
                     }
                     </p>
                     <img src="./assets/images/mamazzal.jpg" />
