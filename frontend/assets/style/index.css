@@ -196,6 +196,20 @@ layout-wrapper {
     z-index: 1;
 }
 
+
+.logout_ {
+    margin-top: auto;
+    margin-bottom: 50px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.logout_ img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+
 app-loader {
     display: flex;
     align-items: center;
