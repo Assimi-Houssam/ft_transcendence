@@ -25,7 +25,12 @@ export class Sidebar extends HTMLElement {
                         </a>`;
                 }).join("")
             }
-        </div>`;
+        </div>
+        <a href="/logout" class="logout_">
+            <img src="./assets/icons/logout.png" />
+        </a>
+        </div>
+        `;
     }
 }
 
