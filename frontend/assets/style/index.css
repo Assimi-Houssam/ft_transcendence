@@ -209,6 +209,7 @@ layout-wrapper {
     width: 35px;
     height: 35px;
     object-fit: contain;
+}
 
 app-loader {
     display: flex;
