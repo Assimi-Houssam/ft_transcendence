@@ -2,34 +2,39 @@ import { isAuthenticated } from "../utils/utils.js";
 import { router, public_paths } from "./routes.js";
 import { synchronousFetch } from "../utils/utils.js";
 
+/**
+ * when user refreshed the page  it not showing the component,
+ * so we need to navigate to the current path
+ * also since the home path is /home, and user want to access  home page from root "/" we need to navigate to /home
+ */
+if (window.location.pathname === "/")
+  router.navigate("/home");
+else
+  router.navigate(window.location.pathname);
+
 // remove the default behavior of the anchor (<a>) tags and added a event to navigate to the clicked link
-// todo?: fix this since clicking an img tag in the sidebar would result in a page redirect
 document.body.addEventListener("click", (event) => {
-  if (event.target.tagName.toLowerCase() === "a") {
+  if (event.target.closest("a")) {
     event.preventDefault();
-    if (!public_paths.includes(event.target.getAttribute("href")) && !isAuthenticated()) {
+    const targetHref = event.target.closest("a").getAttribute("href");
+    if (!public_paths.includes(targetHref) && !isAuthenticated()) {
       router.navigate("/login");
-    }
-    else if (isAuthenticated() && public_paths.includes(event.target.getAttribute("href"))) {
+    } else if (isAuthenticated() && public_paths.includes(targetHref)) {
       router.navigate("/home");
+    } else {
+      router.navigate(targetHref);
     }
-    else {
-      router.navigate(event.target.getAttribute("href"));
+    // check if is the sidebar link and change the active link
+    if (event.target.closest(".sidebar_links")) {
+      const sidebar_links = document.querySelectorAll(".sidebar_links a");
+      sidebar_links.forEach((link) => {
+        link.classList.remove("active_link");
+        link.querySelector("img").src = router.routes.find((r) => r.path === link.getAttribute("href")).icon;
+      });
+      event.target.closest("a").classList.add("active_link");
+      event.target.closest("a").querySelector("img").src = router.route.icon_ac;
     }
   }
-});
-
-//set an event for the sidebar links to change the active link style
-const sidebar_links = document.querySelectorAll(".sidebar_links a");
-sidebar_links.forEach((link) => {
-  link.addEventListener("click", (e) => {
-    sidebar_links.forEach((l) => {
-      l.classList.remove("active_link");
-      l.querySelector("img").src = router.route.icon
-    });
-    link.classList.add("active_link");
-    link.querySelector("img").src = router.route.icon_ac;
-  });
 });
 
 // todo: refactor this, and move it somewhere else
@@ -68,5 +73,5 @@ else if (!isAuthenticated() && !public_paths.includes(window.location.pathname))
   router.navigate("/login");
 }
 else {
-  router.navigate("/home");
+  router.navigate(window.location.pathname);
 }

@@ -2,7 +2,8 @@ import { ForgotPasswordPage } from "../pages/ForgotPassword.js";
 import { LoginPage } from "../pages/Login.js";
 import { RegistrationPage } from "../pages/Registration.js";
 import { HomePage } from "../pages/Home.js"
-
+import { isAuthenticated } from "../utils/utils.js";
+import { SettingsPage } from "../pages/SettingsPage.js";
 // im not sure if each should route should have a public/private entry or not, i think its cleaner this way
 export const public_paths = ["/login", "/register", "/reset-password"]
 
@@ -12,6 +13,12 @@ export const Routes = [
         icon: '../assets/icons/home.png',
         icon_ac: '../assets/icons/active_home.png',
         component: HomePage
+    },
+    {
+        path : '/settings',
+        icon: '../assets/icons/settings.png',
+        icon_ac: '../assets/icons/settings_active.png',
+        component: SettingsPage
     },
     {
         path: '/login',
@@ -58,6 +65,13 @@ class Router {
     }
 
     navigate(path) {
+        if (!public_paths.includes(path) && !isAuthenticated()) {
+            router.navigate("/login")
+            return;
+        }else if (public_paths.includes(path) && isAuthenticated()) {
+            router.navigate("/home")
+            return;
+        }
         this.active_path = path;
         this.route = this.routes.find(route => route.path === this.active_path);
         this.render();
