@@ -5,6 +5,7 @@ import { HomePage } from "../pages/Home.js"
 import { isAuthenticated } from "../utils/utils.js";
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
+import { isPageLoaded } from "../components/Loading.js";
 // im not sure if each should route should have a public/private entry or not, i think its cleaner this way
 export const public_paths = ["/login", "/register", "/reset-password"]
 
@@ -51,23 +52,27 @@ class Router {
         window.history.pushState({}, "", this.active_path);
         const root = document.getElementById("root");
         const curr_page = new this.route.component()
-        if (this.route.path === '/login' || this.route.path === '/register' || this.route.path === '/reset-password') {
-            root.innerHTML = curr_page.outerHTML;
-        }
-        else {
-            let layout = document.querySelector("layout-wrapper");
-            if (!layout) {
-                layout = document.createElement("layout-wrapper");
-                root.innerHTML = layout.outerHTML;
-            }
-            customElements.whenDefined('layout-wrapper').then(() => {
-                const content_ = layout.querySelector(".content_body_");
-                if (content_) {
-                    content_.innerHTML = curr_page.outerHTML;
+        root.innerHTML = `
+            <app-loader></app-loader>
+        `;
+        isPageLoaded().then(() => {
+            root.innerHTML = "";
+            if (public_paths.includes(this.route.path))
+                root.innerHTML = curr_page.outerHTML;
+            else {
+                let layout = document.querySelector("layout-wrapper");
+                if (!layout) {
+                    layout = document.createElement("layout-wrapper");
+                    root.appendChild(layout);
                 }
-            });
-
-        }
+                customElements.whenDefined('layout-wrapper').then(() => {
+                    const content_ = layout.querySelector(".content_body_");
+                    if (content_) {
+                        content_.appendChild(curr_page);
+                    }
+                });
+            }
+        })
     }
 
     navigate(path) {
