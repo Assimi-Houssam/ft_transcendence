@@ -6,7 +6,7 @@ export class MessageHeader extends HTMLElement{
 	connectedCallback(){
 		this.innerHTML = `
 			<header class="message-header">
-				<h2>Messages<span class="message-count">(10)</span><span><img class="search-input" src="../../assets/icons/search.png"></span></h2>
+				<h2>Messages<span class="message-count">(10)</span></h2>
 			</header>
 		`;
 	}
