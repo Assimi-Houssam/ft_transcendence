@@ -1,8 +1,10 @@
 import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
+import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
+
 export class SettingsPage extends HTMLElement {
-    connectedCallback() {
-        this.innerHTML = `
+  connectedCallback() {
+    this.innerHTML = `
             <div class="settings_">
                 <div class="settings_bg_"></div>
                 <div class="settings_content_body">
@@ -17,7 +19,7 @@ export class SettingsPage extends HTMLElement {
                 </div>
             </div>
         `;
-    }
+  }
 }
 
-customElements.define('settings-page', SettingsPage);
+customElements.define("settings-page", SettingsPage);
