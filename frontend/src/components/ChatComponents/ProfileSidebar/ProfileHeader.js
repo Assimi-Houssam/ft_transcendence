@@ -10,7 +10,7 @@ export class ProfileHeader extends HTMLElement{
 				<div class="profile-header">
 					<h2>Profile</h2>
 				</div>
-			/header>
+			</header>
 		`;
 	}
 }

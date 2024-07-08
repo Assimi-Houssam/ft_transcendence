@@ -43,6 +43,7 @@ message-history {
 	display: flex;
 	flex-direction: column;
 	border-right: 1px solid #383838;
+	height: 100vh;
   }
   
   .message-header {
