@@ -69,7 +69,7 @@ export class RegistrationPage extends HTMLElement {
                 <p class="ref">Already have account? login <a class="anchor" href="/login">here</a></p>
                 <p id="registration-error-message" class="registration-error-message"></p>
             </div>
-        </div>`
+        </div>`;
     }
 };
 

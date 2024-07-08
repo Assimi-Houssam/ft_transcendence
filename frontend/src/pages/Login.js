@@ -79,7 +79,7 @@ export class LoginPage extends HTMLElement {
 					<p class="ref">New here? create an account by clicking <a class="anchor" href="/register">here</a></p>
 					<p id="login-error-message" class="login-error-message"></p>
 					</div>
-			</div>`
+			</div>`;
 	}
 };
 
