@@ -21,6 +21,16 @@ function showPopupSetting() {
     }
 }
 
+function changeImageWhenUpload(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+        const img = document.getElementsByClassName("settings_pfp_image")[0];
+        img.src = reader.result;
+    }
+    reader.readAsDataURL(file);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("root").addEventListener("click", (e) => {
         setTimeout(() => {
@@ -31,15 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
         document.getElementById("root").addEventListener("change", (e) => {
-            if (e.target.id === "user_pfp") {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const img = document.getElementsByClassName("settings_pfp_image")[0];
-                    img.src = reader.result;
-                }
-                reader.readAsDataURL(file);
-            }
+            if (e.target.id === "user_pfp")
+                changeImageWhenUpload(e);
         });
     }, 1500);
 })
