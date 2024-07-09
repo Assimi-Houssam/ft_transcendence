@@ -4,47 +4,30 @@
     src: url("../utils/nasalization-rg.otf");
     font-weight: bold;
 }
-/* 
-* {
-    margin: 0;
-    padding: 0;
-} */
-
-/* body {
-	font-family: my_font;
-	background-color: #181B26;
-	color:white;
-	height: 100vh;
-} */
 
 chat-container {
-	height: 100%;
+	display: flex;
+	height: calc(100vh - 120px);
 }
 
 message-history {
+	height: 100%;
+	overflow-y: scroll;
 	flex: 1;
-}
-
-.chat-container {
-	display: flex;
-	width:100%;
-	height: 100vh;
-	font-family: my_font;
-	background-color: #181B26;
-	color:white;
 }
 
  /* chat-sidebar styles */
  /* -> sidebarHeader-style*/
  chat-sidebar {
 	flex: 0.2;
+	height: 100%;
  }
  .chat-sidebar {
 	background-color: #181B26;
 	display: flex;
 	flex-direction: column;
 	border-right: 1px solid #383838;
-	height: 100vh;
+	height: 100%;
   }
   
   .message-header {
@@ -67,16 +50,6 @@ message-history {
 	margin-left: 120px;
   }
 
-.online-users{
-	/* padding: 15px; */
-}
-
-/* .users-list {
-	display: flex;
-
-	/* overflow-x: auto; */
-	/* padding-bottom: 10px; */
-/*} */
 
 .ellipsize-left{
 	padding-top: 15px;
@@ -188,9 +161,7 @@ chat-main {
 .message-history {
 	display: flex;
     flex-direction: column;
-	flex-grow: 1;
 	padding: 20px;
-	overflow: auto;
 }
 
 
@@ -268,37 +239,34 @@ chat-main {
 	border-radius: 10px;
 }
 
-/* .message.received{
-	background: linear-gradient(to right, #222222, #2D2F3D);
-	align-self: flex-start;
-}
-
-
-.message.sent{
-	align-self: flex-end;
-	background: linear-gradient(to right, #222222, #2D2F3D);
-	margin-left:auto;
-}
-*/
-
 .message-input{
 	padding : 20px;
 	background-color: #181B26;
+	display: flex;
+	align-items: center;
 }
+.message-input button {
+	position: absolute;
+	right: 50px;
+	background: none;
+	border: none;
+	color: #CA33FF;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
 
 .message-input input{
 	width: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	padding-left:10px;
+	flex: 1;
 	border: none;
-	border-radius: 20px;
-	background: linear-gradient(to right, #222222, #2D2F3D);
+	border-radius: 15px;
+	/* height: 30px; */
+	padding: 20px;
+	background: #2D2F3D;
 	color: #ffffff;
+	outline: none;
 }
-
-/*Profile sidebar style*/
-
 
 
 .profile-header{
@@ -311,8 +279,6 @@ profile-sidebar {
 }
 .profile-sidebar {
     width: 100%;
-    /* padding: 15px; */
-    border-left: 1px solid #383838;
 }
 
 .profile-content {
@@ -345,16 +311,6 @@ profile-sidebar {
 	justify-content: center;
 	margin-top: 20px;
   }
-  
-/* .profile-actions button {
-	padding: 8px 15px;
-	margin: 0 5px;
-	border: none;
-	border-radius: 5px;
-	background-color: #a0a0a0;
-	color: #ffffff;
-	cursor: pointer;
-} */
 
 .btn-settings{
 	padding: 8px 15px;
@@ -375,3 +331,95 @@ profile-sidebar {
 	color: #ffffff;
 	cursor: pointer;
 }
+received-message-card {
+	display: flex;
+	align-items: end;
+}
+
+.received-message-avatar img {
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	/* margin-right: 10px; */
+	object-fit: contain;
+	display: none;
+	z-index: 1;
+}
+
+.message-received {
+	margin-top: 5px;
+	max-width: 50%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	float: left;
+}
+
+.message-received .message-time {
+	color: gray;
+	font-size: 15px;
+	margin-top: 20px;
+}
+
+.message-received p {
+	display: flex;
+	flex-direction: column;
+	background-color: #242533;
+	padding: 20px;
+	border-radius: 15px;
+}
+
+.received-message-time-avatar-box{
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+}
+
+.message-time {
+	font-size: 10px;
+	color: gray;
+}
+
+.message-sender {
+	align-self: flex-end;
+	max-width: 50%;
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	text-align: left;
+	float: right;
+}
+
+.message-sender p {
+	display: flex;
+	flex-direction: column;
+	background-color: #242533;
+	padding: 20px;
+	border-radius: 15px;
+}
+
+.message-sender .message-time {
+	color: gray;
+	font-size: 15px;
+	margin-top: 20px;
+	text-align: left;
+}
+
+message-input {
+	display: flex;
+	align-items: center;
+	position: relative;
+	bottom: 0;
+	width: 100% !important;
+}
+
+.message-input  {
+	width: 100%;
+}
+
+.message-input input {
+	width: 100%;
+	outline: none;
+}
+

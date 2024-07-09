@@ -3,6 +3,26 @@
     src: url('../fonts/nasalization-rg.otf') format('opentype');
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: none;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #334252;
+    border-radius: 50px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2b2727;
+  }
+
 /* definde variables of primary colors */
 :root {
     --bg: #181B26;
@@ -12,6 +32,7 @@
     --bg2: #191C28;
     --border-color1: #262730;
 }
+
 
 * {
     padding: 0;
@@ -97,7 +118,7 @@ layout-wrapper {
 
 .content_ > .content_body_ {
     padding: 0 20px;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 .navbar_ > .nav_search_ > input {

@@ -6,7 +6,10 @@ export class MessageInput extends HTMLElement{
 	connectedCallback(){
 		this.innerHTML = `
 		<div class="message-input">
-			<input type="text" placeholder="Type message...">
+		<input type="text" placeholder="Type message...">
+		<button class="send-message">
+			send
+		</button>
 		</div>
 		`;
 	}
