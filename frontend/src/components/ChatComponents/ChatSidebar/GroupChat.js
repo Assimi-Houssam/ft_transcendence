@@ -1,5 +1,3 @@
-//Need to update group chats
-
 export class GroupChat extends HTMLElement{
 	constructor(){
 		super();

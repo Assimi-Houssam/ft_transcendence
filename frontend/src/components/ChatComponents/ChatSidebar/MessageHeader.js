@@ -1,4 +1,3 @@
-// Need to update the message-count
 export class MessageHeader extends HTMLElement{
 	constructor(){
 		super();

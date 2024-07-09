@@ -89,8 +89,8 @@ message-history {
 
 /*All messages style*/
 
-.all-messages{
-	padding-top: 10px;
+all-messages .all-messages-title{
+	padding-top: 30px;
 	color: #CA33FF;
 	font-size: 100%;
 }
@@ -270,10 +270,72 @@ chat-main {
 
 
 .profile-header{
-	padding-left: 10px;
+    padding-left: 4px;
+    border-bottom: 1px solid #383838;
+    height: 50px;
+}
+.profile-header h2 {
+	margin-top: 10px;
 }
 
+.last-messages-items {
+	margin-top: 20px;
+}
 
+view-message-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-right: 20px;
+	user-select: none;
+	cursor: pointer;
+	border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to left,#191C28,#4B4B4D, #191C28);
+    border-image-slice: 2;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 10px;
+}
+
+view-message-item:last-child {
+	border-bottom: none;
+}
+
+view-message-item:hover {
+	background-color: #2D2F3D;
+	padding: 10px;
+	transition: 0.3s;
+	transform: scale(1.02);
+}
+
+view-message-item .view-message-left-item {
+	display: flex;
+	align-items: center;
+}
+
+view-message-item .view-message-left-item .view-message-item-avatar img {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+view-message-item .message-item-data h2 {
+	font-size: 15px;
+	font-weight: 500;
+}
+
+view-message-item .message-item-data p {
+	font-size: 12px;
+	font-weight: 400;
+	color: #AFAFAF;
+}
+view-message-item .view-message-right-item p {
+	font-size: 12px;
+	font-weight: 400;
+	color: #AFAFAF;
+
+}
 profile-sidebar {
 	flex: 0.2;
 }

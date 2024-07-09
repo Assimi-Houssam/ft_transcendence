@@ -7,7 +7,7 @@ export class Sidebar extends HTMLElement {
     }
 
     connectedCallback() {
-        let sidebar_links = ["/home", "/settings"]; // add the name of the sidebar routes paths here
+        let sidebar_links = ["/home", "/settings", "/chat"]; // add the name of the sidebar routes paths here
         this.innerHTML = `
         <div class="logo_"> 
             <img src="./assets/images/logo.png" alt="logo" />

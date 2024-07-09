@@ -1,30 +1,51 @@
-//Need to  update message list
+class ViewMessageItem extends HTMLElement {
+	constructor() {super()}
+	connectedCallback() {
+		this.innerHTML = `
+			<div class="view-message-left-item">
+				<div class="view-message-item-avatar">
+					<img src="../../assets/icons/p1.png" alt="user avatar">
+				</div>
+				<div class="message-item-data">
+					<h2>${this.getAttribute("name")}</h2>
+					<p>${
+						this.getAttribute("last_message").length > 20 ?
+						this.getAttribute("last_message").slice(0, 20) + "..." :
+						this.getAttribute("last_message")
+					}</p>
+				</div>
+			</div>
+			<div class="view-message-right-item">
+				<p>${this.getAttribute("time")}</p>
+			</div>
+		`
+	}
+}
+
+customElements.define("view-message-item", ViewMessageItem);
 export class AllMessages extends HTMLElement{
 	constructor(){
 		super();
 	}
 	connectedCallback(){
 		this.innerHTML = `
-			<div class="all-messages">
-				<h3 class="all-messages">All Messages</h3>
-				<ul class="message-list">
-					<li class="message-item">
-						<img src="../../assets/icons/p1.png" alt="player1" class="player">
-						<div class="message-info">
-							<span class="user-name"></span>
-							<span class="last-message"></span>
-						</div>
-						<span class="message-time"></span>
-					</li>
-					<li class="message-item">
-						<img src="../../assets/icons/p2.png" alt="player2" class="player">
-						<div class="message-info">
-							<span class="user-name"></span>
-							<span class="last-message"></span>
-						</div>
-						<span class="message-time"></span>
-					</li>
-				</ul>
+			<h3 class="all-messages-title">All Messages</h3>
+			<div class="last-messages-items">
+				<view-message-item 
+					name="Amine Amazzal" 
+					last_message="Hello" 
+					time="12:00">
+				</view-message-item>
+				<view-message-item 
+					name="Amine Amazzal" 
+					last_message="Hello" 
+					time="12:00">
+				</view-message-item>
+				<view-message-item 
+					name="Amine Amazzal" 
+					last_message="Hello" 
+					time="12:00">
+				</view-message-item>
 			</div>
 		`;
 	}
