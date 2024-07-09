@@ -6,6 +6,7 @@ import { isAuthenticated } from "../utils/utils.js";
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
 import { isPageLoaded } from "../components/Loading.js";
+import { ChatContainer } from "../pages/ChatContainer.js";
 // im not sure if each should route should have a public/private entry or not, i think its cleaner this way
 export const public_paths = ["/login", "/register", "/reset-password"]
 
@@ -33,6 +34,12 @@ export const Routes = [
     {
         path: '/reset-password',
         component: ForgotPasswordPage
+    },
+    {
+        path: '/chat',
+        icon: '../assets/icons/chat.png',
+        icon_ac: '../assets/icons/active_chat.png',
+        component: ChatContainer
     },
     {
         path: '/logout',
