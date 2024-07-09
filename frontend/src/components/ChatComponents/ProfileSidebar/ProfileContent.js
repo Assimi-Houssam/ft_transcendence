@@ -11,8 +11,7 @@ export class ProfileContent extends HTMLElement{
 				<p class="profile-username">@nel-mous</p>
 				
 				<div class="profile-actions">
-					<button class="btn-edit-profile">Edit</button>
-					<button class="btn-settings">Settings</button>
+					<a href="#" class="profile-action">View Profile</a>
 				</div>
 			</div>
 		 `;
