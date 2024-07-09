@@ -40,12 +40,12 @@ export class MessageHistory extends HTMLElement {
     this.innerHTML = `
 		<div class="message-history">
 			<received-message-card 
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
+				message="🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀🎀"
 				time="12:00" 
 				sender="amine amazzal">
 			</received-message-card>
 			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
+				message="dfak" 
 				time="12:00" 
 				sender="amine amazzal">
 			</sender-message-card>
@@ -55,67 +55,7 @@ export class MessageHistory extends HTMLElement {
 				sender="amine amazzal">
 			</received-message-card>
 			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</sender-message-card>
-			<received-message-card 
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</received-message-card>
-			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</sender-message-card>
-			<received-message-card 
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</received-message-card>
-			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</sender-message-card>
-			<received-message-card 
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</received-message-card>
-			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</sender-message-card>
-			<received-message-card 
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</received-message-card>
-			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</sender-message-card>
-			<received-message-card 
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</received-message-card>
-			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</sender-message-card>
-			<received-message-card 
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
-				time="12:00" 
-				sender="amine amazzal">
-			</received-message-card>
-			<sender-message-card
-				message="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer mise en page elle-même." 
+				message="🎀" 
 				time="12:00" 
 				sender="amine amazzal">
 			</sender-message-card>
