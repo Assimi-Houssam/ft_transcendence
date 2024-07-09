@@ -47,7 +47,7 @@ body {
 
 layout-wrapper {
     display: flex;
-    
+
 }
 
 .sidebar_ {
@@ -59,6 +59,7 @@ layout-wrapper {
     height: 100vh;
     align-items: center;
     background-color: var(--bg2);
+    z-index: 999999;
 }
 
 .sidebar_ > .sidebar_links {

@@ -21,5 +21,6 @@ export function isPageLoaded() {
     setTimeout(() => {
       resolve(true);
     }, 1500);
+    //reload js files
   });
 }
