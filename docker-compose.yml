@@ -1,14 +1,12 @@
 services:
   db:
     image: postgres
+    env_file: ".env"
     volumes:
       - ./db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: trans
-      POSTGRES_USER: trans_adm
-      POSTGRES_PASSWORD: test_passwd
   backend:
     build: ./backend
+    env_file: ".env"
     volumes:
       - ./backend:/app
     depends_on:

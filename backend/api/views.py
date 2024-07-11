@@ -8,6 +8,7 @@ from rest_framework import status
 from .models import User
 import requests
 import random
+import os
 
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -40,12 +41,11 @@ def oauth_login(request):
         "code": request.data["code"],
         "state": request.data["state"],
         "redirect_uri": "http://localhost/",
-        "client_id": "u-s4t2ud-9b817b5c046ec73f656311d30af3240cfd77ca2e5a01259a1d39c0223ce5f2fd",
-        "client_secret": "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"
+        "client_id": os.getenv("INTRA_UID"),
+        "client_secret": os.getenv("INTRA_SECRET")
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     r = requests.post(access_token_endpoint, data=params, headers=headers)
-    print(r.text)
     if (r.status_code != requests.codes.ok):
         print("an error has occured")
         return Response({"error": "An error occured fetching an access token from 42", "detail": r.text})
