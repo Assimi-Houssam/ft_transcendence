@@ -39,6 +39,11 @@
     font-weight: 500;
 }
 
+.user_settings_pfp_input_box:hover .settings_pfp_camera_upload {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
 .settings_pfp_camera_upload {
     width: 400px;
     height: 400px;
@@ -48,6 +53,7 @@
     margin-left: -450px !important;
     margin-top: 20px;
     user-select: none;
+    opacity: 0;
 }
 
 
