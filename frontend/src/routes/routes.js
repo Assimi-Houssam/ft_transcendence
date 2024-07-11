@@ -7,8 +7,6 @@ import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
 import { isPageLoaded } from "../components/Loading.js";
 import { ChatContainer } from "../pages/ChatContainer.js";
-// im not sure if each should route should have a public/private entry or not, i think its cleaner this way
-export const public_paths = ["/login", "/register", "/reset-password"]
 
 export const Routes = [
     {
@@ -44,7 +42,7 @@ export const Routes = [
     {
         path: '/logout',
         component: null,
-        service : logout,
+        service: logout,
     }
 ]
 
@@ -53,18 +51,21 @@ class Router {
         this.routes = Routes;
         this.active_path = window.location.pathname;
         this.route  = this.routes.find(route => route.path === this.active_path);
+        this.public_routes = ["/login", "/register", "/reset-password"];
     }
 
     render() {
-        window.history.pushState({}, "", this.active_path);
+        if (this.active_path != window.location.pathname) {
+            window.history.pushState({}, "", this.active_path);
+        }
         const root = document.getElementById("root");
-        const curr_page = new this.route.component()
+        const curr_page = new this.route.component();
         root.innerHTML = `
             <app-loader></app-loader>
         `;
         isPageLoaded().then(() => {
             root.innerHTML = "";
-            if (public_paths.includes(this.route.path))
+            if (this.public_routes.includes(this.route.path))
                 root.innerHTML = curr_page.outerHTML;
             else {
                 let layout = document.querySelector("layout-wrapper");
@@ -83,12 +84,14 @@ class Router {
     }
 
     navigate(path) {
-        if (!public_paths.includes(path) && !isAuthenticated()) {
-            router.navigate("/login")
-            return;
-        }else if (public_paths.includes(path) && isAuthenticated()) {
-            router.navigate("/home")
-            return;
+        if (path === "/" || !this.routes.some(route => route.path === path)) {
+            path = "/home";
+        }
+        if (!isAuthenticated() && !this.public_routes.includes(path)) {
+            path = "/login";
+        }
+        if (isAuthenticated() && this.public_routes.includes(path)) {
+            path = "/home";
         }
         this.active_path = path;
         this.route = this.routes.find(route => route.path === this.active_path);

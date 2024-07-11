@@ -40,7 +40,7 @@ def oauth_login(request):
         "grant_type": "authorization_code",
         "code": request.data["code"],
         "state": request.data["state"],
-        "redirect_uri": "http://localhost/",
+        "redirect_uri": "http://localhost/login",
         "client_id": os.getenv("INTRA_UID"),
         "client_secret": os.getenv("INTRA_SECRET")
     }
@@ -67,10 +67,7 @@ def oauth_login(request):
         intra_user = User.objects.get(intra_id=intra_id)
         # user already has an account created with his intra, return his token
         tokens = RefreshToken.for_user(intra_user)
-        return Response({
-            "refresh": str(tokens),
-            "access": str(tokens.access_token)
-            })
+        return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
     # user has not created an account with his intra, create a new one for him
     except User.DoesNotExist:
         try:
