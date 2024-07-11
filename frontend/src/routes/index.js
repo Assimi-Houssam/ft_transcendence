@@ -20,5 +20,4 @@ document.body.addEventListener("click", (event) => {
   }
 });
 
-console.log(`index.js, url: ${window.location.search} | pathname: ${window.location.pathname}`);
 router.navigate(window.location.pathname);

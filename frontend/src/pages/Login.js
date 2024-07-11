@@ -47,7 +47,6 @@ export class LoginPage extends HTMLElement {
 	}
 	async connectedCallback() {
 		if (localStorage.getItem('state')) {
-			console.log(`intercepting state`);
 			this.err = await OAuthIntercept();
 			if (!this.err) {
 				router.navigate("/home");

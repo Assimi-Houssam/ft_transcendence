@@ -88,11 +88,9 @@ class Router {
             path = "/home";
         }
         if (!isAuthenticated() && !this.public_routes.includes(path)) {
-            console.log("redirecting to: login, user is not authed and tried to access a protected path");
             path = "/login";
         }
         if (isAuthenticated() && this.public_routes.includes(path)) {
-            console.log("redirecting to: home, reason: user is authed and tried to access a public path");
             path = "/home";
         }
         this.active_path = path;
