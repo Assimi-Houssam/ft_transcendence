@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views
+from api import views, updateProfile
 from rest_framework_simplejwt import views as jwt_views
 
 
@@ -27,4 +27,6 @@ urlpatterns = [
     path("login", jwt_views.TokenObtainPairView.as_view()),
     path("login/refresh", jwt_views.TokenRefreshView.as_view()),
     path('admin/', admin.site.urls),
+    # update user profile endpoints
+    path("user/update", updateProfile.updateProfile),
 ]

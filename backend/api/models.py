@@ -11,4 +11,12 @@ class User(AbstractUser):
     intra_id = models.IntegerField(null=True, blank=True) # guaranteed to be unique
     class Meta:
         ordering = ['id']
-    
+
+class Profile(models.Model) :
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    fullname = models.CharField(max_length=20)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        ordering = ['id']
