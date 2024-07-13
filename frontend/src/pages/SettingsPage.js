@@ -37,16 +37,38 @@ export class SettingsPage extends HTMLElement {
     }
     async updateProfile(event) {
         event.preventDefault();
+        /**
+         * need to defined the @user_id in the data object
+         * also need to desplay the loged user data in inputs and profile
+         */
         const data = this.getFormData();
+        data["user_id"] = null;
         data["confirm_password"] = document.getElementById("settings_password_confirmation").value;
         if (data["confirm_password"] === "") {
             document.getElementsByClassName("confirm_password_err")[0].innerHTML = "Password is required, can't be empty";
             return;
         }
+        console.log("data[confirm_password] => ", data["confirm_password"]);
         /**
          * get the return data from @getFormData function
          * send data to backend here
         */
+        try {
+            console.log(data);
+            const res = await fetch("http://localhost:8000/user/update", {
+                method: 'PUT', 
+                headers: {
+                    'Content-Type': 'application/json',
+                }, 
+                body: JSON.stringify(data),
+            })
+            const result = await res.json();
+            if (result.ok) {
+                console.log("Update successfully, data => ", result);
+            }
+        } catch(err) {
+            console.log("cant update profile cuz of => " + err);
+        }
     }
     async validateForm() {
         const data = this.getFormData();
