@@ -60,27 +60,30 @@ class Router {
         }
         const root = document.getElementById("root");
         const curr_page = new this.route.component();
-        root.innerHTML = `
-            <app-loader></app-loader>
-        `;
-        isPageLoaded().then(() => {
-            root.innerHTML = "";
-            if (this.public_routes.includes(this.route.path))
-                root.innerHTML = curr_page.outerHTML;
-            else {
-                let layout = document.querySelector("layout-wrapper");
-                if (!layout) {
-                    layout = document.createElement("layout-wrapper");
-                    root.appendChild(layout);
-                }
-                customElements.whenDefined('layout-wrapper').then(() => {
+        root.innerHTML = `<app-loader></app-loader>`;
+        if (this.public_routes.includes(this.route.path))
+            root.innerHTML = curr_page.outerHTML;
+        else {
+            let layout = document.querySelector("layout-wrapper");
+            if (!layout) {
+                console.log("[routes]: layout was null, creating it");
+                layout = document.createElement("layout-wrapper");
+                layout.style.display = "none";
+                console.log("[routes]: layout created, appending it to root...");
+                console.log("[routes]: layout appended");
+            }
+            customElements.whenDefined('layout-wrapper').then(() => {
+                root.replaceChildren(layout);
+                layout.isLoaded().then(() => {
+                    layout.style.display = "flex";
+                    console.log("[routes]: layout finished loading, appending content to it");
                     const content_ = layout.querySelector(".content_body_");
                     if (content_) {
-                        content_.appendChild(curr_page);
+                        content_.replaceChildren(curr_page);
                     }
                 });
-            }
-        })
+            });
+        }
     }
 
     navigate(path) {

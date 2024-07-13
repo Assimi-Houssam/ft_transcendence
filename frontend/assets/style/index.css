@@ -7,21 +7,21 @@
     width: 5px;
   }
   
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: none;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+/* Track */
+::-webkit-scrollbar-track {
+background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
     background: #334252;
     border-radius: 50px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
     background: #2b2727;
-  }
+}
 
 /* definde variables of primary colors */
 :root {
