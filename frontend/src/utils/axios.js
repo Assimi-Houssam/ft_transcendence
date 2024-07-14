@@ -2,6 +2,7 @@ class Axios {
     constructor() {
         this.url = "http://localhost:8000/";
         this.headers = {};
+        this.method_without_body = ["GET", "DELETE"];
     }
 
     async get(...args) {
@@ -19,17 +20,21 @@ class Axios {
     async delete(...args) {
         return await this.request("DELETE", ...args);
     }
-
     async request(method, endpoint, data = {}, headers = {}) {
-        const response = await fetch(this.url + endpoint, {
+        const options = {
             method,
             headers: {
                 "Content-Type": "application/json",
                 ...this.headers,
                 ...headers,
             },
-            body: JSON.stringify(data),
-        });
+        };
+    
+        if (!this.method_without_body.includes(method)) {
+            options.body = JSON.stringify(data);
+        }
+    
+        const response = await fetch(this.url + endpoint, options);
         return await response.json();
     }
 }
