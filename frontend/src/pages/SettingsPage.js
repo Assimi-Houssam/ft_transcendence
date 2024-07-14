@@ -1,11 +1,16 @@
 import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
 import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
-
+import Toast from "../components/Toast.js";
 export class SettingsPage extends HTMLElement {
     constructor() {
         super();
         this.updateProfile = this.updateProfile.bind(this);
+    }
+
+    removePopup() {
+        const popup = document.querySelector("comfirm-password-pop-up");
+        popup.remove();
     }
     showPopupSetting() {
         const settings = document.querySelector("settings-page");
@@ -54,18 +59,19 @@ export class SettingsPage extends HTMLElement {
          * send data to backend here
         */
         try {
+            Toast.success("Update successfully");
             console.log(data);
             const res = await fetch("http://localhost:8000/user/update", {
                 method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
-                }, 
+                },
                 body: JSON.stringify(data),
-            })
+            });
             const result = await res.json();
-            if (result.ok) {
+            if (result.ok)
                 console.log("Update successfully, data => ", result);
-            }
+            this.removePopup();
         } catch(err) {
             console.log("cant update profile cuz of => " + err);
         }
