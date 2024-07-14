@@ -108,7 +108,10 @@ export class SettingsPage extends HTMLElement {
     }
     return isValid;
   }
-
+  /**
+   * the way i pass data in incorrect
+   * so i nned to fix it
+   */
   connectedCallback() {
     this.innerHTML = `<h1>loading</h1>`;
     this.fechUserInfo().then(() => {
