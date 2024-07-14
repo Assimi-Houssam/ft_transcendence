@@ -5,35 +5,32 @@ class Axios {
         this.method_without_body = ["GET", "DELETE"];
     }
 
-    async get(...args) {
-        return await this.request("GET", ...args);
+    async get(endpoint, config = {}) {
+        return await this.request("GET", endpoint, {}, config.headers);
     }
 
-    async post(...args) {
-        return await this.request("POST", ...args);
+    async post(endpoint, config = {}) {
+        return await this.request("POST", endpoint, config.data, config.headers);
     }
 
-    async put(...args) {
-        return await this.request("PUT", ...args);
+    async put(endpoint, config = {}) {
+        return await this.request("PUT", endpoint, config.data, config.headers);
     }
 
-    async delete(...args) {
-        return await this.request("DELETE", ...args);
+    async delete(endpoint, config = {}) {
+        return await this.request("DELETE", endpoint, {}, config.headers);
     }
     async request(method, endpoint, data = {}, headers = {}) {
         const options = {
             method,
             headers: {
                 "Content-Type": "application/json",
-                ...this.headers,
                 ...headers,
             },
         };
-    
         if (!this.method_without_body.includes(method)) {
             options.body = JSON.stringify(data);
         }
-    
         const response = await fetch(this.url + endpoint, options);
         return await response.json();
     }
