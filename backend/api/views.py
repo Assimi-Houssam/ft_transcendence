@@ -16,7 +16,14 @@ import os
 def me(request):
     user = request.user
     if (user.is_authenticated):
-        return Response({"username": user.username, "email": user.email, "id": user.id, "intra_id": user.intra_id})
+        return Response({
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "username": user.username, 
+            "email": user.email, 
+            "id": user.id, 
+            "intra_id": user.intra_id
+        })
     return Response({"error": "You need to be authenticated to use this endpoint"})
 
 @api_view(['POST'])

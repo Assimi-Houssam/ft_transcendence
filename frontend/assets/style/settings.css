@@ -260,3 +260,17 @@ button {
     color: #FF4D4D;
 }
 
+.settings_user_form_fullname {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.settings_user_form_fullname > .settings_form_control {
+    gap: 5px !important;
+}
+
+/* remvoe the marginTop from the seccne child */
+.settings_user_form_fullname > * {
+    margin-top: 0 !important;
+}

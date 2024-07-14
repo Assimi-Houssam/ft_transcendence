@@ -6,8 +6,32 @@ export class SettingsUserForm extends HTMLElement {
     this.data = JSON.parse(this.getAttribute("data"));
     this.innerHTML = `
             <div class="settings_user_form_" >
+                <div>
+                    <div class="settings_user_form_fullname">
+                        <div class="settings_form_control">
+                            <label>First name</label>
+                            <input
+                                class="gradient-dark-bg gradient-dark-border" 
+                                value="${this.data.first_name || ""}"
+                                type="text" 
+                                id="user_firstname" 
+                                placeholder="Amine Amazzal" >
+                                <div class="settings_input_error user_firstname_err"></div>
+                        </div>
+                        <div class="settings_form_control">
+                            <label>Last name</label>
+                            <input
+                                class="gradient-dark-bg gradient-dark-border" 
+                                value="${this.data.last_name || ""}"
+                                type="text" 
+                                id="user_lastname" 
+                                placeholder="Amine Amazzal" >
+                                <div class="settings_input_error user_lastname_err"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="settings_form_control">
-                    <label>Your Name</label>
+                    <label>Your username (LOGIN)</label>
                     <input
                         class="gradient-dark-bg gradient-dark-border" 
                         value="${this.data.username || "loading..."}"
@@ -30,9 +54,10 @@ export class SettingsUserForm extends HTMLElement {
                         <label>Your Password</label>
                         <input 
                             class="gradient-dark-bg gradient-dark-border" 
-                            type="password"
+                            type="password" 
+                            value="${this.data.password || "loading..."}"
                             id="user_password" 
-                            placeholder="new password" >
+                            placeholder="example@gmail.com" >
                     <div class="settings_input_error user_password_err"></div>
                 </div>
                 <div class="settings_form_btn">
