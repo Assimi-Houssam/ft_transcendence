@@ -4,7 +4,7 @@ class Toast extends HTMLElement {
         this.attachShadow({ mode: "open" });
         this.tostsIcons = {
             success: "../../assets/icons/success.png",
-            error: "../../assets/icons/success.png",
+            error: "../../assets/icons/error.png",
         }
         this.shadowRoot.innerHTML = `
             <style>
@@ -31,10 +31,10 @@ class Toast extends HTMLElement {
                     height: 30px;
                 }
                 .toast_success {
-                    background-color: green;
+                    background-color: #2d2f3d;
                 }
                 .toast_error {
-                    background-color: red;
+                    background-color: #2d2f3d;
                 }
 
                 .timeline {
