@@ -2,6 +2,7 @@ import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
 import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
 import Toast from "../components/Toast.js";
+import Axios from "../utils/axios.js";
 export class SettingsPage extends HTMLElement {
     constructor() {
         super();
@@ -53,27 +54,21 @@ export class SettingsPage extends HTMLElement {
             document.getElementsByClassName("confirm_password_err")[0].innerHTML = "Password is required, can't be empty";
             return;
         }
-        console.log("data[confirm_password] => ", data["confirm_password"]);
         /**
          * get the return data from @getFormData function
          * send data to backend here
         */
         try {
-            Toast.success("Update successfully");
-            console.log(data);
-            const res = await fetch("http://localhost:8000/user/update", {
-                method: 'PUT', 
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-            const result = await res.json();
-            if (result.ok)
-                console.log("Update successfully, data => ", result);
-            this.removePopup();
+            const res =  await Axios.put("/user/update", data);
+            if (res.ok) {
+                console.log("response =>", res);
+                Toast.success("Profile updated successfully");
+                this.removePopup();
+            }else {
+                throw new Error(res.message);
+            }
         } catch(err) {
-            console.log("cant update profile cuz of => " + err);
+            Toast.error(err);
         }
     }
     async validateForm() {
