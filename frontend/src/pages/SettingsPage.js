@@ -185,3 +185,9 @@ export class SettingsPage extends HTMLElement {
 }
 
 customElements.define("settings-page", SettingsPage);
+
+
+/**
+ * TODO :
+ *  the pfp still not updating after uploading a new image
+ */
