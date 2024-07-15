@@ -26,7 +26,7 @@
 .user_settings_pfp_input_box .settings_pfp_image  {
     width: 400px;
     height: 400px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 50%;
     margin-right: 50px;
     margin-top: 20px;

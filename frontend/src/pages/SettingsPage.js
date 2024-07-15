@@ -4,6 +4,7 @@ import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopU
 import Toast from "../components/Toast.js";
 import Axios from "../utils/axios.js";
 import userInfo from "../utils/services/UserInfo.services.js";
+import { router } from "../routes/routes.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
@@ -11,24 +12,55 @@ export class SettingsPage extends HTMLElement {
     this.updateProfile = this.updateProfile.bind(this);
     this.userData = {};
   }
+
+  /**
+   * @function fechUserInfo
+   * @returns {void}
+   * @description fetch the user info from the server
+   * @returns {object} user data
+   */
   async fechUserInfo() {
     this.userData = await userInfo();
   }
+
+  /**
+   * @function removePopup
+   * @returns {void}
+   * @description remove the popup confirmation password
+   */
   removePopup() {
-    const popup = document.querySelector("comfirm-password-pop-up");
-    // check if the popup is already exist
-    if (popup) popup.remove();
-  }
-  showPopupSetting() {
-    const settings = document.querySelector("settings-page");
-    const confirmPopup = document.createElement("comfirm-password-pop-up");
-    settings.appendChild(confirmPopup);
-    const close_popup = document.getElementById("setting_close_popup");
-    close_popup.onclick = () => {
-      confirmPopup.remove();
-    };
+    const popup = document.querySelectorAll("comfirm-password-pop-up");
+    if (popup) {
+      popup.forEach((pop) => {
+        pop.remove();
+      });
+    }
   }
 
+  /**
+   * @function showPopupSetting
+   * @returns {void}
+   * @description show the popup for confirmation password
+   */
+  showPopupSetting() {
+    const settings = document.querySelector("settings-page");
+    let confirmPopup = document.querySelector("comfirm-password-pop-up")
+    if (!confirmPopup) {
+      confirmPopup = document.createElement("comfirm-password-pop-up");
+      settings.appendChild(confirmPopup);
+      const close_popup = document.getElementById("setting_close_popup");
+      close_popup.onclick = () => {
+        confirmPopup.remove();
+      };
+    }
+  }
+
+  /**
+   * @function changeImageWhenUpload
+   * @returns {void}
+   * @param {*} e => event
+   * @description change the image when upload
+   */
   changeImageWhenUpload(e) {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -39,6 +71,11 @@ export class SettingsPage extends HTMLElement {
     reader.readAsDataURL(file);
   }
 
+  /**
+   * @function getFormData
+   * @returns  {object} data
+   * @description get the form data from inputs
+   */
   getFormData() {
     const data = {
       user_firstname: document.getElementById("user_firstname").value,
@@ -49,13 +86,19 @@ export class SettingsPage extends HTMLElement {
     };
     return data;
   }
+  /**
+   * @function updateNavbar
+   * @returns {void}
+   * @description update the navbar after updating the profile
+   */
+  updateNavbar() {
+    const navbar = document.querySelector("navbar-component");
+    navbar.updateData();
+  }
   async updateProfile(event) {
     event && event.preventDefault();
-    /**
-     * need to defined the @user_id in the data object
-     * also need to desplay the loged user data in inputs and profile
-     */
     const data = this.getFormData();
+  
     data["user_id"] = this.userData.id;
     if (!this.userData.intra_id)
       data["confirm_password"] = document.getElementById(
@@ -66,11 +109,6 @@ export class SettingsPage extends HTMLElement {
         "Password is required, can't be empty";
       return;
     }
-    console.log("data =>", data);
-    /**
-     * get the return data from @getFormData function
-     * send data to backend here
-     */
     try {
       const config = {
         headers: {
@@ -80,10 +118,9 @@ export class SettingsPage extends HTMLElement {
       };
       const res = await Axios.put("/user/update", config);
       if (res.ok) {
-        console.log("response =>", res);
         Toast.success("Profile updated successfully");
         this.removePopup();
-        this.fechUserInfo();
+        this.updateNavbar();
       } else {
         throw new Error(res.message);
       }
@@ -91,6 +128,11 @@ export class SettingsPage extends HTMLElement {
       Toast.error(err);
     }
   }
+
+  /**
+   * @description validate the form data
+   * @returns {boolean} isValid
+   */
   async validateForm() {
     const data = this.getFormData();
     for (const key in data) {
@@ -100,53 +142,44 @@ export class SettingsPage extends HTMLElement {
     let isValid = true;
     for (const key in data) {
       if (!data[key] && key !== "user_password") {
-        document.getElementsByClassName(
-          key + "_err"
-        )[0].innerHTML = `${key} is required and can't be empty`;
+        document.getElementsByClassName(key + "_err")[0].innerHTML = `${key} is required and can't be empty`;
         isValid = false;
       }
     }
     return isValid;
   }
-  /**
-   * the way i pass data in incorrect
-   * so i nned to fix it
-   */
+  updateEvent(e) {
+    this.validateForm().then((isValid) => {
+      if (isValid && !this.userData.intra_id) {
+        this.showPopupSetting();
+        const settings_popup_conf_psw = document.getElementById("settings_popup_conf_psw");
+        settings_popup_conf_psw.onclick = (e) => this.updateProfile(e);
+      } else if (this.userData.intra_id && isValid) {
+        this.updateProfile(null);
+      }
+    });
+  }
   connectedCallback() {
-    this.innerHTML = `<h1>loading</h1>`;
     this.fechUserInfo().then(() => {
       this.innerHTML = `
-                <div class="settings_">
-                    <div class="settings_bg_"></div>
-                    <div class="settings_content_body">
-                        <div class="settings_text_desc">
-                            <h2>Account settings</h2>
-                            <p>Edit your name, avatar, email, ect...</p>
-                        </div>
-                        <div class="settings_form_data">
-                            <user-settings-form-page data=${JSON.stringify(this.userData )} ></user-settings-form-page>
-                            <user-settings-pfp></user-settings-pfp>
-                        </div>
+          <div class="settings_">
+                <div class="settings_bg_"></div>
+                <div class="settings_content_body">
+                    <div class="settings_text_desc">
+                        <h2>Account settings</h2>
+                        <p>Edit your name, avatar, email, ect...</p>
+                    </div>
+                    <div class="settings_form_data">
+                        <user-settings-form-page ></user-settings-form-page>
+                        <user-settings-pfp></user-settings-pfp>
                     </div>
                 </div>
-            `;
-      document.getElementById("user_pfp").addEventListener("change", (e) => {
-        this.changeImageWhenUpload(e);
+          </div>
+        `;
+      document.addEventListener("user-settings-form-page:load", () => {
+        document.getElementById("user_pfp").onchange = (e) => this.changeImageWhenUpload(e);
+        document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
       });
-      document
-        .getElementById("save_setting_btn")
-        .addEventListener("click", (e) => {
-          this.validateForm().then((isValid) => {
-            if (isValid && !this.userData.intra_id) {
-              this.showPopupSetting();
-              document
-                .getElementById("settings_popup_conf_psw")
-                .addEventListener("click", this.updateProfile);
-            } else if (this.userData.intra_id) {
-              this.updateProfile(null);
-            }
-          });
-        });
     });
   }
 }

@@ -6,6 +6,9 @@ export class Navbar extends HTMLElement {
         this.classList.add("navbar_");
     }
 
+    updateData() {
+      this.connectedCallback();
+    }
     async connectedCallback() {
         const req_headers = {
           "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
