@@ -55,7 +55,7 @@ class Router {
         this.public_routes = ["/login", "/register", "/reset-password"];
     }
 
-    render() {
+    async render() {
         if (this.active_path != window.location.pathname) {
             window.history.pushState({}, "", this.active_path);
         }
@@ -75,15 +75,17 @@ class Router {
             layout.isLoaded().then(() => {
                 console.log("[routes]: layout loaded successfully, calling replaceChildren on root");
                 root.replaceChildren(layout);
+                const content_ = layout.querySelector(".content_body_");
+                if (content_) {
+                    content_.replaceChildren(curr_page);
+                }
             })
             .catch(error => {
-                root.replaceChildren(new ErrorPage());
-                // console.log("[routes]: layout wrapper threw, error: ", error);
+                console.log("[routes]: layout threw:", error);
+                console.log("[routes]: redirecting to /login");
+                localStorage.clear();
+                this.navigate("/login");
             });
-        }
-        const content_ = layout.querySelector(".content_body_");
-        if (content_) {
-            content_.replaceChildren(curr_page);
         }
     }
 

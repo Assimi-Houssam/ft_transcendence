@@ -1,52 +1,4 @@
-import { synchronousFetch } from "../utils/utils.js";
-
-async function refresh_token() {
-  const data = {
-    refresh: localStorage.getItem("refresh_token")
-  }
-  const req = await api_post("/login/refresh", JSON.stringify(data));
-  // refresh token expired, need to login again
-  if (!resp.ok) {
-    return false;
-  }
-  const json = await req.json();
-  localStorage.setItem("access_token", json.access);
-  return true;
-}
-async function api_post(endpoint, data, requires_auth = true) {
-  const base_url = "http://localhot:8000";
-  const req_headers = {
-    "Content-Type": "application/json"
-  };
-  if (requires_auth) {
-    req_headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`
-  }
-  const req_opt = {
-    method: "POST",
-    headers: req_headers,
-    body: data
-  }
-  return fetch(base_url + endpoint, req_opt);
-}
-
-async function api_get(endpoint) {
-  const base_url = "http://localhost:8000";
-  const req_headers = {
-    "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-    "Content-Type": "application/json"
-  };
-  const req_opt = {
-    method: 'GET',
-    headers: req_headers,
-    body: null
-  };
-  const resp = fetch(base_url + endpoint, req_opt);
-  // token expired, let's request a refresh token
-  if (!response.ok) {
-    await refresh_token();
-  }
-  return resp;
-}
+import ApiWrapper from "../utils/ApiWrapper.js"
 
 export class Navbar extends HTMLElement {
   constructor() {
@@ -58,20 +10,24 @@ export class Navbar extends HTMLElement {
     });
   }
   load() {
-    api_get("/me").then(response => {
-      if (!response.ok) {
-        throw new Error('[Navbar]: server returned: ', response.status);
+    ApiWrapper.get("/me").then((req) => {
+      if (!req) {
+        throw new Error("/me request failed");
       }
-      return response.json();
+      if (!req.ok) {
+        console.log("[Navar]: server returned: ", req.status);
+        throw new Error("Req failed");
+      }
+      return req.json();
     })
-    .then(data => {
+    .then((data) => {
+      console.log("[Navbar]: data was received successfully!");
       this.data = data;
-      console.log("[Navbar]: received resp from server: ", this.data);
       this.resolved_callback();
     })
     .catch(error => {
       this.rejected_callback(error);
-    });
+    })
   }
   isLoaded() {
     return this.loaded_promise;
