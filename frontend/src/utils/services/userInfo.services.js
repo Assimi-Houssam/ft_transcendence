@@ -8,14 +8,14 @@ import Axios from "../axios.js";
 export default async function userInfo() {
     try {
         let headers = {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access_token")}`
         }
         const res = await Axios.get("me", {
             headers: headers
         });
         return res;
     } catch(err) {
-        console.log("[bad - userInfo.services] => ", err);
         Toast.error(err);
     }
 }

@@ -22,7 +22,8 @@ def me(request):
             "username": user.username, 
             "email": user.email, 
             "id": user.id, 
-            "intra_id": user.intra_id
+            "intra_id": user.intra_id, 
+            "pfp": user.pfp.url
         })
     return Response({"error": "You need to be authenticated to use this endpoint"})
 

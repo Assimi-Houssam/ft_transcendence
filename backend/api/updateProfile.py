@@ -1,36 +1,33 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import  User
+import datetime
 
-@api_view(['PUT'])
+
+@api_view(['POST'])
 def updateProfile(req):
     try:
-        # get the user
-        print(req)
-        user_id = req.data['user_id']; #need to defined in the request 
-        # check first if is user logged in
+        user_id = req.POST['user_id'];
         if not req.user.is_authenticated:
             return Response({
                 'ok' : False,
                 'message' : 'User is not logged in',
             })
         user = User.objects.get(id=user_id);
-        if not(user.intra_id) and  not(user.check_password(req.data['confirm_password'])) :
+        if not(user.intra_id) and  not(user.check_password(req.POST['confirm_password'])) :
             return Response({
                 'ok' : False,
                 'message' : 'Incorrect password',
             })
         # update the user
-        user.first_name = req.data['user_firstname']
-        user.last_name = req.data['user_lastname']
-        user.username = req.data['user_name']
-        user.email = req.data['user_email']
-        if 'user_password' in req.data and req.data['user_password'] != '' and not(user.intra_id):
-            user.set_password(req.data['user_password'])
-        # check if user uploaded a new profile picture
-        if 'user_pfp' in req.data and req.data['user_pfp'] != '':
+        user.first_name = req.POST['user_firstname']
+        user.last_name = req.POST['user_lastname']
+        user.username = req.POST['user_name']
+        user.email = req.POST['user_email']
+        if 'user_password' in req.POST and req.POST['user_password'] != '' and not(user.intra_id):
+            user.set_password(req.POST['user_password'])
+        if req.FILES.get('user_pfp'):
             user.pfp = req.FILES['user_pfp']
-            # save the new profile picture
         user.save()
         return Response({
             'ok' : True,

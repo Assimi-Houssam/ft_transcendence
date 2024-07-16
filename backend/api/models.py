@@ -9,15 +9,6 @@ class User(AbstractUser):
     password = models.CharField(max_length=256) # sha-256 hashed
     email = models.EmailField(max_length=64, unique=True)
     intra_id = models.IntegerField(null=True, blank=True) # guaranteed to be unique
-    pfp = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='profile_pictures/default.jpg')
-    class Meta:
-        ordering = ['id']
-
-class Profile(models.Model) :
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    fullname = models.CharField(max_length=20)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    pfp = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='profile_pictures/default.jpeg')
     class Meta:
         ordering = ['id']

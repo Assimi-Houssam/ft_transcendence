@@ -4,13 +4,27 @@ import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopU
 import Toast from "../components/Toast.js";
 import Axios from "../utils/axios.js";
 import userInfo from "../utils/services/UserInfo.services.js";
-import { router } from "../routes/routes.js";
+import { baseApiURL } from "../utils/baseApiURL.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
     super();
     this.updateProfile = this.updateProfile.bind(this);
     this.userData = {};
+  }
+
+  /**
+   * @function setInputsValues
+   * @returns {void}
+   * @description to set the data from the server to the inputs in component
+   */
+  setInputsValues() {
+    const data = this.userData;
+    document.getElementById("user_firstname").value = data.first_name;
+    document.getElementById("user_lastname").value = data.last_name;
+    document.getElementById("user_name").value = data.username;
+    document.getElementById("user_email").value = data.email;
+    document.getElementsByClassName("settings_pfp_image")[0].src = baseApiURL + data.pfp;
   }
 
   /**
@@ -100,20 +114,15 @@ export class SettingsPage extends HTMLElement {
     event && event.preventDefault();
   
     const data = this.getFormData();
-    const formData = new FormData();
+    let formData = new FormData();
   
     // Append regular data
-
     // TODO : the data is not appending to the form data
     for (const key in data) {
-      if (data[key]) {
+      if (data[key])
         formData.append(key, data[key]);
-      }
     }
-    // Append user ID
     formData.append("user_id", this.userData.id);
-  
-    // Append confirm password if necessary
     if (!this.userData.intra_id) {
       const confirmPassword = document.getElementById("settings_password_confirmation").value;
       if (confirmPassword === "") {
@@ -123,21 +132,15 @@ export class SettingsPage extends HTMLElement {
       }
       formData.append("confirm_password", confirmPassword);
     }
-  
-    // Append profile picture if it exists
-    if (data.user_pfp) {
-      formData.append("user_pfp", data.user_pfp);
-    }
-    console.log(formData);
+
     try {
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${localStorage.getItem("access_token")}`
         },
         data: formData,
       };
-      const res = await Axios.put("/user/update", config);
-      console.log(res);
+      const res = await Axios.post("user/update", config);
       if (res.ok) {
         Toast.success("Profile updated successfully");
         this.removePopup();
@@ -171,7 +174,7 @@ export class SettingsPage extends HTMLElement {
       if (key  === "user_pfp") {
         const file = data[key];
         if (file) {
-          if (file.size > 2000000) {
+          if (file.size > 5000000) {
             document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Image size must be less than 2MB";
             isValid = false;
           }else if (!file.type.includes("image")) {
@@ -211,18 +214,24 @@ export class SettingsPage extends HTMLElement {
                 </div>
           </div>
         `;
-      document.addEventListener("user-settings-form-page:load", () => {
-        document.getElementById("user_pfp").onchange = (e) => this.changeImageWhenUpload(e);
-        document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
-      });
+      this.setInputsValues();
+      document.getElementById("user_pfp").onchange = (e) => this.changeImageWhenUpload(e);
+      document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
+    }).catch((err) => {
+      Toast.error(err);
+      this.innerHTML = `
+        <div class="settings__faild">
+          <div class="settings_err_faild">
+            <img src="../../assets/images/broken.webp" alt="broken" />
+            <p>
+              opps something went wrong,
+              please make sure you are logged in
+            </p>
+          </div>
+        </div>
+      `
     });
   }
 }
 
 customElements.define("settings-page", SettingsPage);
-
-
-/**
- * TODO :
- *  the pfp still not updating after uploading a new image
- */

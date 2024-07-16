@@ -1,5 +1,5 @@
 import { synchronousFetch } from "../utils/utils.js";
-
+import { baseApiURL } from "../utils/baseApiURL.js";
 export class Navbar extends HTMLElement {
     constructor() {
         super();
@@ -40,7 +40,7 @@ export class Navbar extends HTMLElement {
                         || "loading" // temporary
                     }
                     </p>
-                    <img src="./assets/images/mamazzal.jpg" />
+                    <img src=${baseApiURL + json.pfp} />
                   </div>
               </div>
           `;
