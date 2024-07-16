@@ -24,3 +24,15 @@ export function isPageLoaded() {
     //reload js files
   });
 }
+
+export class PreloaderMini extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `
+      <div class="mini_loading_">
+        <img src='../../assets/icons/preloader.gif' alt='loading' />
+      </div>
+    `
+  }
+}
+
+customElements.define('preloader-mini', PreloaderMini);

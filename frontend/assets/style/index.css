@@ -257,3 +257,9 @@ app-loader {
     font-size: 30px;
     margin-top: 10px;
 }
+
+preloader-mini img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}

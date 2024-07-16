@@ -111,13 +111,18 @@ export class SettingsPage extends HTMLElement {
     navbar.updateData();
   }
   async updateProfile(event) {
-    event && event.preventDefault();
+    if (event ) {
+      event.preventDefault();
+      document.getElementById("settings_popup_conf_psw").innerHTML = "<preloader-mini></preloader-mini>";
+      document.getElementById("settings_popup_conf_psw").onclick = () => {};
+    }else {
+      document.getElementById("save_setting_btn").innerHTML = "<preloader-mini></preloader-mini>";
+      document.getElementById("save_setting_btn").onclick = () => {};
+    }
   
     const data = this.getFormData();
     let formData = new FormData();
   
-    // Append regular data
-    // TODO : the data is not appending to the form data
     for (const key in data) {
       if (data[key])
         formData.append(key, data[key]);
@@ -170,7 +175,7 @@ export class SettingsPage extends HTMLElement {
         document.getElementsByClassName(key + "_err")[0].innerHTML = `${key} is required and can't be empty`;
         isValid = false;
       }
-      // cheking if image are valid
+
       if (key  === "user_pfp") {
         const file = data[key];
         if (file) {
@@ -191,9 +196,11 @@ export class SettingsPage extends HTMLElement {
       if (isValid && !this.userData.intra_id) {
         this.showPopupSetting();
         const settings_popup_conf_psw = document.getElementById("settings_popup_conf_psw");
-        settings_popup_conf_psw.onclick = (e) => this.updateProfile(e);
+        settings_popup_conf_psw.onclick = (e) => this.updateProfile(e).then(() => settings_popup_conf_psw.innerHTML = "Confirme")
       } else if (this.userData.intra_id && isValid) {
-        this.updateProfile(null);
+        this.updateProfile(null).then(() => {
+          document.getElementById("save_setting_btn").innerHTML = "Save";
+        });
       }
     });
   }
