@@ -57,7 +57,7 @@ class ApiWrapper {
         console.log("[ApiWrapper]: data:", JSON.stringify(data));
         console.log("[ApiWrapper]: headers:", JSON.stringify(headers));
         const response = await fetch(this.url + endpoint, options);
-        if (response.status != 401)
+        if (this.public_routes.includes(endpoint) || response.status != 401)
             return response
         console.log("[ApiWrapper]: token expired, refreshing the token");
         const refreshed = await this.refresh_token();
