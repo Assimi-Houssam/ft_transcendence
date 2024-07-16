@@ -24,15 +24,21 @@ class Axios {
         const options = {
             method,
             headers: {
-                "Content-Type": "application/json",
-                ...headers,
-            },
+                ...headers
+            }
         };
         if (!this.method_without_body.includes(method)) {
-            options.body = JSON.stringify(data);
+            if (headers["Content-Type"] === "application/json")
+                options.body = JSON.stringify(data);
+            else
+                options.body = data;
         }
         const response = await fetch(this.url + endpoint, options);
-        return await response.json();
+        if (response.ok) {
+            return await response.json();
+        }else {
+            throw new Error(response.statusText);
+        }
     }
 }
 
