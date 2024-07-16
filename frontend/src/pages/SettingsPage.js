@@ -83,6 +83,7 @@ export class SettingsPage extends HTMLElement {
       user_name: document.getElementById("user_name").value,
       user_email: document.getElementById("user_email").value,
       user_password: document.getElementById("user_password").value,
+      user_pfp: document.getElementById("user_pfp").files[0],
     };
     return data;
   }
@@ -97,26 +98,46 @@ export class SettingsPage extends HTMLElement {
   }
   async updateProfile(event) {
     event && event.preventDefault();
-    const data = this.getFormData();
   
-    data["user_id"] = this.userData.id;
-    if (!this.userData.intra_id)
-      data["confirm_password"] = document.getElementById(
-        "settings_password_confirmation"
-      ).value;
-    if (data["confirm_password"] === "") {
-      document.getElementsByClassName("confirm_password_err")[0].innerHTML =
-        "Password is required, can't be empty";
-      return;
+    const data = this.getFormData();
+    const formData = new FormData();
+  
+    // Append regular data
+
+    // TODO : the data is not appending to the form data
+    for (const key in data) {
+      if (data[key]) {
+        formData.append(key, data[key]);
+      }
     }
+    // Append user ID
+    formData.append("user_id", this.userData.id);
+  
+    // Append confirm password if necessary
+    if (!this.userData.intra_id) {
+      const confirmPassword = document.getElementById("settings_password_confirmation").value;
+      if (confirmPassword === "") {
+        document.getElementsByClassName("confirm_password_err")[0].innerHTML =
+          "Password is required, can't be empty";
+        return;
+      }
+      formData.append("confirm_password", confirmPassword);
+    }
+  
+    // Append profile picture if it exists
+    if (data.user_pfp) {
+      formData.append("user_pfp", data.user_pfp);
+    }
+    console.log(formData);
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          "Content-Type": "multipart/form-data",
         },
-        data: data,
+        data: formData,
       };
       const res = await Axios.put("/user/update", config);
+      console.log(res);
       if (res.ok) {
         Toast.success("Profile updated successfully");
         this.removePopup();
@@ -128,6 +149,7 @@ export class SettingsPage extends HTMLElement {
       Toast.error(err);
     }
   }
+  
 
   /**
    * @description validate the form data
@@ -141,9 +163,22 @@ export class SettingsPage extends HTMLElement {
     }
     let isValid = true;
     for (const key in data) {
-      if (!data[key] && key !== "user_password") {
+      if (!data[key] && key !== "user_password" && key !== "user_pfp") {
         document.getElementsByClassName(key + "_err")[0].innerHTML = `${key} is required and can't be empty`;
         isValid = false;
+      }
+      // cheking if image are valid
+      if (key  === "user_pfp") {
+        const file = data[key];
+        if (file) {
+          if (file.size > 2000000) {
+            document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Image size must be less than 2MB";
+            isValid = false;
+          }else if (!file.type.includes("image")) {
+            document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Invalid file type, only images are allowed";
+            isValid = false;
+          }
+        }
       }
     }
     return isValid;

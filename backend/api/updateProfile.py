@@ -1,11 +1,12 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Profile, User
+from .models import  User
 
 @api_view(['PUT'])
 def updateProfile(req):
     try:
         # get the user
+        print(req)
         user_id = req.data['user_id']; #need to defined in the request 
         # check first if is user logged in
         if not req.user.is_authenticated:
@@ -26,6 +27,10 @@ def updateProfile(req):
         user.email = req.data['user_email']
         if 'user_password' in req.data and req.data['user_password'] != '' and not(user.intra_id):
             user.set_password(req.data['user_password'])
+        # check if user uploaded a new profile picture
+        if 'user_pfp' in req.data and req.data['user_pfp'] != '':
+            user.pfp = req.FILES['user_pfp']
+            # save the new profile picture
         user.save()
         return Response({
             'ok' : True,

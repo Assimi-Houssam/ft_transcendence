@@ -9,6 +9,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=256) # sha-256 hashed
     email = models.EmailField(max_length=64, unique=True)
     intra_id = models.IntegerField(null=True, blank=True) # guaranteed to be unique
+    pfp = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='profile_pictures/default.jpg')
     class Meta:
         ordering = ['id']
 

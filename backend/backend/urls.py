@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from api import views, updateProfile
 from rest_framework_simplejwt import views as jwt_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
@@ -30,3 +32,7 @@ urlpatterns = [
     # update user profile endpoints
     path("user/update", updateProfile.updateProfile),
 ]
+
+# add the static files url
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
