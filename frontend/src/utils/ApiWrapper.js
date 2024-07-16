@@ -1,4 +1,4 @@
-class Axios {
+class ApiWrapper {
     constructor() {
         this.url = "http://localhost:8000/";
         this.headers = {};
