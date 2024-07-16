@@ -1,7 +1,7 @@
 class ApiWrapper {
     constructor() {
         this.url = "http://localhost:8000";
-        this.public_routes = ["/login", "/login/refresh", "/register"];
+        this.public_routes = ["/login", "/login/refresh", "/register", "/oauth-login"];
     }
 
     async get(endpoint) {
