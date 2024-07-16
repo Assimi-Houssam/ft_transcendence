@@ -5,8 +5,7 @@ import { Navbar } from "./Navbar.js";
 /*
 * if the element is fetching data from the server (which is the case 99% of the time) => isLoaded shoudl return the fetch promise
 * otherwise, we create our own promise
- */
-
+*/
 export class LayoutWrapper extends HTMLElement {
   constructor() {
     super();
@@ -14,6 +13,18 @@ export class LayoutWrapper extends HTMLElement {
       this.resolved_callback = resolved;
       this.rejected_callback = rejected;
     });
+    this.navbar = null;
+  }
+  load() {
+    const nav = new Navbar();
+    nav.load();
+    nav.isLoaded().then(() => {
+      this.navbar = nav;
+      this.resolved_callback();
+    })
+    .catch(error => {
+      this.rejected_callback(error);
+    })
   }
   isLoaded() {
     return this.loaded_promise;
@@ -24,19 +35,7 @@ export class LayoutWrapper extends HTMLElement {
       <div class="content_">
           <div class="content_body_"></div>
       </div>`;
-      console.log("[LayoutWrapper]: creating navbar");
-      const navbar = document.createElement("navbar-component");
-      console.log("waiting...");
-      navbar.isLoaded().then(() => {
-        console.log("[LayoutWrapper]: navbar loaded");
-        this.querySelector(".content_").prepend(navbar);
-        console.log("[LayoutWrapper]: navbar appended");
-        this.resolved_callback();
-      })
-      .catch((error) => {
-        // console.log("[LayoutWrapper]: an error has occured: ", error);
-        this.rejected_callback(error);
-      });
+      this.querySelector(".content_").prepend(this.navbar);
   }
 }
 

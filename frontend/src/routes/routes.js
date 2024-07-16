@@ -5,8 +5,9 @@ import { HomePage } from "../pages/Home.js"
 import { isAuthenticated } from "../utils/utils.js";
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
-import { isPageLoaded } from "../components/Loading.js";
 import { ChatContainer } from "../pages/ChatContainer.js";
+import { LayoutWrapper } from "../components/LayoutComponent.js";
+import { ErrorPage } from "../pages/Error.js"
 
 export const Routes = [
     {
@@ -60,29 +61,29 @@ class Router {
         }
         const root = document.getElementById("root");
         const curr_page = new this.route.component();
-        root.innerHTML = `<app-loader></app-loader>`;
-        if (this.public_routes.includes(this.route.path))
+        root.innerHTML = "<app-loader></app-loader>";
+        if (this.public_routes.includes(this.route.path)) {
             root.innerHTML = curr_page.outerHTML;
-        else {
-            let layout = document.querySelector("layout-wrapper");
-            if (!layout) {
-                console.log("[routes]: layout was null, creating it");
-                layout = document.createElement("layout-wrapper");
-                layout.style.display = "none";
-                console.log("[routes]: layout created, appending it to root...");
-                console.log("[routes]: layout appended");
-            }
-            customElements.whenDefined('layout-wrapper').then(() => {
+            return;
+        }
+        let layout = document.querySelector("layout-wrapper");
+        if (!layout) {
+            console.log("[routes]: layoutwrapper is null, creating it");
+            layout = new LayoutWrapper();
+            console.log("[routes]: loading layoutwrapper");
+            layout.load();
+            layout.isLoaded().then(() => {
+                console.log("[routes]: layout loaded successfully, calling replaceChildren on root");
                 root.replaceChildren(layout);
-                layout.isLoaded().then(() => {
-                    layout.style.display = "flex";
-                    console.log("[routes]: layout finished loading, appending content to it");
-                    const content_ = layout.querySelector(".content_body_");
-                    if (content_) {
-                        content_.replaceChildren(curr_page);
-                    }
-                });
+            })
+            .catch(error => {
+                root.replaceChildren(new ErrorPage());
+                // console.log("[routes]: layout wrapper threw, error: ", error);
             });
+        }
+        const content_ = layout.querySelector(".content_body_");
+        if (content_) {
+            content_.replaceChildren(curr_page);
         }
     }
 
