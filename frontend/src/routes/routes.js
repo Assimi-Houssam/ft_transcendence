@@ -80,6 +80,7 @@ class Router {
                     content_.replaceChildren(curr_page);
                 }
             })
+            // todo: if fetch throws, everything will break
             .catch(error => {
                 console.log("[routes]: layout threw:", error);
                 console.log("[routes]: redirecting to /login");
