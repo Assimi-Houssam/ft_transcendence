@@ -28,7 +28,7 @@ export class RegistrationPage extends HTMLElement {
             }
             const data = await req.json();
             if (!req.ok) {
-                Toast.error(data.detail);
+                Toast.error(data.detail[0]);
                 return;
             }
             Toast.success(data.detail);
