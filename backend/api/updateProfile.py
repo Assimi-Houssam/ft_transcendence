@@ -27,7 +27,7 @@ def updateProfile(req):
         serializer = UpdateProfileSerializer(user, data=data)
         if serializer.is_valid():
             if 'password' in req.POST and req.POST['password'] != '' and not(user.intra_id):
-                serializer.save(password=req.POST['password'])
+                user.set_password(req.POST['password'])
             if req.FILES.get('pfp'):
                 user.pfp = req.FILES.get('pfp')
             serializer.save()
@@ -35,9 +35,10 @@ def updateProfile(req):
                 'detail' : 'Profile updated successfully',
             }, status=status.HTTP_200_OK)
         else :
-            return Response({
-                'detail' : serializer.errors,
-            }, status=status.HTTP_400_BAD_REQUEST)
+            errs = {'detail': []}
+            for err in serializer.errors:
+                errs['detail'].extend(serializer.errors[err])
+            return Response(errs, status=status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist:
         return Response({
             'detail' : 'User not found',

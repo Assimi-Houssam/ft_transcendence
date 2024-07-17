@@ -5,6 +5,7 @@ import Toast from "../components/Toast.js";
 import Axios from "../utils/axios.js";
 import userInfo from "../utils/services/UserInfo.services.js";
 import { baseApiURL } from "../utils/baseApiURL.js";
+import ApiWrapper from "../utils/ApiWrapper.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
@@ -141,15 +142,19 @@ export class SettingsPage extends HTMLElement {
         },
         data: formData,
       };
-      await Axios.post("user/update", config).then((res) => {
-        console.log("RES => ", res);
-        Toast.success(res.detail);
+      const res  = await ApiWrapper.post("/user/update", formData, false);
+      const Resdata = await res.json();
+      if (res.ok) {
+        console.log("RES => ", Resdata);
+        Toast.success(Resdata.detail);
         this.removePopup();
         this.updateNavbar();
-      })
-    } catch (err) {
-      console.log("ERR => ", err);
-      Toast.error();
+      }else {
+        console.log("RES => ", Resdata.detail[0]);
+        Toast.error(Resdata.detail[0]);
+      }
+    }catch(err) {
+      Toast.error(err);
     }
   }
 

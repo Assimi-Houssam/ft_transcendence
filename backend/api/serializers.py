@@ -32,8 +32,6 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("username cannot have less than 5 characters.")
         if (len(data["username"]) > 20):
             raise serializers.ValidationError("username cannot have more than 20 characeters.")
-        if (len(data["password"]) < 10):
-            raise serializers.ValidationError("password cannot have less than 10 characters")
         return data
     class Meta:
         model = User
