@@ -7,9 +7,8 @@ class ApiWrapper {
     async get(endpoint) {
         return this.request("GET", endpoint, null);
     }
-
-    async post(endpoint, data = {}) {
-        return this.request("POST", endpoint, data);
+    async post(endpoint, data = {}, json = true) {
+        return this.request("POST", endpoint, data, json);
     }
 
     async put(endpoint, data = {}) {
@@ -39,10 +38,10 @@ class ApiWrapper {
         localStorage.setItem("access_token", json.access);
         return true;
     }
-    async request(method, endpoint, data) {
+    async request(method, endpoint, data, json = true) {
         console.log("[ApiWrapper]: sending a", method, "request to:", endpoint);
         let headers = {
-            "Content-Type": "application/json"
+            "Content-Type": json ? "application/json" : "multipart/form-data"
         };
         if (!this.public_routes.includes(endpoint))
             headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}` 
@@ -51,8 +50,7 @@ class ApiWrapper {
             headers: headers
         };
         if (data) {
-            console.log("data is not empty!");
-            options.body = JSON.stringify(data);
+            options.body = json ? JSON.stringify(data) : data;
         }
         console.log("[ApiWrapper]: data:", JSON.stringify(data));
         console.log("[ApiWrapper]: headers:", JSON.stringify(headers));
