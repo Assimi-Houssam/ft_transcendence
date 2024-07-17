@@ -7,8 +7,14 @@ import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
 import { isPageLoaded } from "../components/Loading.js";
 import { ChatContainer } from "../pages/ChatContainer.js";
+import Test from "../pages/Test.js";
+import Error404 from "../error/404.js";
 
 export const Routes = [
+    {
+        path: '/404',
+        component: Error404,
+    },
     {
         path: '/home',
         icon: '../assets/icons/home.png',
@@ -37,13 +43,24 @@ export const Routes = [
         path: '/chat',
         icon: '../assets/icons/chat.png',
         icon_ac: '../assets/icons/active_chat.png',
-        component: ChatContainer
+        component: ChatContainer,
+        subs : [
+            {
+                path: '/start',
+                component: Test,
+                subs : [
+                    {
+
+                    }
+                ]
+            }
+        ]
     },
     {
         path: '/logout',
         component: null,
         service: logout,
-    }
+    },
 ]
 
 class Router {
@@ -52,6 +69,26 @@ class Router {
         this.active_path = window.location.pathname;
         this.route  = this.routes.find(route => route.path === this.active_path);
         this.public_routes = ["/login", "/register", "/reset-password"];
+    }
+
+    findSubpath(path, routes = this.routes) {
+        const pathSegments = path.split(/\/(?=.)/);
+        pathSegments[0] === "" && pathSegments.shift();
+        if (pathSegments.length === 0)  return null;
+
+        for (let i = 0; i < pathSegments.length; i++) {
+            if (pathSegments[i])
+                pathSegments[i]  = "/" + pathSegments[i];
+        }
+
+        const route = routes.find(route => route.path === pathSegments[0]);
+        if (!route) return null;
+    
+        if (pathSegments.length > 1) {
+            const remainingPath = pathSegments.slice(1).join("/");
+            return this.findSubpath(remainingPath, route.subs);
+        }
+        return route;
     }
 
     render() {
@@ -84,9 +121,8 @@ class Router {
     }
 
     navigate(path) {
-        if (path === "/" || !this.routes.some(route => route.path === path)) {
+        if (path === "/")
             path = "/home";
-        }
         if (!isAuthenticated() && !this.public_routes.includes(path)) {
             path = "/login";
         }
@@ -94,8 +130,11 @@ class Router {
             path = "/home";
         }
         this.active_path = path;
-        this.route = this.routes.find(route => route.path === this.active_path);
-        if (this.route.service) {
+        this.route = this.findSubpath(path);
+        if (!this.route)
+            this.navigate("/404");
+        console.log(this.route);
+        if (this.route && this.route.service) {
             this.route.service();
             return;
         }
