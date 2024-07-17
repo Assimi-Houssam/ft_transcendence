@@ -4,7 +4,7 @@ export class HomePage extends HTMLElement {
       <div class="home_">
         <div class="home_header_">
           <h1>Home</h1>
-          <a href="/login">Login</a>
+          <a href="/chat/start">start chat</a>
         </div>
       </div>`
   }
