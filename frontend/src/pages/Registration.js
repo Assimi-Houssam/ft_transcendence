@@ -1,5 +1,6 @@
 import { router } from "../routes/routes.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
+import Toast from "../components/Toast.js";
 
 export class RegistrationPage extends HTMLElement {
     constructor() {
@@ -15,28 +16,26 @@ export class RegistrationPage extends HTMLElement {
         if (!username || !email || !password || !repeat_password)
             return;
         if (password !== repeat_password) {
-            let registration_err_elem = document.getElementById('registration-error-message');
-            registration_err_elem.textContent = "Passwords do not match";
+            Toast.error("Passwords do not match.");
             return;
         }
         const registration_data = { username, email, password };
         try {
             const req = await ApiWrapper.post("/register", registration_data);
-            const data = await req.json();
-            // todo: check status codes here instead of whatever this bs is
-            if ('error' in data) {
-                let registration_err_elem = document.getElementById('registration-error-message');
-                registration_err_elem.textContent = data.error;
-                console.log(`registration failed, server returned: ${data.error}`);
+            if (req.status === 500) {
+                Toast.error("An internal server error occured.");
                 return;
             }
-            // todo: display an toast notifying that the user has registered
-            console.log("[RegistrationPage]: account has been created successfully!");
+            const data = await req.json();
+            if (!req.ok) {
+                Toast.error(data.detail);
+                return;
+            }
+            Toast.success(data.detail);
             router.navigate("/login");
         }
         catch (error) {
-            // todo: display a toast notification here
-            console.log("[RegistrationPage]: an exception has occured: ", error);
+            Toast.error(error);
         } 
     }
     connectedCallback() {
@@ -44,11 +43,11 @@ export class RegistrationPage extends HTMLElement {
         <div class="registration-page">
             <div class="registration-container">
                 <img src="../../assets/images/logo.png" alt="Logo" class="logo">
-                <h1>Create your Account</h1>
+                <h1>Create your account</h1>
                 <p class="paragraph">Please enter your data to continue</p>
                 <form class="login-form">
                     <div>
-                        Full Name
+                        Username
                         <input class="input" id="name" type="text" name="name" placeholder="Dummy noob">
                     </div>
                     <div>

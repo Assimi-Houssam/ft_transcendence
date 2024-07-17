@@ -10,24 +10,22 @@ import requests
 import random
 import os
 
+@api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['GET'])
 def me(request):
     user = request.user
-    if (user.is_authenticated):
-        return Response({"username": user.username, "email": user.email, "id": user.id, "intra_id": user.intra_id})
-    return Response({"error": "You need to be authenticated to use this endpoint"})
+    return Response({"username": user.username, "email": user.email, "id": user.id, "intra_id": user.intra_id})
 
 @api_view(['POST'])
 def register(request):
     user = UserRegistrationSerializer(data=request.data)
     if user.is_valid():
         user.save()
-        return Response({'status': 'ok'}, status=status.HTTP_201_CREATED)
-    errs = {'error': []}
+        return Response({'detail': 'Account created successfully!'}, status=status.HTTP_201_CREATED)
+    errs = {'detail': []}
     for err in user.errors:
-        errs['error'].extend(user.errors[err])
+        errs['detail'].extend(user.errors[err])
     return Response(errs, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -47,8 +45,7 @@ def oauth_login(request):
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     r = requests.post(access_token_endpoint, data=params, headers=headers)
     if (r.status_code != requests.codes.ok):
-        print("an error has occured")
-        return Response({"error": "An error occured fetching an access token from 42", "detail": r.text})
+        return Response({"detail": "An error occured fetching an access token from 42"}, status=status.HTTP_400_BAD_REQUEST)
     access_token = r.json()["access_token"]
     headers = {
         "Authorization": f"Bearer {access_token}",
@@ -57,7 +54,7 @@ def oauth_login(request):
     r = requests.get(me_endpoint, headers=headers)
     if (r.status_code != requests.codes.ok):
         print(f"an error has occured fetching user info, access_token: {access_token}")
-        return Response({"error": "An error occured fetching user info from 42"})
+        return Response({"detail": "An error occured fetching user info from 42"}, status=status.HTTP_400_BAD_REQUEST)
     user_info = r.json()
     intra_login = user_info['login']
     intra_email = user_info['email']
