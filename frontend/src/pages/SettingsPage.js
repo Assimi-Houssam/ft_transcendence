@@ -20,10 +20,8 @@ export class SettingsPage extends HTMLElement {
    */
   setInputsValues() {
     const data = this.userData;
-    document.getElementById("user_firstname").value = data.first_name;
-    document.getElementById("user_lastname").value = data.last_name;
-    document.getElementById("user_name").value = data.username;
-    document.getElementById("user_email").value = data.email;
+    document.getElementById("username").value = data.username;
+    document.getElementById("email").value = data.email;
     document.getElementsByClassName("settings_pfp_image")[0].src = baseApiURL + data.pfp;
   }
 
@@ -92,12 +90,10 @@ export class SettingsPage extends HTMLElement {
    */
   getFormData() {
     const data = {
-      user_firstname: document.getElementById("user_firstname").value,
-      user_lastname: document.getElementById("user_lastname").value,
-      user_name: document.getElementById("user_name").value,
-      user_email: document.getElementById("user_email").value,
-      user_password: document.getElementById("user_password").value,
-      user_pfp: document.getElementById("user_pfp").files[0],
+      username: document.getElementById("username").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value,
+      pfp: document.getElementById("pfp").files[0],
     };
     return data;
   }
@@ -145,19 +141,17 @@ export class SettingsPage extends HTMLElement {
         },
         data: formData,
       };
-      const res = await Axios.post("user/update", config);
-      if (res.ok) {
-        Toast.success("Profile updated successfully");
+      await Axios.post("user/update", config).then((res) => {
+        console.log("RES => ", res);
+        Toast.success(res.detail);
         this.removePopup();
         this.updateNavbar();
-      } else {
-        throw new Error(res.message);
-      }
+      })
     } catch (err) {
-      Toast.error(err);
+      console.log("ERR => ", err);
+      Toast.error();
     }
   }
-  
 
   /**
    * @description validate the form data
@@ -166,17 +160,18 @@ export class SettingsPage extends HTMLElement {
   async validateForm() {
     const data = this.getFormData();
     for (const key in data) {
-      if (data[key])
-        document.getElementsByClassName(key + "_err")[0].innerHTML = "";
+      if (data[key]) {
+        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = "";
+      }
     }
     let isValid = true;
     for (const key in data) {
-      if (!data[key] && key !== "user_password" && key !== "user_pfp") {
-        document.getElementsByClassName(key + "_err")[0].innerHTML = `${key} is required and can't be empty`;
+      if (!data[key] && key !== "password" && key !== "pfp") {
+        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = `${key} is required and can't be empty`;
         isValid = false;
       }
 
-      if (key  === "user_pfp") {
+      if (key  === "pfp") {
         const file = data[key];
         if (file) {
           if (file.size > 5000000) {
@@ -196,10 +191,15 @@ export class SettingsPage extends HTMLElement {
       if (isValid && !this.userData.intra_id) {
         this.showPopupSetting();
         const settings_popup_conf_psw = document.getElementById("settings_popup_conf_psw");
-        settings_popup_conf_psw.onclick = (e) => this.updateProfile(e).then(() => settings_popup_conf_psw.innerHTML = "Confirme")
+        settings_popup_conf_psw.onclick = (e) => this.updateProfile(e)
+        .then(() => {
+          settings_popup_conf_psw.innerHTML = "Confirme"
+          settings_popup_conf_psw.onclick = (e) => this.updateEvent(e);
+        })
       } else if (this.userData.intra_id && isValid) {
         this.updateProfile(null).then(() => {
           document.getElementById("save_setting_btn").innerHTML = "Save";
+          document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
         });
       }
     });
@@ -222,7 +222,7 @@ export class SettingsPage extends HTMLElement {
           </div>
         `;
       this.setInputsValues();
-      document.getElementById("user_pfp").onchange = (e) => this.changeImageWhenUpload(e);
+      document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
       document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
     }).catch((err) => {
       Toast.error(err);

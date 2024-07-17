@@ -36,8 +36,8 @@ class Axios {
         const response = await fetch(this.url + endpoint, options);
         if (response.ok) {
             return await response.json();
-        }else {
-            throw new Error(response.statusText);
+        } else {
+            throw new Error(await response.json());
         }
     }
 }

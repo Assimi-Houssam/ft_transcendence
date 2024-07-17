@@ -6,7 +6,7 @@ export class SettingsUserPFP extends HTMLElement {
                 <div class="user_settings_pfp_input_box">
                     <img class="settings_pfp_image" src="../../../assets/images/mamazzal.jpg" >
                     <img class="settings_pfp_camera_upload" src="../../../assets/icons/camera.png" >
-                    <input type="file"  id="user_pfp" />
+                    <input type="file"  id="pfp" />
                     <div class="settings_input_error user_pfp_err"></div>
                 </div>
                 <div class="settings_pfp_delete">

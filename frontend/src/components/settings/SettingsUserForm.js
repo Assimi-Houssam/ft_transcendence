@@ -6,43 +6,21 @@ export class SettingsUserForm extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
             <div class="settings_user_form_" >
-                <div>
-                    <div class="settings_user_form_fullname">
-                        <div class="settings_form_control">
-                            <label>First name</label>
-                            <input
-                                class="gradient-dark-bg gradient-dark-border" 
-                                type="text" 
-                                id="user_firstname" 
-                                placeholder="Amine Amazzal" >
-                                <div class="settings_input_error user_firstname_err"></div>
-                        </div>
-                        <div class="settings_form_control">
-                            <label>Last name</label>
-                            <input
-                                class="gradient-dark-bg gradient-dark-border" 
-                                type="text" 
-                                id="user_lastname" 
-                                placeholder="Amine Amazzal" >
-                                <div class="settings_input_error user_lastname_err"></div>
-                        </div>
-                    </div>
-                </div>
                 <div class="settings_form_control">
                     <label>Your username (LOGIN)</label>
                     <input
                         class="gradient-dark-bg gradient-dark-border" 
                         type="text" 
-                        id="user_name" 
+                        id="username" 
                         placeholder="Amine Amazzal" >
-                    <div class="settings_input_error user_name_err"></div>
+                    <div class="settings_input_error user_username_err"></div>
                 </div>
                 <div class="settings_form_control">
                     <label>Your Email</label>
                     <input 
                         class="gradient-dark-bg gradient-dark-border" 
                         type="email" 
-                        id="user_email" 
+                        id="email" 
                         placeholder="mamazzal@gmail.com" >
                     <div class="settings_input_error user_email_err"></div>
                     </div>
@@ -51,8 +29,8 @@ export class SettingsUserForm extends HTMLElement {
                         <input 
                             class="gradient-dark-bg gradient-dark-border" 
                             type="password" 
-                            id="user_password" 
-                            placeholder="example@gmail.com" >
+                            id="password"
+                            placeholder="password" >
                     <div class="settings_input_error user_password_err"></div>
                 </div>
                 <div class="settings_form_btn">

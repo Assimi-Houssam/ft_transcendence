@@ -10,29 +10,29 @@ import requests
 import random
 import os
 
+@api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['GET'])
 def me(request):
     user = request.user
-    if (user.is_authenticated):
-        return Response({
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "username": user.username, 
-            "email": user.email, 
-            "id": user.id, 
-            "intra_id": user.intra_id, 
-            "pfp": user.pfp.url
-        })
-    return Response({"error": "You need to be authenticated to use this endpoint"})
+    return Response({
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "username": user.username, 
+        "email": user.email, 
+        "id": user.id, 
+        "intra_id": user.intra_id, 
+        "pfp": user.pfp.url
+    })
 
 @api_view(['POST'])
 def register(request):
     user = UserRegistrationSerializer(data=request.data)
     if user.is_valid():
         user.save()
-        return Response({'status': 'ok'}, status=status.HTTP_201_CREATED)
+        return Response({
+            'detail': 'User created successfully'
+        }, status=status.HTTP_201_CREATED)
     errs = {'error': []}
     for err in user.errors:
         errs['error'].extend(user.errors[err])
