@@ -7,7 +7,7 @@ import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
 import { isPageLoaded } from "../components/Loading.js";
 import { ChatContainer } from "../pages/ChatContainer.js";
-import Test from "../pages/Test.js";
+import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 
 export const Routes = [
@@ -48,11 +48,6 @@ export const Routes = [
             {
                 path: '/start',
                 component: Test,
-                subs : [
-                    {
-
-                    }
-                ]
             }
         ]
     },
@@ -133,7 +128,6 @@ class Router {
         this.route = this.findSubpath(path);
         if (!this.route)
             this.navigate("/404");
-        console.log(this.route);
         if (this.route && this.route.service) {
             this.route.service();
             return;

@@ -1,8 +1,8 @@
-export default class Test extends HTMLElement {
+export class Test extends HTMLElement {
     constructor() {
         super();
     }
-    connectedCallBack() {
+    connectedCallback() {
         this.innerHTML = `
             <div>
                 <h1>test page for subpaths</h1>
