@@ -10,5 +10,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=64, unique=True)
     intra_id = models.IntegerField(null=True, blank=True) # guaranteed to be unique
     pfp = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
+    count_updates = models.IntegerField(default=2)
+    can_update_on  = models.DateField(null=True, blank=True)
     class Meta:
         ordering = ['id']

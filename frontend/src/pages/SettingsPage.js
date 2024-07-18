@@ -153,7 +153,7 @@ export class SettingsPage extends HTMLElement {
         // todo: this is broken, fix it
         // this.updateNavbar();
       } else {
-        Toast.error(data.detail[0]);
+        Toast.error(Array.isArray(data.detail) ? data.detail[0] : data.detail);
       }
     }
     catch (err) {
@@ -224,7 +224,7 @@ export class SettingsPage extends HTMLElement {
                 <div class="settings_content_body">
                     <div class="settings_text_desc">
                         <h2>Account settings</h2>
-                        <p>Edit your name, avatar, email, etc...</p>
+                        <p>Please be aware that you can only change your info 2 times a day</p>
                     </div>
                     <div class="settings_form_data">
                         <user-settings-form-page ></user-settings-form-page>

@@ -6,10 +6,20 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import  User
 from .serializers import UpdateProfileSerializer
+import datetime
 
 
-# todo: ratelimit this
-# todo: add a limit on how many times users are allowed to update their profiles
+def limit_user_updates(user):
+    today_date = datetime.date.today()
+    if user.count_updates == 0 and user.can_update_on != today_date:
+        user.count_updates = 2
+    elif user.count_updates == 2:
+        user.can_update_on = today_date
+    elif user.count_updates == 0:
+        return False
+    user.save()
+    return True
+
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -23,16 +33,19 @@ def update_profile(req):
             'detail': 'Incorrect password',
         }, status=status.HTTP_400_BAD_REQUEST)
     data = {}
-    if req.POST.get("username"):
-        data["username"] = req.POST.get("username")
-    if req.POST.get("email"):
-        data["email"] = req.POST.get("email")
-    if req.POST.get("password"):
-        data["password"] = req.POST.get("password")
+    fields = ["username", "email", "password"];
+    for field in fields :
+        if req.POST.get(field):
+            data[field] = req.POST.get(field)
     if req.FILES.get("pfp"):
         data["pfp"] = req.FILES.get("pfp")
     serializer = UpdateProfileSerializer(user, data=data, partial=True)
+    if not limit_user_updates(user):
+        return Response({
+            'detail': 'You have reached the maximum number of updates for today',
+        }, status=status.HTTP_400_BAD_REQUEST)
     if serializer.is_valid():
+        user.count_updates -= 1
         serializer.save()
         return Response({
             'detail': 'Profile updated successfully',
