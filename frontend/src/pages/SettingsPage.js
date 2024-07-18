@@ -116,11 +116,12 @@ export class SettingsPage extends HTMLElement {
     // navbar.updateData();
   }
   async updateProfile(event) {
-    if (event ) {
+    if (event) {
       event.preventDefault();
       document.getElementById("settings_popup_conf_psw").innerHTML = "<preloader-mini></preloader-mini>";
       document.getElementById("settings_popup_conf_psw").onclick = () => {};
-    }else {
+    }
+    else {
       document.getElementById("save_setting_btn").innerHTML = "<preloader-mini></preloader-mini>";
       document.getElementById("save_setting_btn").onclick = () => {};
     }
@@ -137,7 +138,7 @@ export class SettingsPage extends HTMLElement {
       const confirmPassword = document.getElementById("settings_password_confirmation").value;
       if (confirmPassword === "") {
         document.getElementsByClassName("confirm_password_err")[0].innerHTML =
-          "Password is required, can't be empty";
+          "Password field cannot be empty";
         return;
       }
       formData.append("confirm_password", confirmPassword);
@@ -155,7 +156,7 @@ export class SettingsPage extends HTMLElement {
         Toast.error(data.detail[0]);
       }
     }
-    catch(err) {
+    catch (err) {
       Toast.error(err);
     }
   }
@@ -171,27 +172,27 @@ export class SettingsPage extends HTMLElement {
         document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = "";
       }
     }
-    let isValid = true;
     for (const key in data) {
       if (!data[key] && key !== "password" && key !== "pfp") {
         document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = `${key} is required and can't be empty`;
-        isValid = false;
+        return false;
       }
 
-      if (key  === "pfp") {
+      if (key === "pfp") {
         const file = data[key];
-        if (file) {
-          if (file.size > 5000000) {
-            document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Image size must be less than 2MB";
-            isValid = false;
-          }else if (!file.type.includes("image")) {
-            document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Invalid file type, only images are allowed";
-            isValid = false;
-          }
+        if (!file)
+          return true;
+        if (file.size > 5000000) {
+          document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Image size must be less than 2MB";
+          return false;
+        }
+        else if (!file.type.includes("image")) {
+          document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Invalid file type, only images are allowed";
+          return false;
         }
       }
     }
-    return isValid;
+    return true;
   }
   updateEvent(e) {
     this.validateForm().then((isValid) => {
