@@ -1,6 +1,7 @@
 import { router } from "../routes/routes.js";
 import { genRandomString } from "../utils/utils.js";
 import { OAuthIntercept } from "../utils/utils.js";
+import ApiWrapper from "../utils/ApiWrapper.js";
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -10,6 +11,7 @@ export class LoginPage extends HTMLElement {
 		this.err = "";
 	}
 	async loginUser(event) {
+		// todo: block button input with animations after this is called
 		event.preventDefault();
 		const username = this.username_elem.value;
 		const password = this.password_elem.value;
@@ -18,24 +20,24 @@ export class LoginPage extends HTMLElement {
 		}
 		const login_data = { username, password };
 		try {
-			const response = await fetch('http://localhost:8000/login', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(login_data)
-        	});
-			const data = await response.json();
+			// todo: display some sort of loading animation here
+			const req = await ApiWrapper.post("/login", login_data);
+			// todo: handle error codes here
+			const data = await req.json();
+			// todo: use toasts
 			if ('detail' in data) {
 				const login_err_elem = document.getElementById('login-error-message');
-				login_err_elem.textContent = data.detail;
+				login_err_elem.textContent = data.detail
+				return;
 			}
-			else {
-				localStorage.setItem('access_token', data.access);
-				localStorage.setItem('refresh_token', data.refresh);
-				router.navigate("/home");
-			}
+			// todo: use cookies here
+			localStorage.setItem("access_token", data.access);
+			localStorage.setItem("refresh_token", data.refresh);
+			router.navigate("/home");
 		}
 		catch (error) {
-			console.log(`an exception occured: ${error}`);
+			// display some toast notification here
+			console.log("[LoginPage]: an exception has occured:", error);
 		}
 	}
 	OAuthLogin(event) {
@@ -81,7 +83,6 @@ export class LoginPage extends HTMLElement {
 		`;
 		this.username_elem = document.getElementById('email');
 		this.password_elem = document.getElementById('password');
-		document.getElementById('login-error-message').textContent = this.err;
 		this.querySelector('.primary-btn').addEventListener('click', this.loginUser);
 		this.querySelector('.secondary-btn').addEventListener('click', this.OAuthLogin);
 	}
