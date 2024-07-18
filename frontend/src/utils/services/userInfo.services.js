@@ -1,5 +1,5 @@
 import Toast from "../../components/Toast.js";
-import Axios from "../axios.js";
+import ApiWrapper from "../ApiWrapper.js";
 
 /**
  * @description Get user information form the server
@@ -7,14 +7,9 @@ import Axios from "../axios.js";
  */
 export default async function userInfo() {
     try {
-        let headers = {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("access_token")}`
-        }
-        const res = await Axios.get("me", {
-            headers: headers
-        });
-        return res;
+        const res = await ApiWrapper.get("me");
+        const data = await res.json();
+        return data;
     } catch(err) {
         Toast.error(err);
     }

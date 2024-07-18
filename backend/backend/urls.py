@@ -16,12 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views
+from api import views, update_profile
 from rest_framework_simplejwt import views as jwt_views
 from django.conf.urls.static import static
 from django.conf import settings
-
-from backend.api import update_profile
 
 
 urlpatterns = [

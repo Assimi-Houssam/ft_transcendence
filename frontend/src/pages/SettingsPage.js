@@ -2,7 +2,6 @@ import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
 import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
 import Toast from "../components/Toast.js";
-import Axios from "../utils/axios.js";
 import userInfo from "../utils/services/UserInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 
