@@ -4,7 +4,6 @@ import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopU
 import Toast from "../components/Toast.js";
 import Axios from "../utils/axios.js";
 import userInfo from "../utils/services/UserInfo.services.js";
-import { baseApiURL } from "../utils/baseApiURL.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 
 export class SettingsPage extends HTMLElement {
@@ -23,7 +22,8 @@ export class SettingsPage extends HTMLElement {
     const data = this.userData;
     document.getElementById("username").value = data.username;
     document.getElementById("email").value = data.email;
-    document.getElementsByClassName("settings_pfp_image")[0].src = baseApiURL + data.pfp;
+    // todo: make the server return the full url instead of generating it locally?
+    document.getElementsByClassName("settings_pfp_image")[0].src = "http://localhost:8000/" + data.pfp;
   }
 
   /**
