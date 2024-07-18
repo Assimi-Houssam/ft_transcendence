@@ -196,20 +196,22 @@ export class SettingsPage extends HTMLElement {
   }
   updateEvent(e) {
     this.validateForm().then((isValid) => {
-      if (isValid && !this.userData.intra_id) {
-        this.showPopupSetting();
-        const settings_popup_conf_psw = document.getElementById("settings_popup_conf_psw");
-        settings_popup_conf_psw.onclick = (e) => this.updateProfile(e)
-        .then(() => {
-          settings_popup_conf_psw.innerHTML = "Confirme"
-          settings_popup_conf_psw.onclick = (e) => this.updateEvent(e);
-        })
-      } else if (this.userData.intra_id && isValid) {
+      if (!isValid)
+        return;
+      if (this.userData.intra_id) {
         this.updateProfile(null).then(() => {
           document.getElementById("save_setting_btn").innerHTML = "Save";
           document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
         });
+        return;
       }
+      this.showPopupSetting();
+      const settings_popup_conf_psw = document.getElementById("settings_popup_conf_psw");
+      settings_popup_conf_psw.onclick = (e) => this.updateProfile(e)
+      .then(() => {
+        settings_popup_conf_psw.innerHTML = "Confirm"
+        settings_popup_conf_psw.onclick = (e) => this.updateEvent(e);
+      });
     });
   }
   connectedCallback() {

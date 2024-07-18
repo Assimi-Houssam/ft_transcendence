@@ -8,38 +8,36 @@ from .models import  User
 from .serializers import UpdateProfileSerializer
 
 
+# todo: ratelimit this
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def update_profile(req):
-    try:
-        user_id = req.POST['user_id'];
-        user = User.objects.get(id=user_id);
-        if not(user.intra_id) and  not(user.check_password(req.POST['confirm_password'])) :
-            return Response({
-                'detail' : 'Incorrect password',
-            }, status=status.HTTP_400_BAD_REQUEST)
-        # update the user
-        data = {
-            'username' : req.POST['username'],
-            'email' : req.POST['email'],
-        }
-        serializer = UpdateProfileSerializer(user, data=data)
-        if serializer.is_valid():
-            if 'password' in req.POST and req.POST['password'] != '' and not(user.intra_id):
-                user.set_password(req.POST['password'])
-            if req.FILES.get('pfp'):
-                user.pfp = req.FILES.get('pfp')
-            serializer.save()
-            return Response({
-                'detail' : 'Profile updated successfully',
-            }, status=status.HTTP_200_OK)
-        else :
-            errs = {'detail': []}
-            for err in serializer.errors:
-                errs['detail'].extend(serializer.errors[err])
-            return Response(errs, status=status.HTTP_400_BAD_REQUEST)
-    except User.DoesNotExist:
+    user = req.user
+    old_passwd_conf = req.POST.get("confirm_password")
+    if (user.intra_id != None and req.POST.get("password") != None):
+        return Response({"detail": "Accounts created via 42 cannot update their passwords"}, status=status.HTTP_400_BAD_REQUEST)
+    if (user.intra_id == None and not user.check_password(old_passwd_conf)):
         return Response({
-            'detail' : 'User not found',
+            'detail': 'Incorrect password',
         }, status=status.HTTP_400_BAD_REQUEST)
+    data = {}
+    if req.POST.get("username"):
+        data["username"] = req.POST.get("username")
+    if req.POST.get("email"):
+        data["email"] = req.POST.get("email")
+    if req.POST.get("password"):
+        data["password"] = req.POST.get("password")
+    if req.FILES.get("pfp"):
+        data["pfp"] = req.FILES.get("pfp")
+    serializer = UpdateProfileSerializer(user, data=data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            'detail': 'Profile updated successfully',
+        }, status=status.HTTP_200_OK)
+    else:
+        # errs = {'detail': []}
+        # for err in serializer.errors:
+        #     errs['detail'].extend(serializer.errors[err])
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
