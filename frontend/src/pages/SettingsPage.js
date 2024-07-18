@@ -111,8 +111,9 @@ export class SettingsPage extends HTMLElement {
    * @description update the navbar after updating the profile
    */
   updateNavbar() {
-    const navbar = document.querySelector("navbar-component");
-    navbar.updateData();
+    // todo: fix this
+    // const navbar = document.querySelector("navbar-component");
+    // navbar.updateData();
   }
   async updateProfile(event) {
     if (event ) {
