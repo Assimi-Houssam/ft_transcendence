@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views, updateProfile
+from api import views
 from rest_framework_simplejwt import views as jwt_views
 from django.conf.urls.static import static
 from django.conf import settings
+
+from backend.api import update_profile
 
 
 urlpatterns = [
@@ -30,7 +32,7 @@ urlpatterns = [
     path("login/refresh", jwt_views.TokenRefreshView.as_view()),
     path('admin/', admin.site.urls),
     # update user profile endpoints
-    path("user/update", updateProfile.updateProfile),
+    path("user/update", update_profile.update_profile),
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

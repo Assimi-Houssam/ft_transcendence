@@ -11,7 +11,7 @@ from .serializers import UpdateProfileSerializer
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def updateProfile(req):
+def update_profile(req):
     try:
         user_id = req.POST['user_id'];
         user = User.objects.get(id=user_id);
