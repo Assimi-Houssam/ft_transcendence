@@ -10,7 +10,7 @@ export class SettingsUserPFP extends HTMLElement {
                     <div class="settings_input_error user_pfp_err"></div>
                 </div>
                 <div class="settings_pfp_delete">
-                    <button> Delete Your Account </button>
+                    <button>Delete Your Account</button>
                     <p>You will receive an email to confirm your decision
                     Please note, that all boards you have created will be 
                     permanently erased.</p>

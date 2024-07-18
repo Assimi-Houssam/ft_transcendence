@@ -7,7 +7,7 @@ export class SettingsUserForm extends HTMLElement {
     this.innerHTML = `
             <div class="settings_user_form_" >
                 <div class="settings_form_control">
-                    <label>Your username (LOGIN)</label>
+                    <label>Username</label>
                     <input
                         class="gradient-dark-bg gradient-dark-border" 
                         type="text" 
@@ -16,7 +16,7 @@ export class SettingsUserForm extends HTMLElement {
                     <div class="settings_input_error user_username_err"></div>
                 </div>
                 <div class="settings_form_control">
-                    <label>Your Email</label>
+                    <label>Email</label>
                     <input 
                         class="gradient-dark-bg gradient-dark-border" 
                         type="email" 
@@ -25,7 +25,7 @@ export class SettingsUserForm extends HTMLElement {
                     <div class="settings_input_error user_email_err"></div>
                     </div>
                     <div class="settings_form_control">
-                        <label>Your Password</label>
+                        <label>Password</label>
                         <input 
                             class="gradient-dark-bg gradient-dark-border" 
                             type="password" 
