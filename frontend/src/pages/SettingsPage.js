@@ -211,7 +211,7 @@ export class SettingsPage extends HTMLElement {
                 <div class="settings_content_body">
                     <div class="settings_text_desc">
                         <h2>Account settings</h2>
-                        <p>Edit your name, avatar, email, ect...</p>
+                        <p>Edit your name, avatar, email, etc...</p>
                     </div>
                     <div class="settings_form_data">
                         <user-settings-form-page ></user-settings-form-page>
@@ -229,10 +229,7 @@ export class SettingsPage extends HTMLElement {
         <div class="settings__faild">
           <div class="settings_err_faild">
             <img src="../../assets/images/broken.webp" alt="broken" />
-            <p>
-              opps something went wrong,
-              please make sure you are logged in
-            </p>
+            <p>Something went wrong...</p>
           </div>
         </div>
       `
