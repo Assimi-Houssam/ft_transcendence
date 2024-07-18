@@ -22,7 +22,7 @@ export class SettingsPage extends HTMLElement {
     document.getElementById("username").value = data.username;
     document.getElementById("email").value = data.email;
     // todo: make the server return the full url instead of generating it locally?
-    document.getElementsByClassName("settings_pfp_image")[0].src = "http://localhost:8000/" + data.pfp;
+    document.getElementsByClassName("settings_pfp_image")[0].src = "http://localhost:8000" + data.pfp;
   }
 
   /**
@@ -32,7 +32,15 @@ export class SettingsPage extends HTMLElement {
    * @returns {object} user data
    */
   async fechUserInfo() {
-    this.userData = await userInfo();
+    const req = await ApiWrapper.get("/me");
+    if (req.ok) {
+      const data = await req.json();
+      this.userData = data;
+    }
+    else {
+      // todo: save server error message somewhere and display it in a toast
+      this.userData = null;
+    }
   }
 
   /**
@@ -203,7 +211,9 @@ export class SettingsPage extends HTMLElement {
     });
   }
   connectedCallback() {
-    this.fechUserInfo().then(() => {
+      this.fechUserInfo().then(() => {
+      if (!this.userData)
+        throw new Error("An error occured fetching user info from the server");
       this.innerHTML = `
           <div class="settings_">
                 <div class="settings_bg_"></div>
@@ -219,19 +229,19 @@ export class SettingsPage extends HTMLElement {
                 </div>
           </div>
         `;
-      this.setInputsValues();
-      document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
-      document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
-    }).catch((err) => {
-      Toast.error(err);
-      this.innerHTML = `
-        <div class="settings__faild">
-          <div class="settings_err_faild">
-            <img src="../../assets/images/broken.webp" alt="broken" />
-            <p>Something went wrong...</p>
+        this.setInputsValues();
+        document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
+        document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
+      }).catch((err) => {
+        Toast.error(err);
+        this.innerHTML = `
+          <div class="settings__faild">
+            <div class="settings_err_faild">
+              <img src="../../assets/images/broken.webp" alt="broken" />
+              <p>Something went wrong...</p>
+            </div>
           </div>
-        </div>
-      `
+        `
     });
   }
 }
