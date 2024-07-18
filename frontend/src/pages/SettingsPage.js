@@ -136,24 +136,18 @@ export class SettingsPage extends HTMLElement {
     }
 
     try {
-      const config = {
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("access_token")}`
-        },
-        data: formData,
-      };
       const res  = await ApiWrapper.post("/user/update", formData, false);
-      const Resdata = await res.json();
+      const data = await res.json();
       if (res.ok) {
-        console.log("RES => ", Resdata);
-        Toast.success(Resdata.detail);
+        Toast.success(data.detail);
         this.removePopup();
-        this.updateNavbar();
-      }else {
-        console.log("RES => ", Resdata.detail[0]);
-        Toast.error(Resdata.detail[0]);
+        // todo: this is broken, fix it
+        // this.updateNavbar();
+      } else {
+        Toast.error(data.detail[0]);
       }
-    }catch(err) {
+    }
+    catch(err) {
       Toast.error(err);
     }
   }
