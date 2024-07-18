@@ -9,6 +9,7 @@ from .serializers import UpdateProfileSerializer
 
 
 # todo: ratelimit this
+# todo: add a limit on how many times users are allowed to update their profiles
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -37,7 +38,7 @@ def update_profile(req):
             'detail': 'Profile updated successfully',
         }, status=status.HTTP_200_OK)
     else:
-        # errs = {'detail': []}
-        # for err in serializer.errors:
-        #     errs['detail'].extend(serializer.errors[err])
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        errs = {'detail': []}
+        for err in serializer.errors:
+            errs['detail'].extend(serializer.errors[err])
+        return Response(errs, status=status.HTTP_400_BAD_REQUEST)

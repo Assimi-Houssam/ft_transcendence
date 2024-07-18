@@ -15,6 +15,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if (len(data["password"]) < 10):
             raise serializers.ValidationError("password cannot have less than 10 characters")
         # todo: call validate_password
+        # todo: call validate_email
         return data
 
     def create(self, validated_data):
