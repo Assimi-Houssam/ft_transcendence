@@ -35,6 +35,7 @@ background: none;
 
 
 * {
+    transition: all 0.3s ease;
     padding: 0;
     margin: 0;
     color: white;
@@ -155,7 +156,7 @@ layout-wrapper {
 .navbar_ > .navbar_right_elements  > .nav_username img {
     width: 40px;
     height: 40px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 50%;
     border-radius: 50%;
 }
@@ -254,4 +255,10 @@ app-loader {
 .loading_text {
     font-size: 30px;
     margin-top: 10px;
+}
+
+preloader-mini img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
 }

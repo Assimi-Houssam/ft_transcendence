@@ -5,3 +5,5 @@ db/
 db
 .DS_Store
 **/.DS_Store
+# tonot push images im backend
+backend/media/profile_pictures/*

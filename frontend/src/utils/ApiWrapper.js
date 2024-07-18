@@ -40,11 +40,11 @@ class ApiWrapper {
     }
     async request(method, endpoint, data, json = true) {
         console.log("[ApiWrapper]: sending a", method, "request to:", endpoint);
-        let headers = {
-            "Content-Type": json ? "application/json" : "multipart/form-data"
-        };
+        let headers = {};
         if (!this.public_routes.includes(endpoint))
             headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}` 
+        if (json)
+        headers["Content-Type"] = "application/json";
         const options = {
             method,
             headers: headers

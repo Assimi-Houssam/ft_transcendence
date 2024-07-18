@@ -52,7 +52,7 @@ export class Navbar extends HTMLElement {
                 <p class="nav_username_id">
                 ${log_username}
                 </p>
-                <img src="./assets/images/mamazzal.jpg" />
+                <img src="${"http://localhost:8000" + this.data.pfp}" />
               </div>
           </div>
       `;
