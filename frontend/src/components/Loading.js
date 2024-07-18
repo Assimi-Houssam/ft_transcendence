@@ -9,30 +9,15 @@ export class Loader extends HTMLElement {
   }
 }
 
-customElements.define('app-loader', Loader);
-
-/**
- * TODO:
- * the loader will be displayed for 1.5 seconds
- * the setTimeout function is temporary and will be replaced with a real check
- */
-export function isPageLoaded() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1500);
-    //reload js files
-  });
-}
-
 export class PreloaderMini extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-      <div class="mini_loading_">
-        <img src='../../assets/icons/preloader.gif' alt='loading' />
-      </div>
+    <div class="mini_loading_">
+    <img src='../../assets/icons/preloader.gif' alt='loading' />
+    </div>
     `
   }
 }
 
+customElements.define('app-loader', Loader);
 customElements.define('preloader-mini', PreloaderMini);
