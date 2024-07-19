@@ -1,4 +1,4 @@
-from models import FriendRequest, User
+from .models import FriendRequest, User
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -30,10 +30,26 @@ def accept_friend_request(req, requestId):
     if friend_req.to_user == req.user:
         friend_req.to_user.friends.add(friend_req.from_user)
         friend_req.from_user.friends.add(friend_req.to_user)
-        Response({
+        friend_req.delete()
+        # friend_req.delete()
+        return Response({
             'detail' : 'Request accepted successfuly'
         }, status=status.HTTP_200_OK)
     else:
-        Response({
-            'detail' : 'Request accepted successfuly'
+        return Response({
+            'detail' : 'Request was not accepted'
         }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def all_requests(req):
+    details = {'requests' : []}
+    for r in FriendRequest.objects.all() :
+        details['requests'].append({
+            'id' : r.id,
+            'from_user' : r.from_user,
+            'to_user' : r.to_user,
+        })
+    return Response(details, status.HTTP_200_OK)
