@@ -4,7 +4,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from .models import  User
+from .models import User
 from .serializers import UpdateProfileSerializer
 import datetime
 
@@ -13,12 +13,12 @@ def limit_user_updates(user):
     today_date = datetime.date.today()
     if user.count_updates == 0 and user.can_update_on != today_date:
         user.count_updates = 2
-    elif user.count_updates == 2:
         user.can_update_on = today_date
     elif user.count_updates == 0:
         return False
     user.save()
     return True
+
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
