@@ -31,7 +31,6 @@ def accept_friend_request(req, requestId):
         friend_req.to_user.friends.add(friend_req.from_user)
         friend_req.from_user.friends.add(friend_req.to_user)
         friend_req.delete()
-        # friend_req.delete()
         return Response({
             'detail' : 'Request accepted successfuly'
         }, status=status.HTTP_200_OK)
