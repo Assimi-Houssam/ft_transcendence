@@ -12,5 +12,10 @@ class User(AbstractUser):
     pfp = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     count_updates = models.IntegerField(default=2)
     can_update_on  = models.DateField(null=True, blank=True)
+    friends = models.ManyToManyField("User", blank=True)
     class Meta:
         ordering = ['id']
+
+class FriendRequest(models.model):
+    from_user = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
