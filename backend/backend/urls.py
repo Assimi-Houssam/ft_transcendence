@@ -28,7 +28,7 @@ urlpatterns = [
     path("login", jwt_views.TokenObtainPairView.as_view()),
     path("login/refresh", jwt_views.TokenRefreshView.as_view()),
     path('admin/', admin.site.urls),
-    path("users/all", views.all_users),
+    path('users', views.users),
     # update user profile endpoints
     path("user/update", update_profile.update_profile),
     # managing friends enpoint

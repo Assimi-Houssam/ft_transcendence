@@ -3,7 +3,10 @@ from .models import User
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
 
-
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if (len(data["username"]) < 5):
