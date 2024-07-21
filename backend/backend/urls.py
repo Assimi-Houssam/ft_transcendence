@@ -29,12 +29,12 @@ urlpatterns = [
     path("login/refresh", jwt_views.TokenRefreshView.as_view()),
     path('admin/', admin.site.urls),
     path('users', views.users),
-    # update user profile endpoints
     path("user/update", update_profile.update_profile),
+    
     # managing friends enpoint
-    path("friends/send_request/<int:userId>", manage_friends.send_friend_request),
-    path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request),
-    path("friends/all", manage_friends.all_requests),
+    path("friends/send_request/<int:userId>", manage_friends.send_friend_request), #to send requests
+    path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request), #to accept request 
+    path("friends/requests", manage_friends.friend_requests), #to get the loged in suer requests
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -89,7 +89,6 @@ def oauth_login(request):
             tokens = RefreshToken.for_user(user)
             return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
 
-from rest_framework.renderers import JSONRenderer
 
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])

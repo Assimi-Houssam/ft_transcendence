@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
+from .serializers import FriendRequestSerializer
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
@@ -43,12 +44,10 @@ def accept_friend_request(req, requestId):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def all_requests(req):
-    details = {'requests' : []}
-    for r in FriendRequest.objects.all() :
-        details['requests'].append({
-            'id' : r.id,
-            'from_user' : r.from_user,
-            'to_user' : r.to_user,
-        })
-    return Response(details, status.HTTP_200_OK)
+def friend_requests(req):
+    user = req.user
+    friend = FriendRequest.objects.filter(to_user=user).select_related("to_user", "from_user")
+    requests = FriendRequestSerializer(friend, many=True)
+    if not requests:
+        return Response({'detail' : 'No requests'}, status=status.HTTP_200_OK)
+    return Response(requests.data, status=status.HTTP_200_OK)
