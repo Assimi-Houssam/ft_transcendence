@@ -4,6 +4,7 @@ import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopU
 import Toast from "../components/Toast.js";
 import userInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
+import {MessageBox} from '../components/MessageBox.js'
 
 export class SettingsPage extends HTMLElement {
   constructor() {
@@ -105,27 +106,12 @@ export class SettingsPage extends HTMLElement {
     };
     return data;
   }
-  /**
-   * @function updateNavbar
-   * @returns {void}
-   * @description update the navbar after updating the profile
-   */
-  updateNavbar() {
-    // todo: fix this
-    // const navbar = document.querySelector("navbar-component");
-    // navbar.updateData();
-  }
-  async updateProfile(event) {
-    if (event) {
-      event.preventDefault();
-      document.getElementById("settings_popup_conf_psw").innerHTML = "<preloader-mini></preloader-mini>";
-      document.getElementById("settings_popup_conf_psw").onclick = () => {};
-    }
-    else {
+
+  async updateProfile(e) {
+    if (this.userData.intra_id) {
       document.getElementById("save_setting_btn").innerHTML = "<preloader-mini></preloader-mini>";
       document.getElementById("save_setting_btn").onclick = () => {};
     }
-  
     const data = this.getFormData();
     let formData = new FormData();
   
@@ -135,23 +121,14 @@ export class SettingsPage extends HTMLElement {
     }
     formData.append("user_id", this.userData.id);
     if (!this.userData.intra_id) {
-      const confirmPassword = document.getElementById("settings_password_confirmation").value;
-      if (confirmPassword === "") {
-        document.getElementsByClassName("confirm_password_err")[0].innerHTML =
-          "Password field cannot be empty";
-        return;
-      }
+      const confirmPassword = document.querySelector(".msg-box-input").value;
       formData.append("confirm_password", confirmPassword);
     }
-
     try {
       const res  = await ApiWrapper.post("/user/update", formData, false);
       const data = await res.json();
       if (res.ok) {
         Toast.success(data.detail);
-        this.removePopup();
-        // todo: this is broken, fix it
-        // this.updateNavbar();
       } else {
         Toast.error(Array.isArray(data.detail) ? data.detail[0] : data.detail);
       }
@@ -205,13 +182,7 @@ export class SettingsPage extends HTMLElement {
         });
         return;
       }
-      this.showPopupSetting();
-      const settings_popup_conf_psw = document.getElementById("settings_popup_conf_psw");
-      settings_popup_conf_psw.onclick = (e) => this.updateProfile(e)
-      .then(() => {
-        settings_popup_conf_psw.innerHTML = "Confirm"
-        settings_popup_conf_psw.onclick = (e) => this.updateEvent(e);
-      });
+      new MessageBox("confirm password", "please enter your password", "Confirm", this.updateProfile, "", "", "confirm password").show()
     });
   }
   connectedCallback() {
