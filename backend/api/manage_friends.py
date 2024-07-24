@@ -46,7 +46,7 @@ def accept_friend_request(req, requestId):
 @permission_classes([IsAuthenticated])
 def friend_requests(req):
     user = req.user
-    friend = FriendRequest.objects.filter(to_user=user).select_related("to_user", "from_user")
+    friend = FriendRequest.objects.filter(to_user=user).select_related("from_user")
     requests = FriendRequestSerializer(friend, many=True)
     if not requests:
         return Response({'detail' : 'No requests'}, status=status.HTTP_200_OK)

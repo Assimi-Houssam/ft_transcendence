@@ -7,14 +7,13 @@ from .models import FriendRequest
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ["id", "username", "pfp", "intra_id"]
 
 class FriendRequestSerializer(serializers.ModelSerializer):
     from_user = UserSerializer()
-    to_user = UserSerializer()
     class Meta:
         model = FriendRequest
-        fields = '__all__'
+        fields = ["id", 'from_user']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, data):
