@@ -2,6 +2,7 @@ import { router } from "../routes/routes.js";
 import { genRandomString } from "../utils/utils.js";
 import { OAuthIntercept } from "../utils/utils.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
+import Toast from "../components/Toast.js"
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -22,15 +23,15 @@ export class LoginPage extends HTMLElement {
 		try {
 			// todo: display some sort of loading animation here
 			const req = await ApiWrapper.post("/login", login_data);
-			// todo: handle error codes here
+			if (req.status === 500) {
+				Toast.err("An internal server error has occured.");
+				return;
+			} 
 			const data = await req.json();
-			// todo: use toasts
-			if ('detail' in data) {
-				const login_err_elem = document.getElementById('login-error-message');
-				login_err_elem.textContent = data.detail
+			if (!req.ok) {
+				Toast.error(data.detail);
 				return;
 			}
-			// todo: use cookies here
 			localStorage.setItem("access_token", data.access);
 			localStorage.setItem("refresh_token", data.refresh);
 			router.navigate("/home");
@@ -77,7 +78,6 @@ export class LoginPage extends HTMLElement {
 						</div>
 					</form>
 					<p class="ref">New here? create an account by clicking <a class="anchor" href="/register">here</a></p>
-					<p id="login-error-message" class="login-error-message"></p>
 					</div>
 			</div>
 		`;
