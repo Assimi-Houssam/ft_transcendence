@@ -1,11 +1,10 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from .models import User
 from .serializers import UpdateProfileSerializer
+from .auth import JWTAuth
 import datetime
 
 
@@ -21,7 +20,7 @@ def limit_user_updates(user):
 
 
 @api_view(['POST'])
-@authentication_classes([JWTAuthentication])
+@authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def update_profile(req):
     user = req.user

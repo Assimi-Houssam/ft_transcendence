@@ -16,18 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views, update_profile
-from rest_framework_simplejwt import views as jwt_views
+from api import views, update_profile, auth
 from django.conf.urls.static import static
 from django.conf import settings
 
 
 urlpatterns = [
     path("me", views.me),
-    path("register", views.register),
-    path("oauth-login", views.oauth_login),
-    path("login", jwt_views.TokenObtainPairView.as_view()),
-    path("login/refresh", jwt_views.TokenRefreshView.as_view()),
+    path("register", auth.register),
+    path("oauth-login", auth.oauth_login),
+    path("login", auth.login),
     path('admin/', admin.site.urls),
     # update user profile endpoints
     path("user/update", update_profile.update_profile),
