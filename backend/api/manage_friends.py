@@ -20,11 +20,10 @@ def is_reached_max_requests(from_user) :
 @permission_classes([IsAuthenticated])
 def send_friend_request(req, userId):
     from_ = req.user
-    friends = User.objects.get(id=from_.id).friends
     to_ = User.objects.get(id=userId)
-    if (from_ == to_) or (to_ in friends.all()) :
+    if (from_ == to_) or (to_ in from_.friends.all()) :
         return Response({
-            "detail" : "You cannot send a request to this user" 
+            "detail" : "You cannot send a request to this user"
         }, status=status.HTTP_406_NOT_ACCEPTABLE)
     if is_reached_max_requests(from_):
         return Response({
