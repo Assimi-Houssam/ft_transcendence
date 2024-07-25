@@ -15,7 +15,13 @@ import os
 @permission_classes([IsAuthenticated])
 def me(request):
     user = request.user
-    return Response({"username": user.username, "email": user.email, "id": user.id, "intra_id": user.intra_id})
+    return Response({
+        "username": user.username, 
+        "email": user.email, 
+        "id": user.id, 
+        "intra_id": user.intra_id, 
+        "pfp": user.pfp.url
+    })
 
 @api_view(['POST'])
 def register(request):

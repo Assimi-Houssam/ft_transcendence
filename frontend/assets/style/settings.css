@@ -26,7 +26,7 @@
 .user_settings_pfp_input_box .settings_pfp_image  {
     width: 400px;
     height: 400px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 50%;
     margin-right: 50px;
     margin-top: 20px;
@@ -254,4 +254,54 @@ button {
     align-self: flex-end;
     cursor: pointer;
     margin-bottom: 50px;
+}
+
+.settings_input_error {
+    color: #FF4D4D;
+}
+
+.settings_user_form_fullname {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.settings_user_form_fullname > .settings_form_control {
+    gap: 5px !important;
+}
+
+/* remvoe the marginTop from the seccne child */
+.settings_user_form_fullname > * {
+    margin-top: 0 !important;
+}
+
+.settings__faild {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.settings__faild  {
+    height: 100%;
+}
+.settings_err_faild {
+    display: flex;
+    flex-direction: column;
+}
+.settings__faild .settings_err_faild  p {
+    color: red;
+    text-align: center;
+    font-size: 30px;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.settings__faild .settings_err_faild  img {
+    width: 500px;
+    height: 500px;
+    text-align: center;
+    display: flex;
+    align-self: center;
 }
