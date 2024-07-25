@@ -6,12 +6,30 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import FriendRequestSerializer
 
+max_requests = 100
+max_friends  = 100
+
+def is_reached_max_requests(from_user) :
+    requests = FriendRequest.objects.filter(from_user=from_user).all();
+    if len(requests) >= max_requests :
+        return True
+    return False
+
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def send_friend_request(req, userId):
     from_ = req.user
+    friends = User.objects.get(id=from_.id).friends
     to_ = User.objects.get(id=userId)
+    if (from_ == to_) or (to_ in friends.all()) :
+        return Response({
+            "detail" : "You cannot send a request to this user" 
+        }, status=status.HTTP_406_NOT_ACCEPTABLE)
+    if is_reached_max_requests(from_):
+        return Response({
+            "detail" : "You cannot add more friends; you've reached the maximum requests"
+        },  status=status.HTTP_429_TOO_MANY_REQUESTS)
     data, created =  FriendRequest.objects.get_or_create(to_user=to_, from_user=from_)
     if created:
         return Response({
@@ -28,6 +46,10 @@ def send_friend_request(req, userId):
 @permission_classes([IsAuthenticated])
 def accept_friend_request(req, requestId):
     friend_req = FriendRequest.objects.get(id=requestId)
+    if req.user.friends.count() > max_friends :
+        return Response({
+            'detail' : "You cannot accept more friends, you've hit the maximum."
+        }, status=status.HTTP_429_TOO_MANY_REQUESTS)
     if friend_req.to_user == req.user:
         friend_req.to_user.friends.add(friend_req.from_user)
         friend_req.from_user.friends.add(friend_req.to_user)
