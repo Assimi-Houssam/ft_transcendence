@@ -27,11 +27,13 @@ SECRET_KEY = os.getenv("DJANGO_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
 AUTH_USER_MODEL = 'api.User'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ASGI_APPLICATION = "backend.asgi.application"
 

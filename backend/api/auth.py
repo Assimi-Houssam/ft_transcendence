@@ -79,8 +79,11 @@ def oauth_login(request):
     try:
         intra_user = User.objects.get(intra_id=intra_id)
         # user already has an account created with his intra, return his token
-        tokens = AccessToken.for_user(intra_user)
-        return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
+        token = AccessToken.for_user(intra_user)
+        print(f"intra user logging in: {intra_user.username}")
+        resp = Response({"detail", "Logged in successfully"})
+        resp.set_cookie("access_token", str(token), httponly=True)
+        return resp
     # user has not created an account with his intra, create a new one for him
     except User.DoesNotExist:
         try:
@@ -88,13 +91,20 @@ def oauth_login(request):
             # the user's intra login is already taken, we append a random number for this user to create a unique username
             new_login = intra_login + str(random.randint(0, 100))
             user = User.objects.create(username=new_login, email=intra_email, intra_id=intra_id)
-            tokens = AccessToken.for_user(user)
-            return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
+            token = AccessToken.for_user(user)
+            resp = Response({"detail", "Logged in successfully"})
+            print(f"intra user registering in: {user.username}")
+            resp.set_cookie("access_token", str(token), httponly=True)
+            return resp
+            # return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
         except User.DoesNotExist:
             # username not taken, create a normal account and return a refresh token
             user = User.objects.create(username=intra_login, email=intra_email, intra_id=intra_id)
-            tokens = AccessToken.for_user(user)
-            return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
+            print(f"intra user logging in: {user.username}")
+            token = AccessToken.for_user(user)
+            resp = Response({"detail", "Logged in successfully"})
+            resp.set_cookie("access_token", str(token), httponly=True)
+            return resp
 
 
 class JWTAuth(JWTAuthentication):

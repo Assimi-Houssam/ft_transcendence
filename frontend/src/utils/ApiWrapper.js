@@ -41,13 +41,14 @@ class ApiWrapper {
     async request(method, endpoint, data, json = true) {
         console.log("[ApiWrapper]: sending a", method, "request to:", endpoint);
         let headers = {};
-        if (!this.public_routes.includes(endpoint))
-            headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}` 
+        // if (!this.public_routes.includes(endpoint))
+            // headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}` 
         if (json)
-        headers["Content-Type"] = "application/json";
+            headers["Content-Type"] = "application/json";
         const options = {
             method,
-            headers: headers
+            headers: headers,
+            credentials: 'include'
         };
         if (data) {
             options.body = json ? JSON.stringify(data) : data;
@@ -57,15 +58,6 @@ class ApiWrapper {
         const response = await fetch(this.url + endpoint, options);
         if (this.public_routes.includes(endpoint) || response.status != 401)
             return response
-        console.log("[ApiWrapper]: token expired, refreshing the token");
-        const refreshed = await this.refresh_token();
-        if (refreshed) {
-            console.log("[ApiWrapper]: token refreshed successfully");
-            headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
-            const response = await fetch(this.url + endpoint, options);
-            return response;
-        }
-        console.log("[ApiWrapper]: an error occured, most likely the user needs to login again");
         return null;
     }
 }
