@@ -30,6 +30,8 @@ def login(request):
     user = authenticate(username=username, password=password)
     if user == None:
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+    # once a token is generated for a user, it'll always be able to log the user in, even if the user changes the password etc
+    # todo: possibly start blacklisting tokens on logout/password change (but that kind of breaks jwt's purpose)
     token = AccessToken.for_user(user)
     resp = Response({"detail": "Logged in successfully"})
     resp.set_cookie("access_token", str(token), httponly=True)
