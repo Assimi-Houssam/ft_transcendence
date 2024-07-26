@@ -34,6 +34,7 @@ urlpatterns = [
     path("friends/send_request/<int:userId>", manage_friends.send_friend_request),
     path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request),
     path("friends/requests", manage_friends.friend_requests),
+    path("friends/all", manage_friends.get_friends),
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

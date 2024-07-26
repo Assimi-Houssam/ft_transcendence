@@ -4,32 +4,25 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import FriendRequestSerializer
+from .serializers import FriendRequestSerializer, UserFriendsSerializer
 
-max_requests = 100
-max_friends  = 100
-
-def is_reached_max_requests(from_user) :
-    requests = FriendRequest.objects.filter(from_user=from_user).all();
-    if len(requests) >= max_requests :
-        return True
-    return False
+max_friends  = 200
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def send_friend_request(req, userId):
-    from_ = req.user
-    to_ = User.objects.get(id=userId)
-    if (from_ == to_) or (to_ in from_.friends.all()) :
+    from_user = req.user
+    to_user = User.objects.get(id=userId)
+    if (from_user == to_user) or (to_user in from_user.friends.all()) :
         return Response({
             "detail" : "You cannot send a request to this user"
         }, status=status.HTTP_406_NOT_ACCEPTABLE)
-    if is_reached_max_requests(from_):
+    if from_user.friends.count() >= max_friends :
         return Response({
-            "detail" : "You cannot add more friends; you've reached the maximum requests"
+            "detail" : "You cannot add more friends; you've reached the maximum."
         },  status=status.HTTP_429_TOO_MANY_REQUESTS)
-    data, created =  FriendRequest.objects.get_or_create(to_user=to_, from_user=from_)
+    data, created =  FriendRequest.objects.get_or_create(to_user=to_user, from_user=from_user)
     if created:
         return Response({
             'detail' : "Friend request sent successfuly"
@@ -72,3 +65,14 @@ def friend_requests(req):
     if not requests:
         return Response({'detail' : 'No requests'}, status=status.HTTP_200_OK)
     return Response(requests.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def get_friends(req) :
+    user = req.user
+    friends = UserFriendsSerializer(user.friends.all(), many=True)
+    return Response({
+        'detail' : friends.data
+    }, status=status.HTTP_200_OK)
