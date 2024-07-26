@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserRegistrationSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
@@ -85,3 +85,13 @@ def oauth_login(request):
             user = User.objects.create(username=intra_login, email=intra_email, intra_id=intra_id)
             tokens = RefreshToken.for_user(user)
             return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def users(req):
+    seria = UserSerializer(User.objects.all(), many=True)
+    return Response({
+        'data' : seria.data
+    }, status=status.HTTP_200_OK)

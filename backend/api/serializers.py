@@ -2,7 +2,26 @@ from rest_framework import serializers
 from .models import User
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
+from .models import FriendRequest
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "pfp", "intra_id"]
+
+class UserFriendsSerializer(serializers.ModelSerializer):
+    friends = UserSerializer(many=True)
+    class Meta :
+        model  = User
+        fields = ['friends']
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    from_user = UserSerializer()
+    class Meta:
+        model = FriendRequest
+        fields = ["id", 'from_user']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, data):
