@@ -122,13 +122,15 @@ class Router {
         }
     }
 
-    navigate(path) {
+    async navigate(path) {
         if (path === "/")
             path = "/home";
-        if (!isAuthenticated() && !this.public_routes.includes(path)) {
+        const isLogged = await isAuthenticated();
+        console.log("routes, isAuthed: ", isLogged);
+        if (!isLogged && !this.public_routes.includes(path)) {
             path = "/login";
         }
-        if (isAuthenticated() && this.public_routes.includes(path)) {
+        if (isLogged && this.public_routes.includes(path)) {
             path = "/home";
         }
         this.active_path = path;

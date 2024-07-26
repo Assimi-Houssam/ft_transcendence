@@ -4,8 +4,10 @@ import ApiWrapper from "./ApiWrapper.js";
  * @returns {boolean} true if the user is authenticated, false otherwise
  * token need to be also checked if it's expired or not and if it's valid
  */
-export const isAuthenticated = () => !!localStorage.getItem('access_token');
-
+export async function isAuthenticated() {
+    const req = await ApiWrapper.get("/me");
+    return req;
+}
 export function genRandomString(length) {
     const array = new Uint8Array(length);
     window.crypto.getRandomValues(array);

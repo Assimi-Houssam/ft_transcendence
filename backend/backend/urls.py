@@ -26,6 +26,7 @@ urlpatterns = [
     path("register", auth.register),
     path("oauth-login", auth.oauth_login),
     path("login", auth.login),
+    path("logout", auth.logout),
     path('admin/', admin.site.urls),
     # update user profile endpoints
     path("user/update", update_profile.update_profile),

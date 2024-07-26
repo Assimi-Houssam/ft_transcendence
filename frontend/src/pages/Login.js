@@ -22,17 +22,13 @@ export class LoginPage extends HTMLElement {
 		try {
 			// todo: display some sort of loading animation here
 			const req = await ApiWrapper.post("/login", login_data);
-			// todo: handle error codes here
 			const data = await req.json();
 			// todo: use toasts
-			if ('detail' in data) {
+			if (!req.ok) {
 				const login_err_elem = document.getElementById('login-error-message');
 				login_err_elem.textContent = data.detail
 				return;
 			}
-			// todo: use cookies here
-			localStorage.setItem("access_token", data.access);
-			localStorage.setItem("refresh_token", data.refresh);
 			router.navigate("/home");
 		}
 		catch (error) {
