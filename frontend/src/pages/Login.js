@@ -23,17 +23,11 @@ export class LoginPage extends HTMLElement {
 		try {
 			// todo: display some sort of loading animation here
 			const req = await ApiWrapper.post("/login", login_data);
-			if (req.status === 500) {
-				Toast.err("An internal server error has occured.");
-				return;
-			} 
 			const data = await req.json();
 			if (!req.ok) {
-				Toast.error(data.detail);
+				Toast.error(data.detail)
 				return;
 			}
-			localStorage.setItem("access_token", data.access);
-			localStorage.setItem("refresh_token", data.refresh);
 			router.navigate("/home");
 		}
 		catch (error) {
