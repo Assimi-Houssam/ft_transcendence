@@ -1,7 +1,7 @@
 from .models import FriendRequest, User
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from auth import JWTAuth
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import FriendRequestSerializer, UserFriendsSerializer
@@ -9,7 +9,7 @@ from .serializers import FriendRequestSerializer, UserFriendsSerializer
 max_friends  = 200
 
 @api_view(['POST'])
-@authentication_classes([JWTAuthentication])
+@authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def send_friend_request(req, userId):
     from_user = req.user
@@ -34,7 +34,7 @@ def send_friend_request(req, userId):
 
 
 @api_view(['POST'])
-@authentication_classes([JWTAuthentication])
+@authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def accept_friend_request(req, requestId):
     friend_req = FriendRequest.objects.get(id=requestId)
@@ -56,7 +56,7 @@ def accept_friend_request(req, requestId):
 
 
 @api_view(['GET'])
-@authentication_classes([JWTAuthentication])
+@authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def friend_requests(req):
     user = req.user
@@ -68,7 +68,7 @@ def friend_requests(req):
 
 
 @api_view(['GET'])
-@authentication_classes([JWTAuthentication])
+@authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def get_friends(req) :
     user = req.user
