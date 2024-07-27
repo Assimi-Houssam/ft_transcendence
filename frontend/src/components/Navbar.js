@@ -59,6 +59,7 @@ export class Navbar extends HTMLElement {
           </div>
       `;
       const noti_btn = this.querySelector(".navbar_notification_btn");
+      // todo: make sure this cant be clickable once its clicked
       noti_btn.addEventListener("click", () => {
         this.notification_center.show();
       })

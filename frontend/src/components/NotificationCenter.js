@@ -95,7 +95,7 @@ export class NotificationCenter extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="notification-center-header">
-                <div class="notification-headline">All Notifications (<a>${this.notifications.length}</a>)</div>
+                <div class="notification-headline">All Notifications (<a class="notification-count">${this.notifications.length}</a>)</div>
                 <div class="notification-clear">Clear All</div>
             </div>
             <div class="notifications-list"></div>`;
@@ -110,7 +110,16 @@ export class NotificationCenter extends HTMLElement {
             opacity: 1,
             duration: 450,
             easing: 'easeOutQuint',
-            complete: () => {document.body.addEventListener("click", this.outerClickHandler);}
+            complete: () => {
+                document.body.addEventListener("click", this.outerClickHandler);
+            }
+        });
+        anime({
+            targets: this.querySelectorAll('notification-item'),
+            opacity: 1,
+            marginLeft: ["100%", "0%"], 
+            delay: anime.stagger(20),
+            easing: 'easeOutExpo'
         });
     }
     hide() {
