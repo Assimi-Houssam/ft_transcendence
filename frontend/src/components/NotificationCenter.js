@@ -117,7 +117,7 @@ export class NotificationCenter extends HTMLElement {
         anime({
             targets: this,
             left: ['70%', '100%'],
-            opacity: 1,
+            opacity: 0,
             duration: 450,
             easing: 'easeOutQuint',
             complete: () => {
