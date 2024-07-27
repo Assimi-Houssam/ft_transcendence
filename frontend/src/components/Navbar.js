@@ -1,4 +1,5 @@
 import ApiWrapper from "../utils/ApiWrapper.js"
+import { NotificationCenter } from "./NotificationCenter.js";
 
 export class Navbar extends HTMLElement {
   constructor() {
@@ -8,6 +9,7 @@ export class Navbar extends HTMLElement {
       this.resolved_callback = resolved;
       this.rejected_callback = rejected;
     });
+    this.notification_center = new NotificationCenter();
   }
   load() {
     ApiWrapper.get("/me").then((req) => {
@@ -56,6 +58,10 @@ export class Navbar extends HTMLElement {
               </div>
           </div>
       `;
+      const noti_btn = this.querySelector(".navbar_notification_btn");
+      noti_btn.addEventListener("click", () => {
+        this.notification_center.show();
+      })
   }
 }
 customElements.define('navbar-component', Navbar);

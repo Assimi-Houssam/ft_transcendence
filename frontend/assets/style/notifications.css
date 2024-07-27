@@ -6,10 +6,11 @@ notification-center {
     width: 30%;
     height: 100%;
     top: 0%;
-    left: 70%;
+    left: 100%;
     z-index: 9999;
     backdrop-filter: blur(10px);
     background-color: rgba(56, 60, 78, 0.28);
+    opacity: 0%;
 }
  
 .notification-center-header {
@@ -60,6 +61,7 @@ notification-item {
     border-bottom: 1px solid transparent;
     border-image: linear-gradient(to left,rgba(34, 37, 50, 0),#4B4B4D, rgba(34, 37, 50, 0));
     border-image-slice: 2;
+    transition: all 0.2s ease-in;
 }
 
 .notification-c {

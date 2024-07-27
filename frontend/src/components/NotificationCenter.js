@@ -7,7 +7,7 @@ notification types:
 
 system:
 - notifications are stored on the server side
-- each time the user logs in, we fetch his new unsread notifications (if any)
+- each time the user logs in, we fetch his new unread notifications (if any)
 - clicking in an invite notification would display a messagebox asking if the user wants to join the game
 - clicking in an incoming friend request noti would redirect to the profile page with the option to selected whether to accept or not inplace of the send fr button
 - clicking in an accepted friend request noti would redirect to the profile page
@@ -18,6 +18,8 @@ notes:
 - add notification type enum
 - should make links that has a user's profile page automatically redirect to the profile page
 */
+
+const anime = window.anime;
 
 const NotificationType = {
     ReceivedFriendRequest: "ReceivedFriendRequest",
@@ -58,7 +60,7 @@ class Notification extends HTMLElement {
             <div class="notification-c">
                 <img class="notification-img" src="${this.pfpUrl}"></img>
                 <div class="notification-content-container">
-                    <div class="notification-content"><a>${this.sender}</a> ${this.content}</div>
+                    <div class="notification-content"><a class="notification-src">${this.sender}</a> ${this.content}</div>
                     <div class="notification-date">22-7-2024 8:28</div>
                 </div>
             </div>
@@ -78,7 +80,14 @@ customElements.define("notification-item", Notification);
 export class NotificationCenter extends HTMLElement {
     constructor() {
         super();
+        console.log("ctor called");
+        // todo: here, we connect to the server, and get the unread notifications and append them here
         this.notifications = [];
+        this.outerClickHandler = (e) => {
+            if (!e.target.className.startsWith("notification") && !e.target.localName.startsWith("notification"))
+                this.hide();
+        }
+
         // testing
         for (let i = 0; i < 5; i++)
             this.notifications.push(new Notification(NotificationType.AcceptedFriendRequest, "miyako"));
@@ -92,6 +101,30 @@ export class NotificationCenter extends HTMLElement {
             <div class="notifications-list"></div>`;
         for (let noti in this.notifications)
             this.querySelector(".notifications-list").append(this.notifications[noti]);
+    }
+    show() {
+        document.body.appendChild(this);
+        anime({
+            targets: "notification-center",
+            left: ['100%', '70%'],
+            opacity: 1,
+            duration: 450,
+            easing: 'easeOutQuint',
+            complete: () => {document.body.addEventListener("click", this.outerClickHandler);}
+        });
+    }
+    hide() {
+        anime({
+            targets: "notification-center",
+            left: ['70%', '100%'],
+            opacity: 1,
+            duration: 450,
+            easing: 'easeOutQuint',
+            complete: () => {
+                document.body.removeChild(this);
+                document.body.removeEventListener("click", this.outerClickHandler);
+            }
+        });
     }
 }
 

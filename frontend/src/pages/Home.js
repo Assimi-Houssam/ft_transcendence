@@ -10,10 +10,10 @@ export class HomePage extends HTMLElement {
           <a href="/chat/start">start chat</a>
         </div>
       </div>`
-      this.querySelector(".test").onclick = () => {
-        new MessageBox("sadasd", "asldksald", "sdasd", () => {}).show();
-      }
-      this.querySelector(".home_").appendChild(new NotificationCenter());
+      // this.querySelector(".test").onclick = () => {
+      //   new MessageBox("sadasd", "asldksald", "sdasd", () => {}).show();
+      // }
+      // this.querySelector(".home_").appendChild(new NotificationCenter());
   }
 };
 
