@@ -105,7 +105,7 @@ export class NotificationCenter extends HTMLElement {
     show() {
         document.body.appendChild(this);
         anime({
-            targets: "notification-center",
+            targets: this,
             left: ['100%', '70%'],
             opacity: 1,
             duration: 450,
@@ -115,7 +115,7 @@ export class NotificationCenter extends HTMLElement {
     }
     hide() {
         anime({
-            targets: "notification-center",
+            targets: this,
             left: ['70%', '100%'],
             opacity: 1,
             duration: 450,
