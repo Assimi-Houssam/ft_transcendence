@@ -72,6 +72,21 @@ class Notification extends HTMLElement {
         this.addEventListener('mouseout', () => {
             this.style.backgroundColor = "rgba(56, 60, 78, 0.0)";
         });
+        this.querySelector(".notification-delete").addEventListener("click", () => {
+            this.dispatchEvent(new CustomEvent("notificationDelete", { detail: this, bubbles: true }));
+        });
+    }
+    delete(animateMinHeight = true) {
+        anime({
+            targets: this,
+            height: 0,
+            minHeight: animateMinHeight ? 0 : this.style.minHeight,
+            marginLeft: ["0%", "-100%"],
+            easing: "easeOutExpo",
+            opacity: 0,
+            duration: 600,
+            complete: () => {this.remove();}
+        });
     }
 }
 
@@ -87,10 +102,10 @@ export class NotificationCenter extends HTMLElement {
             if (!e.target.className.startsWith("notification") && !e.target.localName.startsWith("notification"))
                 this.hide();
         }
-
+        
         // testing
         for (let i = 0; i < 5; i++)
-            this.notifications.push(new Notification(NotificationType.AcceptedFriendRequest, "miyako"));
+            this.notifications.push(new Notification(NotificationType.AcceptedFriendRequest, "miyako" + i));
     }
     connectedCallback() {
         this.innerHTML = `
@@ -99,11 +114,27 @@ export class NotificationCenter extends HTMLElement {
                 <div class="notification-clear">Clear All</div>
             </div>
             <div class="notifications-list"></div>`;
+        this.querySelector(".notification-clear").onclick = () => { this.clearNotifications(); }
         for (let noti in this.notifications)
             this.querySelector(".notifications-list").append(this.notifications[noti]);
     }
+    clearNotifications() {
+        const notis = this.notifications;
+        for (let i = 0; i < notis.length; i++) {
+            setTimeout(() => { notis[i].delete(false); }, i * 30);
+        }
+        this.notifications = [];
+        this.querySelector(".notification-count").textContent = 0;
+    }
     show() {
         document.body.appendChild(this);
+        this.addEventListener("notificationDelete", (e) => { 
+            const noti = e.detail;
+            const noti_idx = this.notifications.indexOf(noti);
+            noti.delete();
+            this.notifications.splice(noti_idx, 1); 
+            this.querySelector(".notification-count").textContent = this.notifications.length;
+        });
         anime({
             targets: this,
             left: ['100%', '70%'],
@@ -119,7 +150,8 @@ export class NotificationCenter extends HTMLElement {
             opacity: 1,
             marginLeft: ["100%", "0%"], 
             delay: anime.stagger(20),
-            easing: 'easeOutExpo'
+            duration: 600,
+            easing: 'easeOutQuint'
         });
     }
     hide() {
@@ -127,7 +159,7 @@ export class NotificationCenter extends HTMLElement {
             targets: this,
             left: ['70%', '100%'],
             opacity: 0,
-            duration: 450,
+            duration: 500,
             easing: 'easeOutQuint',
             complete: () => {
                 document.body.removeChild(this);
