@@ -2,6 +2,7 @@ import { router } from "../routes/routes.js";
 import { genRandomString } from "../utils/utils.js";
 import { OAuthIntercept } from "../utils/utils.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
+import Toast from "../components/Toast.js"
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -73,7 +74,6 @@ export class LoginPage extends HTMLElement {
 						</div>
 					</form>
 					<p class="ref">New here? create an account by clicking <a class="anchor" href="/register">here</a></p>
-					<p id="login-error-message" class="login-error-message"></p>
 					</div>
 			</div>
 		`;

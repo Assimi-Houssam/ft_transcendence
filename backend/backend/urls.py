@@ -16,10 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views, update_profile, auth
+from api import views, update_profile, auth, manage_friends
 from django.conf.urls.static import static
 from django.conf import settings
-
 
 urlpatterns = [
     path("me", views.me),
@@ -28,8 +27,13 @@ urlpatterns = [
     path("login", auth.login),
     path("logout", auth.logout),
     path('admin/', admin.site.urls),
-    # update user profile endpoints
+    path('users', views.users),
     path("user/update", update_profile.update_profile),
+
+    path("friends/send_request/<int:userId>", manage_friends.send_friend_request),
+    path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request),
+    path("friends/requests", manage_friends.friend_requests),
+    path("friends/all", manage_friends.get_friends),
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
