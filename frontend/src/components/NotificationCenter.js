@@ -72,9 +72,9 @@ class Notification extends HTMLElement {
         this.addEventListener('mouseout', () => {
             this.style.backgroundColor = "rgba(56, 60, 78, 0.0)";
         });
-        this.querySelector(".notification-delete").addEventListener("click", () => {
+        this.querySelector(".notification-delete").onclick = () => {
             this.dispatchEvent(new CustomEvent("notificationDelete", { detail: this, bubbles: true }));
-        });
+        };
     }
     delete(animateMinHeight = true) {
         anime({
@@ -115,6 +115,8 @@ export class NotificationCenter extends HTMLElement {
             </div>
             <div class="notifications-list"></div>`;
         this.querySelector(".notification-clear").onclick = () => { this.clearNotifications(); }
+
+        // testing
         for (let noti in this.notifications)
             this.querySelector(".notifications-list").append(this.notifications[noti]);
     }
