@@ -33,6 +33,7 @@ class WSAuthMiddleware:
         decoded_token = UntypedToken(token).payload
         user = await self.get_user(decoded_token["user_id"])
         if (user == None):
+            await send({'type': 'websocket.close','code': 1000})
             return
         scope["user"] = user
         return await self.app(scope, receive, send)
