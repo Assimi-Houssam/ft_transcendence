@@ -126,7 +126,6 @@ class Router {
         if (path === "/")
             path = "/home";
         const isLogged = await isAuthenticated();
-        console.log("routes, isAuthed: ", isLogged);
         if (!isLogged && !this.public_routes.includes(path)) {
             path = "/login";
         }
