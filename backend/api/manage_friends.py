@@ -1,10 +1,10 @@
 from .models import FriendRequest, User
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
-from auth import JWTAuth
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import FriendRequestSerializer, UserFriendsSerializer
+from .auth import JWTAuth
 
 max_friends  = 200
 

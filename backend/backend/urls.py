@@ -27,7 +27,6 @@ urlpatterns = [
     path("login", auth.login),
     path("logout", auth.logout),
     path('admin/', admin.site.urls),
-    path('users', views.users),
     path("user/update", update_profile.update_profile),
 
     path("friends/send_request/<int:userId>", manage_friends.send_friend_request),
