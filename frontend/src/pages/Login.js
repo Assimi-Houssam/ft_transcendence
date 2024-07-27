@@ -24,10 +24,8 @@ export class LoginPage extends HTMLElement {
 			// todo: display some sort of loading animation here
 			const req = await ApiWrapper.post("/login", login_data);
 			const data = await req.json();
-			// todo: use toasts
 			if (!req.ok) {
-				const login_err_elem = document.getElementById('login-error-message');
-				login_err_elem.textContent = data.detail
+				Toast.error(data.detail)
 				return;
 			}
 			router.navigate("/home");
