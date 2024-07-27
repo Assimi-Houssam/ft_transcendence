@@ -16,21 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views, update_profile
-from rest_framework_simplejwt import views as jwt_views
+from api import views, update_profile, auth, manage_friends
 from django.conf.urls.static import static
 from django.conf import settings
 
-
 urlpatterns = [
     path("me", views.me),
-    path("register", views.register),
-    path("oauth-login", views.oauth_login),
-    path("login", jwt_views.TokenObtainPairView.as_view()),
-    path("login/refresh", jwt_views.TokenRefreshView.as_view()),
+    path("register", auth.register),
+    path("oauth-login", auth.oauth_login),
+    path("login", auth.login),
+    path("logout", auth.logout),
     path('admin/', admin.site.urls),
-    # update user profile endpoints
     path("user/update", update_profile.update_profile),
+
+    path("friends/send_request/<int:userId>", manage_friends.send_friend_request),
+    path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request),
+    path("friends/requests", manage_friends.friend_requests),
+    path("friends/all", manage_friends.get_friends),
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

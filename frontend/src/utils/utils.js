@@ -4,8 +4,10 @@ import ApiWrapper from "./ApiWrapper.js";
  * @returns {boolean} true if the user is authenticated, false otherwise
  * token need to be also checked if it's expired or not and if it's valid
  */
-export const isAuthenticated = () => !!localStorage.getItem('access_token');
-
+export async function isAuthenticated() {
+    const req = await ApiWrapper.get("/me");
+    return req;
+}
 export function genRandomString(length) {
     const array = new Uint8Array(length);
     window.crypto.getRandomValues(array);
@@ -25,14 +27,11 @@ export async function OAuthIntercept() {
     try {
         const req = await ApiWrapper.post("/oauth-login", oauth_data);
         const data = await req.json();
-        // todo: use detail instead of error (requires some backend work)
-        if ('error' in data) {
-            return data.error;
-        }
-        // todo: again, move tokens to cookies
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
-        console.log("[OAuthIntercept]: tokens set!");
+        if (req.status === 500)
+            return "An internal server error occured";
+        if (!req.ok)
+            return data.detail;
+
     }
     catch (error) {
         return "An exception has occured";

@@ -2,20 +2,36 @@ from rest_framework import serializers
 from .models import User
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
+from .models import FriendRequest
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "pfp", "intra_id"]
+
+class UserFriendsSerializer(serializers.ModelSerializer):
+    friends = UserSerializer(many=True)
+    class Meta :
+        model  = User
+        fields = ['friends']
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    from_user = UserSerializer()
+    class Meta:
+        model = FriendRequest
+        fields = ["id", 'from_user']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if (len(data["username"]) < 5):
-            raise serializers.ValidationError("username cannot have less than 5 characters.")
+            raise serializers.ValidationError("Username cannot have less than 5 characters.")
         if (len(data["username"]) > 20):
-            raise serializers.ValidationError("username cannot have more than 20 characeters.")
-        # if (data["password"] == data["username"]):
-        #     raise serializers.ValidationError("password cannot be the same as the username")
+            raise serializers.ValidationError("Username cannot have more than 20 characeters.")
+        # todo: add more password checks
         if (len(data["password"]) < 10):
-            raise serializers.ValidationError("password cannot have less than 10 characters")
-        # todo: call validate_password
-        # todo: call validate_email
+            raise serializers.ValidationError("Password cannot have less than 10 characters")
         return data
 
     def create(self, validated_data):
