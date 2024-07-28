@@ -49,7 +49,7 @@ export const Routes = [
         path: '/chat/messages/:username',
         icon: '../assets/icons/chat.png',
         icon_ac: '../assets/icons/active_chat.png',
-        component: ChatContainer,
+        component: Test,
     },
     {
         path: '/logout',
@@ -67,22 +67,18 @@ class Router {
     }
 
     findSubpath(path, routes = this.routes) {
-        const pathSegments = path.split('/');
-        pathSegments[0] === "" && pathSegments.shift();
-        if (pathSegments.length === 0)  return null;
-    
+        const pathSegments = path.split('/').filter(Boolean);
+
         for (const route of routes) {
             const routeSegments = route.path.split('/').filter(Boolean);
-            if (routeSegments.length !== pathSegments.length) 
-                continue;
+            if (routeSegments.length !== pathSegments.length)  continue;
 
-            let isMatch = true;
-            let params = {};
+            let isMatch = true, params = {};
 
             for (let i = 0; i < routeSegments.length; i++) {
-                if (routeSegments[i].startsWith(':')) {
+                if (routeSegments[i].startsWith(':')) 
                     params[routeSegments[i].substring(1)] = pathSegments[i];
-                } else if (routeSegments[i] !== pathSegments[i]) {
+                else if (routeSegments[i] !== pathSegments[i]) {
                     isMatch = false;
                     break;
                 }
