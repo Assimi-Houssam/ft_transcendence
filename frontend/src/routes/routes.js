@@ -46,7 +46,7 @@ export const Routes = [
         component: ChatContainer,
     },
     {
-        path: '/chat/messages/:username',
+        path: '/chat/:username/messages',
         icon: '../assets/icons/chat.png',
         icon_ac: '../assets/icons/active_chat.png',
         component: Test,
