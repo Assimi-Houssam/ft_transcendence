@@ -11,6 +11,7 @@ export class SettingsPage extends HTMLElement {
     super();
     this.updateProfile = this.updateProfile.bind(this);
     this.userData = {};
+    this.is2FAEnable = false  //tmp, TODO: get boolean from backedn
   }
 
   /**
@@ -185,6 +186,11 @@ export class SettingsPage extends HTMLElement {
       new MessageBox("confirm password", "please enter your password", "Confirm", this.updateProfile, "", "", "confirm password").show()
     });
   }
+
+  handle2FA() {
+    this.is2FAEnable = !this.is2FAEnable; //tmp, TODO: set the boolean to backedn
+    this.connectedCallback();
+  }
   connectedCallback() {
       this.fechUserInfo().then(() => {
       if (!this.userData)
@@ -201,12 +207,20 @@ export class SettingsPage extends HTMLElement {
                         <user-settings-form-page ></user-settings-form-page>
                         <user-settings-pfp></user-settings-pfp>
                     </div>
+                    <div class="settings_2fa_auth">
+                      <h3>Two-Factor Authentication</h3>
+                      <div class="settings_two_actor_manage">
+                          <p>Two-factor authentication is currently ${this.is2FAEnable ? "Enabled" :  "Disabled"}</p>
+                          <button id="twoFactorBtn">${this.is2FAEnable ? "Disable" :  "Enable"}</button>
+                      </div>
+                    </div>
                 </div>
           </div>
         `;
         this.setInputsValues();
         document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
         document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
+        document.getElementById("twoFactorBtn").onclick = (e) => this.handle2FA(e);
       }).catch((err) => {
         Toast.error(err);
         this.innerHTML = `
