@@ -139,7 +139,7 @@ user-settings-pfp {
 }
 
 .settings_form_btn {
-    margin-top: 100px;
+    margin-top: 40px;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -304,4 +304,30 @@ button {
     text-align: center;
     display: flex;
     align-self: center;
+}
+
+.settings_2fa_auth {
+    margin-top: 30px;
+}
+
+.settings_2fa_auth .settings_two_actor_manage {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+    background-color: #1B1F2D;
+    padding: 25px;
+    border-radius: 10px;
+}
+.settings_2fa_auth .settings_two_actor_manage p {
+    color: #a4a5a7;
+}
+
+.settings_2fa_auth .settings_two_actor_manage button {
+    background-color: #24CE90;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 15px;
+    border-radius: 7px;
 }
