@@ -9,6 +9,7 @@ import { ChatContainer } from "../pages/ChatContainer.js";
 import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
+import { GameSelection } from "../pages/gameSelectionMenu/GameSelectionMenu.js";
 
 export const Routes = [
     {
@@ -51,6 +52,24 @@ export const Routes = [
             }
         ]
     },
+    {
+        path: '/game-selection',
+        icon: '../assets/icons/game.png',
+        icon_ac: '../assets/icons/active_game.png',
+        component: GameSelection,
+        // subs: [
+        //     {
+        //         path: '/offline-room-1vs1',
+        //         component: RoomOneVsOne,
+        //     }
+        // ]
+    },
+    // {
+    //     path: '/online-room-list',
+    //     icon: '../assets/icons/game.png',
+    //     icon_ac: '../assets/icons/active_game.png',
+    //     component: OnlineRoomList,
+    // },
     {
         path: '/logout',
         component: null,
