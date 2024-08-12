@@ -4,7 +4,7 @@ import Toast from './Toast.js';
 export class Search extends HTMLElement {
     constructor() {
         super();
-        this.delayTime = 250;
+        this.delayTime = 200;
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
     }
 
@@ -12,25 +12,25 @@ export class Search extends HTMLElement {
         const searchResult = document.getElementsByClassName("nav_search_result")[0];
         if (searchResult.classList.contains("show_search_result"))
             return;
-        anime({
-            targets: '.nav_search_result',
-            height: ['0px', '350px'],
-            duration: this.delayTime,
-            easing: 'easeInOutQuad',
-            begin: () => {
-                searchResult.classList.add("show_search_result");
-            }
-        });
+            anime({
+                targets: '.nav_search_result',
+                opacity: [0, 1],
+                duration: this.delayTime,
+                easing: 'easeOutQuint',
+                begin: () => {
+                    searchResult.classList.add("show_search_result");
+                }
+            });
+            
         document.addEventListener('click', this.handleDocumentClick);
     }
-
 
     handleDocumentClick(e) {
         const searchResult = document.getElementsByClassName("nav_search_result")[0];
         if (!this.contains(e.target)) {
             anime({
                 targets: '.nav_search_result',
-                height: ['350px', '0px'],
+                opacity: [1, 0],
                 duration: this.delayTime,
                 easing: 'easeInOutQuad',
                 complete: () => {
