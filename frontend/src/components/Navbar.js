@@ -36,7 +36,7 @@ export class Navbar extends HTMLElement {
     this.classList.add("navbar_");
     let log_username = this.data.username ? this.data.username : "loading..";
     this.innerHTML = `
-          <search-component />
+          <search-component></search-component >
           <div class="navbar_right_elements" >
               <div class="navbar_notification_btn gradient-dark-bg gradient-dark-border" >
                 <div class="dot_"></div>
