@@ -26,7 +26,7 @@ def me(request):
 def filter_users(request) :
     query = request.GET["query"]
     print(query)
-    data = User.objects.filter(username=query).values()
+    data = User.objects.filter(username__iexact=query).values()
     print(data);
     users = UserSerializer(data, many=True)
     return Response({
