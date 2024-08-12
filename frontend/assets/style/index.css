@@ -204,13 +204,14 @@ search-component {
     border-radius: 22px;
     border: 1px solid rgba(80, 76, 76, 0.448);
     display: none;
+    margin-top: 10px;
+    /* top: 0; */
 }
 
 .show_search_result {
     display: block;
-    height: 350px;
-    transition: all 0.5 ease-in-out;
 }
+
 
 .navbar_ .navbar_right_elements {
     display: flex;
