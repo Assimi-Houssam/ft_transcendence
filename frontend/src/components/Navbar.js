@@ -1,5 +1,5 @@
 import ApiWrapper from "../utils/ApiWrapper.js"
-
+import { Search } from "./Search.js";
 export class Navbar extends HTMLElement {
   constructor() {
     super();
@@ -36,13 +36,7 @@ export class Navbar extends HTMLElement {
     this.classList.add("navbar_");
     let log_username = this.data.username ? this.data.username : "loading..";
     this.innerHTML = `
-          <div class="nav_search_ gradient-dark-bg gradient-dark-border">
-              <img src="../../assets/icons/search.png" />
-              <input
-                type="text" 
-                placeholder="Search for user by email or username"
-              />
-          </div>
+          <search-component />
           <div class="navbar_right_elements" >
               <div class="navbar_notification_btn gradient-dark-bg gradient-dark-border" >
                 <div class="dot_"></div>

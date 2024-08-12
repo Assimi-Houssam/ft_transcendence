@@ -124,7 +124,7 @@ layout-wrapper {
     /* margin-top: 20px; */
 }
 
-.navbar_ > .nav_search_ > input {
+.navbar_ > search-component > .nav_search_ > input {
     border: none;
     flex : 1;
     outline: none;
@@ -132,7 +132,7 @@ layout-wrapper {
     width: 100%;
 }
 
-.navbar_ > .nav_search_ > img {
+.navbar_ > search-component > .nav_search_ > img {
     width: 40px;
     height: 40px;
     object-fit: contain;
@@ -175,7 +175,7 @@ layout-wrapper {
 }
 
 
-.navbar_ > .nav_search_ {
+.navbar_ > search-component > .nav_search_ {
     display: flex;
     align-items: center;
     width:  650px;
