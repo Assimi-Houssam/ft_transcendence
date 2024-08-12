@@ -8,10 +8,10 @@ export class GameMode extends HTMLElement {
         this.innerHTML = `
             <div id="BtnGameMode" class="BtnGamemode">
                 <button name="hokey">
-                    <img src="../../../assets/images/hoky.png" width="60px">
+                    <img src="../../../assets/images/hoky.png" width="35px">
                 </button>
                 <button name="pingpong">
-                    <img src="../../../assets/images/ping.png" width="60px">
+                    <img src="../../../assets/images/ping.png" width="35px">
                 </button>
             </div>
         `

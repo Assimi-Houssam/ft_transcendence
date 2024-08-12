@@ -28,21 +28,8 @@ export class InviteFriends extends HTMLElement {
             </div>
         `;
 
-        const InviteFriendsBtn = document.getElementById("InviteFriendsBtn");
         const popup = this.querySelector(".ContainerPopupInviteFreiends");
         const card = this.querySelector(".ContainerPopupInviteFreiends_card");
-
-        InviteFriendsBtn.addEventListener("click", () => {
-            const elemnt = document.querySelector("invite-friends");
-            elemnt.style.display = "block";
-            anime({
-                targets: ".ContainerPopupInviteFreiends_card",
-                scale: [0, 1],
-                opacity: [0, 1],
-                duration: 500,
-                easing: 'easeOutBack'
-            });
-        });
 
         popup.addEventListener("click", (event) => {
             if (!card.contains(event.target)) {

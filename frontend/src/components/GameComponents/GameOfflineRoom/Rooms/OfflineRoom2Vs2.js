@@ -11,13 +11,13 @@ export class OfflineRoom2Vs2 extends HTMLElement {
                         <div class="player_">
                             <div>
                                 <img src="../../../../assets/images/p1.png" width="25px">
-                                <img src="../../../../assets/images/p1.png" width="25px">
+                                <img src="../../../../assets/images/p5.png" width="25px">
                             </div>
                             <p>mamazzal133 & Player 1</p>
                         </div>
                         <div class="player_">
-                            <img src="../../../../assets/images/p2.png" width="25px">
-                            <img src="../../../../assets/images/p2.png" width="25px">
+                            <img src="../../../../assets/images/p3.png" width="25px">
+                            <img src="../../../../assets/images/p4.png" width="25px">
                             <p>Player 1 & Player 2</p>
                         </div>
                     </div>
@@ -32,13 +32,13 @@ export class OfflineRoom2Vs2 extends HTMLElement {
                 <div class="TwoVsTwo">
                     <div class="usersTeams2v2">
                         <div class="player_">
-                            <img src="../../../../assets/images/p1.png" width="25px">
-                            <img src="../../../../assets/images/p1.png" width="25px">
+                            <img src="../../../../assets/images/p2.png" width="25px">
+                            <img src="../../../../assets/images/p5.png" width="25px">
                             <p>Player 3 & Player 4</p>
                         </div>
                         <div class="player_">
-                            <img src="../../../../assets/images/p2.png" width="25px">
-                            <img src="../../../../assets/images/p2.png" width="25px">
+                            <img src="../../../../assets/images/p1.png" width="25px">
+                            <img src="../../../../assets/images/p3.png" width="25px">
                             <p>Player 5 & Player 6</p>
                         </div>
                     </div>

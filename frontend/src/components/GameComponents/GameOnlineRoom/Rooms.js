@@ -1,0 +1,47 @@
+import { ChatGame } from "./ChatGame.js";
+import { InRoom1Vs1 } from "./InRoom1Vs1.js"
+import { InRoom2Vs2 } from "./InRoom2Vs2.js"
+import { ContainerGameOptions } from "./ContainerGameOptions/ContainerGameOptions.js";
+
+export class Rooms extends HTMLElement {
+    constructor(){
+        super();
+    }
+
+    connectedCallback(){
+        this.innerHTML = `
+            <div>
+                <div id="room-name_" >
+                    <room-name></room-name>
+                </div>
+                <div class="content_line">
+                    <div class="line_x"></div>
+                </div>
+                <contaner-btn-room></contaner-btn-room>
+            </div>
+            <invite-friends style="display: none;"></invite-friends>
+            <div class="ContainerCardParticipants">
+                <in-room-2vs2></in-room-2vs2>
+                <chat-game></chat-game>
+            </div>
+            <div class="content_line">
+                <div class="line_x"></div>
+            </div>
+            <container-game-options></container-game-options>
+        `
+        // const BtnStartGame = this.querySelector("#BtnStartGame");
+
+        // BtnStartGame.addEventListener('click', () =>{
+        //     this.StartGame();
+        // });
+    }
+
+    // StartGame() {
+    // const onlineRoomList = document.createElement("in-room-2vs2");
+    // onlineRoomList.classList.add("fade-in");
+    // this.replaceChildren(onlineRoomList);
+    // onlineRoomList.classList.add("show");
+    // }
+}
+
+customElements.define("rooms-component", Rooms);

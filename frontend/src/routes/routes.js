@@ -10,6 +10,8 @@ import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
 import { GameSelection } from "../pages/gameSelectionMenu/GameSelectionMenu.js";
+import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
+import { OnlineRoomList } from "../components/GameComponents/GameOnlineRoom/OnlineRoomList.js";
 
 export const Routes = [
     {
@@ -64,12 +66,14 @@ export const Routes = [
         //     }
         // ]
     },
-    // {
-    //     path: '/online-room-list',
-    //     icon: '../assets/icons/game.png',
-    //     icon_ac: '../assets/icons/active_game.png',
-    //     component: OnlineRoomList,
-    // },
+    {
+        path : "/tournament",
+        component : OfflineRoom,
+    },
+    {
+        path : "/rooms",
+        component : OnlineRoomList,
+    },
     {
         path: '/logout',
         component: null,
