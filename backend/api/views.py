@@ -25,7 +25,7 @@ def me(request):
 @permission_classes([IsAuthenticated])
 def filter_users(request) :
     query = request.GET["query"]
-    data = User.objects.filter(username=query)
+    data = User.objects.filter(username__icontains=query)
     users = UserSerializer(data, many=True)
     return Response({
         'detail' : users.data

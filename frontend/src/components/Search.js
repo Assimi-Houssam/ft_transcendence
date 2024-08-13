@@ -51,6 +51,10 @@ export class Search extends HTMLElement {
             </div>
         `
         setTimeout( async () => {
+            if (e.target.value.length === 0) {
+                show_search_result.innerHTML = `<p class="serach_disc_text">Please enter somthing to start searching.</p>`
+                return;
+            }
             const res = await ApiWrapper.get(`/users/filter?query=${e.target.value}`);
             const data = await res.json()
             if (res.ok) {
@@ -79,7 +83,7 @@ export class Search extends HTMLElement {
                                         </div>
                                     </a>
                                 `
-                            ))}
+                            )).join("")}
                         `
                 }else {
                     show_search_result.innerHTML = `<p class="serach_disc_no_result">
