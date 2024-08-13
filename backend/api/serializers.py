@@ -8,7 +8,7 @@ from .models import FriendRequest
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "pfp", "intra_id"]
+        fields = ["id", "username", "email", "pfp", "intra_id", "friends"]
 
 class UserFriendsSerializer(serializers.ModelSerializer):
     friends = UserSerializer(many=True)

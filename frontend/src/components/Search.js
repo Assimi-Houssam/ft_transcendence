@@ -4,7 +4,7 @@ import Toast from './Toast.js';
 export class Search extends HTMLElement {
     constructor() {
         super();
-        this.delayTime = 200;
+        this.delayTime = 80;
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
     }
 
@@ -12,16 +12,16 @@ export class Search extends HTMLElement {
         const searchResult = document.getElementsByClassName("nav_search_result")[0];
         if (searchResult.classList.contains("show_search_result"))
             return;
-            anime({
-                targets: '.nav_search_result',
-                opacity: [0, 1],
-                duration: this.delayTime,
-                easing: 'easeOutQuint',
-                begin: () => {
-                    searchResult.classList.add("show_search_result");
-                }
-            });
-            
+        searchResult.innerHTML = `<p class="serach_disc_text">Please enter somthing to start searching.</p>`
+        anime({
+            targets: '.nav_search_result',
+            opacity: [0, 1],
+            duration: this.delayTime,
+            easing: 'easeOutQuint',
+            begin: () => {
+                searchResult.classList.add("show_search_result");
+            }
+        });
         document.addEventListener('click', this.handleDocumentClick);
     }
 
@@ -53,16 +53,31 @@ export class Search extends HTMLElement {
         setTimeout( async () => {
             const res = await ApiWrapper.get(`/users/filter?query=${e.target.value}`);
             const data = await res.json()
-            console.log(data.detail)
             if (res.ok) {
                 if (data.detail.length > 0) {
                     show_search_result.innerHTML =
                         `
                             ${data.detail.map((user) => (
                                 `
-                                    <div>
-                                        ${user.username}
-                                    </div
+                                    <a href="#" class="search_result_user_card">
+                                        <div class="search_result_user_card_left">
+                                            <div>
+                                                <img 
+                                                    class="search_result_user_card_pfp"
+                                                    src="http://localhost:8000${user?.pfp}"
+                                                    alt="${user?.pfp}"
+                                                />
+                                            </div>
+                                            <div class="user_info">
+                                                <h1>${user?.username}</h1>
+                                                <p>${user?.email}</p>
+                                            </div>
+                                        </div>
+                                        <div class="search_result_user_card_right">
+                                            <p>70</p>
+                                            <img  src="../../assets/icons/runk.png" />
+                                        </div>
+                                    </a>
                                 `
                             ))}
                         `
@@ -87,11 +102,7 @@ export class Search extends HTMLElement {
                     placeholder="Search for user by email or username"
                 />
             </div>
-            <div class="nav_search_result">
-                <p class="serach_disc_text">
-                    Please enter somthing to start searching.
-                </p>
-            </div>
+            <div class="nav_search_result"></div>
         `;
         const searchBox = document.getElementById("searchBox");
         searchBox.onfocus = (e) => this.onInputFocus(e);
