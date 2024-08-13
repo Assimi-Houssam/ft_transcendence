@@ -13,49 +13,49 @@ export class InRoom2Vs2 extends HTMLElement{
                 <div class="line_x" style="background: linear-gradient(to right, transparent, #E0E0E0, transparent); height: 0.5px; width: 100%;"></div>
                 </div>
                 <div class="ParticipantsTeam">
-                <div style="width: 100%;">
-                        <p style="padding:20px;">Red Team</p>
-                        <div class="ContainerParticipantsTeam">
-                            <div class="ParticipantsTeamUserRed">
-                                <div class="ParticipantsTeamUserImg">
-                                    <div class="ParticipantsHost">
-                                        <img src="../../../assets/images/amine.png" width="35px">
-                                        <p style="font-size: 13px;">mamazzal133<span style="color: var(--orchid)"> (host)</span></p>
+                    <div class="RedTeam">
+                        <div class="TeamTitle">
+                            <p>Red team</p>
+                        </div>
+                        <div class="TeamSlot">
+                            <button class="TeamSlotBtnRed">
+                                <div class="TeamSlotBtnContentUser">
+                                    <div class="UserSelecte">
+                                        <img src="../../../../assets/images/p1.png">
+                                        <p>rouali <span style="color: var(--orchid); font-size: 65% ;">(Host)</span></p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="ParticipantsTeamUserRed">
-                                <div class="ParticipantsTeamUserImg">
-                                    <div class="ParticipantsHost">
-                                        <img src="../../../assets/images/amine.png" width="35px">
-                                        <p style="font-size: 13px;">mamazzal133<span style="color: var(--orchid)"> (host)</span></p>
+                            </button>
+                            <button class="TeamSlotBtnRed">
+                                <div class="TeamSlotBtnContentUser">
+                                    <div class="UserSelecte">
+                                        <img src="../../../../assets/images/miyako.png">
+                                        <p>Miyako</p>
                                     </div>
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </div>
-                    <div style="width: 100%;">
-                        <p style="padding:20px;">Blue Team</p>
-                        <div class="ContainerParticipantsTeam">
-                            <div class="ParticipantsTeamUserBlue">
-                                <div class="ParticipantsTeamUserImg">
-                                    <div class="ParticipantsHost">
-                                        <img src="../../../assets/images/ilyass.png" width="35px">
-                                        <p style="font-size: 13px;">miyako</p>
+                    <div class="BlueTeam">
+                        <div class="TeamTitle">
+                            <p>Blue team</p>
+                        </div>
+                        <div class="TeamSlot">
+                            <button class="TeamSlotBtnBlue">
+                                <div class="TeamSlotBtnContentUser">
+                                    <div class="UserSelecte">
+                                        <img src="../../../../assets/images/p2.png">
+                                        <p>silentzer</p>
                                     </div>
                                 </div>
-                            </div>
+                            </button>
+                            <button class="TeamSlotBtnBlue" id="InviteFriendsBtn">
+                                <div class="TeamSlotBtnContent">
+                                    <p>Empty Slot</p>
+                                    <img src="../../../../assets/icons/friends.png" height="20px">
+                                </div>
+                            </button>
                         </div>
-                    </div>
-                    <div class="ContainerBtnSlot">
-                        <button id="InviteFriendsBtn">
-                            <div class="ContainerBtnSlot">
-                                <p>Empty slot</p>
-                            </div>
-                            <div class="ContainerBtnSlot_Img">
-                                <img src="../../../assets/icons/friends.png" width="15px" height="15px">
-                            </div>
-                        </button>
                     </div>
                 </div>
             </div>

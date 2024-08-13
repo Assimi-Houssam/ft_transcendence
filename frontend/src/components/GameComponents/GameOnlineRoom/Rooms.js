@@ -2,6 +2,14 @@ import { ChatGame } from "./ChatGame.js";
 import { InRoom1Vs1 } from "./InRoom1Vs1.js"
 import { InRoom2Vs2 } from "./InRoom2Vs2.js"
 import { ContainerGameOptions } from "./ContainerGameOptions/ContainerGameOptions.js";
+import { RoomCard } from "./RoomCard.js";
+
+export let roomData = {
+    teamSize : 1,
+    time : 3,
+    gameMood : "pong",
+    roomName : "default"
+}
 
 export class Rooms extends HTMLElement {
     constructor(){
@@ -20,8 +28,8 @@ export class Rooms extends HTMLElement {
                 <contaner-btn-room></contaner-btn-room>
             </div>
             <invite-friends style="display: none;"></invite-friends>
-            <div class="ContainerCardParticipants">
-                <in-room-2vs2></in-room-2vs2>
+            <div id="ContainerCardParticipants" class="ContainerCardParticipants">
+                <room-card></room-card>
                 <chat-game></chat-game>
             </div>
             <div class="content_line">

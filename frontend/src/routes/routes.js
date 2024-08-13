@@ -12,6 +12,7 @@ import { LayoutWrapper } from "../components/LayoutComponent.js";
 import { GameSelection } from "../pages/gameSelectionMenu/GameSelectionMenu.js";
 import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
 import { OnlineRoomList } from "../components/GameComponents/GameOnlineRoom/OnlineRoomList.js";
+import { Rooms } from "../components/GameComponents/GameOnlineRoom/Rooms.js";
 
 export const Routes = [
     {
@@ -73,6 +74,10 @@ export const Routes = [
     {
         path : "/rooms",
         component : OnlineRoomList,
+    },
+    {
+        path : "/rooms2",
+        component : Rooms,
     },
     {
         path: '/logout',

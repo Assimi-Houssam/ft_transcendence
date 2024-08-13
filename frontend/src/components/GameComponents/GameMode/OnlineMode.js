@@ -14,7 +14,7 @@ export class OnlineMode extends HTMLElement{
         `
         const BtnOnlineMode = document.getElementById("BtnOnlineMode");
         BtnOnlineMode.addEventListener("click", () => {
-            const parrentElemnt = document.querySelector("game-selection");
+            // const parrentElemnt = document.querySelector("game-selection");
             // parrentElemnt.innerHTML = "<online-room-list></online-room-list>"
             router.navigate("/rooms");
             // this.showOnlineRoomList();

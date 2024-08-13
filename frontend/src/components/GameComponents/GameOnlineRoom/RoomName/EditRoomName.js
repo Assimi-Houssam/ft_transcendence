@@ -1,5 +1,6 @@
 import Toast from "../../../Toast.js";
 import { RoomName } from "./RoomName.js";
+import { roomData } from "../Rooms.js";
 
 export class EditRoomName extends HTMLElement {
     constructor(name = "") {
@@ -34,22 +35,10 @@ export class EditRoomName extends HTMLElement {
                 Toast.error("You can’t set an empty name");
                 return;
             }
-
-            anime({
-                targets: this,
-                opacity: [1, 0],
-                duration: 500,
-                easing: 'easeOutQuad',
-                complete: () => {
-                    changeTitleRoom.replaceChildren(new RoomName(this.roomName));
-                    anime({
-                        targets: changeTitleRoom.firstElementChild,
-                        opacity: [0, 1],
-                        duration: 500,
-                        easing: 'easeInQuad'
-                    });
-                }
-            });
+            roomData.roomName = this.roomName;
+            const RoomTitleName  = document.getElementById("RoomTitleName");
+            RoomTitleName.innerHTML = this.roomName;
+            changeTitleRoom.replaceChildren(new RoomName(this.roomName));
         };
 
         saveRoomNameBtn.addEventListener("click", saveRoomName);

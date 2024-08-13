@@ -16,17 +16,25 @@ export class InRoom1Vs1 extends HTMLElement {
                     <div class="line_x" style="background: linear-gradient(to right, transparent, #E0E0E0, transparent); height: 0.5px; width: 100%;"></div>
                 </div>
                 <div class="ParticipantsTeam">
-                    <div class="ParticipantsTeamBackdrop">
-                        <div class="ParticipantsHost">
-                            <img src="../../../assets/images/amine.png" width="35px">
-                            <p style="font-size: 13px;">mamazzal133<span style="color: var(--orchid)"> (host)</span></p>
+                    <div class="TeamOneToOne">
+                        <div class="TeamOneToOneHost">
+                            <button class="TeamBtnUserHost">
+                                <div class="UserHost">
+                                    <img src="../../../../assets/images/p1.png">
+                                    <p>rouali <span style="color: var(--orchid); font-size: 65% ;">(Host)</span></p>
+                                </div>
+                            </button>
                         </div>
-                    </div>
-                    <p>VS</p>
-                    <div class="ParticipantsTeamBackdrop">
-                        <div class="ParticipantsHost">
-                            <img src="../../../assets/images/ilyass.png" width="35px">
-                            <p style="font-size: 13px;">miyako</p>
+                        <div class="vs">
+                            <p>Vs</p>
+                        </div>
+                        <div class="TeamOneToOneHost">
+                            <button class="TeamSlotBtn" id="InviteFriendsBtn">
+                                <div class="TeamSlotBtnInvit">
+                                    <p>Empty Slot</p>
+                                    <img src="../../../../assets/icons/friends.png" height="20px">
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>

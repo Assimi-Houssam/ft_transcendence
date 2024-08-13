@@ -1,3 +1,5 @@
+import { roomData } from "../Rooms.js";
+
 export class Customizations extends HTMLElement{
     constructor(){
         super();

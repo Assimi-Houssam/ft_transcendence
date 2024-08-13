@@ -1,5 +1,5 @@
 import { EditRoomName } from "./EditRoomName.js";
-
+import { roomData } from "../Rooms.js";
 export class RoomName extends HTMLElement {
     constructor(name = "أبطال الديجيتال") {
         super();
@@ -18,22 +18,9 @@ export class RoomName extends HTMLElement {
         const changeTitleBtn = document.getElementById("changeTitleBtn");
 
         changeTitleBtn.addEventListener("click", () => {
-            anime({
-                targets: this,
-                opacity: [1, 0],
-                duration: 500,
-                easing: 'easeOutQuad',
-                complete: () => {
-                    changeTitleRoom.replaceChildren(new EditRoomName(this.roomeName));
-                    anime({
-                        targets: changeTitleRoom.firstElementChild,
-                        opacity: [0, 1],
-                        duration: 500,
-                        easing: 'easeInQuad'
-                    });
-                }
-            });
+            changeTitleRoom.replaceChildren(new EditRoomName(this.roomeName));
         });
+
     }
 }
 

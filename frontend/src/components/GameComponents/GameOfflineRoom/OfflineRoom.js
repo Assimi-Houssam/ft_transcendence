@@ -21,14 +21,6 @@ export class OfflineRoom extends HTMLElement{
                 <div class="line_x"></div>
             </div>
             <container-game-options></container-game-options>
-            <div class="ContinerFooter">
-                <div>
-                    <p class="ContinerFooter_reminder">Unable to start the game: not enough players in the room</p>
-                </div>
-                <div class="BtnStartGame">
-                    <button type="button" id="BtnStartGame">Start game!</button>
-                </div>
-            </div>
     `
     }
 }

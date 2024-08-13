@@ -8,19 +8,19 @@ export class ContanerBtnRoom extends HTMLElement {
             <button class="ContainerButtonRoomBtn">
                 <div class="Room">
                     <div class="RoomTypeGame">
-                        <img src="../../../assets/images/ping.png" width="28px" height="28px">
+                        <img id="RoomTeamGameType" src="../../../assets/images/ping.png" width="28px" height="28px">
                     </div>
                     <div class="RoomContent">
                         <div class="RoomContentCard">
                             <div class="RoomContentCard_flex">
-                                <div class="RoomTeam">
-                                    <p>2v2</p>
+                                <div  class="RoomTeam">
+                                    <p id="RoomTeamSize">1v1</p>
                                 </div>
                                 <div class="RoomName">
-                                    <p>أبطال الديجيتال</p>
+                                    <p id="RoomTitleName">أبطال الديجيتال</p>
                                 </div>
                                 <div class="RoomTime">
-                                    <p>5 min</p>
+                                    <p id="RoomTeamTime">3 min</p>
                                 </div>
                             </div>
                             <div class="RoomContentCard_flex">

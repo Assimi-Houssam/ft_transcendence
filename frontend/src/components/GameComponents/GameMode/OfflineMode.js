@@ -15,7 +15,7 @@ export class OfflineMode extends HTMLElement{
 
         const BtnOnlineMode = document.getElementById("BtnOfflineMode");
         BtnOnlineMode.addEventListener("click", () => {
-            const parrentElemnt = document.querySelector("game-selection");
+            // const parrentElemnt = document.querySelector("game-selection");
             router.navigate("/tournament");
         });
     }

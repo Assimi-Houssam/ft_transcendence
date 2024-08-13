@@ -3,6 +3,7 @@ import { GameSelection } from "../../../pages/gameSelectionMenu/GameSelectionMen
 import { router } from "../../../routes/routes.js";
 import { ContanerBtnRoom } from "./ContainerBtnRoom.js";
 import { Rooms } from "./Rooms.js";
+// import { Rooms } from "./Rooms.js";
 
 
 export class OnlineRoomList extends HTMLElement{
@@ -13,18 +14,18 @@ export class OnlineRoomList extends HTMLElement{
 
     connectedCallback(){
         this.innerHTML = `
-        <div class="ContainerOnlineRoom">
-            <div class="BtnCreateRoom">
-                <h1>Online rooms</h1>
-                <button name="CreateRoom" id="Room">Create room</button>
+            <div class="ContainerOnlineRoom">
+                <div class="BtnCreateRoom">
+                    <h1>Online rooms</h1>
+                    <button name="CreateRoom" id="Room">Create room</button>
+                </div>
+                <div class="content_line">
+                    <div class="line_x"></div>
+                </div>
+                <div class="ContainerButtonRoom" style="height: 45vh;">
+                    <contaner-btn-room id="BtnJoinRoom"></contaner-btn-room>
+                </div>
             </div>
-            <div class="content_line">
-                <div class="line_x"></div>
-            </div>
-            <div class="ContainerButtonRoom" style="height: 45vh;">
-                <contaner-btn-room></contaner-btn-room>
-            </div>
-        </div>
         `
 
         const BtnRoom = this.querySelector("#Room");

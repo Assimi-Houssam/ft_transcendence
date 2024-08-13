@@ -1,7 +1,7 @@
+import { roomData } from "../Rooms.js";
 export class GameMode extends HTMLElement {
     constructor(){
         super();
-        this.SelectedGameMode;
     }
 
     connectedCallback(){
@@ -10,7 +10,7 @@ export class GameMode extends HTMLElement {
                 <button name="hokey">
                     <img src="../../../assets/images/hoky.png" width="35px">
                 </button>
-                <button name="pingpong">
+                <button id="gameMode" name="pingpong">
                     <img src="../../../assets/images/ping.png" width="35px">
                 </button>
             </div>
@@ -19,10 +19,16 @@ export class GameMode extends HTMLElement {
         const BtnGameMode = document.getElementById("BtnGameMode");
         for (let i = 0; i < BtnGameMode.children.length; i++) {
             BtnGameMode.children[i].addEventListener("click", () => {
-                if (this.SelectedGameMode?.id)
-                    this.SelectedGameMode.id = "";
+                const gameMode = document.getElementById("gameMode");
+                if (gameMode) gameMode.id = "";
                 BtnGameMode.children[i].id = "gameMode";
                 this.SelectedGameMode = BtnGameMode.children[i];
+                roomData.gameMood  = this.SelectedGameMode.name;
+                const RoomTeamGameType = document.getElementById("RoomTeamGameType");
+                if (roomData.gameMood === "hokey") 
+                    RoomTeamGameType.src = "../../../assets/images/hoky.png"
+                else
+                    RoomTeamGameType.src = "../../../assets/images/ping.png"
                 console.log("selected: ", this.SelectedGameMode.name);
             })
         }
