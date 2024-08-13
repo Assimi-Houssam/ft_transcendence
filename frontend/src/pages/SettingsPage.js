@@ -234,13 +234,10 @@ export class SettingsPage extends HTMLElement {
                 </div>
           </div>
         `;
-        this.setInputsValues();
-        document.getElementById("pfp").onchange = (e) =>
-          this.changeImageWhenUpload(e);
-        document.getElementById("save_setting_btn").onclick = (e) =>
-          this.updateEvent(e);
-        document.getElementById("twoFactorBtn").onclick = (e) =>
-          this.handle2FA(e);
+        this.setInputsValues(); 
+        document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
+        document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
+        document.getElementById("twoFactorBtn").onclick = (e) => this.handle2FA(e);
       })
       .catch((err) => {
         Toast.error(err);
