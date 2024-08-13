@@ -1,17 +1,18 @@
 import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
 import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
+import { LanguageComponent } from "../components/settings/Language Component.js";
 import Toast from "../components/Toast.js";
 import userInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
-import {MessageBox} from '../components/MessageBox.js'
+import { MessageBox } from "../components/MessageBox.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
     super();
     this.updateProfile = this.updateProfile.bind(this);
     this.userData = {};
-    this.is2FAEnable = false  //tmp, TODO: get boolean from backedn
+    this.is2FAEnable = false; //tmp, TODO: get boolean from backedn
   }
 
   /**
@@ -24,7 +25,8 @@ export class SettingsPage extends HTMLElement {
     document.getElementById("username").value = data.username;
     document.getElementById("email").value = data.email;
     // todo: make the server return the full url instead of generating it locally?
-    document.getElementsByClassName("settings_pfp_image")[0].src = "http://localhost:8000" + data.pfp;
+    document.getElementsByClassName("settings_pfp_image")[0].src =
+      "http://localhost:8000" + data.pfp;
   }
 
   /**
@@ -38,8 +40,7 @@ export class SettingsPage extends HTMLElement {
     if (req.ok) {
       const data = await req.json();
       this.userData = data;
-    }
-    else {
+    } else {
       // todo: save server error message somewhere and display it in a toast
       this.userData = null;
     }
@@ -66,7 +67,7 @@ export class SettingsPage extends HTMLElement {
    */
   showPopupSetting() {
     const settings = document.querySelector("settings-page");
-    let confirmPopup = document.querySelector("comfirm-password-pop-up")
+    let confirmPopup = document.querySelector("comfirm-password-pop-up");
     if (!confirmPopup) {
       confirmPopup = document.createElement("comfirm-password-pop-up");
       settings.appendChild(confirmPopup);
@@ -110,15 +111,15 @@ export class SettingsPage extends HTMLElement {
 
   async updateProfile(e) {
     if (this.userData.intra_id) {
-      document.getElementById("save_setting_btn").innerHTML = "<preloader-mini></preloader-mini>";
+      document.getElementById("save_setting_btn").innerHTML =
+        "<preloader-mini></preloader-mini>";
       document.getElementById("save_setting_btn").onclick = () => {};
     }
     const data = this.getFormData();
     let formData = new FormData();
-  
+
     for (const key in data) {
-      if (data[key])
-        formData.append(key, data[key]);
+      if (data[key]) formData.append(key, data[key]);
     }
     formData.append("user_id", this.userData.id);
     if (!this.userData.intra_id) {
@@ -126,15 +127,14 @@ export class SettingsPage extends HTMLElement {
       formData.append("confirm_password", confirmPassword);
     }
     try {
-      const res  = await ApiWrapper.post("/user/update", formData, false);
+      const res = await ApiWrapper.post("/user/update", formData, false);
       const data = await res.json();
       if (res.ok) {
         Toast.success(data.detail);
       } else {
         Toast.error(Array.isArray(data.detail) ? data.detail[0] : data.detail);
       }
-    }
-    catch (err) {
+    } catch (err) {
       Toast.error(err);
     }
   }
@@ -147,25 +147,28 @@ export class SettingsPage extends HTMLElement {
     const data = this.getFormData();
     for (const key in data) {
       if (data[key]) {
-        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = "";
+        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML =
+          "";
       }
     }
     for (const key in data) {
       if (!data[key] && key !== "password" && key !== "pfp") {
-        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = `${key} is required and can't be empty`;
+        document.getElementsByClassName(
+          "user_" + key + "_err"
+        )[0].innerHTML = `${key} is required and can't be empty`;
         return false;
       }
 
       if (key === "pfp") {
         const file = data[key];
-        if (!file)
-          return true;
+        if (!file) return true;
         if (file.size > 5000000) {
-          document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Image size must be less than 2MB";
+          document.getElementsByClassName("user_pfp_err")[0].innerHTML =
+            "Image size must be less than 2MB";
           return false;
-        }
-        else if (!file.type.includes("image")) {
-          document.getElementsByClassName("user_pfp_err")[0].innerHTML = "Invalid file type, only images are allowed";
+        } else if (!file.type.includes("image")) {
+          document.getElementsByClassName("user_pfp_err")[0].innerHTML =
+            "Invalid file type, only images are allowed";
           return false;
         }
       }
@@ -174,16 +177,24 @@ export class SettingsPage extends HTMLElement {
   }
   updateEvent(e) {
     this.validateForm().then((isValid) => {
-      if (!isValid)
-        return;
+      if (!isValid) return;
       if (this.userData.intra_id) {
         this.updateProfile(null).then(() => {
           document.getElementById("save_setting_btn").innerHTML = "Save";
-          document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
+          document.getElementById("save_setting_btn").onclick = (e) =>
+            this.updateEvent(e);
         });
         return;
       }
-      new MessageBox("confirm password", "please enter your password", "Confirm", this.updateProfile, "", "", "confirm password").show()
+      new MessageBox(
+        "confirm password",
+        "please enter your password",
+        "Confirm",
+        this.updateProfile,
+        "",
+        "",
+        "confirm password"
+      ).show();
     });
   }
 
@@ -192,16 +203,22 @@ export class SettingsPage extends HTMLElement {
     this.connectedCallback();
   }
   connectedCallback() {
-      this.fechUserInfo().then(() => {
-      if (!this.userData)
-        throw new Error("An error occured fetching user info from the server");
-      this.innerHTML = `
+    this.fechUserInfo()
+      .then(() => {
+        if (!this.userData)
+          throw new Error(
+            "An error occured fetching user info from the server"
+          );
+        this.innerHTML = `
           <div class="settings_">
                 <div class="settings_bg_"></div>
                 <div class="settings_content_body">
                     <div class="settings_text_desc">
-                        <h2>Account settings</h2>
-                        <p>Please be aware that you can only change your info 2 times a day</p>
+                        <div>
+                          <h2>Account settings</h2>
+                          <p>Please be aware that you can only change your info 2 times a day</p>
+                        </div>
+                        <language-component></language-component>
                     </div>
                     <div class="settings_form_data">
                         <user-settings-form-page ></user-settings-form-page>
@@ -210,18 +227,23 @@ export class SettingsPage extends HTMLElement {
                     <div class="settings_2fa_auth">
                       <h3>Two-Factor Authentication</h3>
                       <div class="settings_two_actor_manage">
-                          <p>Two-factor authentication is currently ${this.is2FAEnable ? "Enabled" :  "Disabled"}</p>
-                          <button id="twoFactorBtn">${this.is2FAEnable ? "Disable" :  "Enable"}</button>
+                          <p>Two-factor authentication is currently ${
+                            this.is2FAEnable ? "Enabled" : "Disabled"
+                          }</p>
+                          <button id="twoFactorBtn">${
+                            this.is2FAEnable ? "Disable" : "Enable"
+                          }</button>
                       </div>
                     </div>
                 </div>
           </div>
         `;
-        this.setInputsValues();
+        this.setInputsValues(); 
         document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
         document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
         document.getElementById("twoFactorBtn").onclick = (e) => this.handle2FA(e);
-      }).catch((err) => {
+      })
+      .catch((err) => {
         Toast.error(err);
         this.innerHTML = `
           <div class="settings__faild">
@@ -230,8 +252,8 @@ export class SettingsPage extends HTMLElement {
               <p>Something went wrong...</p>
             </div>
           </div>
-        `
-    });
+        `;
+      });
   }
 }
 
