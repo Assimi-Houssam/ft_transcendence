@@ -20,7 +20,7 @@ const data = [
 export class LanguageComponent extends HTMLElement {
     constructor() {
         super();
-        this.selectedItemd = "English"
+        this.selectedItem = "English"
     }
 
     closeDropmMenu(selectChildItems, arrowIcon) {
@@ -44,7 +44,7 @@ export class LanguageComponent extends HTMLElement {
                                 <img class="lang_befor_icon" src="${flags[item.slug.toLowerCase()]}" />
                                 <p>${item.slug}</p>
                             </div>
-                            ${item.slug === this.selectedItemd ? (
+                            ${item.slug === this.selectedItem ? (
                                 `<img class="verified_icon_lang" src="../../../assets/icons/verified.png" />`
                             ) : ""}
                         </div>
@@ -56,7 +56,7 @@ export class LanguageComponent extends HTMLElement {
             lists.forEach(item =>  {
                 item.addEventListener("click", (e) => {
                     const slug = item.getAttribute("value");
-                    this.selectedItemd = slug;
+                    this.selectedItem = slug;
                     const beforIcon = document.getElementById("lang_icon");
                     const selectedLangSlug = document.getElementById("selected_lang_slug");
                     beforIcon.src = icons[slug.toLowerCase()]
