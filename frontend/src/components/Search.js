@@ -46,7 +46,9 @@ export class Search extends HTMLElement {
     async handleOnChange (e) {
         const  show_search_result = document.getElementsByClassName("show_search_result")[0];
         show_search_result.innerHTML = `
-            <div>Searching...</div>
+            <div class="search_result_loading">
+                <img src="../../assets/icons/loading.gif" />
+            </div>
         `
         setTimeout( async () => {
             const res = await ApiWrapper.get(`/users/filter?query=${e.target.value}`);
@@ -65,10 +67,12 @@ export class Search extends HTMLElement {
                             ))}
                         `
                 }else {
-                    show_search_result.innerHTML = `<div>No result found sorry</div>`
+                    show_search_result.innerHTML = `<p class="serach_disc_no_result">
+                        No results match your search.
+                    </p>`
                 }
             }else {
-                show_search_result.innerHTML = `<div>faild to load data</div>`
+                show_search_result.innerHTML = `<p class="serach_disc_error">faild to load data</p>`
             }
         }, 200);
     }
@@ -83,7 +87,11 @@ export class Search extends HTMLElement {
                     placeholder="Search for user by email or username"
                 />
             </div>
-            <div class="nav_search_result"></div>
+            <div class="nav_search_result">
+                <p class="serach_disc_text">
+                    Please enter somthing to start searching.
+                </p>
+            </div>
         `;
         const searchBox = document.getElementById("searchBox");
         searchBox.onfocus = (e) => this.onInputFocus(e);

@@ -376,3 +376,26 @@ preloader-mini img {
     justify-content: center;
     cursor: pointer;
 }
+
+.serach_disc_text, .serach_disc_no_result {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #63656F;
+}
+
+.search_result_loading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search_result_loading  img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}

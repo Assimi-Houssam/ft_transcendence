@@ -32,4 +32,3 @@ def filter_users(request) :
     return Response({
         'detail' : users.data
     }, status=status.HTTP_200_OK)
-
