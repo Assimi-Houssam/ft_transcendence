@@ -74,12 +74,7 @@ export class Search extends HTMLElement {
                                             </div>
                                             <div class="user_info">
                                                 <h1>${user?.username}</h1>
-                                                <p>${user?.email}</p>
                                             </div>
-                                        </div>
-                                        <div class="search_result_user_card_right">
-                                            <p>70</p>
-                                            <img  src="../../assets/icons/runk.png" />
                                         </div>
                                     </a>
                                 `
