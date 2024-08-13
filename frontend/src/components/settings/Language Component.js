@@ -71,7 +71,7 @@ export class LanguageComponent extends HTMLElement {
             <div id="select_items_btn" class="select_items">
                 <div class="lang_desc">
                     <img id="lang_icon" class="lang_icon" src="${icons["english"]}">
-                    <p id="selected_lang_slug">${this.selectediItem}</p>
+                    <p id="selected_lang_slug">English</p>
                 </div>
                 <img id="arrow_icon" class="arrow_down" src="../../../assets/icons/arrow_down.png">
             </div>
