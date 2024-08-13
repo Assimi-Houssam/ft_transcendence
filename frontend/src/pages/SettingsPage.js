@@ -1,6 +1,7 @@
 import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
 import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
+import { LanguageComponent } from "../components/settings/Language Component.js";
 import Toast from "../components/Toast.js";
 import userInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
@@ -213,8 +214,11 @@ export class SettingsPage extends HTMLElement {
                 <div class="settings_bg_"></div>
                 <div class="settings_content_body">
                     <div class="settings_text_desc">
-                        <h2>Account settings</h2>
-                        <p>Please be aware that you can only change your info 2 times a day</p>
+                        <div>
+                          <h2>Account settings</h2>
+                          <p>Please be aware that you can only change your info 2 times a day</p>
+                        </div>
+                        <language-component></language-component>
                     </div>
                     <div class="settings_form_data">
                         <user-settings-form-page ></user-settings-form-page>
