@@ -202,6 +202,32 @@ export class SettingsPage extends HTMLElement {
     this.is2FAEnable = !this.is2FAEnable; //tmp, TODO: set the boolean to backedn
     this.connectedCallback();
   }
+
+  changeBanner(e) {
+    const file = e.target.files[0];
+    if (file.size > 5000000) {
+      Toast.error("Banner too long")
+      return;
+    } else if (!file.type.includes("image")) {
+      Toast.error("Banner should be an image")
+      return;
+    }
+    const reader = new FileReader();
+    const img = new Image();
+    reader.onload = () => {
+      img.onload = () => { 
+        if ((img.width < 1500) || (img.height < 500 || img.height > 1200)) {
+          Toast.error("Only resolution allowed are : width < 1500 and height < 1200 > 500");
+          return;
+        }
+        console.log("img.width -> ", img.width)
+        const bgSet = document.getElementById("settings_bg_");
+        bgSet.style.backgroundImage = `url(${reader.result}), linear-gradient(to right, #212535, #212535)`;
+      }
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
   connectedCallback() {
     this.fechUserInfo()
       .then(() => {
@@ -211,7 +237,12 @@ export class SettingsPage extends HTMLElement {
           );
         this.innerHTML = `
           <div class="settings_">
-                <div class="settings_bg_"></div>
+                <div id="settings_bg_" class="settings_bg_">
+                  <div class="upload_banner_btn" id="upload_banner_btn">
+                    <img src="../../assets/icons/camra.png" />
+                    <input class="banner_input" id="settings_banner_upload" type="file" />
+                  </div>
+                </div>
                 <div class="settings_content_body">
                     <div class="settings_text_desc">
                         <div>
@@ -240,6 +271,7 @@ export class SettingsPage extends HTMLElement {
         `;
         this.setInputsValues(); 
         document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
+        document.getElementById("settings_banner_upload").onchange = (e) => this.changeBanner(e);
         document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
         document.getElementById("twoFactorBtn").onclick = (e) => this.handle2FA(e);
       })
