@@ -25,7 +25,7 @@ export class MessageBox extends HTMLElement {
      *       message box hides itself automatically.
      */
     constructor(title, content, primaryButtonText, primaryButtonCallback,
-                secondaryButtonText = "", secondaryButtonCallback = null, textBoxContent = "") {
+                secondaryButtonText = "", secondaryButtonCallback = null, textBoxContent = "", isPassword = false) {
         super();
         if (!title || !content || !primaryButtonText || !primaryButtonCallback)
             return;
@@ -41,7 +41,7 @@ export class MessageBox extends HTMLElement {
                 <div class="msg-box-content">
                     ${content}
                 </div>
-                ${textBoxContent ? `<input class="msg-box-input" placeholder="${textBoxContent}"></input>` : ""}
+                ${textBoxContent ? `<input class="msg-box-input" ${isPassword ? `type="password"` : ""} placeholder="${textBoxContent}"></input>` : ""}
                 <div class="msg-box-button-container ${!secondaryButtonText ? 'centered' : ''}">
                     <div class="msg-box-button-primary">${primaryButtonText}</div>
                     ${secondaryButtonText ? `<div class="msg-box-button-secondary">${secondaryButtonText}</div>` : ''}

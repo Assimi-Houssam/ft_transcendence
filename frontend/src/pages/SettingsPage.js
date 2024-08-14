@@ -194,7 +194,7 @@ export class SettingsPage extends HTMLElement {
         this.updateProfile,
         "",
         "",
-        "Confirm password"
+        "Confirm password", true
       ).show();
     });
   }
