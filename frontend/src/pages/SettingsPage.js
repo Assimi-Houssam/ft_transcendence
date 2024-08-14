@@ -207,7 +207,7 @@ export class SettingsPage extends HTMLElement {
   async saveBanner(file) {
     let formData = new FormData();
     formData.append("banner", file)
-    const res = await ApiWrapper.post("/user/banner/update", formData, false)
+    const res = await ApiWrapper.post("/user/update", formData, false)
     const json = await res.json();
     if (res.ok) {
       Toast.success("Banner Updated Successfuly")

@@ -19,10 +19,21 @@ def limit_user_updates(user):
     return True
 
 
+
 @api_view(['POST'])
 @authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def update_profile(req):
+    if req.FILES.get("banner") :
+        banner_file = req.FILES.get("banner");
+        if not banner_file:
+            return Response({'detail' : "No banner file provided"}, status=status.HTTP_400_BAD_REQUEST);
+        req.user.banner = banner_file
+        req.user.save()
+        return Response({
+            'detail'  : "Banner updated successfuly"   
+        }, status=status.HTTP_200_OK)
+
     user = req.user
     old_passwd_conf = req.POST.get("confirm_password")
     if (user.intra_id != None and req.POST.get("password") != None):
@@ -54,30 +65,3 @@ def update_profile(req):
         for err in serializer.errors:
             errs['detail'].extend(serializer.errors[err])
         return Response(errs, status=status.HTTP_400_BAD_REQUEST)
-
-
-# def update_banner(req) : 
-#     banner_file = req.FILES.get("banner");
-#     data = {'banner' : banner_file}
-#     print(data);
-#     serializer = UpdateProfileSerializer(instance=req.user, data=data, partial=True)
-#     if serializer.is_valid() :
-#         serializer.save()
-#         return Response({
-#             'detail'  : "Banner updated successfuly"   
-#         }, status=status.HTTP_200_OK)
-#     return Response({
-#         'detail'  : serializer.errors
-#     }, status=status.HTTP_400_BAD_REQUEST)
-@api_view(['POST'])
-@authentication_classes([JWTAuth])
-@permission_classes([IsAuthenticated])
-def update_banner(req) : 
-    banner_file = req.FILES.get("banner");
-    if not banner_file:
-        return Response({'detail' : "No banner file provided"}, status=status.HTTP_400_BAD_REQUEST);
-    req.user.banner = banner_file
-    req.user.save()
-    return Response({
-        'detail'  : "Banner updated successfuly"   
-    }, status=status.HTTP_200_OK)
