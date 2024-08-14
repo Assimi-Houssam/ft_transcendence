@@ -234,11 +234,15 @@
     margin-right: 20px;
 }
 
+.RoomName > p {
+    font-size: 1.7vh;
+}
+
 .RoomContentCard_flex
 {
     display:flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 4px;
 }
 
 .RoomTeam
@@ -247,8 +251,8 @@
     justify-content: center;
     align-items: center;
     background-color: var(--byzanitumnew);
-    width: 38px;
-    height: 11px;
+    width: 43px;
+    height: 16px;
     border-radius: 15px;
 }
 
@@ -257,7 +261,7 @@
     display: flex;
     justify-content:center;
     align-items:center;
-    font-size: 7px;
+    font-size: 8px;
 }
 
 .RoomTime
@@ -266,8 +270,8 @@
     justify-content: center;
     align-items: center;
     background-color: var(--byzanitumnew);
-    width: 38px;
-    height: 13px;
+    width: 43px;
+    height: 16px;
     border-radius: 15px;
 }
 
@@ -276,7 +280,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 6px;
+    font-size: 8px;
 }
 
 .RoomName
@@ -289,6 +293,7 @@
 .RoomPlayer p
 {
     color: var(--yellow);
+    font-size: 1.8vh;
 }
 
 .RoomHosted
@@ -296,7 +301,7 @@
     display: flex;
     justify-content: end;
     align-items: center;
-    font-size: 7px;
+    font-size: 10px;
 }
 
 .RoomUsers
@@ -316,9 +321,9 @@
     display: flex;
     justify-content: space-around;
     margin: 25px;
-    height: 500px;
+    height: 40vh;
+    /* height: 370px; */
 }
-
 
 .fade-in {
     position: relative;

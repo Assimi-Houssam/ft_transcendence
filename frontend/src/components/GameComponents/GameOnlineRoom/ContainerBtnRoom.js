@@ -17,7 +17,7 @@ export class ContanerBtnRoom extends HTMLElement {
                                     <p id="RoomTeamSize">1v1</p>
                                 </div>
                                 <div class="RoomName">
-                                    <p id="RoomTitleName">أبطال الديجيتال</p>
+                                    <p id="RoomTitleName">Room Name</p>
                                 </div>
                                 <div class="RoomTime">
                                     <p id="RoomTeamTime">3 min</p>
