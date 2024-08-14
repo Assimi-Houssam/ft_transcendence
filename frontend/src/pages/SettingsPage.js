@@ -1,7 +1,7 @@
 import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
 import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
-import { LanguageComponent } from "../components/settings/Language Component.js";
+import { LanguageComponent } from "../components/settings/LanguageComponent.js";
 import Toast from "../components/Toast.js";
 import userInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
