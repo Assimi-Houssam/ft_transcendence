@@ -225,7 +225,7 @@ export class SettingsPage extends HTMLElement {
                     <div class="settings_text_desc">
                         <div>
                           <h2 id="banner_title">Account settings</h2>
-                          <p id="banner_desc">Please be aware that you can only change your info 2 times a day</p>
+                          <p id="banner_desc">Please be aware that you can only change your info twice every 12 hours</p>
                         </div>
                         <language-component></language-component>
                     </div>
