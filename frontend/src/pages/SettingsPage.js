@@ -73,6 +73,7 @@ export class SettingsPage extends HTMLElement {
       email: document.getElementById("email").value,
       password: document.getElementById("password").value,
       pfp: document.getElementById("pfp").files[0],
+      banner: document.getElementById("settings_banner_upload").files[0],
     };
     return data;
   }
@@ -87,13 +88,15 @@ export class SettingsPage extends HTMLElement {
     let formData = new FormData();
 
     for (const key in data) {
-      if (data[key]) formData.append(key, data[key]);
+      if (data[key])
+        formData.append(key, data[key]);
     }
     formData.append("user_id", this.userData.id);
     if (!this.userData.intra_id) {
       const confirmPassword = document.querySelector(".msg-box-input").value;
       formData.append("confirm_password", confirmPassword);
     }
+    console.log("formData -> ", formData.get("banner"))
     try {
       const res = await ApiWrapper.post("/user/update", formData, false);
       const data = await res.json();
@@ -115,12 +118,12 @@ export class SettingsPage extends HTMLElement {
     const data = this.getFormData();
     for (const key in data) {
       if (data[key]) {
-        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML =
-          "";
+        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = "";
       }
     }
+    const optionKeys = ["password", "pfp", "banner"]
     for (const key in data) {
-      if (!data[key] && key !== "password" && key !== "pfp") {
+      if (!data[key] &&  !optionKeys.find((option) => option === key) === undefined) {
         document.getElementsByClassName(
           "user_" + key + "_err"
         )[0].innerHTML = `${key} is required and can't be empty`;
@@ -198,7 +201,6 @@ export class SettingsPage extends HTMLElement {
     reader.onload = () => {
         const bgSet = document.getElementById("settings_bg_");
         bgSet.style.backgroundImage = `url(${reader.result}), linear-gradient(to right, #212535, #212535)`;
-        this.saveBanner(file);
     };
     reader.readAsDataURL(file);
   }
@@ -213,6 +215,7 @@ export class SettingsPage extends HTMLElement {
           <div class="settings_">
                 <div ${this.userData.banner && (`style="background-image: url(http://localhost:8000${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">
                   <div class="upload_banner_btn" id="upload_banner_btn">
+                    <div class="user_banner_err"></div>
                     <img src="../../assets/icons/camra.png" />
                     <input class="banner_input" id="settings_banner_upload" type="file" />
                     </div>

@@ -24,16 +24,6 @@ def limit_user_updates(user):
 @authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def update_profile(req):
-    if req.FILES.get("banner") :
-        banner_file = req.FILES.get("banner");
-        if not banner_file:
-            return Response({'detail' : "No banner file provided"}, status=status.HTTP_400_BAD_REQUEST);
-        req.user.banner = banner_file
-        req.user.save()
-        return Response({
-            'detail'  : "Banner updated successfuly"   
-        }, status=status.HTTP_200_OK)
-
     user = req.user
     old_passwd_conf = req.POST.get("confirm_password")
     if (user.intra_id != None and req.POST.get("password") != None):
@@ -47,13 +37,16 @@ def update_profile(req):
     for field in fields :
         if req.POST.get(field):
             data[field] = req.POST.get(field)
+    if req.FILES.get("banner") :
+        data["banner"] = req.FILES.get("pfp")
+        print(data["banner"])
     if req.FILES.get("pfp"):
         data["pfp"] = req.FILES.get("pfp")
     serializer = UpdateProfileSerializer(user, data=data, partial=True)
-    if not limit_user_updates(user):
-        return Response({
-            'detail': 'You have reached the maximum number of updates for today',
-        }, status=status.HTTP_400_BAD_REQUEST)
+    # if not limit_user_updates(user):
+    #     return Response({
+    #         'detail': 'You have reached the maximum number of updates for today',
+    #     }, status=status.HTTP_400_BAD_REQUEST)
     if serializer.is_valid():
         user.count_updates -= 1
         serializer.save()
