@@ -175,6 +175,7 @@ export class SettingsPage extends HTMLElement {
     }
     return true;
   }
+
   updateEvent(e) {
     this.validateForm().then((isValid) => {
       if (!isValid) return;
@@ -246,13 +247,14 @@ export class SettingsPage extends HTMLElement {
                   <div class="upload_banner_btn" id="upload_banner_btn">
                     <img src="../../assets/icons/camra.png" />
                     <input class="banner_input" id="settings_banner_upload" type="file" />
-                  </div>
+                    </div>
+                    <div class="gr_bg_banner"></div>
                 </div>
                 <div class="settings_content_body">
                     <div class="settings_text_desc">
                         <div>
-                          <h2>Account settings</h2>
-                          <p>Please be aware that you can only change your info 2 times a day</p>
+                          <h2 id="banner_title">Account settings</h2>
+                          <p id="banner_desc">Please be aware that you can only change your info 2 times a day</p>
                         </div>
                         <language-component></language-component>
                     </div>

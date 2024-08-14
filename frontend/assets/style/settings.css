@@ -9,6 +9,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    position: relative;
 }
 
 .banner_input {
@@ -54,6 +55,7 @@
     width: 80%;
     margin: 0 auto;
     height: 100%;
+    position: relative;
 }
 
 .settings_form_data {
@@ -456,4 +458,13 @@ button {
 .verified_icon_lang {
     width: 20px;
     height: 20px;
+}
+
+.gr_bg_banner {
+    background: rgb(2,0,36);
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.261) 100%);
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 100%;
 }
