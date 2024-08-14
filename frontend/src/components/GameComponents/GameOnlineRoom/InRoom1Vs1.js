@@ -9,11 +9,8 @@ export class InRoom1Vs1 extends HTMLElement {
     connectedCallback(){
         this.innerHTML = `
             <div class="CardParticipants">
-                <div style="padding: 18px">
+                <div class="ParticipantsText">
                     <h4>Participants</h4>
-                </div>
-                <div class="content_line" style="width: 50%;">
-                    <div class="line_x" style="background: linear-gradient(to right, transparent, #E0E0E0, transparent); height: 0.5px; width: 100%;"></div>
                 </div>
                 <div class="ParticipantsTeam">
                     <div class="TeamOneToOne">
