@@ -203,6 +203,19 @@ export class SettingsPage extends HTMLElement {
     this.connectedCallback();
   }
 
+  async saveBanner(file) {
+    let formData = new FormData();
+    formData.append("banner", file)
+    const res = await ApiWrapper.post("/user/banner/update", formData, false)
+    const json = await res.json();
+    if (res.ok) {
+      Toast.success("Banner Updated Successfuly")
+    } else {
+      console.log(json.detail);
+      Toast.error(json.detail)
+    }
+  }
+
   changeBanner(e) {
     const file = e.target.files[0];
     if (file.size > 5000000) {
@@ -213,18 +226,10 @@ export class SettingsPage extends HTMLElement {
       return;
     }
     const reader = new FileReader();
-    const img = new Image();
     reader.onload = () => {
-      img.onload = () => { 
-        if ((img.width < 1500) || (img.height < 500 || img.height > 1200)) {
-          Toast.error("Only resolution allowed are : width < 1500 and height < 1200 > 500");
-          return;
-        }
-        console.log("img.width -> ", img.width)
         const bgSet = document.getElementById("settings_bg_");
         bgSet.style.backgroundImage = `url(${reader.result}), linear-gradient(to right, #212535, #212535)`;
-      }
-      img.src = reader.result;
+        this.saveBanner(file);
     };
     reader.readAsDataURL(file);
   }
@@ -237,7 +242,7 @@ export class SettingsPage extends HTMLElement {
           );
         this.innerHTML = `
           <div class="settings_">
-                <div id="settings_bg_" class="settings_bg_">
+                <div ${this.userData.banner && (`style="background-image: url(http://localhost:8000${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">
                   <div class="upload_banner_btn" id="upload_banner_btn">
                     <img src="../../assets/icons/camra.png" />
                     <input class="banner_input" id="settings_banner_upload" type="file" />
