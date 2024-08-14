@@ -48,12 +48,12 @@ export const Routes = [
         icon: '../assets/icons/chat.png',
         icon_ac: '../assets/icons/active_chat.png',
         component: ChatContainer,
-        subs : [
-            {
-                path: '/start',
-                component: Test,
-            }
-        ]
+    },
+    {
+        path: '/chat/:username/messages',
+        icon: '../assets/icons/chat.png',
+        icon_ac: '../assets/icons/active_chat.png',
+        component: Test,
     },
     {
         path: '/game-selection',
@@ -94,25 +94,27 @@ class Router {
         this.public_routes = ["/login", "/register", "/reset-password"];
     }
 
-
     findSubpath(path, routes = this.routes) {
-        const pathSegments = path.split(/\/(?=.)/);
-        pathSegments[0] === "" && pathSegments.shift();
-        if (pathSegments.length === 0)  return null;
+        const pathSegments = path.split('/').filter(Boolean);
 
-        for (let i = 0; i < pathSegments.length; i++) {
-            if (pathSegments[i])
-                pathSegments[i]  = "/" + pathSegments[i];
-        }
+        for (const route of routes) {
+            const routeSegments = route.path.split('/').filter(Boolean);
+            if (routeSegments.length !== pathSegments.length)  continue;
 
-        const route = routes.find(route => route.path === pathSegments[0]);
-        if (!route) return null;
-    
-        if (pathSegments.length > 1) {
-            const remainingPath = pathSegments.slice(1).join("/");
-            return this.findSubpath(remainingPath, route.subs);
+            let isMatch = true, params = {};
+
+            for (let i = 0; i < routeSegments.length; i++) {
+                if (routeSegments[i].startsWith(':')) 
+                    params[routeSegments[i].substring(1)] = pathSegments[i];
+                else if (routeSegments[i] !== pathSegments[i]) {
+                    isMatch = false;
+                    break;
+                }
+            }
+            if (isMatch)
+                return { ...route, params };
         }
-        return route;
+        return null
     }
 
     render() {

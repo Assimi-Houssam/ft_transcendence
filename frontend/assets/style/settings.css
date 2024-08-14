@@ -170,6 +170,43 @@ user-settings-pfp {
 
 .settings_text_desc {
     margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+language-component {
+    position: relative;
+}
+language-component .select_items {
+    padding: 10px;
+    color: black;
+    width: 200px;
+    cursor: pointer;
+    border-radius: 10px;
+    outline: none;
+    background-color: #fff;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+language-component .lang_desc {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+language-component .lang_desc .lang_icon {
+    width: 30px;
+    height: 27px;
+    object-fit: contain;
+}
+language-component .select_items .arrow_down {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
 }
 
 .settings_text_desc h2 {
@@ -330,4 +367,49 @@ button {
     outline: none;
     padding: 15px;
     border-radius: 7px;
+}
+
+.lang_items_dropdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    justify-content: space-between;
+}
+.lang_items_dropdown:hover {
+    background-color: #5a5d6750;
+}
+.lang_items_dropdown .lang_befor_icon {
+    width: 25px;
+    width: 25px;
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+.select_child_items {
+    margin-top: 10px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    display: none;
+    position: absolute;
+    width: 210px;
+}
+
+.lang_left_items {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rotat_arrow_icon {
+    rotate: 180deg;
+}
+
+.verified_icon_lang {
+    width: 20px;
+    height: 20px;
 }
