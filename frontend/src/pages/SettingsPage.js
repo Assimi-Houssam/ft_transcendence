@@ -188,13 +188,13 @@ export class SettingsPage extends HTMLElement {
         return;
       }
       new MessageBox(
-        "confirm password",
-        "please enter your password",
+        "Confirm password",
+        "Please enter your password",
         "Confirm",
         this.updateProfile,
         "",
         "",
-        "confirm password"
+        "Confirm password"
       ).show();
     });
   }
