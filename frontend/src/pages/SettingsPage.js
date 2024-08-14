@@ -47,38 +47,6 @@ export class SettingsPage extends HTMLElement {
   }
 
   /**
-   * @function removePopup
-   * @returns {void}
-   * @description remove the popup confirmation password
-   */
-  removePopup() {
-    const popup = document.querySelectorAll("comfirm-password-pop-up");
-    if (popup) {
-      popup.forEach((pop) => {
-        pop.remove();
-      });
-    }
-  }
-
-  /**
-   * @function showPopupSetting
-   * @returns {void}
-   * @description show the popup for confirmation password
-   */
-  showPopupSetting() {
-    const settings = document.querySelector("settings-page");
-    let confirmPopup = document.querySelector("comfirm-password-pop-up");
-    if (!confirmPopup) {
-      confirmPopup = document.createElement("comfirm-password-pop-up");
-      settings.appendChild(confirmPopup);
-      const close_popup = document.getElementById("setting_close_popup");
-      close_popup.onclick = () => {
-        confirmPopup.remove();
-      };
-    }
-  }
-
-  /**
    * @function changeImageWhenUpload
    * @returns {void}
    * @param {*} e => event
