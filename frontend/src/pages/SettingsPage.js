@@ -96,7 +96,6 @@ export class SettingsPage extends HTMLElement {
       const confirmPassword = document.querySelector(".msg-box-input").value;
       formData.append("confirm_password", confirmPassword);
     }
-    console.log("formData -> ", formData.get("banner"))
     try {
       const res = await ApiWrapper.post("/user/update", formData, false);
       const data = await res.json();
