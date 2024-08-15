@@ -174,19 +174,6 @@ export class SettingsPage extends HTMLElement {
     this.connectedCallback();
   }
 
-  async saveBanner(file) {
-    let formData = new FormData();
-    formData.append("banner", file)
-    const res = await ApiWrapper.post("/user/update", formData, false)
-    const json = await res.json();
-    if (res.ok) {
-      Toast.success("Banner Updated Successfuly")
-    } else {
-      console.log(json.detail);
-      Toast.error(json.detail)
-    }
-  }
-
   changeBanner(e) {
     const file = e.target.files[0];
     if (file.size > 5000000) {

@@ -57,6 +57,7 @@ export class LanguageComponent extends HTMLElement {
                 item.addEventListener("click", (e) => {
                     const slug = item.getAttribute("value");
                     this.selectedItem = slug;
+                    localStorage.setItem("lang", slug.toLowerCase())
                     const beforIcon = document.getElementById("lang_icon");
                     const selectedLangSlug = document.getElementById("selected_lang_slug");
                     beforIcon.src = icons[slug.toLowerCase()]
