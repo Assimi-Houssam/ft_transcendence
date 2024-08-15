@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0001_initial'),
+        ('api', '0004_alter_user_can_update_on'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='user',
             name='can_update_on',
-            field=models.IntegerField(default=1723712358),
+            field=models.IntegerField(default=1723712380),
         ),
     ]

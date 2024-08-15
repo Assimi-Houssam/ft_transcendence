@@ -122,7 +122,7 @@ export class SettingsPage extends HTMLElement {
     }
     const optionKeys = ["password", "pfp", "banner"]
     for (const key in data) {
-      if (!data[key] &&  !optionKeys.find((option) => option === key) === undefined) {
+      if (!data[key] &&  !optionKeys.find((option) => option === key)) {
         document.getElementsByClassName(
           "user_" + key + "_err"
         )[0].innerHTML = `${key} is required and can't be empty`;
