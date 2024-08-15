@@ -1,4 +1,4 @@
-import { GameSelection } from "../../../pages/gameSelectionMenu/GameSelectionMenu.js"
+import { GameSelection } from "../../../pages/GameSelectionMenu.js"
 // import { InRoom1Vs1 } from "./InRoom1Vs1.js"
 import { router } from "../../../routes/routes.js";
 import { ContanerBtnRoom } from "./ContainerBtnRoom.js";
@@ -18,9 +18,6 @@ export class OnlineRoomList extends HTMLElement{
                 <div class="BtnCreateRoom">
                     <h1>Online rooms</h1>
                     <button name="CreateRoom" id="Room">Create room</button>
-                </div>
-                <div class="content_line">
-                    <div class="line_x"></div>
                 </div>
                 <div class="ContainerButtonRoom" style="height: 45vh;">
                     <contaner-btn-room id="BtnJoinRoom"></contaner-btn-room>

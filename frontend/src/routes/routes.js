@@ -9,7 +9,7 @@ import { ChatContainer } from "../pages/ChatContainer.js";
 import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
-import { GameSelection } from "../pages/gameSelectionMenu/GameSelectionMenu.js";
+import { GameSelection } from "../pages/GameSelectionMenu.js";
 import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
 import { OnlineRoomList } from "../components/GameComponents/GameOnlineRoom/OnlineRoomList.js";
 import { Rooms } from "../components/GameComponents/GameOnlineRoom/Rooms.js";

@@ -322,7 +322,6 @@
     justify-content: space-around;
     margin: 25px;
     height: 40vh;
-    /* height: 370px; */
 }
 
 .fade-in {
@@ -485,7 +484,6 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    gap: 10px;
 }
 
 .TeamTitle
@@ -495,11 +493,21 @@
     justify-content: center;
     width: 85%;
     height: 20%;
+    padding-bottom: 10px;
+}
+
+.TeamTitle > p {
+    font-size: 12px;
 }
 
 .ParticipantsText {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
     border-bottom: 1px solid transparent;
-    border-image: linear-gradient(to left,#191C28,#4B4B4D, #191C28);
+    border-image: linear-gradient(to right, transparent, #E0E0E0, transparent);
     border-image-slice: 2;
 }
 
@@ -509,7 +517,7 @@
     flex-direction: column;
     justify-content: space-evenly;
     width: 85%;
-    gap: 5px;
+    gap: 10px;
     /* height: 18vh; */
     /* min-height: 90%; */
 }
@@ -562,7 +570,7 @@
     background-size: cover;
 }
 
-.UserSelecte
+.UserSelected
 {
     display: flex;
     flex-direction: row;
@@ -574,7 +582,7 @@
     background-color: #00000054;
 }
 
-.UserSelecte img
+.UserSelected img
 {
     margin-left: 10px;
 }
@@ -702,19 +710,13 @@
     width: 87%;
 }
 
-
-
-
-
-
-
-
 room-card {
-    width: 100%;
+    width: 45vh;
+    height: 40vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0.5;
+    flex: 0.38;
 }
 
 .ContainerGameOptions
@@ -728,7 +730,6 @@ room-card {
 {
     width: 100%;
     height: 67%;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -757,10 +758,16 @@ room-card {
 {
     width: 100%;
     height: 67%;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 35px;
+    justify-content: space-evenly;
+    margin-left: 15px;
+}
+
+.ContainerGameOptions_Team > h2 {
+    font-size: 20px;
 }
 
 .ContainerGameOptions_Customizations
@@ -776,8 +783,8 @@ room-card {
 
 .BtnGamemode button
 {
-    width: 100px;
-    height: 100px;
+    width: 8.2vh;
+    height: 8.2vh;
     background: none;
     background-color: var(--byzantium);
     transition: .5s;
@@ -788,7 +795,7 @@ room-card {
 
 .BtnGamemode button:hover
 {
-    border: 6px solid var(--orchid);
+    border: 4px solid var(--orchid);
     opacity: 0.7;
 }
 
@@ -803,8 +810,8 @@ room-card {
 
 .BtnTime button
 {
-    width: 100px;
-    height: 100px;
+    width: 8.5vh;
+    height: 8.5vh;
     background: none;
     border: 6px solid var(--shamrock);
     transition: .5s;
@@ -830,8 +837,8 @@ room-card {
 
 .BtnTeamSize button
 {
-    width: 100px;
-    height: 100px;
+    width: 8.5vh;
+    height: 8.5vh;
     background: none;
     border: 6px solid var(--yellow);
     transition: .5s;
@@ -858,8 +865,8 @@ room-card {
 .BtnCustomizations button
 {
     display: flex;
-    width: 100px;
-    height: 100px;
+    width: 8.5vh;
+    height: 8.5vh;
     background: none;
     border: 6px solid var(--red);
     border-radius: 20px;
@@ -914,16 +921,17 @@ room-card {
     cursor: not-allowed;
 }
 
-.ContinerFooter
+.ContainerFooter
 {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     height: 5vh;
+    padding: 20px;
 }
 
-.ContinerFooter_reminder
+.ContainerFooter_reminder
 {
-    margin-left: 20px;
     color: var(--red);
 }
 
@@ -948,10 +956,9 @@ room-card {
     background-color: var(--red);
 }
 
-chat-game
-{
-    width: 100%;
-    flex: 1;
+chat-game {
+    width: 60%;
+    flex: 0.7;
 }
 
 in-room-1vs1, in-room-2vs2
@@ -963,30 +970,35 @@ in-room-1vs1, in-room-2vs2
     flex: 0.5;
 }
 
-.chat-container{
+.chat-container {
     background-color: #363B4F;
     border: 1px solid #363B4F;
     border-radius: 16px;
     width: 85%;
-    height:100%;
+    height: 100%;
 }
 
-.chat-header{
+.chat-header {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #363B4F;
     text-align: center;
     border-radius: 16px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     height: 10%;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to right, transparent, #E0E0E0, transparent);
+    border-image-slice: 2;
+    margin-top: 3px;
+    padding-bottom: 3px;
 }
 
 .chat-box{
     display:flex;
     width: 97%;
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(21, 21, 21);
     border-radius:15px 15px 0 0;
     height: 85%;
 }
@@ -1036,21 +1048,20 @@ in-room-1vs1, in-room-2vs2
     
 }
 
-.input_msg
-{
+.input_msg {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 97%;
 }
 
-.chat-input{
+.chat-input {
     display:flex;
     border: none;
     border-top: 2px solid #3a3e47;
     height: 25px;
     width: 100%;
-    background-color: black;
+    background-color: rgb(21, 21, 21);
     color: white;
     bottom : 0;
     left:0;
@@ -1060,13 +1071,13 @@ in-room-1vs1, in-room-2vs2
 
 }
 
-.ContainerChat
-{
+.ContainerChat {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 88%;
+    height: 83%;
+    padding-top: 10px;
 }
 
 .chat-container-content
@@ -1091,13 +1102,12 @@ in-room-1vs1, in-room-2vs2
 }
 
 
-.ContainerPopupInviteFreiends
-{
+.ContainerPopupInviteFreiends {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #1e293a64;
-    backdrop-filter: blur(5px);
+    /* background: #1e293a64; */
+    /* backdrop-filter: blur(5px); */
     width: 100%;
     height: 100%;
 }
@@ -1183,8 +1193,7 @@ in-room-1vs1, in-room-2vs2
     align-items: center;
 }
 
-game-selection
-{
+game-selection {
     z-index: 999;
     position: relative;
 }

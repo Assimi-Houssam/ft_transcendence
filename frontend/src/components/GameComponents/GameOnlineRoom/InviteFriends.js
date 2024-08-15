@@ -32,19 +32,8 @@ export class InviteFriends extends HTMLElement {
         const card = this.querySelector(".ContainerPopupInviteFreiends_card");
 
         popup.addEventListener("click", (event) => {
-            if (!card.contains(event.target)) {
-                anime({
-                    targets: ".ContainerPopupInviteFreiends_card",
-                    scale: [1, 0],
-                    opacity: [1, 0],
-                    duration: 500,
-                    easing: 'easeInBack',
-                    complete: () => {
-                        const elemnt = document.querySelector("invite-friends");
-                        elemnt.style.display = "none";
-                    }
-                });
-            }
+            const elem = document.querySelector("invite-friends");
+            elem.style.display = "none";
         });
     }
 }

@@ -1,6 +1,4 @@
 import { ChatGame } from "./ChatGame.js";
-import { InRoom1Vs1 } from "./InRoom1Vs1.js"
-import { InRoom2Vs2 } from "./InRoom2Vs2.js"
 import { ContainerGameOptions } from "./ContainerGameOptions/ContainerGameOptions.js";
 import { RoomCard } from "./RoomCard.js";
 

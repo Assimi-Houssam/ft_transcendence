@@ -43,9 +43,9 @@ export class ContainerGameOptions extends HTMLElement {
                     `
                 )).join("")}
             </div>
-            <div class="ContinerFooter">
+            <div class="ContainerFooter">
                 <div>
-                    <p class="ContinerFooter_reminder">Unable to start the game: not enough players in the room</p>
+                    <p class="ContainerFooter_reminder">Unable to start the game: not enough players in the room</p>
                 </div>
                 <div class="BtnStartGame">
                     <button type="button" id="BtnStartGame">Start game!</button>

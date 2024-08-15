@@ -7,11 +7,8 @@ export class RoomCard extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
             <div class="CardParticipants">
-            <div style="padding: 18px">
+            <div class="ParticipantsText">
                 <h4>Participants</h4>
-            </div>
-            <div class="content_line" style="width: 50%;">
-                <div class="line_x" style="background: linear-gradient(to right, transparent, #E0E0E0, transparent); height: 0.5px; width: 100%;"></div>
             </div>
             <div class="ParticipantsTeam">
                 <div class="RedTeam">
@@ -24,7 +21,7 @@ export class RoomCard extends HTMLElement {
                     <div class="TeamSlot">
                         <button class="TeamSlotBtnRed">
                             <div class="TeamSlotBtnContentUser">
-                                <div class="UserSelecte">
+                                <div class="UserSelected">
                                     <img src="../../../../assets/images/p1.png">
                                     <p>rouali <span style="color: var(--orchid); font-size: 65% ;">(Host)</span></p>
                                 </div>
@@ -42,7 +39,7 @@ export class RoomCard extends HTMLElement {
                 </div>
                 ${this.teamSize  === 1 ? (`
                     <div class="vs">
-                        <p>Vs</p>
+                        <p>vs</p>
                     </div>
                 `) : ""}
                 <div class="BlueTeam">
@@ -77,13 +74,13 @@ export class RoomCard extends HTMLElement {
         for (let i = 0; i < InviteFriendsBtns.length; i++) {
             InviteFriendsBtns[i].addEventListener("click", (e) => {
                 const element = document.querySelector("invite-friends");
-                const usersCardInvit = element.getElementsByClassName("InviteFreindsPopup_content");
-                for (let g = 0; g < usersCardInvit.length; g++) {
-                    usersCardInvit[g].querySelector("button").onclick =  (e) => {
+                const usersCardInvite = element.getElementsByClassName("InviteFreindsPopup_content");
+                for (let g = 0; g < usersCardInvite.length; g++) {
+                    usersCardInvite[g].querySelector("button").onclick =  (e) => {
                         if (InviteFriendsBtns[i]) {
                             InviteFriendsBtns[i].innerHTML  = `
                                 <div class="TeamSlotBtnContentUser">
-                                    <div class="UserSelecte">
+                                    <div class="UserSelected">
                                         <img src="../../../../assets/images/p1.png">
                                         <p>rouali <span style="color: var(--orchid); font-size: 65% ;">(Host)</span></p>
                                     </div>
@@ -93,13 +90,6 @@ export class RoomCard extends HTMLElement {
                     }
                 }
                 element.style.display = "block";
-                anime({
-                    targets: ".ContainerPopupInviteFreiends_card",
-                    scale: [0, 1],
-                    opacity: [0, 1],
-                    duration: 500,
-                    easing: 'easeOutBack'
-                });
             })
         }
   }

@@ -1,4 +1,4 @@
-import { GameSelection } from "../../../pages/gameSelectionMenu/GameSelectionMenu.js"
+import { GameSelection } from "../../../pages/GameSelectionMenu.js";
 import { router } from "../../../routes/routes.js";
 
 export class OnlineMode extends HTMLElement{
@@ -9,7 +9,7 @@ export class OnlineMode extends HTMLElement{
         this.innerHTML = `
             <button class="btn-gameselection" id="BtnOnlineMode">
                 <img src="../../../assets/images/OnlineMode.png" width="183px">
-                <p class="mb-0">Online Mode</p>
+                <p>Online Mode</p>
             </button>
         `
         const BtnOnlineMode = document.getElementById("BtnOnlineMode");
