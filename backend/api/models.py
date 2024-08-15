@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import time
 
 # django is way too bloated and using any custom User model would result in the admin
 # pannel + auth support getting broken, we'll just inherit from AbstractUser
@@ -12,7 +13,7 @@ class User(AbstractUser):
     pfp = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     banner = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     count_updates = models.IntegerField(default=2)
-    can_update_on  = models.DateField(null=True, blank=True)
+    can_update_on  = models.IntegerField(default=(int(time.time())))
     friends = models.ManyToManyField("User", blank=True)
     class Meta:
         ordering = ['id']
