@@ -98,6 +98,7 @@ export class Search extends HTMLElement {
                 <input
                     id="searchBox"
                     type="text" 
+                    autocomplete="off"
                     placeholder="Search for user by email or username"
                 />
             </div>

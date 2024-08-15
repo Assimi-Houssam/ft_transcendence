@@ -1,7 +1,7 @@
 import { SettingsUserForm } from "../components/settings/SettingsUserForm.js";
 import { SettingsUserPFP } from "../components/settings/SettingsUserPFP.js";
 import { ComfirmPasswordPopUp } from "../components/settings/ComfirmPasswordPopUp.js";
-import { LanguageComponent } from "../components/settings/Language Component.js";
+import { LanguageComponent } from "../components/settings/LanguageComponent.js";
 import Toast from "../components/Toast.js";
 import userInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
@@ -47,38 +47,6 @@ export class SettingsPage extends HTMLElement {
   }
 
   /**
-   * @function removePopup
-   * @returns {void}
-   * @description remove the popup confirmation password
-   */
-  removePopup() {
-    const popup = document.querySelectorAll("comfirm-password-pop-up");
-    if (popup) {
-      popup.forEach((pop) => {
-        pop.remove();
-      });
-    }
-  }
-
-  /**
-   * @function showPopupSetting
-   * @returns {void}
-   * @description show the popup for confirmation password
-   */
-  showPopupSetting() {
-    const settings = document.querySelector("settings-page");
-    let confirmPopup = document.querySelector("comfirm-password-pop-up");
-    if (!confirmPopup) {
-      confirmPopup = document.createElement("comfirm-password-pop-up");
-      settings.appendChild(confirmPopup);
-      const close_popup = document.getElementById("setting_close_popup");
-      close_popup.onclick = () => {
-        confirmPopup.remove();
-      };
-    }
-  }
-
-  /**
    * @function changeImageWhenUpload
    * @returns {void}
    * @param {*} e => event
@@ -105,6 +73,7 @@ export class SettingsPage extends HTMLElement {
       email: document.getElementById("email").value,
       password: document.getElementById("password").value,
       pfp: document.getElementById("pfp").files[0],
+      banner: document.getElementById("settings_banner_upload").files[0],
     };
     return data;
   }
@@ -119,7 +88,8 @@ export class SettingsPage extends HTMLElement {
     let formData = new FormData();
 
     for (const key in data) {
-      if (data[key]) formData.append(key, data[key]);
+      if (data[key])
+        formData.append(key, data[key]);
     }
     formData.append("user_id", this.userData.id);
     if (!this.userData.intra_id) {
@@ -147,12 +117,12 @@ export class SettingsPage extends HTMLElement {
     const data = this.getFormData();
     for (const key in data) {
       if (data[key]) {
-        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML =
-          "";
+        document.getElementsByClassName("user_" + key + "_err")[0].innerHTML = "";
       }
     }
+    const optionKeys = ["password", "pfp", "banner"]
     for (const key in data) {
-      if (!data[key] && key !== "password" && key !== "pfp") {
+      if (!data[key] &&  !optionKeys.find((option) => option === key)) {
         document.getElementsByClassName(
           "user_" + key + "_err"
         )[0].innerHTML = `${key} is required and can't be empty`;
@@ -175,6 +145,7 @@ export class SettingsPage extends HTMLElement {
     }
     return true;
   }
+
   updateEvent(e) {
     this.validateForm().then((isValid) => {
       if (!isValid) return;
@@ -187,13 +158,13 @@ export class SettingsPage extends HTMLElement {
         return;
       }
       new MessageBox(
-        "confirm password",
-        "please enter your password",
+        "Confirm password",
+        "Please enter your password",
         "Confirm",
         this.updateProfile,
         "",
         "",
-        "confirm password"
+        "Confirm password", true
       ).show();
     });
   }
@@ -201,6 +172,23 @@ export class SettingsPage extends HTMLElement {
   handle2FA() {
     this.is2FAEnable = !this.is2FAEnable; //tmp, TODO: set the boolean to backedn
     this.connectedCallback();
+  }
+
+  changeBanner(e) {
+    const file = e.target.files[0];
+    if (file.size > 5000000) {
+      Toast.error("Banner too long")
+      return;
+    } else if (!file.type.includes("image")) {
+      Toast.error("Banner should be an image")
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+        const bgSet = document.getElementById("settings_bg_");
+        bgSet.style.backgroundImage = `url(${reader.result}), linear-gradient(to right, #212535, #212535)`;
+    };
+    reader.readAsDataURL(file);
   }
   connectedCallback() {
     this.fechUserInfo()
@@ -211,12 +199,19 @@ export class SettingsPage extends HTMLElement {
           );
         this.innerHTML = `
           <div class="settings_">
-                <div class="settings_bg_"></div>
+                <div ${this.userData.banner && (`style="background-image: url(http://localhost:8000${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">
+                  <div class="upload_banner_btn" id="upload_banner_btn">
+                    <div class="user_banner_err"></div>
+                    <img src="../../assets/icons/camra.png" />
+                    <input class="banner_input" id="settings_banner_upload" type="file" />
+                    </div>
+                    <div class="gr_bg_banner"></div>
+                </div>
                 <div class="settings_content_body">
                     <div class="settings_text_desc">
                         <div>
-                          <h2>Account settings</h2>
-                          <p>Please be aware that you can only change your info 2 times a day</p>
+                          <h2 id="banner_title">Account settings</h2>
+                          <p id="banner_desc">Please be aware that you can only change your info twice every 12 hours</p>
                         </div>
                         <language-component></language-component>
                     </div>
@@ -240,6 +235,7 @@ export class SettingsPage extends HTMLElement {
         `;
         this.setInputsValues(); 
         document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
+        document.getElementById("settings_banner_upload").onchange = (e) => this.changeBanner(e);
         document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
         document.getElementById("twoFactorBtn").onclick = (e) => this.handle2FA(e);
       })

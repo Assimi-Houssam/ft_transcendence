@@ -8,7 +8,7 @@ from .models import FriendRequest
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email", "pfp", "intra_id", "friends"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends"]
 
 class UserFriendsSerializer(serializers.ModelSerializer):
     friends = UserSerializer(many=True)
@@ -60,11 +60,12 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'pfp']
+        fields = ['email', 'username', 'password', 'pfp', 'banner']
         write_only_fields = ['password']
         extra_kwargs = {
             'username': {'required': False},
             'email': {'required': False},
             'password': {'required': False},
-            'pfp': {'required': False}
+            'pfp': {'required': False},
+            'banner': {'required': False}
         }

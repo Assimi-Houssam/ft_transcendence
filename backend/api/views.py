@@ -16,7 +16,8 @@ def me(request):
         "email": user.email, 
         "id": user.id, 
         "intra_id": user.intra_id, 
-        "pfp": user.pfp.url
+        "pfp": user.pfp.url,
+        "banner": user.banner.url
     })
 
 
