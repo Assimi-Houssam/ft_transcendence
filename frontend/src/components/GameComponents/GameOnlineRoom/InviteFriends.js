@@ -32,8 +32,10 @@ export class InviteFriends extends HTMLElement {
         const card = this.querySelector(".ContainerPopupInviteFreiends_card");
 
         popup.addEventListener("click", (event) => {
-            const elem = document.querySelector("invite-friends");
-            elem.style.display = "none";
+            if (!card.contains(event.target)){
+                const elem = document.querySelector("invite-friends");
+                elem.style.display = "none";
+            }
         });
     }
 }

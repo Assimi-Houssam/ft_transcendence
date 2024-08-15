@@ -1,3 +1,6 @@
+import { TeamSlotBlue } from "./TeamSlotBlue.js";
+import { TeamSlotRed } from "./TeamSlotRed.js";
+
 export class RoomCard extends HTMLElement {
   constructor(teamSize=1) {
     super();
@@ -18,24 +21,7 @@ export class RoomCard extends HTMLElement {
                             <p>Red team</p>
                         </div>
                    `) : ""}
-                    <div class="TeamSlot">
-                        <button class="TeamSlotBtnRed">
-                            <div class="TeamSlotBtnContentUser">
-                                <div class="UserSelected">
-                                    <img src="../../../../assets/images/p1.png">
-                                    <p>rouali <span style="color: var(--orchid); font-size: 65% ;">(Host)</span></p>
-                                </div>
-                            </div>
-                        </button>
-                        ${this.teamSize != 1 ? (`
-                            <button class="TeamSlotBtnRed InviteFriendsBtn" id="InviteFriendsBtn">
-                                <div class="TeamSlotBtnContent">
-                                    <p>Empty Slot</p>
-                                    <img src="../../../../assets/icons/friends.png" height="20px">
-                                </div>
-                            </button>
-                        `) : ""}
-                    </div>
+                    <team-slot-red style="width: 85%;"></team-slot-red>
                 </div>
                 ${this.teamSize  === 1 ? (`
                     <div class="vs">
@@ -49,22 +35,7 @@ export class RoomCard extends HTMLElement {
                             <p>Blue team</p>
                         </div>
                     `): ""}
-                    <div class="TeamSlot">
-                        <button class="TeamSlotBtnBlue InviteFriendsBtn" id="InviteFriendsBtn">
-                            <div class="TeamSlotBtnContent">
-                                <p>Empty Slot</p>
-                                <img src="../../../../assets/icons/friends.png" height="20px">
-                            </div>
-                        </button>
-                        ${this.teamSize > 1 ? (`
-                            <button  class="TeamSlotBtnBlue InviteFriendsBtn" id="InviteFriendsBtn">
-                                <div class="TeamSlotBtnContent">
-                                    <p>Empty Slot</p>
-                                    <img src="../../../../assets/icons/friends.png" height="20px">
-                                </div>
-                            </button>
-                        `) : ""}
-                    </div>
+                    <team-slot-blue style="width: 85%;"></team-slot-blue>
                 </div>
             </div>
         </div>

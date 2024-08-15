@@ -1,8 +1,9 @@
 import { RoomCard } from "../RoomCard.js";
 import { roomData } from "../Rooms.js";
+import { TeamSlotRed } from "../TeamSlotRed.js";
 
 let user = {
-    username : "reda"
+    username : "rida"
 }
 
 export class GameTeamSize extends HTMLElement {
@@ -42,7 +43,10 @@ export class GameTeamSize extends HTMLElement {
                     }
                 }
                 const RoomTeamSize = document.getElementById("RoomTeamSize");
+                const SizePlayers = document.getElementById("SizePlayers");
                 RoomTeamSize.innerHTML = `${roomData.teamSize === "twoTeam" ? "2v2" : "1v1"}`
+                SizePlayers.innerHTML = `${roomData.teamSize === "twoTeam" ? "1/4 Players" : "1/2 Players"}`
+
             })
         }
     }

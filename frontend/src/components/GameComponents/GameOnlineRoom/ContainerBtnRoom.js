@@ -25,14 +25,12 @@ export class ContanerBtnRoom extends HTMLElement {
                             </div>
                             <div class="RoomContentCard_flex">
                                 <div class="RoomPlayer">
-                                    <p>3/4 Players</p>
+                                    <p id="SizePlayers">1/2 Players</p>
                                 </div>
                                 <div class="RoomHosted">
                                     <p>hosted by <span style="color: var(--orchid)">miyako<span></p>
                                 </div>
                                 <div class="RoomUsers">
-                                    <img src="../../../assets/images/p3.png" width="20px">
-                                    <img src="../../../assets/images/p2.png" width="20px">
                                     <img src="../../../assets/images/p1.png" width="20px">
                                 </div>
                             </div>

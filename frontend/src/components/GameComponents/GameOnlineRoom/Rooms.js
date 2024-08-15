@@ -35,19 +35,7 @@ export class Rooms extends HTMLElement {
             </div>
             <container-game-options></container-game-options>
         `
-        // const BtnStartGame = this.querySelector("#BtnStartGame");
-
-        // BtnStartGame.addEventListener('click', () =>{
-        //     this.StartGame();
-        // });
     }
-
-    // StartGame() {
-    // const onlineRoomList = document.createElement("in-room-2vs2");
-    // onlineRoomList.classList.add("fade-in");
-    // this.replaceChildren(onlineRoomList);
-    // onlineRoomList.classList.add("show");
-    // }
 }
 
 customElements.define("rooms-component", Rooms);
