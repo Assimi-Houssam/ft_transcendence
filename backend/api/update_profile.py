@@ -38,8 +38,8 @@ def update_profile(req):
         if req.POST.get(field):
             data[field] = req.POST.get(field)
     if req.FILES.get("banner") :
-        data["banner"] = req.FILES.get("pfp")
-        print(data["banner"])
+        data["banner"] = req.FILES.get("banner")
+        print("panner ---> ", data["banner"])
     if req.FILES.get("pfp"):
         data["pfp"] = req.FILES.get("pfp")
     serializer = UpdateProfileSerializer(user, data=data, partial=True)
@@ -49,6 +49,7 @@ def update_profile(req):
     #     }, status=status.HTTP_400_BAD_REQUEST)
     if serializer.is_valid():
         user.count_updates -= 1
+        print("serializer ---> ", serializer)
         serializer.save()
         return Response({
             'detail': 'Profile updated successfully',
