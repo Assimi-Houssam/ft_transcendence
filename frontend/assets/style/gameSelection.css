@@ -485,6 +485,47 @@ button.ContainerButtonRoomBtn {
     border-image-slice: 2;
 }
 
+
+pariticipant-entry {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 15px;
+    align-items: center;
+    height: 5.5vh;
+    width: 90%;
+    border-radius: 15px;
+}
+
+pariticipant-entry > img {
+    width: 3.3vh;
+    height: 3.3vh;
+    border-radius: 5px;
+}
+
+empty-slot {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 5.5vh;
+    width: 90%;
+    background-color: #373739;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+empty-slot > p {
+    margin-left: 35%;
+    /* justify-self: center; */
+}
+
+empty-slot > img {
+    width: 2vh;
+    height: 2vh;
+    margin-right: 5%;
+}
+
 .TeamSlot
 {
     height: 13vh;
