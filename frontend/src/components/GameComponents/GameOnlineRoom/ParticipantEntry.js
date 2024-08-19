@@ -1,4 +1,8 @@
 export class EmptySlot extends HTMLElement {
+    constructor() {
+        super();
+        this.classList.add("draggable");
+    }
     connectedCallback() {
         this.innerHTML = `
             <p>Empty Slot</p>

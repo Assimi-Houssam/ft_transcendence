@@ -1,6 +1,5 @@
-import { RoomCard } from "../RoomCard.js";
+import ParticipantsCard from "../ParticipantsCard.js";
 import { roomData } from "../Rooms.js";
-import { TeamSlotRed } from "../TeamSlotRed.js";
 
 let user = {
     username : "rida"
@@ -27,10 +26,12 @@ export class GameTeamSize extends HTMLElement {
                 if (gameTeamSize) gameTeamSize.id = "";
                 BtnTeamSize.children[i].id = "gameTeamSize";
                 this.SelectTeamSize = BtnTeamSize.children[i];
-                roomData.teamSize = this.SelectTeamSize.name
-                const parrent  = document.getElementById("ContainerCardParticipants");
-                const replacedChild = document.querySelector("room-card");
-                parrent.replaceChild(new RoomCard(roomData.teamSize === "twoTeam" ? 2 : 1), replacedChild); 
+                roomData.teamSize = this.SelectTeamSize.name;
+
+                // const parrent  = document.getElementById("ContainerCardParticipants");
+                // const replacedChild = document.querySelector("room-card");
+                // parrent.replaceChild(new RoomCard(roomData.teamSize === "twoTeam" ? 2 : 1), replacedChild);
+                ParticipantsCard.switchTeamSize();
                 if (roomData.teamSize === "twoTeam") {
                     roomData["teams"] = {
                         readTeam : {user, user},
@@ -46,7 +47,6 @@ export class GameTeamSize extends HTMLElement {
                 const SizePlayers = document.getElementById("SizePlayers");
                 RoomTeamSize.innerHTML = `${roomData.teamSize === "twoTeam" ? "2v2" : "1v1"}`
                 SizePlayers.innerHTML = `${roomData.teamSize === "twoTeam" ? "1/4 Players" : "1/2 Players"}`
-
             })
         }
     }
