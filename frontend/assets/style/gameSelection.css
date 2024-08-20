@@ -495,16 +495,31 @@ pariticipant-entry {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    padding-left: 15px;
     align-items: center;
+    justify-content: space-between;
     height: 5.5vh;
     width: 90%;
     border-radius: 15px;
 }
 
 pariticipant-entry > img {
-    width: 3.3vh;
-    height: 3.3vh;
+    width: 1.5vh;
+    height: 1.5vh;
+    padding-right: 15px;
+    opacity: 0;
+}
+
+.ParticipantEntryInfo {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 15px;
+    align-items: center;
+}
+
+.ParticipantEntryInfo > img {
+    width: 3.5vh;
+    height: 3.5vh;
     border-radius: 5px;
 }
 

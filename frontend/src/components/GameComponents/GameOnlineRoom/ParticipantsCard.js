@@ -45,7 +45,17 @@ class ParticipantsCard extends HTMLElement {
   }
 
   // todo: this
-  removeParticipant() {
+  kickParticipant(participant) {
+    if (participant.parentNode.className === "RedTeam") {
+      const participantIdx = this.redTeam.indexOf(participant);
+      this.redTeam[participantIdx] = new EmptySlot();
+    }
+    else {
+      const participantIdx = this.blueTeam.indexOf(participant);
+      this.blueTeam[participantIdx] = new EmptySlot();
+    }
+    this.participantsCount--;
+    this.connectedCallback();    
   }
 
   connectedCallback() {
@@ -74,7 +84,7 @@ class ParticipantsCard extends HTMLElement {
 
     // testing
     this.querySelector(".ParticipantsText").onclick = () => {
-      this.addParticipant(new ParticipantEntry("silentzer2", "../../../../assets/images/p1.png", "", "blue", false));
+      this.addParticipant(new ParticipantEntry("silentzer" + this.participantsCount, "../../../../assets/images/p1.png", "", "blue", false));
     }
 
     for (let i = 0; i < this.teamSize; i++) {
@@ -83,6 +93,7 @@ class ParticipantsCard extends HTMLElement {
       this.querySelector(".RedTeam").appendChild(this.redTeam[i]);
       this.querySelector(".BlueTeam").appendChild(this.blueTeam[i]);
     }
+    this.addEventListener("participantkick", (e) => { this.kickParticipant(e.detail); });
     
     // yeah i fw with early returns way too much lol
     if (this.teamSize === 1)
@@ -115,6 +126,8 @@ class ParticipantsCard extends HTMLElement {
         }
       },
     });
+    // todo: only allow hosts to kick, (both locally and in the server)
+    // todo: create a User class representing the current logged in user
   }
 }
 

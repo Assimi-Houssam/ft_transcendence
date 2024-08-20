@@ -32,7 +32,7 @@ export class Rooms extends HTMLElement {
                 <div class="line_x"></div>
             </div>
             <container-game-options></container-game-options>`;
-            this.querySelector(".ContainerCardParticipants").appendChild(ParticipantsCard);
+        this.querySelector(".ContainerCardParticipants").appendChild(ParticipantsCard);
         this.querySelector(".ContainerCardParticipants").appendChild(new ChatGame());
     }
 }

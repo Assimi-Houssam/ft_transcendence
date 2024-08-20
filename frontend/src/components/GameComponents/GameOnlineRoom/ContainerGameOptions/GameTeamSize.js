@@ -28,7 +28,7 @@ export class GameTeamSize extends HTMLElement {
                 this.SelectTeamSize = BtnTeamSize.children[i];
                 roomData.teamSize = this.SelectTeamSize.name;
 
-                // const parrent  = document.getElementById("ContainerCardParticipants");
+                // const parrent  = document.g  etElementById("ContainerCardParticipants");
                 // const replacedChild = document.querySelector("room-card");
                 // parrent.replaceChild(new RoomCard(roomData.teamSize === "twoTeam" ? 2 : 1), replacedChild);
                 ParticipantsCard.switchTeamSize();
