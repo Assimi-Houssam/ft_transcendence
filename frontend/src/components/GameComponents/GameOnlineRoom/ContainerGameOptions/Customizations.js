@@ -21,6 +21,10 @@ export class Customizations extends HTMLElement{
         const BtnCustomizations = document.getElementById("BtnCustomizations");
         for (let i = 0; i < BtnCustomizations.children.length; i++) {
             BtnCustomizations.children[i].addEventListener('click', () => {
+                if (this.SelectCustomizations === BtnCustomizations.children[i]) {
+                    BtnCustomizations.children[i].id = this.SelectCustomizations = "";
+                    return;
+                }
                 if (this.SelectCustomizations?.id)
                     this.SelectCustomizations.id = ""
                 BtnCustomizations.children[i].id = "customizations";
