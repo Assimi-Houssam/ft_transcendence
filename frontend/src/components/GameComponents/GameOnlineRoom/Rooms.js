@@ -25,7 +25,6 @@ export class Rooms extends HTMLElement {
                 </div>
                 <contaner-btn-room></contaner-btn-room>
             </div>
-            <invite-friends style="display: none;"></invite-friends>
             <div id="ContainerCardParticipants" class="ContainerCardParticipants">
             </div>
             <div class="content_line">

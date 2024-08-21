@@ -1136,42 +1136,73 @@ in-room-1vs1, in-room-2vs2
     height: 10%;
 }
 
-.InviteFreindsPopup
-{
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    height: 88%;
-    
-}
-
-.InviteFreindsPopup_content
-{
-    width: 90%;
-    height: 98%;
-}
-
-.CardFriend
-{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    height: 10%;
-    background-color: var(--bg2_);
+invite-friends-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32%;
+    height: 65%;
+    background-color: #191C28;
     border-radius: 15px;
-}
-
-.CardFriend_name
-{
     display: flex;
     align-items: center;
-    gap: 10px;
-
+    justify-content: space-around;
+    flex-direction: column;
+    opacity: 0;
 }
 
-.CardFriend button
-{
+.InviteFriendsPopupHeader {
+    display: flex;
+    width: 100%;
+    height: 12%;
+    font-size: 2.3vh;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to right, transparent, #E0E0E0, transparent);
+    border-image-slice: 2;
+}
+
+.InviteFriendsPopupEntries {
+    margin-bottom: 5px;
+    width: 95%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    overflow-x: hidden;
+}
+
+friend-invite-entry {
+    width: 100%;
+    height: 12%;
+    min-height: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: #363B4F;
+    border-radius: 10px;
+}
+
+.FriendInviteEntryInfo {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding-left: 10px;
+    gap: 10px;
+}
+
+.FriendInviteEntryInfo > img {
+    width: 4vh;
+    height: 4vh;
+    border-radius: 10px;
+}
+
+friend-invite-entry > button {
+    margin-right: 10px;
     width: 20%;
     height: 70%;
     border-radius: 15px;
@@ -1185,32 +1216,14 @@ in-room-1vs1, in-room-2vs2
     background-size: 100% 100%, 200% 100%;
 }
 
-.CardFriend button:hover
-{
+friend-invite-entry > button:hover {
     background-image: linear-gradient(#212d3e, #2a2d3c), linear-gradient(to right, #1675BD, #5232B2);
     background-size: 100% 100%, 100% 100%;
-}
-
-.InviteFreindsPopupNoOne
-{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 game-selection {
     z-index: 999;
     position: relative;
-}
-
-invite-friends
-{
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
 }
 
 #roomeNameInput

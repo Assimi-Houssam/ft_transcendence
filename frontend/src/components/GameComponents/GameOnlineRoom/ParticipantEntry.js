@@ -1,3 +1,5 @@
+import { InviteFriendsPopup } from "./InviteFriendsPopup.js";
+
 export class EmptySlot extends HTMLElement {
     constructor() {
         super();
@@ -8,6 +10,9 @@ export class EmptySlot extends HTMLElement {
             <p>Empty Slot</p>
             <img src="../../../../assets/icons/friends.png">
         `;
+        this.onclick = () => {
+            new InviteFriendsPopup().show();
+        }
     }
 }
 

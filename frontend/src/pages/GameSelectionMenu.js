@@ -6,7 +6,7 @@ import { GameMode } from "../components/GameComponents/GameOnlineRoom/ContainerG
 import { GameTime } from "../components/GameComponents/GameOnlineRoom/ContainerGameOptions/GameTime.js";
 import { GameTeamSize } from "../components/GameComponents/GameOnlineRoom/ContainerGameOptions/GameTeamSize.js";
 import { Customizations } from "../components/GameComponents/GameOnlineRoom/ContainerGameOptions/Customizations.js";
-import { InviteFriends } from "../components/GameComponents/GameOnlineRoom/InviteFriends.js";
+import { InviteFriendsPopup } from "../components/GameComponents/GameOnlineRoom/InviteFriendsPopup.js";
 import { RoomName } from "../components/GameComponents/GameOnlineRoom/RoomName/RoomName.js";
 
 export class GameSelection extends HTMLElement {
