@@ -72,12 +72,16 @@ export const Routes = [
         component : OfflineRoom,
     },
     {
+        icon: '../assets/icons/game.png',
+        icon_ac: '../assets/icons/active_game.png',
         path: "/rooms",
         component: RoomsListPage,
     },
     {
         path: "/room/:id",
-        component: RoomPage
+        icon: '../assets/icons/game.png',
+        icon_ac: '../assets/icons/active_game.png',
+        component: RoomPage,
     },
     {
         path: '/logout',
