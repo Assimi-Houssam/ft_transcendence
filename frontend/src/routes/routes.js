@@ -11,8 +11,8 @@ import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
 import { GameSelection } from "../pages/GameSelectionMenu.js";
 import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
-import { OnlineRoomList } from "../components/GameComponents/GameOnlineRoom/OnlineRoomList.js";
-import { Rooms } from "../components/GameComponents/GameOnlineRoom/Rooms.js";
+import { RoomsListPage } from "../components/GameComponents/GameOnlineRoom/RoomsListPage.js";
+import { RoomPage } from "../components/GameComponents/GameOnlineRoom/RoomPage.js";
 
 export const Routes = [
     {
@@ -72,12 +72,12 @@ export const Routes = [
         component : OfflineRoom,
     },
     {
-        path : "/rooms",
-        component : OnlineRoomList,
+        path: "/rooms",
+        component: RoomsListPage,
     },
     {
-        path : "/rooms2",
-        component : Rooms,
+        path: "/room/:id",
+        component: RoomPage
     },
     {
         path: '/logout',

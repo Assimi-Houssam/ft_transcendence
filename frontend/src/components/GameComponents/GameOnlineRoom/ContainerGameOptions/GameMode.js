@@ -1,4 +1,4 @@
-import { roomData } from "../Rooms.js";
+import { roomData } from "../RoomPage.js";
 
 export class GameMode extends HTMLElement {
     connectedCallback() {

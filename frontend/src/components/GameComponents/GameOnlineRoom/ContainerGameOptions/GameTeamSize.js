@@ -1,5 +1,5 @@
 import ParticipantsCard from "../ParticipantsCard.js";
-import { roomData } from "../Rooms.js";
+import { roomData } from "../RoomPage.js";
 
 let user = {
     username : "rida"

@@ -1,9 +1,8 @@
-*{
+* {
     user-select: none;
 }
 
-:root
-{
+:root {
     --bg-button_: #222838;
     --orchid: #CA33FF;
     --bg: #181B26;
@@ -47,26 +46,6 @@
     border-radius: 20px;
     font-size: 25px;
 }
-
-/* .btn-gameselection img
-{
-    transition: transform 1s ease;
-} */
-
-/* .btn-gameselection:hover img
-{
-    transform: scale(1.2);
-} */
-
-/* .btn-gameselection p
-{
-    transition: transform 1s ease;
-} */
-
-/* .btn-gameselection:hover p
-{
-    transform: scale(1.2);
-} */
 
 .btn-gameselection:hover
 {
@@ -369,91 +348,6 @@ button.RoomListContainerBtn {
     width: 100%;
 }
 
-/* .ParticipantsTeamUserRed
-{
-    width: 85%;
-    display: flex;
-    background-color: var(--red);
-    border-radius: 10px;
-    
-} */
-
-/* .ParticipantsTeamUserImg
-{
-    width: 100%;
-    background-image: url(../images/img.png);
-    background-size: cover;
-    margin-left: 7px;
-    border-radius: 10px;
-    display: flex;
-} */
-/* .ParticipantsTeamUserBlue
-{
-    display: flex;
-    width: 85%;
-    background-color: var(--blue);
-    border-radius: 10px;
-} */
-/* .ParticipantsTeamBackdrop
-{
-    width: 85%;
-    display: flex;
-    align-items: center;
-    height: 45.5px;
-    margin-left: 6px;
-    background-image: url(../images/img.png);
-    background-size: cover;
-    border-radius: 10px;
-} */
-
-/* .ParticipantsHost
-{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    width: 100%;
-    height: 63%;
-    background: rgb(0 0 0 / 39%);
-    border-radius: 10px;
-} */
-
-/* .ContainerBtnSlot_Img
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    background-size: cover;
-} */
-
-/* .ContainerBtnSlot
-{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-} */
-
-/* .ContainerBtnSlot button
-{
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    width: 85%;
-    height: 40px;
-    border: 0;
-    border-radius: 10px;
-    background: var(--bg3_);
-} */
-
-/* .ContainerBtnSlot button:hover
-{
-    background: var(--bg1_);
-    box-shadow: 0 0 10px 2px rgba(51, 51, 51, 0.3);
-} */
-
-
 .RedTeam
 {
     display: flex;
@@ -467,8 +361,6 @@ button.RoomListContainerBtn {
 .TeamTitle
 {
     display: flex;
-    /* flex-direction: column;
-    justify-content: center; */
     justify-self: flex-start;
     align-self: flex-start;
     padding-left: 1.3vh;
@@ -537,7 +429,6 @@ empty-slot {
 
 empty-slot > p {
     margin-left: 35%;
-    /* justify-self: center; */
 }
 
 empty-slot > img {
@@ -1114,7 +1005,6 @@ in-room-1vs1, in-room-2vs2
     justify-content: center;
     align-items: center;
     background: rgb(0, 0, 0, 40%);
-    /* backdrop-filter: blur(5px); */
     width: 100%;
     height: 100%;
 }
@@ -1372,8 +1262,7 @@ offline-room-1vs1, offline-room-2vs1, offline-room-2vs2
     width: 100%;
 }
 
-online-room-list
-{
+rooms-list-page {
     position: relative;
 }
 

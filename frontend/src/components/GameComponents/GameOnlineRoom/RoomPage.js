@@ -1,20 +1,26 @@
 import { ChatGame } from "./ChatGame.js";
 import { ContainerGameOptions } from "./ContainerGameOptions/ContainerGameOptions.js";
 import ParticipantsCard from "./ParticipantsCard.js";
+import { Loader } from "../../Loading.js"
 
 export let roomData = {
     teamSize: 1,
     time: 3,
-    gameMode : "pong",
-    roomName : "default"
+    gameMode: "pong",
+    roomName: "default"
 }
 
-export class Rooms extends HTMLElement {
+export class RoomPage extends HTMLElement {
     constructor(){
         super();
+        this.chat = new ChatGame();
     }
-    
-    connectedCallback(){
+    async connectToRoom() {
+        // ws connection here 
+    }
+    async connectedCallback() {
+        this.innerHTML = new Loader();
+        await this.connectToRoom();
         this.innerHTML = `
             <div>
                 <div id="room-name_" >
@@ -32,8 +38,8 @@ export class Rooms extends HTMLElement {
             </div>
             <container-game-options></container-game-options>`;
         this.querySelector(".ContainerCardParticipants").appendChild(ParticipantsCard);
-        this.querySelector(".ContainerCardParticipants").appendChild(new ChatGame());
+        this.querySelector(".ContainerCardParticipants").appendChild(this.chat);
     }
 }
 
-customElements.define("rooms-component", Rooms);
+customElements.define("room-page", RoomPage);

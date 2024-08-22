@@ -8,16 +8,13 @@ export class OnlineMode extends HTMLElement{
     connectedCallback(){
         this.innerHTML = `
             <button class="btn-gameselection" id="BtnOnlineMode">
-                <img src="../../../assets/images/OnlineMode.png" width="183px">
+                <img src="../../../assets/images/onlineMode.png" width="183px">
                 <p>Online Mode</p>
             </button>
         `
         const BtnOnlineMode = document.getElementById("BtnOnlineMode");
         BtnOnlineMode.addEventListener("click", () => {
-            // const parrentElemnt = document.querySelector("game-selection");
-            // parrentElemnt.innerHTML = "<online-room-list></online-room-list>"
             router.navigate("/rooms");
-            // this.showOnlineRoomList();
         });
 
     }

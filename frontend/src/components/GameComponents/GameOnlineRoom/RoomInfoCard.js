@@ -1,3 +1,4 @@
+import { router } from "../../../routes/routes.js";
 
 // should be RoomInfoCard
 export class RoomInfoCard extends HTMLElement {
@@ -52,6 +53,7 @@ export class RoomInfoCard extends HTMLElement {
                 if (!this.enabled)
                     return;
                 // redirect to the room here
+                router.navigate("/room/" + this.roomId);
                 console.log("clicked!, should redirect to /rooms/roomId maybe?");
             });
     }
