@@ -50,9 +50,7 @@ export const Routes = [
         component: ChatContainer,
     },
     {
-        path: '/chat/:username/messages',
-        icon: '../assets/icons/chat.png',
-        icon_ac: '../assets/icons/active_chat.png',
+        path: '/test/:id',
         component: Test,
     },
     {
@@ -72,16 +70,12 @@ export const Routes = [
         component : OfflineRoom,
     },
     {
-        icon: '../assets/icons/game.png',
-        icon_ac: '../assets/icons/active_game.png',
         path: "/rooms",
         component: RoomsListPage,
     },
     {
         path: "/room/:id",
-        icon: '../assets/icons/game.png',
-        icon_ac: '../assets/icons/active_game.png',
-        component: RoomPage,
+        component: RoomPage
     },
     {
         path: '/logout',
@@ -96,6 +90,7 @@ class Router {
         this.active_path = window.location.pathname;
         this.route  = this.routes.find(route => route.path === this.active_path);
         this.public_routes = ["/login", "/register", "/reset-password"];
+        this.active_page = null;
     }
 
     findSubpath(path, routes = this.routes) {
@@ -126,10 +121,11 @@ class Router {
             window.history.pushState({}, "", this.active_path);
         }
         const root = document.getElementById("root");
-        const curr_page = new this.route.component();
+        if (!this.active_page)
+            this.active_page = new this.route.component();
         root.innerHTML = "<app-loader></app-loader>";
         if (this.public_routes.includes(this.route.path)) {
-            root.innerHTML = curr_page.outerHTML;
+            root.innerHTML = this.active_page.outerHTML;
             return;
         }
         let layout = document.querySelector("layout-wrapper");
@@ -143,7 +139,7 @@ class Router {
                 root.replaceChildren(layout);
                 const content_ = layout.querySelector(".content_body_");
                 if (content_) {
-                    content_.replaceChildren(curr_page);
+                    content_.replaceChildren(this.active_page);
                 }
             })
             // fixme: if fetch throws, everything will break, gotta refactor how errors are handled in the load methods
@@ -156,7 +152,7 @@ class Router {
         }
     }
 
-    async navigate(path) {
+    async navigate(path, customInstance = null) {
         if (path === "/")
             path = "/home";
         const isLogged = await isAuthenticated();
@@ -174,6 +170,10 @@ class Router {
             this.route.service();
             return;
         }
+        if (customInstance)
+            this.active_page = customInstance;
+        else
+            this.active_page = null;
         this.render();
     }
 }

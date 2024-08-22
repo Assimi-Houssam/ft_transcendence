@@ -1,4 +1,4 @@
-import { roomData } from "../RoomPage.js";
+import { roomData } from "../Room.js";
 import { GameMode } from "./GameMode.js";
 import { GameTime } from "./GameTime.js";
 import { GameTeamSize } from "./GameTeamSize.js";
