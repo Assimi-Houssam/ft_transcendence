@@ -37,7 +37,8 @@ export class GameTeamSize extends HTMLElement {
                         readTeam : {user, user},
                         blueTeam : {user, user}
                     }
-                }else {
+                }
+                else {
                     roomData["teams"] = {
                         host : user,
                         ennmy : user

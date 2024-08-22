@@ -3,16 +3,14 @@ import { InviteFriendsPopup } from "./InviteFriendsPopup.js";
 export class EmptySlot extends HTMLElement {
     constructor() {
         super();
-        this.classList.add("draggable");
+        this.classList.add("undraggable");
     }
     connectedCallback() {
         this.innerHTML = `
             <p>Empty Slot</p>
             <img src="../../../../assets/icons/friends.png">
         `;
-        this.onclick = () => {
-            new InviteFriendsPopup().show();
-        }
+        this.onclick = () => { new InviteFriendsPopup().show(); }
     }
 }
 

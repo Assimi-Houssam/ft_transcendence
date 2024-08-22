@@ -1,16 +1,21 @@
 import { GameSelection } from "../../../pages/GameSelectionMenu.js"
 import { router } from "../../../routes/routes.js";
-import { ContanerBtnRoom } from "./ContainerBtnRoom.js";
+import { RoomInfoCard } from "./RoomInfoCard.js";
 import { Rooms } from "./Rooms.js";
 
 
-export class OnlineRoomList extends HTMLElement{
-    constructor(){
-        super()
-        this.selectBtnCreateRoom;
+export class OnlineRoomList extends HTMLElement {
+    constructor() {
+        super();
+        this.rooms = [];
     }
-
-    connectedCallback(){
+    fetchRooms() {
+        // fetch rooms from the server here
+        
+        // testing:
+        
+    }
+    connectedCallback() {
         this.innerHTML = `
             <div class="ContainerOnlineRoom">
                 <div class="BtnCreateRoom">
@@ -20,17 +25,13 @@ export class OnlineRoomList extends HTMLElement{
                 <div class="content_line">
                     <div class="line_x"></div>
                 </div>
-                <div class="ContainerButtonRoom">
-                    <contaner-btn-room id="BtnJoinRoom"></contaner-btn-room>
-                </div>
-            </div>
-        `
-
+                <div class="RoomListContainer"></div>
+            </div>`;
+                
+        this.querySelector(".RoomListContainer").appendChild(new RoomInfoCard(1, "test room", "miyako", "pong", "1v1", [], "3", true));
         const BtnRoom = this.querySelector("#Room");
 
-        BtnRoom.addEventListener('click', () => {
-            this.showRoom();
-        });
+        BtnRoom.addEventListener('click', () => { this.showRoom(); });
 
         const CreateRoom = document.getElementById("Room");
         CreateRoom.addEventListener('click', () => {
@@ -45,7 +46,7 @@ export class OnlineRoomList extends HTMLElement{
         BtnJoinRoom.addEventListener('click', () => {
             const parrentElemnt = document.querySelector("online-room-list");
             parrentElemnt.innerHTML = "<rooms-component></rooms-component>"
-        })
+        });
     }
 
     showRoom() {
@@ -55,8 +56,6 @@ export class OnlineRoomList extends HTMLElement{
 
         this.innerHTML = "";
         this.appendChild(onlineRoomList);
-
-        onlineRoomList.offsetWidth;
 
         onlineRoomList.classList.add("show");
     }

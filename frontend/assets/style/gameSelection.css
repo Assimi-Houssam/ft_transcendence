@@ -140,7 +140,7 @@
     background-size: 100% 100%, 100% 100%;
 }
 
-button.ContainerButtonRoomBtn {
+button.RoomListContainerBtn {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -152,32 +152,32 @@ button.ContainerButtonRoomBtn {
     width: 100%;
 }
 
-.ContainerButtonRoom button:hover .RoomContent
+.RoomListContainer button:hover .RoomContent
 {
     background: var(--bg-button_);
 }
 
-.ContainerButtonRoom button:hover .Room
+.RoomListContainer button:hover .Room
 {
     background: var(--bg2_);
 }
 
-.ContainerButtonRoom button:hover .RoomTypeGame
+.RoomListContainer button:hover .RoomTypeGame
 {
     background: var(--bg2_);
 }
 
-.ContainerButtonRoomBtn:hover .RoomContent
+.RoomListContainerBtn:hover .RoomContent
 {
     background: var(--bg-button_);
 }
 
-.ContainerButtonRoomBtn:hover .Room
+.RoomListContainerBtn:hover .Room
 {
     background: var(--bg2_);
 }
 
-.ContainerButtonRoomBtn:hover .RoomTypeGame
+.RoomListContainerBtn:hover .RoomTypeGame
 {
     background: var(--bg2_);
 }

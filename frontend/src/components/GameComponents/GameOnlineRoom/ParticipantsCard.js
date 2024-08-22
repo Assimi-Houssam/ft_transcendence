@@ -102,7 +102,7 @@ class ParticipantsCard extends HTMLElement {
     new Sortable(this.querySelector(".RedTeam"), {
       group: "shared",
       swap: true,
-      filter: ".draggable",
+      filter: ".undraggable",
       onEnd: (evt) => {
         this.redTeam = Array.from(this.querySelector(".RedTeam").children);
         this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);
@@ -116,7 +116,7 @@ class ParticipantsCard extends HTMLElement {
     new Sortable(this.querySelector(".BlueTeam"), {
       group: "shared",
       swap: true,
-      filter: ".draggable",
+      filter: ".undraggable",
       onEnd: (evt) => {
         this.redTeam = Array.from(this.querySelector(".RedTeam").children);
         this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);

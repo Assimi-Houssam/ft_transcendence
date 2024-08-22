@@ -3,9 +3,9 @@ import { ContainerGameOptions } from "./ContainerGameOptions/ContainerGameOption
 import ParticipantsCard from "./ParticipantsCard.js";
 
 export let roomData = {
-    teamSize : 1,
-    time : 3,
-    gameMood : "pong",
+    teamSize: 1,
+    time: 3,
+    gameMode : "pong",
     roomName : "default"
 }
 
@@ -13,7 +13,7 @@ export class Rooms extends HTMLElement {
     constructor(){
         super();
     }
-
+    
     connectedCallback(){
         this.innerHTML = `
             <div>
@@ -23,7 +23,7 @@ export class Rooms extends HTMLElement {
                 <div class="content_line">
                     <div class="line_x"></div>
                 </div>
-                <contaner-btn-room></contaner-btn-room>
+                <room-info-card></room-info-card>
             </div>
             <div id="ContainerCardParticipants" class="ContainerCardParticipants">
             </div>
