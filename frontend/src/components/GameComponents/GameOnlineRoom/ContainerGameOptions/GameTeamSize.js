@@ -6,7 +6,7 @@ let user = {
 }
 
 export class GameTeamSize extends HTMLElement {
-    constructor(){
+    constructor() {
         super();
     }
 
@@ -18,36 +18,34 @@ export class GameTeamSize extends HTMLElement {
             </div>
         `
 
-        const BtnTeamSize = document.getElementById("BtnTeamSize");
+        const btnTeamSize = document.getElementById("BtnTeamSize");
 
-        for (let i = 0; i < BtnTeamSize.children.length; i++) {
-            BtnTeamSize.children[i].addEventListener("click", () => {
+        for (let i = 0; i < btnTeamSize.children.length; i++) {
+            btnTeamSize.children[i].addEventListener("click", () => {
                 const gameTeamSize = document.getElementById("gameTeamSize");
                 if (gameTeamSize) gameTeamSize.id = "";
-                BtnTeamSize.children[i].id = "gameTeamSize";
-                this.SelectTeamSize = BtnTeamSize.children[i];
+                btnTeamSize.children[i].id = "gameTeamSize";
+                this.SelectTeamSize = btnTeamSize.children[i];
                 roomData.teamSize = this.SelectTeamSize.name;
 
-                // const parrent  = document.g  etElementById("ContainerCardParticipants");
-                // const replacedChild = document.querySelector("room-card");
-                // parrent.replaceChild(new RoomCard(roomData.teamSize === "twoTeam" ? 2 : 1), replacedChild);
                 ParticipantsCard.switchTeamSize();
                 if (roomData.teamSize === "twoTeam") {
                     roomData["teams"] = {
-                        readTeam : {user, user},
-                        blueTeam : {user, user}
+                        redTeam: {user, user},
+                        blueTeam: {user, user}
                     }
                 }
                 else {
                     roomData["teams"] = {
                         host : user,
-                        ennmy : user
+                        ennemy : user
                     }
                 }
-                const RoomTeamSize = document.getElementById("RoomTeamSize");
-                const SizePlayers = document.getElementById("SizePlayers");
-                RoomTeamSize.innerHTML = `${roomData.teamSize === "twoTeam" ? "2v2" : "1v1"}`
-                SizePlayers.innerHTML = `${roomData.teamSize === "twoTeam" ? "1/4 Players" : "1/2 Players"}`
+                const roomTeamSize = document.getElementById("RoomTeamSize");
+                const sizePlayers = document.getElementById("SizePlayers");
+                roomTeamSize.innerHTML = `${roomData.teamSize === "twoTeam" ? "2v2" : "1v1"}`;
+                sizePlayers.innerHTML = `${roomData.users.length}/${roomData.teamSize} Players`;
+                sizePlayers.innerHTML = `${roomData.teamSize === "twoTeam" ? `${roomData.users.length}/4 Players` : `1/2 Players`}`
             })
         }
     }

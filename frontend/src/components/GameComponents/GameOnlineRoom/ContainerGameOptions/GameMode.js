@@ -4,7 +4,7 @@ export class GameMode extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div id="BtnGameMode" class="BtnGamemode">
-                <button name="hokey">
+                <button name="hockey">
                     <img src="../../../assets/images/hockey.png" width="35px">
                 </button>
                 <button id="gameMode" name="pong">
@@ -12,17 +12,17 @@ export class GameMode extends HTMLElement {
                 </button>
             </div>`;
 
-        const BtnGameMode = document.getElementById("BtnGameMode");
-        for (let i = 0; i < BtnGameMode.children.length; i++) {
-            BtnGameMode.children[i].addEventListener("click", () => {
+        const btnGameMode = document.getElementById("BtnGameMode");
+        for (let i = 0; i < btnGameMode.children.length; i++) {
+            btnGameMode.children[i].addEventListener("click", () => {
                 const gameMode = document.getElementById("gameMode");
                 if (gameMode) gameMode.id = "";
-                BtnGameMode.children[i].id = "gameMode";
-                this.SelectedGameMode = BtnGameMode.children[i];
-                roomData.gameMode  = this.SelectedGameMode.name;
-                const RoomTeamGameType = document.getElementById("RoomTeamGameType");
-                RoomTeamGameType.src = roomData.gameMode === "hokey" ? "../../../assets/images/hockey.png" : "../../../assets/images/pong.png";
-                console.log("selected: ", this.SelectedGameMode.name);
+                btnGameMode.children[i].id = "gameMode";
+                const selectedGameMode = btnGameMode.children[i];
+                roomData.gamemode  = selectedGameMode.name;
+                const roomTeamGameType = document.getElementById("RoomTeamGameType");
+                roomTeamGameType.src = roomData.gamemode === "hockey" ? "../../../assets/images/hockey.png" : "../../../assets/images/pong.png";
+                console.log("gamemode: ", selectedGameMode.name);
             })
         }
     }

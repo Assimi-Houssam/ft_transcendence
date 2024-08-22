@@ -1,4 +1,4 @@
-import { roomData } from "../Room.js";
+import { roomData } from "../RoomPage.js";
 import { GameMode } from "./GameMode.js";
 import { GameTime } from "./GameTime.js";
 import { GameTeamSize } from "./GameTeamSize.js";
@@ -24,11 +24,11 @@ const gameSetting = [
 ]
 
 export class ContainerGameOptions extends HTMLElement {
-    constructor(){
+    constructor() {
         super();
     }
 
-    connectedCallback(){
+    connectedCallback() {
         this.innerHTML = `
             <div class="ContainerGameOptions">
                 ${gameSetting.map((item, index) => (
@@ -57,9 +57,9 @@ export class ContainerGameOptions extends HTMLElement {
             </div>
         `
 
-        const BtnStartGame =document.getElementById("BtnStartGame");
-        BtnStartGame.onclick = (e) => {
-            console.log("roome : ", roomData)
+        const btnStartGame = document.getElementById("BtnStartGame");
+        btnStartGame.onclick = (e) => {
+            console.log("room data: ", roomData)
         }
     }
 }

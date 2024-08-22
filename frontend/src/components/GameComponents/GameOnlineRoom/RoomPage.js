@@ -2,12 +2,19 @@ import { ChatGame } from "./ChatGame.js";
 import { ContainerGameOptions } from "./ContainerGameOptions/ContainerGameOptions.js";
 import ParticipantsCard from "./ParticipantsCard.js";
 import { Loader } from "../../Loading.js"
+import { RoomInfoCard } from "./RoomInfoCard.js";
 
 export let roomData = {
-    teamSize: 1,
+    id: 1,
+    name: "lolz",
+    teamSize: 2,
     time: 3,
-    gameMode: "pong",
-    roomName: "default"
+    gamemode: "pong",
+    customization: "",
+    host: "miyako",
+    users: ["temp"],
+    redTeam: [],
+    blueTeam: []
 }
 
 export class RoomPage extends HTMLElement {
@@ -16,20 +23,19 @@ export class RoomPage extends HTMLElement {
         this.chat = new ChatGame();
     }
     async connectToRoom() {
-        // ws connection here 
+        // ws connection here, when connecting to the ws, the server receives the room data and fills roomData 
     }
     async connectedCallback() {
         this.innerHTML = new Loader();
         await this.connectToRoom();
         this.innerHTML = `
-            <div>
+            <div class="room-info-container">
                 <div id="room-name_" >
                     <room-name></room-name>
                 </div>
                 <div class="content_line">
                     <div class="line_x"></div>
                 </div>
-                <room-info-card></room-info-card>
             </div>
             <div id="ContainerCardParticipants" class="ContainerCardParticipants">
             </div>
@@ -37,8 +43,12 @@ export class RoomPage extends HTMLElement {
                 <div class="line_x"></div>
             </div>
             <container-game-options></container-game-options>`;
+        this.querySelector(".room-info-container").appendChild(new RoomInfoCard(roomData.id, roomData.name, roomData.host, roomData.gamemode, roomData.teamSize, roomData.users, roomData.time));
         this.querySelector(".ContainerCardParticipants").appendChild(ParticipantsCard);
         this.querySelector(".ContainerCardParticipants").appendChild(this.chat);
+    }
+    disconnectedCallback() {
+        // close the ws connection here
     }
 }
 

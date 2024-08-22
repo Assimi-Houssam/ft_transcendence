@@ -1,6 +1,5 @@
 import { router } from "../../../routes/routes.js";
 
-// should be RoomInfoCard
 export class RoomInfoCard extends HTMLElement {
     constructor(roomId, roomName, roomHost, roomGameMode, roomTeamSize, roomUsers, roomTime, enabled = false) {
         super();
@@ -14,6 +13,15 @@ export class RoomInfoCard extends HTMLElement {
         this.roomLenT = 1; // testing, should be this.roomUsers.length
         this.enabled = enabled;
     }
+    // temporary, will be deleted 
+    participantJoined() {
+        this.roomLenT++;
+        this.connectedCallback();
+    }
+    participantLeft() {
+        this.roomLenT--;
+        this.connectedCallback();
+    }
     connectedCallback() {
         this.innerHTML = `
             <button class="RoomListContainerBtn">
@@ -25,7 +33,7 @@ export class RoomInfoCard extends HTMLElement {
                         <div class="RoomContentCard">
                             <div class="RoomContentCard_flex">
                                 <div class="RoomTeam">
-                                    <p id="RoomTeamSize">${this.roomTeamSize}</p>
+                                    <p id="RoomTeamSize">${this.roomTeamSize === 1 ? "1v1" : "2v2"}</p>
                                 </div>
                                 <div class="RoomName">
                                     <p id="RoomTitleName">${this.roomName}</p>
@@ -36,7 +44,7 @@ export class RoomInfoCard extends HTMLElement {
                             </div>
                             <div class="RoomContentCard_flex">
                                 <div class="RoomPlayer">
-                                    <p id="SizePlayers">${this.roomLenT}/${this.roomTeamSize === "1v1" ? "2" : "1"} Players</p>
+                                    <p id="SizePlayers">${this.roomLenT}/${this.roomTeamSize} Players</p>
                                 </div>
                                 <div class="RoomHosted">
                                     <p>hosted by <span style="color: var(--orchid)">${this.roomHost}<span></p>

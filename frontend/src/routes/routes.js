@@ -170,10 +170,7 @@ class Router {
             this.route.service();
             return;
         }
-        if (customInstance)
-            this.active_page = customInstance;
-        else
-            this.active_page = null;
+        this.active_page = customInstance;
         this.render();
     }
 }
