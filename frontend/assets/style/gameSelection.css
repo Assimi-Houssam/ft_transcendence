@@ -764,7 +764,7 @@ participants-card {
 .ContainerGameOptions_Team
 {
     width: 100%;
-    height: 67%;
+    height: 90%;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -947,7 +947,7 @@ participants-card {
     border: 6px solid var(--orchid);
 }
 
-#gameTime
+#gameTime, #gameBracketSize
 {
     color: var(--bg1_);
     background-color: var(--shamrock);

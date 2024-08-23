@@ -4,6 +4,7 @@ import ParticipantsCard from "./ParticipantsCard.js";
 
 export let roomData = {
     teamSize : 1,
+    bracketSize : 1,
     time : 3,
     gameMood : "pong",
     roomName : "default"

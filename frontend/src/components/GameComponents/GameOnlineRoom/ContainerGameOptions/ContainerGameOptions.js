@@ -3,6 +3,7 @@ import { GameMode } from "./GameMode.js";
 import { GameTime } from "./GameTime.js";
 import { GameTeamSize } from "./GameTeamSize.js";
 import { Customizations } from "./Customizations.js";
+import { GameBracketSize } from "./BracketSize.js";
 
 const gameSetting = [
     {
@@ -10,8 +11,7 @@ const gameSetting = [
         element : new GameMode()
     },
     {
-        title : "Time",
-        element : new GameTime()
+        
     },
     {
         title : "Team size",
@@ -26,6 +26,19 @@ const gameSetting = [
 export class ContainerGameOptions extends HTMLElement {
     constructor(){
         super();
+        const path = window.location.pathname;
+        if (path === "/tournament") {
+            gameSetting[1] = {
+                title : "Bracket size",
+                element : new GameBracketSize()
+            }
+        }
+        else {
+            gameSetting[1] = {
+                title : "Time",
+                element : new GameTime()
+            }
+        }
     }
 
     connectedCallback(){
