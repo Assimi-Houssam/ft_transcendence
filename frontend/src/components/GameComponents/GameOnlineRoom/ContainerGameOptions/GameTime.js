@@ -1,27 +1,24 @@
-import { roomData } from "../Rooms.js";
-export class GameTime extends HTMLElement{
-    constructor(){
-        super();
-    }
+import { roomData } from "../RoomPage.js";
 
-    connectedCallback(){
+export class GameTime extends HTMLElement {
+    connectedCallback() {
         this.innerHTML = `
             <div id="BtnTime" class="BtnTime">
-                <button name="fivemin">5</button>
-                <button id="gameTime" name="treemin">3</button>
+                <button name="5">5</button>
+                <button id="gameTime" name="3">3</button>
             </div>
         `
 
-        const BtnTime = document.getElementById("BtnTime");
-        for (let i = 0; i < BtnTime.children.length; i++) {
-            BtnTime.children[i].addEventListener('click', () => {
+        const btnTime = document.getElementById("BtnTime");
+        for (let i = 0; i < btnTime.children.length; i++) {
+            btnTime.children[i].addEventListener('click', () => {
                 const gameTime = document.getElementById("gameTime");
                 if (gameTime) gameTime.id = "";
-                BtnTime.children[i].id = "gameTime";
-                this.SellectTime = BtnTime.children[i];
-                roomData.time = this.SellectTime.name;
-                const RoomTeamTime = document.getElementById("RoomTeamTime");
-                RoomTeamTime.innerHTML = `${roomData.time === "treemin" ? "3" : "5"} min`
+                btnTime.children[i].id = "gameTime";
+                let selectedTime = BtnTime.children[i];
+                roomData.time = selectedTime.name;
+                const roomTeamTime = document.getElementById("RoomTeamTime");
+                roomTeamTime.innerHTML = `${roomData.time === "3" ? "3" : "5"} min`
             })
         }
     }

@@ -1,6 +1,6 @@
 import Toast from "../../../Toast.js";
 import { RoomName } from "./RoomName.js";
-import { roomData } from "../Rooms.js";
+import { roomData } from "../RoomPage.js";
 
 export class EditRoomName extends HTMLElement {
     constructor(name = "") {
@@ -29,10 +29,10 @@ export class EditRoomName extends HTMLElement {
 
         const saveRoomName = () => {
             if (this.roomName.length > 15) {
-                Toast.error("You can’t set a name more than 15 characters");
+                Toast.error("You can't set a name more than 15 characters");
                 return;
             } else if (this.roomName === "") {
-                Toast.error("You can’t set an empty name");
+                Toast.error("You can't set an empty name");
                 return;
             }
             roomData.roomName = this.roomName;

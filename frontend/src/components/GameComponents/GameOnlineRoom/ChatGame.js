@@ -1,4 +1,4 @@
-export class ChatGame extends HTMLElement{
+export class ChatGame extends HTMLElement {
     constructor(){
         super();
     }
@@ -7,17 +7,15 @@ export class ChatGame extends HTMLElement{
         this.innerHTML = `
             <div class = "chat-container">
                 <div class="chat-container-content">
-                    <div class = "chat-header">Room Chat</div>
-                    <div class="content_line">
-                        <div class="line_x_chat"></div>
-                    </div>
+                    <div class="chat-header">Room Chat</div>
+
                     <div class="ContainerChat">
                         <div class = "chat-box" id="chat-box">
                             <div class ="sidebar-chatbox">
                                 <span class="timestamp">12:31:43</span> 
                                 <span class="username" style="color: purple;">mamazza..</span>
                             </div> 
-                            <div class ="chat-content">
+                            <div class="chat-content">
                                 <div class="chat_msg">
                                     <span class="message">hiiii</span>
                                 </div>

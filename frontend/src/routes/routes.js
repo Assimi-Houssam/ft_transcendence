@@ -9,10 +9,10 @@ import { ChatContainer } from "../pages/ChatContainer.js";
 import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
-import { GameSelection } from "../pages/gameSelectionMenu/GameSelectionMenu.js";
+import { GameSelection } from "../pages/GameSelectionMenu.js";
 import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
-import { OnlineRoomList } from "../components/GameComponents/GameOnlineRoom/OnlineRoomList.js";
-import { Rooms } from "../components/GameComponents/GameOnlineRoom/Rooms.js";
+import { RoomsListPage } from "../components/GameComponents/GameOnlineRoom/RoomsListPage.js";
+import { RoomPage } from "../components/GameComponents/GameOnlineRoom/RoomPage.js";
 
 export const Routes = [
     {
@@ -50,9 +50,7 @@ export const Routes = [
         component: ChatContainer,
     },
     {
-        path: '/chat/:username/messages',
-        icon: '../assets/icons/chat.png',
-        icon_ac: '../assets/icons/active_chat.png',
+        path: '/test/:id',
         component: Test,
     },
     {
@@ -72,12 +70,12 @@ export const Routes = [
         component : OfflineRoom,
     },
     {
-        path : "/rooms",
-        component : OnlineRoomList,
+        path: "/rooms",
+        component: RoomsListPage,
     },
     {
-        path : "/rooms2",
-        component : Rooms,
+        path: "/room/:id",
+        component: RoomPage
     },
     {
         path: '/logout',
@@ -92,6 +90,7 @@ class Router {
         this.active_path = window.location.pathname;
         this.route  = this.routes.find(route => route.path === this.active_path);
         this.public_routes = ["/login", "/register", "/reset-password"];
+        this.active_page = null;
     }
 
     findSubpath(path, routes = this.routes) {
@@ -122,10 +121,11 @@ class Router {
             window.history.pushState({}, "", this.active_path);
         }
         const root = document.getElementById("root");
-        const curr_page = new this.route.component();
+        if (!this.active_page)
+            this.active_page = new this.route.component();
         root.innerHTML = "<app-loader></app-loader>";
         if (this.public_routes.includes(this.route.path)) {
-            root.innerHTML = curr_page.outerHTML;
+            root.innerHTML = this.active_page.outerHTML;
             return;
         }
         let layout = document.querySelector("layout-wrapper");
@@ -139,7 +139,7 @@ class Router {
                 root.replaceChildren(layout);
                 const content_ = layout.querySelector(".content_body_");
                 if (content_) {
-                    content_.replaceChildren(curr_page);
+                    content_.replaceChildren(this.active_page);
                 }
             })
             // fixme: if fetch throws, everything will break, gotta refactor how errors are handled in the load methods
@@ -152,7 +152,7 @@ class Router {
         }
     }
 
-    async navigate(path) {
+    async navigate(path, customInstance = null) {
         if (path === "/")
             path = "/home";
         const isLogged = await isAuthenticated();
@@ -170,6 +170,7 @@ class Router {
             this.route.service();
             return;
         }
+        this.active_page = customInstance;
         this.render();
     }
 }

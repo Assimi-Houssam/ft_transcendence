@@ -1,12 +1,12 @@
-import { roomData } from "../Rooms.js";
+import { roomData } from "../RoomPage.js";
 
-export class Customizations extends HTMLElement{
-    constructor(){
+export class Customizations extends HTMLElement {
+    constructor() {
         super();
-        this.SelectCustomizations;
+        this.SelectCustomizations = null;
     }
 
-    connectedCallback(){
+    connectedCallback() {
         this.innerHTML = `
             <div id="BtnCustomizations" class="BtnCustomizations">
                 <button name="half">
@@ -18,17 +18,21 @@ export class Customizations extends HTMLElement{
             </div>
         `
 
-        const BtnCustomizations = document.getElementById("BtnCustomizations");
-        for (let i = 0; i < BtnCustomizations.children.length; i++) {
-            BtnCustomizations.children[i].addEventListener('click', () => {
+        const btnCustomizations = document.getElementById("BtnCustomizations");
+        for (let i = 0; i < btnCustomizations.children.length; i++) {
+            btnCustomizations.children[i].addEventListener('click', () => {
+                if (this.SelectCustomizations === btnCustomizations.children[i]) {
+                    btnCustomizations.children[i].id = this.SelectCustomizations = "";
+                    return;
+                }
                 if (this.SelectCustomizations?.id)
-                    this.SelectCustomizations.id = ""
-                BtnCustomizations.children[i].id = "customizations";
-                this.SelectCustomizations = BtnCustomizations.children[i];
-                console.log("Customizations", this.SelectCustomizations.name);
-            })
+                    this.SelectCustomizations.id = "";
+                btnCustomizations.children[i].id = "customizations";
+                this.SelectCustomizations = btnCustomizations.children[i];
+                console.log("customization:", this.SelectCustomizations.name);
+            });
         }
     }
 }
 
-customElements.define("game-customiz", Customizations);
+customElements.define("game-customization", Customizations);

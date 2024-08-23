@@ -9,7 +9,7 @@ export class OfflineMode extends HTMLElement{
         this.innerHTML = `
             <button class="btn-gameselection" id="BtnOfflineMode">
                 <img src="../../../assets/images/offlineMode.png" width="183px">
-                <p class="mb-0">Offline Mode</p>
+                <p>Offline Mode</p>
             </button>
         `
 

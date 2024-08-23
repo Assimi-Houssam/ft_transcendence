@@ -5,16 +5,20 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .serializers import UpdateProfileSerializer
 from .auth import JWTAuth
-import datetime
+import time
 
 
 def limit_user_updates(user):
-    today_date = datetime.date.today()
-    if user.count_updates == 0 and user.can_update_on != today_date:
+    current_time = int(time.time())
+    next_update = current_time + 43200
+    if user.count_updates == 0 and user.can_update_on < current_time:
         user.count_updates = 2
-        user.can_update_on = today_date
     elif user.count_updates == 0:
+        user.can_update_on = next_update
+        user.save()
         return False
+    user.count_updates -= 1
+    user.can_update_on = next_update
     user.save()
     return True
 
@@ -36,6 +40,8 @@ def update_profile(req):
     for field in fields :
         if req.POST.get(field):
             data[field] = req.POST.get(field)
+    if req.FILES.get("banner") :
+        data["banner"] = req.FILES.get("banner")
     if req.FILES.get("pfp"):
         data["pfp"] = req.FILES.get("pfp")
     serializer = UpdateProfileSerializer(user, data=data, partial=True)
@@ -44,7 +50,6 @@ def update_profile(req):
             'detail': 'You have reached the maximum number of updates for today',
         }, status=status.HTTP_400_BAD_REQUEST)
     if serializer.is_valid():
-        user.count_updates -= 1
         serializer.save()
         return Response({
             'detail': 'Profile updated successfully',
