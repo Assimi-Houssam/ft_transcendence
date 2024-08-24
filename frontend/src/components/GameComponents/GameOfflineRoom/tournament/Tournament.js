@@ -1,5 +1,6 @@
 import { FinalTournament } from "./FinalTournament.js";
 
+
 export class GroupBrackets extends HTMLElement {
     constructor(teamSize=1) {
         super();
@@ -11,10 +12,12 @@ export class GroupBrackets extends HTMLElement {
         this.innerHTML = `        
             <div class="usersTeams2v2">
                 <div class="player_">
-                    <p>mamazzal133 ${this.teamSize > 1 ? "& Player 1" : ""}</p>
+                    <p><input type="text" id="player_bracket_name" placeholder="player name"> ${this.teamSize > 1 ? 
+                        `<input type="text" id="player_bracket_name" placeholder="player name">` : ""}</p>
                 </div>
                 <div class="player_">
-                    <p>player1 ${this.teamSize > 1 ? "& Player 2" : ""}</p>
+                    <p><input type="text" id="player_bracket_name" placeholder="player name"> 
+                        ${this.teamSize > 1 ? `& <input type="text" id="player_bracket_name" placeholder="player name">` : ""}</p>
                 </div>
             </div>
             <div class="line_tourn">
