@@ -1,5 +1,5 @@
 import { EditRoomName } from "./EditRoomName.js";
-import { roomData } from "../Rooms.js";
+import { roomData } from "../RoomPage.js";
 export class RoomName extends HTMLElement {
     constructor(name = "Room Name") {
         super();

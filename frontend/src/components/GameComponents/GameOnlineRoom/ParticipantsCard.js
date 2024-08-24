@@ -9,8 +9,22 @@ class ParticipantsCard extends HTMLElement {
     this.redTeam = [this.pariticipantS, new EmptySlot()];
     this.blueTeam = [new EmptySlot(), new EmptySlot()];
     this.participantsCount = 1; // temp
-  }
 
+    this.addEventListener("participantkick", (e) => { this.kickParticipant(e.detail); });
+  }
+  getTeams() {
+    const rt = []
+    const bt = [];
+    for (let participant of this.redTeam) {
+      if (participant instanceof ParticipantEntry)
+        rt.push(participant);
+    }
+    for (let participant of this.blueTeam) {
+      if (participant instanceof ParticipantEntry)
+        bt.push(participant);
+    }
+    return [rt, bt];
+  }
   // TODO: if all the team spots were already full, display a messagebox to tell the host that switching team sizes would kick other participants
   switchTeamSize() {
     this.teamSize = this.teamSize === 1 ? 2 : 1;
@@ -24,6 +38,7 @@ class ParticipantsCard extends HTMLElement {
       }
       this.blueTeam[0] = participant;
       this.participantsCount++;
+      document.querySelector("room-info-card").participantJoined();
       this.connectedCallback();
       return;
     }
@@ -37,6 +52,7 @@ class ParticipantsCard extends HTMLElement {
         if (team[i] instanceof EmptySlot) {
           team[i] = participant;
           this.participantsCount++;
+          document.querySelector("room-info-card").participantJoined();
           this.connectedCallback();
           return;
         }
@@ -55,6 +71,7 @@ class ParticipantsCard extends HTMLElement {
       this.blueTeam[participantIdx] = new EmptySlot();
     }
     this.participantsCount--;
+    document.querySelector("room-info-card").participantLeft();
     this.connectedCallback();    
   }
 
@@ -93,7 +110,6 @@ class ParticipantsCard extends HTMLElement {
       this.querySelector(".RedTeam").appendChild(this.redTeam[i]);
       this.querySelector(".BlueTeam").appendChild(this.blueTeam[i]);
     }
-    this.addEventListener("participantkick", (e) => { this.kickParticipant(e.detail); });
     
     // yeah i fw with early returns way too much lol
     if (this.teamSize === 1)
@@ -102,7 +118,7 @@ class ParticipantsCard extends HTMLElement {
     new Sortable(this.querySelector(".RedTeam"), {
       group: "shared",
       swap: true,
-      filter: ".draggable",
+      filter: ".undraggable",
       onEnd: (evt) => {
         this.redTeam = Array.from(this.querySelector(".RedTeam").children);
         this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);
@@ -116,7 +132,7 @@ class ParticipantsCard extends HTMLElement {
     new Sortable(this.querySelector(".BlueTeam"), {
       group: "shared",
       swap: true,
-      filter: ".draggable",
+      filter: ".undraggable",
       onEnd: (evt) => {
         this.redTeam = Array.from(this.querySelector(".RedTeam").children);
         this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);

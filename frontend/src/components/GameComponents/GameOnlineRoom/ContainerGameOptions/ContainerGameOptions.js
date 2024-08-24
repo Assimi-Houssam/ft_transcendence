@@ -1,4 +1,4 @@
-import { roomData } from "../Rooms.js";
+import { roomData } from "../RoomPage.js";
 import { GameMode } from "./GameMode.js";
 import { GameTime } from "./GameTime.js";
 import { GameTeamSize } from "./GameTeamSize.js";
@@ -11,7 +11,6 @@ const gameSetting = [
         element : new GameMode()
     },
     {
-        
     },
     {
         title : "Team size",
@@ -24,7 +23,7 @@ const gameSetting = [
 ]
 
 export class ContainerGameOptions extends HTMLElement {
-    constructor(){
+    constructor() {
         super();
         const path = window.location.pathname;
         if (path === "/tournament") {
@@ -41,7 +40,7 @@ export class ContainerGameOptions extends HTMLElement {
         }
     }
 
-    connectedCallback(){
+    connectedCallback() {
         this.innerHTML = `
             <div class="ContainerGameOptions">
                 ${gameSetting.map((item, index) => (
@@ -70,9 +69,18 @@ export class ContainerGameOptions extends HTMLElement {
             </div>
         `
 
-        const BtnStartGame =document.getElementById("BtnStartGame");
-        BtnStartGame.onclick = (e) => {
-            console.log("roome : ", roomData)
+        const btnStartGame = document.getElementById("BtnStartGame");
+        btnStartGame.onclick = (e) => {
+            if (roomData.users && roomData.users.length >= 2) {
+                console.log("start game: ", roomData);
+            }
+            else {
+                const reminder = document.querySelector(".ContainerFooter_reminder");
+                reminder.style.display = "block";
+                setTimeout(() => {
+                    reminder.style.display = "none";
+                }, 3000);
+            }
         }
     }
 }

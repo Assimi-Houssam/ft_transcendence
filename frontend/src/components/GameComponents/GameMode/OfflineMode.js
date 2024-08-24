@@ -1,5 +1,5 @@
 import { router } from "../../../routes/routes.js";
-import { OfflineRoom } from "../GameOfflineRoom/OfflineRoom.js";
+import { OfflineGame } from "../GameOfflineRoom/OfflineGame.js";
 
 export class OfflineMode extends HTMLElement{
     constructor(){

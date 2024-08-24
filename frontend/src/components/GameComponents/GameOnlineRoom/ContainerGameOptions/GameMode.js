@@ -1,35 +1,28 @@
-import { roomData } from "../Rooms.js";
-export class GameMode extends HTMLElement {
-    constructor(){
-        super();
-    }
+import { roomData } from "../RoomPage.js";
 
-    connectedCallback(){
+export class GameMode extends HTMLElement {
+    connectedCallback() {
         this.innerHTML = `
             <div id="BtnGameMode" class="BtnGamemode">
-                <button name="hokey">
-                    <img src="../../../assets/images/hoky.png" width="35px">
+                <button name="hockey">
+                    <img src="../../../assets/images/hockey.png" width="35px">
                 </button>
-                <button id="gameMode" name="pingpong">
-                    <img src="../../../assets/images/ping.png" width="35px">
+                <button id="gameMode" name="pong">
+                    <img src="../../../assets/images/pong.png" width="35px">
                 </button>
-            </div>
-        `
+            </div>`;
 
-        const BtnGameMode = document.getElementById("BtnGameMode");
-        for (let i = 0; i < BtnGameMode.children.length; i++) {
-            BtnGameMode.children[i].addEventListener("click", () => {
+        const btnGameMode = document.getElementById("BtnGameMode");
+        for (let i = 0; i < btnGameMode.children.length; i++) {
+            btnGameMode.children[i].addEventListener("click", () => {
                 const gameMode = document.getElementById("gameMode");
                 if (gameMode) gameMode.id = "";
-                BtnGameMode.children[i].id = "gameMode";
-                this.SelectedGameMode = BtnGameMode.children[i];
-                roomData.gameMood  = this.SelectedGameMode.name;
-                const RoomTeamGameType = document.getElementById("RoomTeamGameType");
-                if (roomData.gameMood === "hokey") 
-                    RoomTeamGameType.src = "../../../assets/images/hoky.png"
-                else
-                    RoomTeamGameType.src = "../../../assets/images/ping.png"
-                console.log("selected: ", this.SelectedGameMode.name);
+                btnGameMode.children[i].id = "gameMode";
+                const selectedGameMode = btnGameMode.children[i];
+                roomData.gamemode  = selectedGameMode.name;
+                const roomTeamGameType = document.getElementById("RoomTeamGameType");
+                roomTeamGameType.src = roomData.gamemode === "hockey" ? "../../../assets/images/hockey.png" : "../../../assets/images/pong.png";
+                console.log("gamemode: ", selectedGameMode.name);
             })
         }
     }

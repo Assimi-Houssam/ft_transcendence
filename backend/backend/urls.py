@@ -22,6 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path("me", views.me),
+    path("users/filter", views.filter_users),
     path("register", auth.register),
     path("oauth-login", auth.oauth_login),
     path("login", auth.login),

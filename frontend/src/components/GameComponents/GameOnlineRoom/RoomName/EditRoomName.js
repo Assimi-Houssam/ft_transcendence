@@ -1,6 +1,6 @@
 import Toast from "../../../Toast.js";
 import { RoomName } from "./RoomName.js";
-import { roomData } from "../Rooms.js";
+import { roomData } from "../RoomPage.js";
 
 export class EditRoomName extends HTMLElement {
     constructor(name = "") {
