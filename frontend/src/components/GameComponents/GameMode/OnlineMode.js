@@ -19,19 +19,6 @@ export class OnlineMode extends HTMLElement{
 
     }
 
-    // showOnlineRoomList() {
-    //     const onlineRoomList = document.createElement("online-room-list");
-
-    //     onlineRoomList.classList.add("fade-in");
-
-    //     this.innerHTML = "";
-    //     this.appendChild(onlineRoomList);
-
-    //     onlineRoomList.offsetWidth;
-
-    //     onlineRoomList.classList.add("show");
-    // }
-
 }
 
 customElements.define("online-mode", OnlineMode);

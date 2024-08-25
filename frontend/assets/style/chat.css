@@ -481,3 +481,131 @@ message-input {
 	outline: none;
 }
 
+
+
+
+
+
+
+/* chat room online */
+.chat-container {
+    background-color: #363B4F;
+    border: 1px solid #363B4F;
+    border-radius: 16px;
+    width: 85%;
+    height: 100%;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #363B4F;
+    text-align: center;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 10%;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to right, transparent, #E0E0E0, transparent);
+    border-image-slice: 2;
+    margin-top: 3px;
+    padding-bottom: 3px;
+}
+
+.chat-box{
+    display:flex;
+    width: 97%;
+    background-color: rgb(21, 21, 21);
+    border-radius:15px 15px 0 0;
+    height: 85%;
+}
+
+.sidebar-chatbox{
+    display:flex;
+    align-items: flex-end;
+    overflow-y: auto;
+    gap: 10px;
+    padding: 20px;
+    width: 30%;
+}
+
+.chat-content{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    border-left: 1px solid #3a3e47; 
+    width : 100%;
+    height: 100%;
+}
+
+.chat_msg
+{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 10px;
+}
+.timestamp {
+    color: #888;
+    font-size: 12px;
+}
+
+.username {
+    font-weight: bold;
+    white-space: nowrap;
+    color: green;
+}
+
+.message {
+    display: flex;
+    align-items: end;
+    color: gray;
+    word-wrap: break-word;
+    flex-grow: 1;
+    
+}
+
+.input_msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 97%;
+}
+
+.chat-input {
+    display:flex;
+    border: none;
+    border-top: 2px solid #3a3e47;
+    height: 25px;
+    width: 100%;
+    background-color: rgb(21, 21, 21);
+    color: white;
+    bottom : 0;
+    left:0;
+    border-radius: 0 0 15px 15px;
+    padding: 10px;
+    outline: none;
+
+}
+
+.ContainerChat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 83%;
+    padding-top: 10px;
+}
+
+.chat-container-content
+{
+    height: 100%;
+}
+
+.line_x_chat
+{
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(to right, #363B4F, #fff, #363B4F);
+}

@@ -1,0 +1,138 @@
+* {
+    user-select: none;
+}
+
+:root {
+    --bg-button_: #222838;
+    --orchid: #CA33FF;
+    --bg: #181B26;
+    --bg1_: #191C28;
+    --bg2_: #363B4F;
+    --bg3_: #2B2F40;
+    --white_: #FFFFFF;
+    --title: #A8A8A8;
+    --text: #63656F;
+    --shamrock: #24CE90;
+    --byzantium: #581352;
+    --byzanitumnew: #321A3E;
+    --box: #2E3345;
+    --yellow: #FAE744;
+    --red: #FF6666;
+    --blue: #4496D4;
+    --btn_slot: #373739;
+    
+}
+
+.OfflineTournamentTitle
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+}
+
+.ContainerCardOffline
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 650px;
+}
+
+.player_
+{
+    display: flex;
+    align-items: center;
+    height: 8%;
+    background-color: var(--bg2_);
+    border-radius: 10px;
+    font-size: 10px;
+    gap: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.player_ img
+{
+    border-radius: 15px;
+}
+
+.player_ > input
+{
+    flex: 1;
+    width: 100%;
+    background: none;
+    border: 0;
+    outline: none;
+    height: 3vh;
+    padding-left: 5px;
+    border-radius: 10px;
+
+}
+
+.player_ > input:valid
+{
+    border: 1px solid var(--shamrock);
+}
+
+.line_tourn
+{
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+}
+
+.TwoVsTwo
+{
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+}
+
+.usersTeams2v2
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 85%;
+    width: 70%;
+}
+
+.usersTeams2v2_final
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60%;
+    width: 70%;
+}
+
+.ContainerUsersTeams
+{
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    width: 23%;
+}
+
+.toor
+{
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+}
+
+.linee
+{
+    border: 0.7px solid #828E97;
+    width: 100%;
+}
+
+rooms-list-page {
+    position: relative;
+}
