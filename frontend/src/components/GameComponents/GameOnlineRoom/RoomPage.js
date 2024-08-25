@@ -5,6 +5,22 @@ import { RoomInfoCard } from "./RoomInfoCard.js";
 import { RoomOptions } from "./RoomOptions.js";
 import { RoomName } from "./RoomName/RoomName.js";
 
+class RoomPageFooter extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
+            <div class="ContainerFooter">
+                <div>
+                    <p style="display:none;" class="ContainerFooter_reminder">Unable to start the game: not enough players in the room</p>
+                </div>
+                <div class="BtnStartGame">
+                    <button type="button" id="BtnStartGame">Start game!</button>
+                </div>
+            </div>`;
+    }
+}
+
+customElements.define("room-page-footer", RoomPageFooter);
+
 export class RoomPage extends HTMLElement {
     constructor() {
         super();
@@ -49,6 +65,7 @@ export class RoomPage extends HTMLElement {
         this.querySelector(".ContainerCardParticipants").appendChild(this.participantsCard);
         this.querySelector(".ContainerCardParticipants").appendChild(this.chat);
         this.appendChild(new RoomOptions());
+        this.appendChild(new RoomPageFooter());
         this.addEventListener("gameModeChange", (evt) => {
             this.roomData.gamemode = evt.detail;
             this.infoCard.update(this.roomData);
@@ -70,7 +87,11 @@ export class RoomPage extends HTMLElement {
         document.addEventListener("roomNameChange", (evt) => {
             this.roomData.name = evt.detail;
             this.infoCard.update(this.roomData);
-        })
+        });
+        this.querySelector(".BtnStartGame").onclick = (e) => {
+            console.log("game start! | room data: ", this.roomData);
+            // error check, swtich the game scene here, whatever
+        }
     }
     disconnectedCallback() {
         // close the ws connection here

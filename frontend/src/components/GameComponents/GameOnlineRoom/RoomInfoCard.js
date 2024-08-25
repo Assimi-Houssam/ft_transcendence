@@ -19,7 +19,6 @@ export class RoomInfoCard extends HTMLElement {
     update(roomData) {
         this.roomData = roomData;
         this.connectedCallback();
-        console.log("okay");
     }
     connectedCallback() {
         this.innerHTML = `
