@@ -12,12 +12,12 @@ export class GroupBrackets extends HTMLElement {
         this.innerHTML = `        
             <div class="usersTeams2v2">
                 <div class="player_">
-                    <p><input type="text" id="player_bracket_name" placeholder="player name"> ${this.teamSize > 1 ? 
-                        `<input type="text" id="player_bracket_name" placeholder="player name">` : ""}</p>
+                    <input type="text" id="player_bracket_name" placeholder="player name"> ${this.teamSize > 1 ? 
+                        `<input type="text" id="player_bracket_name" placeholder="player name">` : ""}
                 </div>
                 <div class="player_">
-                    <p><input type="text" id="player_bracket_name" placeholder="player name"> 
-                        ${this.teamSize > 1 ? `& <input type="text" id="player_bracket_name" placeholder="player name">` : ""}</p>
+                    <input type="text" id="player_bracket_name" placeholder="player name"> 
+                        ${this.teamSize > 1 ? `<input type="text" id="player_bracket_name" placeholder="player name">` : ""}
                 </div>
             </div>
             <div class="line_tourn">
