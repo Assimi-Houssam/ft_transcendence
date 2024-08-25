@@ -2,10 +2,6 @@ import { OnlineMode } from "../components/GameComponents/GameMode/OnlineMode.js"
 import { OfflineMode } from "../components/GameComponents/GameMode/OfflineMode.js";
 import { router } from "../routes/routes.js";
 import { RoomsListPage } from "../components/GameComponents/GameOnlineRoom/RoomsListPage.js";
-import { GameMode } from "../components/GameComponents/GameOnlineRoom/ContainerGameOptions/GameMode.js";
-import { GameTime } from "../components/GameComponents/GameOnlineRoom/ContainerGameOptions/GameTime.js";
-import { GameTeamSize } from "../components/GameComponents/GameOnlineRoom/ContainerGameOptions/GameTeamSize.js";
-import { Customizations } from "../components/GameComponents/GameOnlineRoom/ContainerGameOptions/Customizations.js";
 import { InviteFriendsPopup } from "../components/GameComponents/GameOnlineRoom/InviteFriendsPopup.js";
 import { RoomName } from "../components/GameComponents/GameOnlineRoom/RoomName/RoomName.js";
 
