@@ -58,6 +58,7 @@ export class RoomPage extends HTMLElement {
         });
         this.addEventListener("teamSizeChange", (evt) => {
             this.roomData.teamSize = evt.detail;
+            ParticipantsCard.switchTeamSize();
             this.infoCard.update(this.roomData);
         });
         this.addEventListener("customizationChange", (evt) => {
@@ -66,7 +67,6 @@ export class RoomPage extends HTMLElement {
         });
         // im so sick of this, i dont care anymore
         document.addEventListener("roomNameChange", (evt) => {
-            console.log("name change");
             this.roomData.name = evt.detail;
             this.infoCard.update(this.roomData);
         })
