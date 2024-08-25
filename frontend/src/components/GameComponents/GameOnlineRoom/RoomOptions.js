@@ -48,7 +48,7 @@ customElements.define("room-option", RoomOption);
 export class RoomOptions extends HTMLElement {
 
     connectedCallback() {
-        this.appendChild(new RoomOption("Gamemode", "#581352", ["hockey", "pong"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange"));
+        this.appendChild(new RoomOption("Gamemode", "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange"));
         this.appendChild(new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange"));
         this.appendChild(new RoomOption("Team size", "#FAE744", ["1", "2"], [], "teamSizeChange"));
         this.appendChild(new RoomOption("Customizations", "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true));

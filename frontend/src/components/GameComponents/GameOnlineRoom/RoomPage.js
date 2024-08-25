@@ -21,6 +21,7 @@ export class RoomPage extends HTMLElement {
     constructor(){
         super();
         this.chat = new ChatGame();
+        this.infoCard = new RoomInfoCard(roomData);
     }
     async connectToRoom() {
         // ws connection here, when connecting to the ws, the server receives the room data and fills roomData 
@@ -42,25 +43,25 @@ export class RoomPage extends HTMLElement {
             <div class="content_line">
                 <div class="line_x"></div>
             </div>`;
-        this.querySelector(".room-info-container").appendChild(new RoomInfoCard(roomData.id, roomData.name, roomData.host, roomData.gamemode, roomData.teamSize, roomData.users, roomData.time));
+        this.querySelector(".room-info-container").appendChild(this.infoCard);
         this.querySelector(".ContainerCardParticipants").appendChild(ParticipantsCard);
         this.querySelector(".ContainerCardParticipants").appendChild(this.chat);
         this.appendChild(new RoomOptions());
         this.addEventListener("gameModeChange", (evt) => {
-            const newOptions = evt.detail;
-            console.log("gamemode selected:", newOptions);
+            roomData.gamemode = evt.detail;
+            this.infoCard.update(roomData);
         });
         this.addEventListener("timeChange", (evt) => {
-            const newOptions = evt.detail;
-            console.log("time opt selected:", newOptions);
+            roomData.time = evt.detail;
+            this.infoCard.update(roomData);
         });
         this.addEventListener("teamSizeChange", (evt) => {
-            const newOptions = evt.detail;
-            console.log("team size selected:", newOptions);
+            roomData.teamSize = evt.detail;
+            this.infoCard.update(roomData);
         });
         this.addEventListener("customizationChange", (evt) => {
-            const newOptions = evt.detail;
-            console.log("customization selected:", newOptions);
+            roomData.customization = evt.detail;
+            this.infoCard.update(roomData);
         });
     }
     disconnectedCallback() {
