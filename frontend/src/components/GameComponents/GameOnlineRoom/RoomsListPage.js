@@ -12,8 +12,20 @@ export class RoomsListPage extends HTMLElement {
     async fetchRooms() {
         // fetch rooms from the server here and fill `this.rooms`
         // testing:
+        let roomData = {
+            id: "1",
+            name: "lolz",
+            teamSize: "1",
+            time: "3",
+            gamemode: "pong",
+            customization: "",
+            host: "miyako",
+            users: ["temp"],
+            redTeam: [],
+            blueTeam: []
+        }
         for (let i = 1; i < 3; i++) {
-            this.rooms.push(new RoomInfoCard(i, "test room " + i, "miyako", "pong", "1v1", [], "3", true));
+            this.rooms.push(new RoomInfoCard(roomData, true));
         }
     }
     async connectedCallback() {

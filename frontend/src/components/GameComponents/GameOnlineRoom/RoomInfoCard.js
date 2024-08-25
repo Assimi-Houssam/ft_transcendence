@@ -60,7 +60,7 @@ export class RoomInfoCard extends HTMLElement {
                 if (!this.enabled)
                     return;
                 // redirect to the room here
-                router.navigate("/room/" + this.roomId);
+                router.navigate("/room/" + this.roomData.id);
                 console.log("clicked!, should redirect to /rooms/roomId maybe?");
             });
     }
