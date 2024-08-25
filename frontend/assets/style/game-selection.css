@@ -657,7 +657,7 @@ in-room-1vs1, in-room-2vs2 {
     height: 85%;
 }
 
-.sidebar-chatbox{
+.sidebar-chatbox {
     display:flex;
     align-items: flex-end;
     overflow-y: auto;
@@ -734,13 +734,11 @@ in-room-1vs1, in-room-2vs2 {
     padding-top: 10px;
 }
 
-.chat-container-content
-{
+.chat-container-content {
     height: 100%;
 }
 
-.content_line
-{
+.content_line {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -748,8 +746,7 @@ in-room-1vs1, in-room-2vs2 {
     height: 10px;
 }
 
-.line_x_chat
-{
+.line_x_chat {
     width: 50%;
     height: 1px;
     background: linear-gradient(to right, #363B4F, #fff, #363B4F);

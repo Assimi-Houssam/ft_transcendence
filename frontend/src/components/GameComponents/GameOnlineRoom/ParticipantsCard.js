@@ -38,7 +38,6 @@ class ParticipantsCard extends HTMLElement {
       }
       this.blueTeam[0] = participant;
       this.participantsCount++;
-      document.querySelector("room-info-card").participantJoined();
       this.connectedCallback();
       return;
     }
@@ -52,7 +51,6 @@ class ParticipantsCard extends HTMLElement {
         if (team[i] instanceof EmptySlot) {
           team[i] = participant;
           this.participantsCount++;
-          document.querySelector("room-info-card").participantJoined();
           this.connectedCallback();
           return;
         }
@@ -71,7 +69,6 @@ class ParticipantsCard extends HTMLElement {
       this.blueTeam[participantIdx] = new EmptySlot();
     }
     this.participantsCount--;
-    document.querySelector("room-info-card").participantLeft();
     this.connectedCallback();    
   }
 

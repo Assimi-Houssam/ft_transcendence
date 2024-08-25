@@ -10,7 +10,7 @@ export class ChatGame extends HTMLElement {
                     <div class="chat-header">Room Chat</div>
 
                     <div class="ContainerChat">
-                        <div class = "chat-box" id="chat-box">
+                        <div class ="chat-box" id="chat-box">
                             <div class ="sidebar-chatbox">
                                 <span class="timestamp">12:31:43</span> 
                                 <span class="username" style="color: purple;">mamazza..</span>
