@@ -1,6 +1,6 @@
 import { ParticipantEntry, EmptySlot } from "./ParticipantEntry.js";
 
-class ParticipantsCard extends HTMLElement {
+export class ParticipantsCard extends HTMLElement {
   constructor(teamSize = 1) {
     super();
     this.teamSize = teamSize;
@@ -145,4 +145,3 @@ class ParticipantsCard extends HTMLElement {
 }
 
 customElements.define("participants-card", ParticipantsCard);
-export default new ParticipantsCard();

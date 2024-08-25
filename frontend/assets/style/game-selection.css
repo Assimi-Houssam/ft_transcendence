@@ -603,7 +603,9 @@ participants-card {
     justify-content: space-between;
     align-items: center;
     height: 5vh;
-    padding: 1vh;
+    padding-top: 5vh;
+    padding-bottom: 0.8vh;
+    /* padding: 1vh; */
 }
 
 .ContainerFooter_reminder

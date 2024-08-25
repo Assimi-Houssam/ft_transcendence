@@ -35,7 +35,6 @@ export class EditRoomName extends HTMLElement {
                 return;
             }
             changeTitleRoom.replaceChildren(new RoomName(this.roomName));
-            console.log("dispatching...");
             document.dispatchEvent(new CustomEvent("roomNameChange", { detail: this.roomName, bubbles: true }));
         };
 
