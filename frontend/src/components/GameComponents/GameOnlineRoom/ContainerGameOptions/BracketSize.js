@@ -21,10 +21,8 @@ export class GameBracketSize extends HTMLElement{
                 BtnBracketSize.children[i].id = "gameBracketSize";
                 this.SellectBracketSize = BtnBracketSize.children[i];
                 roomData.bracketSize = this.SellectBracketSize.name;
-                console.log("roomData.bracketSize : ", roomData.bracketSize);
                 const tournament  = document.getElementById("tournament_node");
                 if (tournament) {
-                    console.log("parseInt(roomData.bracketSize) -> ", parseInt(roomData.bracketSize))
                     const tourn =  new Tournament(parseInt(roomData.teamSize), parseInt(roomData.bracketSize));
                     tournament.replaceChildren(tourn)
                 }

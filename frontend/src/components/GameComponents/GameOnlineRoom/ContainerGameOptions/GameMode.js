@@ -21,7 +21,8 @@ export class GameMode extends HTMLElement {
                 const selectedGameMode = btnGameMode.children[i];
                 roomData.gamemode  = selectedGameMode.name;
                 const roomTeamGameType = document.getElementById("RoomTeamGameType");
-                roomTeamGameType.src = roomData.gamemode === "hockey" ? "../../../assets/images/hockey.png" : "../../../assets/images/pong.png";
+                if (roomTeamGameType)
+                    roomTeamGameType.src = roomData.gamemode === "hockey" ? "../../../assets/images/hockey.png" : "../../../assets/images/pong.png";
                 console.log("gamemode: ", selectedGameMode.name);
             })
         }

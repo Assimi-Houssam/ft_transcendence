@@ -71,16 +71,22 @@ export class ContainerGameOptions extends HTMLElement {
 
         const btnStartGame = document.getElementById("BtnStartGame");
         btnStartGame.onclick = (e) => {
-            if (roomData.users && roomData.users.length >= 2) {
+            // if (roomData.users && roomData.users.length >= 2) {
+                const tournamentinputs = document.querySelectorAll("tournament-group input");
+                const playersName = [];
+                tournamentinputs.forEach(input => {
+                    playersName.push(input.value)
+                })
+                roomData["playersName"] = playersName;
                 console.log("start game: ", roomData);
-            }
-            else {
-                const reminder = document.querySelector(".ContainerFooter_reminder");
-                reminder.style.display = "block";
-                setTimeout(() => {
-                    reminder.style.display = "none";
-                }, 3000);
-            }
+            // }
+            // else {
+            //     const reminder = document.querySelector(".ContainerFooter_reminder");
+            //     reminder.style.display = "block";
+            //     setTimeout(() => {
+            //         reminder.style.display = "none";
+            //     }, 3000);
+            // }
         }
     }
 }

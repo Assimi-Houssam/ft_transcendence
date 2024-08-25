@@ -12,12 +12,12 @@ export class GroupBrackets extends HTMLElement {
         this.innerHTML = `        
             <div class="usersTeams2v2">
                 <div class="player_">
-                    <input type="text" id="player_bracket_name" placeholder="player name"> ${this.teamSize > 1 ? 
-                        `<input type="text" id="player_bracket_name" placeholder="player name">` : ""}
+                    <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required> ${this.teamSize > 1 ? 
+                        `<input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
                 </div>
                 <div class="player_">
-                    <input type="text" id="player_bracket_name" placeholder="player name"> 
-                        ${this.teamSize > 1 ? `<input type="text" id="player_bracket_name" placeholder="player name">` : ""}
+                    <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required> 
+                        ${this.teamSize > 1 ? `<input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
                 </div>
             </div>
             <div class="line_tourn">
@@ -39,7 +39,6 @@ export class Tournament extends HTMLElement {
         this.teamSize = teamSize;
         this.bracketsSize = bracketsSize;
         this.classList.add("ContainerCardOffline")
-        console.log("teamSize ----> ", teamSize);
     }
 
     connectedCallback(){

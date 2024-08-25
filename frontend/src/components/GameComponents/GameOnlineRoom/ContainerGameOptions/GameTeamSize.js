@@ -45,7 +45,6 @@ export class GameTeamSize extends HTMLElement {
                 if (router.route.path == "/tournament") {
                     const tournament  = document.getElementById("tournament_node");
                     if (tournament) {
-                        console.log("parseInt(roomData.bracketSize) -> ", parseInt(roomData.bracketSize))
                         const tourn =  new Tournament(parseInt(roomData.teamSize), parseInt(roomData.bracketSize));
                         tournament.replaceChildren(tourn)
                     }

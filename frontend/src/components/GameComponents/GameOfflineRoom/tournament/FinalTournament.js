@@ -5,7 +5,6 @@ export class FinalTournament extends HTMLElement {
         this.bracketsSize = bracketsSize;
         this.showNames = bracketsSize === 1;
         this.classList.add("ContainerUsersTeams");
-        console.log("teamSize -> ", teamSize)
     }
 
     connectedCallback() {
@@ -15,14 +14,14 @@ export class FinalTournament extends HTMLElement {
                     <div class="usersTeams2v2_final">
                         <div class="player_">
                             ${this.showNames ? `
-                                <input type="text" id="player_bracket_name" placeholder="player name">
-                                ${this.teamSize > 1 ? ` <input type="text" id="player_bracket_name" placeholder="player name">` : ""}
+                                <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>
+                                ${this.teamSize > 1 ? ` <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
                             ` : ""}
                         </div>
                         <div class="player_">
                         ${this.showNames ? `
-                            <input type="text" id="player_bracket_name" placeholder="player name">
-                            ${this.teamSize > 1 ? ` <input type="text" id="player_bracket_name" placeholder="player name">` : ""}
+                            <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>
+                            ${this.teamSize > 1 ? ` <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
                     ` : ""}
                         </div>
                     </div>

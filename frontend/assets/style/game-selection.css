@@ -1197,12 +1197,31 @@ offline-room-1vs1, offline-room-2vs1, offline-room-2vs2
     border-radius: 10px;
     font-size: 10px;
     gap: 10px;
-    padding: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .player_ img
 {
     border-radius: 15px;
+}
+
+.player_ > input
+{
+    flex: 1;
+    width: 100%;
+    background: none;
+    border: 0;
+    outline: none;
+    height: 3vh;
+    padding-left: 5px;
+    border-radius: 10px;
+
+}
+
+.player_ > input:valid
+{
+    border: 1px solid var(--shamrock);
 }
 
 .line_tourn
