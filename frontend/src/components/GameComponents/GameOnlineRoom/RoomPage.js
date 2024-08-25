@@ -1,5 +1,5 @@
 import { ChatGame } from "./ChatGame.js";
-import ParticipantsCard from "./ParticipantsCard.js";
+import { ParticipantsCard } from "./ParticipantsCard.js";
 import { Loader } from "../../Loading.js"
 import { RoomInfoCard } from "./RoomInfoCard.js";
 import { RoomOptions } from "./RoomOptions.js";
@@ -23,6 +23,7 @@ export class RoomPage extends HTMLElement {
         }
         this.chat = new ChatGame();
         this.infoCard = new RoomInfoCard(this.roomData);
+        this.participantsCard = new ParticipantsCard(Number(this.roomData.teamSize));
     }
     async connectToRoom() {
         // ws connection here, when connecting to the ws, the server receives the room data and fills roomData 
@@ -45,7 +46,7 @@ export class RoomPage extends HTMLElement {
             </div>`;
         this.querySelector(".room-name_").appendChild(new RoomName(this.roomData.name));
         this.querySelector(".room-info-container").appendChild(this.infoCard);
-        this.querySelector(".ContainerCardParticipants").appendChild(ParticipantsCard);
+        this.querySelector(".ContainerCardParticipants").appendChild(this.participantsCard);
         this.querySelector(".ContainerCardParticipants").appendChild(this.chat);
         this.appendChild(new RoomOptions());
         this.addEventListener("gameModeChange", (evt) => {
@@ -58,7 +59,7 @@ export class RoomPage extends HTMLElement {
         });
         this.addEventListener("teamSizeChange", (evt) => {
             this.roomData.teamSize = evt.detail;
-            ParticipantsCard.switchTeamSize();
+            this.participantsCard.switchTeamSize();
             this.infoCard.update(this.roomData);
         });
         this.addEventListener("customizationChange", (evt) => {
