@@ -569,11 +569,14 @@ message-input {
 .message {
     display: flex;
     color: gray;
+	word-break: break-word;
 }
 
 .container-msg
 {
 	padding-top: 1.2vh;
+	max-width: 80%;
+    overflow-wrap: break-word;
 }
 /* 
 .line-chat
