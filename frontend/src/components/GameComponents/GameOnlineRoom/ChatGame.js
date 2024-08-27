@@ -1,3 +1,27 @@
+import { CharPopup } from "./ChatPopup.js";
+
+export class ContainerChat extends HTMLElement {
+  constructor(){
+    super();
+  }
+
+  connectedCallback(){
+    this.innerHTML = `
+      <div class="ContainerChat">
+          <div class = "chat-box" id="chat-box">
+              <div id="chats" class="chat-box-content">
+              </div>
+          </div>
+          <div class="input_msg">
+              <input type="text" placeholder="Type something..." class="chat-input" id="chat-input">
+          </div>
+      </div>
+    `
+  }
+}
+
+customElements.define("container-chat", ContainerChat)
+
 class SingleMessage extends HTMLElement {
   constructor(message, username = "rouali") {
     super();
@@ -37,15 +61,7 @@ export class ChatGame extends HTMLElement {
             <div class = "chat-container">
                 <div class="chat-container-content">
                     <div class="chat-header">Room Chat</div>
-                    <div class="ContainerChat">
-                        <div class = "chat-box" id="chat-box">
-                            <div id="chats" class="chat-box-content">
-                            </div>
-                        </div>
-                        <div class="input_msg">
-                            <input type="text" placeholder="Type something..." class="chat-input" id="chat-input">
-                        </div>
-                    </div>
+                    <container-chat></container-chat>
                 </div>
             </div>
         `;
