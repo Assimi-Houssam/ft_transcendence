@@ -7,8 +7,8 @@ import asyncio
 class RoomConsumer(AsyncWebsocketConsumer):
     async def check_rooms(self):
         while True:
-            if int(time.time()) - self.last_msg_timestamp > 300: # 5 mins doing nothing would delete the room
-                print("no messages have been sent over the last 10 seconds, deleting room...")
+            curr_time = int(time.time())
+            if (curr_time - self.created_at > 1200) or (curr_time - self.last_msg_timestamp > 300):
                 await self.channel_layer.group_send(self.room_id, { "type": "disconnect_everyone" })
                 break
             await asyncio.sleep(1)
@@ -58,6 +58,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         cache.set("rooms", rooms)
         
         if (self.scope["user"].id == rooms[self.room_id]["host"]["id"]):
+            self.created_at = int(time.time())
             asyncio.create_task(self.check_rooms())
             
         await self.channel_layer.group_send(self.room_id, {"type": "user_join"})
