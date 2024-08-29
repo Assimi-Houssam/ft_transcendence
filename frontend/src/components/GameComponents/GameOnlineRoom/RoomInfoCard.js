@@ -5,7 +5,6 @@ export class RoomInfoCard extends HTMLElement {
     constructor(roomData, enabled = false) {
         super();
         this.roomData = roomData;
-        this.roomLenT = 1; // testing, should be this.roomUsers.length
         this.enabled = enabled;
     }
     update(roomData) {
@@ -40,8 +39,7 @@ export class RoomInfoCard extends HTMLElement {
                                     <p>hosted by <span style="color: var(--orchid)">${this.roomData.host.username}<span></p>
                                 </div>
                                 <div class="RoomUsers">
-                                    <img src="${this.roomData.host.pfp}" width="20px">
-                                </div>
+                                ${this.roomData.users.map(user => `<img src="${user.pfp}" width="20px">`).join('')}</div>
                             </div>
                         </div>
                     </div>
