@@ -5,48 +5,25 @@ export class ParticipantsCard extends HTMLElement {
         super();
         this.teamSize = Number(roomData.teamSize);
         this.hostId = roomData.host.id;
-        const redTeam = [];
-        const blueTeam = [];
-        console.log(`[pp::ctor] roomData: `, roomData.redTeam);
+        this.redTeam = [];
+        this.blueTeam = [];
         for (let redEntry of roomData.redTeam) {
-            if (Object.keys(redEntry).length)
-                redTeam.push(new ParticipantEntry(redEntry, redEntry.id === this.hostId));
-            else
-                redTeam.push(new EmptySlot());
+            this.redTeam.push(Object.keys(redEntry).length ? new ParticipantEntry(redEntry, redEntry.id === this.hostId) : new EmptySlot());
         }
-
         for (let blueEntry of roomData.blueTeam) {
-            if (Object.keys(blueEntry).length)      
-                blueTeam.push(new ParticipantEntry(blueEntry, blueEntry.id === this.hostId));
-            else
-                blueTeam.push(new EmptySlot());
+            this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId) : new EmptySlot());
         }
-
-        this.redTeam = redTeam;
-        this.blueTeam = blueTeam;
-
         this.participantsCount = roomData.users.length;
     }
     updateTeams(message) {
-        const redTeam = [];
-        const blueTeam = [];
-        console.log("[pp]: update team called:", message);
+        this.redTeam = [];
+        this.blueTeam = [];
         for (let redEntry of message.redTeam) {
-            if (Object.keys(redEntry).length)
-                redTeam.push(new ParticipantEntry(redEntry, redEntry.id === this.hostId));
-            else
-                redTeam.push(new EmptySlot());
+            this.redTeam.push(Object.keys(redEntry).length ? new ParticipantEntry(redEntry, redEntry.id === this.hostId) : new EmptySlot());
         }
-
         for (let blueEntry of message.blueTeam) {
-            if (Object.keys(blueEntry).length)      
-                blueTeam.push(new ParticipantEntry(blueEntry, blueEntry.id === this.hostId));
-            else
-                blueTeam.push(new EmptySlot());
+            this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId) : new EmptySlot());
         }
-        this.redTeam = redTeam;
-        this.blueTeam = blueTeam;
-        console.log(`[pp:updateteams]: `, this.redTeam, " | ", this.blueTeam);
         this.connectedCallback();
     }
     getTeams() {
@@ -69,11 +46,9 @@ export class ParticipantsCard extends HTMLElement {
     }
     // TODO: if all the team spots were already full, display a messagebox to tell the host that switching team sizes would kick other participants
     switchTeamSize(newTeamSize) {
-        // this.teamSize = this.teamSize === 1 ? 2 : 1;
         if (this.teamSize == newTeamSize)
             return;
         this.teamSize = Number(newTeamSize);
-        console.log("[pp]: team size:", this.teamSize);
         this.connectedCallback();
     }
 
@@ -82,69 +57,71 @@ export class ParticipantsCard extends HTMLElement {
         this.updateTeams(roomData);
     }
 
-connectedCallback() {
-    this.innerHTML = `
-        <div class="CardParticipants">
-            <div class="ParticipantsText">
-                <h4>Participants</h4>
-            </div>
-            <div class="ParticipantsTeam">
-            ${this.teamSize === 2 ? (`
-                <div class="TeamTitle">
-                    <p>Red team</p>
-                </div>`) : ""}
-            <div class="RedTeam"></div>
-            ${this.teamSize === 1 ? (`
-                <div class="vs">
-                    <p>vs</p>
-                </div>`) : ""}
-            ${this.teamSize === 2 ?( `
-                <div class="TeamTitle">
-                    <p>Blue team</p>
-                </div>`): ""}
-                <div class="BlueTeam"></div>
-            </div>
-        </div>`;
+    connectedCallback() {
+        this.innerHTML = `
+            <div class="CardParticipants">
+                <div class="ParticipantsText">
+                    <h4>Participants</h4>
+                </div>
+                <div class="ParticipantsTeam">
+                ${this.teamSize === 2 ? (`
+                    <div class="TeamTitle">
+                        <p>Red team</p>
+                    </div>`) : ""}
+                <div class="RedTeam"></div>
+                ${this.teamSize === 1 ? (`
+                    <div class="vs">
+                        <p>vs</p>
+                    </div>`) : ""}
+                ${this.teamSize === 2 ?( `
+                    <div class="TeamTitle">
+                        <p>Blue team</p>
+                    </div>`): ""}
+                    <div class="BlueTeam"></div>
+                </div>
+            </div>`;
 
-    for (let i = 0; i < this.teamSize; i++) {
-        this.redTeam[i].style.borderLeft = this.redTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--red)" : "";
-        this.blueTeam[i].style.borderLeft = this.blueTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--blue)" : "";
-        this.querySelector(".RedTeam").appendChild(this.redTeam[i]);
-        this.querySelector(".BlueTeam").appendChild(this.blueTeam[i]);
-    }
+        for (let i = 0; i < this.teamSize; i++) {
+            this.redTeam[i].style.borderLeft = this.redTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--red)" : "";
+            this.blueTeam[i].style.borderLeft = this.blueTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--blue)" : "";
+            this.querySelector(".RedTeam").appendChild(this.redTeam[i]);
+            this.querySelector(".BlueTeam").appendChild(this.blueTeam[i]);
+        }
 
-// yeah i fw with early returns way too much lol
-    if (this.teamSize === 1)
-        return;
+        // yeah i fw with early returns way too much lol
+        if (this.teamSize === 1)
+            return;
 
-    new Sortable(this.querySelector(".RedTeam"), {
-        group: "shared",
-        swap: true,
-        filter: ".undraggable",
-        onEnd: (evt) => {
-            this.redTeam = Array.from(this.querySelector(".RedTeam").children);
-            this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);
-            for (let i = 0; i < this.teamSize; i++) {
-                this.redTeam[i].style.borderLeft = this.redTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--red)" : "";
-                this.blueTeam[i].style.borderLeft = this.blueTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--blue)" : "";
+        new Sortable(this.querySelector(".RedTeam"), {
+            group: "shared",
+            swap: true,
+            filter: ".undraggable",
+            onEnd: (evt) => {
+                this.redTeam = Array.from(this.querySelector(".RedTeam").children);
+                this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);
+                for (let i = 0; i < this.teamSize; i++) {
+                    this.redTeam[i].style.borderLeft = this.redTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--red)" : "";
+                    this.blueTeam[i].style.borderLeft = this.blueTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--blue)" : "";
+                }
+
+                this.dispatchEvent(new CustomEvent("participantsSwitch", {detail: this.getTeams(), bubbles: true}));
             }
+        });
 
-            this.dispatchEvent(new CustomEvent("participantsSwitch", {detail: this.getTeams(), bubbles: true}));
-        }});
-
-    new Sortable(this.querySelector(".BlueTeam"), {
-        group: "shared",
-        swap: true,
-        filter: ".undraggable",
-        onEnd: (evt) => {
-            this.redTeam = Array.from(this.querySelector(".RedTeam").children);
-            this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);
-            for (let i = 0; i < this.teamSize; i++) {
-                this.redTeam[i].style.borderLeft = this.redTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--red)" : "";
-                this.blueTeam[i].style.borderLeft = this.blueTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--blue)" : "";
+        new Sortable(this.querySelector(".BlueTeam"), {
+            group: "shared",
+            swap: true,
+            filter: ".undraggable",
+            onEnd: (evt) => {
+                this.redTeam = Array.from(this.querySelector(".RedTeam").children);
+                this.blueTeam = Array.from(this.querySelector(".BlueTeam").children);
+                for (let i = 0; i < this.teamSize; i++) {
+                    this.redTeam[i].style.borderLeft = this.redTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--red)" : "";
+                    this.blueTeam[i].style.borderLeft = this.blueTeam[i] instanceof ParticipantEntry && this.teamSize === 2 ? "0.7vh solid var(--blue)" : "";
+                }
+                this.dispatchEvent(new CustomEvent("participantsSwitch", {detail: this.getTeams(), bubbles: true}));
             }
-            this.dispatchEvent(new CustomEvent("participantsSwitch", {detail: this.getTeams(), bubbles: true}));
-        }});
+        });
     }
 }
 

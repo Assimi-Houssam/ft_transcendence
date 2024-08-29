@@ -255,6 +255,23 @@ class RoomConsumer(AsyncWebsocketConsumer):
         cache.set("rooms", rooms)
         await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
 
+    async def room_name_change(self, event):
+        rooms = cache.get("rooms", {})
+        if (self.scope["user"].id != rooms[self.room_id]["host"]["id"]):
+            await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
+            return
+        name = event["message"]
+        if (len(name) > 25):
+            return
+        if (name.isascii() == False):
+            return
+        
+        rooms[self.room_id]["name"] = name
+        cache.set("rooms", rooms)
+        
+        await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
+
+
     async def receive(self, text_data):
         try:
             event = json.loads(text_data)
