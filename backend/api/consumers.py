@@ -1,17 +1,27 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
+import time
+import asyncio
 
 class RoomConsumer(AsyncWebsocketConsumer):
+    async def check_rooms(self):
+        while True:
+            if int(time.time()) - self.last_msg_timestamp > 300: # 5 mins doing nothing would delete the room
+                print("no messages have been sent over the last 10 seconds, deleting room...")
+                await self.channel_layer.group_send(self.room_id, { "type": "disconnect_everyone" })
+                break
+            await asyncio.sleep(1)
+    
     async def connect(self):
         self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
+        self.last_msg_timestamp = int(time.time())
         rooms = cache.get("rooms", {})
 
         if self.room_id not in rooms:
             await self.close()
             return
 
-        await self.channel_layer.group_add(self.room_id, self.channel_name)
 
         # todo: check if the user is connected to another room
         for user in rooms[self.room_id]["users"]:
@@ -19,6 +29,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 await self.close()
                 return
 
+        await self.channel_layer.group_add(self.room_id, self.channel_name)
+        
         if (int(rooms[self.room_id]["teamSize"]) * 2 == len(rooms[self.room_id]["users"])):
             await self.close()
             return
@@ -44,7 +56,10 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
         rooms[self.room_id]["users"].append(user)
         cache.set("rooms", rooms)
-
+        
+        if (self.scope["user"].id == rooms[self.room_id]["host"]["id"]):
+            asyncio.create_task(self.check_rooms())
+            
         await self.channel_layer.group_send(self.room_id, {"type": "user_join"})
     
     async def disconnect_everyone(self, event):
@@ -252,5 +267,5 @@ class RoomConsumer(AsyncWebsocketConsumer):
         rooms = cache.get("rooms", {})
         if (self.scope["user"].id != rooms[self.room_id]["host"]["id"]):
             return
-
+        self.last_msg_timestamp = int(time.time())
         await self.channel_layer.group_send(self.room_id, {"type": event["type"], "message": event["message"]})
