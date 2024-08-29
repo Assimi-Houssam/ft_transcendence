@@ -1,8 +1,10 @@
 import { GameSelection } from "../../../pages/GameSelectionMenu.js"
 import { router } from "../../../routes/routes.js";
 import { RoomInfoCard } from "./RoomInfoCard.js";
-import { RoomPage } from "./RoomPage.js";
 import { Loader } from "../../Loading.js";
+import ApiWrapper from "../../../utils/ApiWrapper.js";
+import { RoomPage } from "./RoomPage.js";
+import Toast from "../../Toast.js";
 
 export class RoomsListPage extends HTMLElement {
     constructor() {
@@ -12,20 +14,16 @@ export class RoomsListPage extends HTMLElement {
     async fetchRooms() {
         // fetch rooms from the server here and fill `this.rooms`
         // testing:
-        let roomData = {
-            id: "1",
-            name: "lolz",
-            teamSize: "1",
-            time: "3",
-            gamemode: "pong",
-            customization: "",
-            host: "miyako",
-            users: ["temp"],
-            redTeam: [],
-            blueTeam: []
+        const resp = await ApiWrapper.get("/rooms/list");
+        if (!resp.ok) {
+            console.log("an error has occured fetching");
+            return;
         }
-        for (let i = 1; i < 3; i++) {
-            this.rooms.push(new RoomInfoCard(roomData, true));
+        const json = await resp.json();
+        const rooms = JSON.parse(json);
+        for (let room of rooms) {
+            console.log(room);
+            this.rooms.push(new RoomInfoCard(room, true));
         }
     }
     async connectedCallback() {
@@ -35,13 +33,29 @@ export class RoomsListPage extends HTMLElement {
             <div class="ContainerOnlineRoom">
                 <div class="BtnCreateRoom">
                     <h1>Online rooms</h1>
-                    <button name="CreateRoom" id="Room">Create room</button>
+                    <button name="CreateRoom" id="Room" class="CreateRoomBtn">Create room</button>
                 </div>
                 <div class="content_line">
                     <div class="line_x"></div>
                 </div>
                 <div class="RoomListContainer"></div>
             </div>`;
+        this.querySelector(".CreateRoomBtn").onclick = async () => {
+            const req = await ApiWrapper.post("/rooms/create");
+            if (req.status === 500) {
+                Toast.error("An internal server error occured");
+                return;
+            }
+            if (!req.ok) {
+                const json = await req.json();
+                Toast.error(json.detail);
+                return;
+            }
+            const json = await req.json();
+            const parsed = JSON.parse(json);
+            console.log("room created!, room data:", parsed);
+            router.navigate("/room/" + parsed.id, new RoomPage(parsed));
+        }
         for (let room of this.rooms) {
             this.querySelector(".RoomListContainer").appendChild(room);
         }

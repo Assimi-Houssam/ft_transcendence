@@ -1,4 +1,5 @@
 import { router } from "../../../routes/routes.js";
+import { RoomPage } from "./RoomPage.js";
 
 export class RoomInfoCard extends HTMLElement {
     constructor(roomData, enabled = false) {
@@ -6,15 +7,6 @@ export class RoomInfoCard extends HTMLElement {
         this.roomData = roomData;
         this.roomLenT = 1; // testing, should be this.roomUsers.length
         this.enabled = enabled;
-    }
-    // temporary, will be deleted 
-    participantJoined() {
-        this.roomLenT++;
-        this.connectedCallback();
-    }
-    participantLeft() {
-        this.roomLenT--;
-        this.connectedCallback();
     }
     update(roomData) {
         this.roomData = roomData;
@@ -45,10 +37,10 @@ export class RoomInfoCard extends HTMLElement {
                                     <p id="SizePlayers">${this.roomData.users.length}/${this.roomData.teamSize === "1" ? "2" : "4"} Players</p>
                                 </div>
                                 <div class="RoomHosted">
-                                    <p>hosted by <span style="color: var(--orchid)">${this.roomData.host}<span></p>
+                                    <p>hosted by <span style="color: var(--orchid)">${this.roomData.host.username}<span></p>
                                 </div>
                                 <div class="RoomUsers">
-                                    <img src="../../../assets/images/p1.png" width="20px">
+                                    <img src="${this.roomData.host.pfp}" width="20px">
                                 </div>
                             </div>
                         </div>
@@ -58,9 +50,8 @@ export class RoomInfoCard extends HTMLElement {
             this.addEventListener("click", () => {
                 if (!this.enabled)
                     return;
-                // redirect to the room here
-                router.navigate("/room/" + this.roomData.id);
-                console.log("clicked!, should redirect to /rooms/roomId maybe?");
+                console.log("switch to roomspage, roomdata:", this.roomData);
+                router.navigate("/room/" + this.roomData.id, new RoomPage(this.roomData));
             });
     }
 }

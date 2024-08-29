@@ -1,10 +1,16 @@
 import { ChatGame } from "./ChatGame.js";
 import { ParticipantsCard } from "./ParticipantsCard.js";
+import { ParticipantEntry } from "./ParticipantEntry.js";
 import { Loader } from "../../Loading.js"
 import { RoomInfoCard } from "./RoomInfoCard.js";
 import { RoomOptions } from "./RoomOptions.js";
 import { RoomName } from "./RoomName/RoomName.js";
+import ApiWrapper from "../../../utils/ApiWrapper.js";
+import userInfo from "../../../utils/services/userInfo.services.js";
+import { router } from "../../../routes/routes.js";
+import Toast from "../../Toast.js";
 
+// todo: take care of this
 class RoomPageFooter extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
@@ -22,30 +28,45 @@ class RoomPageFooter extends HTMLElement {
 customElements.define("room-page-footer", RoomPageFooter);
 
 export class RoomPage extends HTMLElement {
-    constructor() {
+    constructor(roomData) {
         super();
-        // temporary
-        this.roomData = {
-            id: "1",
-            name: "lolz",
-            teamSize: "1",
-            time: "3",
-            gamemode: "pong",
-            customization: "",
-            host: "miyako",
-            users: ["temp"],
-            redTeam: [],
-            blueTeam: []
-        }
+        this.roomData = roomData
+        this.roomId = roomData.id;
         this.chat = new ChatGame();
         this.infoCard = new RoomInfoCard(this.roomData);
-        this.participantsCard = new ParticipantsCard(Number(this.roomData.teamSize));
+        console.log("RoomPage ctor called, roomdata:", roomData);
+        this.participantsCard = new ParticipantsCard(roomData);
+        this.roomOptions = new RoomOptions();
+        this.socket = null;
     }
     async connectToRoom() {
-        // ws connection here, when connecting to the ws, the server receives the room data and fills roomData 
+        this.socket = new WebSocket("ws://localhost:8000/ws/room/" + this.roomId + "/");
+    
+        this.socket.onclose = (evt) => {
+            console.log("socket connection CLOSED");
+            Toast.error("An error occured connecting to the room");
+            router.navigate("/rooms");
+        }
+    
+        const openPromise = new Promise(resolve => {
+            this.socket.onopen = (evt) => { resolve(); };
+        });
+    
+        this.socket.addEventListener("message", (event) => {
+            const parsed_json = JSON.parse(event.data);
+            if (parsed_json.hasOwnProperty("room_data")) {
+                console.log("ROOM DATA EVENT RECEIVED:", parsed_json.room_data);
+                this.roomData = parsed_json.room_data;
+                this.participantsCard.update(this.roomData);
+                this.infoCard.update(this.roomData);
+                this.roomOptions.update(this.roomData);
+                return;
+            }
+        });
+        await openPromise;
     }
     async connectedCallback() {
-        this.innerHTML = new Loader();
+        this.innerHTML = new Loader().outerHTML;
         await this.connectToRoom();
         this.innerHTML = `
             <div class="room-info-container">
@@ -64,29 +85,32 @@ export class RoomPage extends HTMLElement {
         this.querySelector(".room-info-container").appendChild(this.infoCard);
         this.querySelector(".ContainerCardParticipants").appendChild(this.participantsCard);
         this.querySelector(".ContainerCardParticipants").appendChild(this.chat);
-        this.appendChild(new RoomOptions());
+        this.appendChild(this.roomOptions);
         this.appendChild(new RoomPageFooter());
         this.addEventListener("gameModeChange", (evt) => {
-            this.roomData.gamemode = evt.detail;
-            this.infoCard.update(this.roomData);
+            this.socket.send(JSON.stringify({"type": "gamemode_change", "message": evt.detail}));
         });
         this.addEventListener("timeChange", (evt) => {
-            this.roomData.time = evt.detail;
-            this.infoCard.update(this.roomData);
+            this.socket.send(JSON.stringify({"type": "time_change", "message": evt.detail}));
         });
         this.addEventListener("teamSizeChange", (evt) => {
-            this.roomData.teamSize = evt.detail;
-            this.participantsCard.switchTeamSize();
-            this.infoCard.update(this.roomData);
+            this.socket.send(JSON.stringify({"type": "team_size_change", "message": evt.detail}));
         });
         this.addEventListener("customizationChange", (evt) => {
-            this.roomData.customization = evt.detail;
+            this.socket.send(JSON.stringify({"type": "customization_change", "message": evt.detail}));
             this.infoCard.update(this.roomData);
+        });
+        this.addEventListener("participantsSwitch", (evt) => {
+            this.socket.send(JSON.stringify({"type": "team_change", "message": {"redTeam": evt.detail.redTeam, "blueTeam": evt.detail.blueTeam}}));
+        });
+        this.addEventListener("participantkick", (evt) => {
+            this.socket.send(JSON.stringify({"type": "team_kick", "message": {"user": evt.detail.getUserInfo()}}));
         });
         // im so sick of this, i dont care anymore
         document.addEventListener("roomNameChange", (evt) => {
-            this.roomData.name = evt.detail;
-            this.infoCard.update(this.roomData);
+            // this.socket.send(JSON.stringify({"type": "room_name_change", "message": evt.detail}));
+            // this.roomData.name = evt.detail;
+            // this.infoCard.update(this.roomData);
         });
         this.querySelector(".BtnStartGame").onclick = (e) => {
             console.log("game start! | room data: ", this.roomData);
@@ -94,7 +118,7 @@ export class RoomPage extends HTMLElement {
         }
     }
     disconnectedCallback() {
-        // close the ws connection here
+        this.socket.close();
     }
 }
 
