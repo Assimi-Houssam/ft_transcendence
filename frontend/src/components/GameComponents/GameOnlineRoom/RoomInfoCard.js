@@ -1,4 +1,5 @@
 import { router } from "../../../routes/routes.js";
+import Toast from "../../Toast.js";
 import { RoomPage } from "./RoomPage.js";
 
 export class RoomInfoCard extends HTMLElement {
@@ -48,7 +49,15 @@ export class RoomInfoCard extends HTMLElement {
             this.addEventListener("click", () => {
                 if (!this.enabled)
                     return;
-                console.log("switch to roomspage, roomdata:", this.roomData);
+                console.log("ul: ", this.roomData.users.length, " lolz:", Number(this.roomData.teamSize) * 2);
+                if (this.roomData.users.length === Number(this.roomData.teamSize) * 2) {
+                    Toast.error("This room is full");
+                    return;
+                }
+                if (this.roomData.started === "true") {
+                    Toast.error("This room has already started");
+                    return;
+                }
                 router.navigate("/room/" + this.roomData.id, new RoomPage(this.roomData));
             });
     }

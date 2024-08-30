@@ -9,7 +9,6 @@ export default async function userInfo() {
     try {
         const res = await ApiWrapper.get("/me");
         const data = await res.json();
-        console.log("[UserInfoService]: /me returned: ", data);
         return data;
     } catch(err) {
         Toast.error(err);

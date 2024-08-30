@@ -38,10 +38,11 @@ export class RoomPage extends HTMLElement {
         this.participantsCard = new ParticipantsCard(roomData);
         this.roomOptions = new RoomOptions();
         this.socket = null;
+        this.user = null;
     }
     async connectToRoom() {
         this.socket = new WebSocket("ws://localhost:8000/ws/room/" + this.roomId + "/");
-    
+        // this.user = await userInfo();
         this.socket.onclose = (evt) => {
             console.log("socket connection CLOSED, error code:", evt.code, " reason: ", evt.reason);
             if (evt.code === 4001) {
@@ -123,7 +124,6 @@ export class RoomPage extends HTMLElement {
         });
         this.querySelector(".BtnStartGame").onclick = (e) => {
             console.log("game start! | room data: ", this.roomData);
-            // error check, swtich the game scene here, whatever
             this.socket.send(JSON.stringify({"type": "start_game", "message": ""}));
         }
     }
