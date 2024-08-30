@@ -5,6 +5,7 @@ import { Loader } from "../components/Loading.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import { RoomPage } from "./RoomPage.js";
 import Toast from "../components/Toast.js";
+import { PreloaderMini } from "../components/Loading.js";
 
 export class RoomsListPage extends HTMLElement {
     constructor() {
@@ -32,7 +33,10 @@ export class RoomsListPage extends HTMLElement {
         this.innerHTML = `
             <div class="ContainerOnlineRoom">
                 <div class="BtnCreateRoom">
-                    <h1>Online rooms</h1>
+                    <div class="OnlineRoomsContainer">
+                        <h1>Online rooms</h1>
+                        <preloader-mini></preloader-mini>
+                    </div>
                     <button name="CreateRoom" id="Room" class="CreateRoomBtn">Create room</button>
                 </div>
                 <div class="content_line">
@@ -57,11 +61,23 @@ export class RoomsListPage extends HTMLElement {
             router.navigate("/room/" + parsed.id, new RoomPage(parsed));
         }
         this.fetchLoop = setInterval(async () => {
+            const loader = this.querySelector("preloader-mini");
+            anime({
+                targets: loader,
+                opacity: [0, 1],
+                duration: 250,
+            });
             await this.fetchRooms();
+
             this.querySelector(".RoomListContainer").innerHTML = "";
             for (let room of this.rooms) {
                 this.querySelector(".RoomListContainer").appendChild(room);
             }
+            anime({
+                targets: loader,
+                opacity: [1, 0],
+                duration: 5000,
+            });
         }, 3000);
     }
     disconnectedCallback() {

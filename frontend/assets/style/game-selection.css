@@ -1063,3 +1063,14 @@ room-option {
     align-items: center;
     gap: 10px;
 }
+
+.OnlineRoomsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}
+
+.OnlineRoomsContainer > preloader-mini {
+    opacity: 0;
+}
