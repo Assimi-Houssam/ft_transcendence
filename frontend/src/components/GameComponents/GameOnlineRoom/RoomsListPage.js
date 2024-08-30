@@ -10,6 +10,7 @@ export class RoomsListPage extends HTMLElement {
     constructor() {
         super();
         this.rooms = [];
+        this.fetchLoop = null;
     }
     async fetchRooms() {
         const resp = await ApiWrapper.get("/rooms/list");
@@ -55,13 +56,19 @@ export class RoomsListPage extends HTMLElement {
             console.log("room created!, room data:", parsed);
             router.navigate("/room/" + parsed.id, new RoomPage(parsed));
         }
-        setInterval(async () => {
+        this.fetchLoop = setInterval(async () => {
             await this.fetchRooms();
             this.querySelector(".RoomListContainer").innerHTML = "";
             for (let room of this.rooms) {
                 this.querySelector(".RoomListContainer").appendChild(room);
             }
         }, 3000);
+    }
+    disconnectedCallback() {
+        if (this.fetchLoop) {
+            clearInterval(this.fetchLoop);
+            this.fetchLoop = null;
+        }
     }
 }
 

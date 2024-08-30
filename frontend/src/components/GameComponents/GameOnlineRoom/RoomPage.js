@@ -42,12 +42,10 @@ export class RoomPage extends HTMLElement {
     }
     async connectToRoom() {
         this.socket = new WebSocket("ws://localhost:8000/ws/room/" + this.roomId + "/");
-        // this.user = await userInfo();
         this.socket.onclose = (evt) => {
             console.log("socket connection CLOSED, error code:", evt.code, " reason: ", evt.reason);
             if (evt.code === 4001) {
                 Toast.success("Game started!");
-                // temporary, should switch the game page
                 router.navigate("/home");
                 return;
             }
