@@ -1,5 +1,5 @@
 class RoomOption extends HTMLElement {
-    constructor(name, color, options, optionsImgs, evtName, optional = false) {
+    constructor(name, color, options, optionsImgs, evtName, optional = false, locked = false) {
         super();
         this.name = name;
         this.color = color;
@@ -8,6 +8,7 @@ class RoomOption extends HTMLElement {
         this.evtName = evtName;
         this.optional = optional;
         this.selected = !this.optional ? options[0] : null;
+        this.locked = locked;
     }
     connectedCallback() {
         this.innerHTML = `
@@ -25,7 +26,10 @@ class RoomOption extends HTMLElement {
         if (!this.optional)
             buttons[0].style.backgroundColor = this.color;
 
-        buttons.forEach((elem) => { elem.addEventListener("click", (evt) => {
+        buttons.forEach((elem) => {
+            if (this.locked)
+                return; 
+            elem.addEventListener("click", (evt) => {
             const target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
             if (this.selected === target.name && !this.optional)
                 return;
@@ -58,12 +62,12 @@ customElements.define("room-option", RoomOption);
 
 
 export class RoomOptions extends HTMLElement {
-    constructor(roomData = null) {
+    constructor(roomData = null, locked = false) {
         super();
-        this.gameModeOpt = new RoomOption("Gamemode", "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange");
-        this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange");
-        this.teamSizeOpt = new RoomOption("Team size", "#FAE744", ["1", "2"], [], "teamSizeChange");
-        this.customizationsOpt = new RoomOption("Customizations", "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true);
+        this.gameModeOpt = new RoomOption("Gamemode", "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange", false, locked);
+        this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange", false, locked);
+        this.teamSizeOpt = new RoomOption("Team size", "#FAE744", ["1", "2"], [], "teamSizeChange", false, locked);
+        this.customizationsOpt = new RoomOption("Customizations", "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true, locked);
         this.roomData = roomData;
     }
     connectedCallback() {

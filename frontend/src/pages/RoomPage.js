@@ -30,13 +30,17 @@ customElements.define("room-page-footer", RoomPageFooter);
 export class RoomPage extends HTMLElement {
     constructor(roomData) {
         super();
+        if (!roomData) {
+            Toast.error("The room doesnt exist anymore");
+            router.navigate("/home");
+        }
         this.roomData = roomData
         this.roomId = roomData.id;
         this.chat = new ChatGame();
         this.infoCard = new RoomInfoCard(this.roomData);
         console.log("RoomPage ctor called, roomdata:", roomData);
         this.participantsCard = new ParticipantsCard(roomData);
-        this.roomOptions = new RoomOptions();
+        this.roomOptions = new RoomOptions(this.roomData, false); // TODO: lock user input if the room is the host
         this.socket = null;
         this.user = null;
     }
