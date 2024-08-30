@@ -51,6 +51,11 @@ export class RoomPage extends HTMLElement {
                 router.navigate("/home");
                 return;
             }
+            if (evt.code === 4002) {
+                Toast.error("You've been kicked from the room");
+                router.navigate("/rooms");
+                return;
+            }
             Toast.error("An error occured connecting to the room: " + evt.reason);
             router.navigate("/rooms");
         }
@@ -124,6 +129,7 @@ export class RoomPage extends HTMLElement {
         });
         this.querySelector(".BtnStartGame").onclick = (e) => {
             console.log("game start! | room data: ", this.roomData);
+            // todo: check if the host is the same as the current logged in user
             this.socket.send(JSON.stringify({"type": "start_game", "message": ""}));
         }
     }

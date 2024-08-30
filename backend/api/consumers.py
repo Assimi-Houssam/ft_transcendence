@@ -238,7 +238,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
         if (target_user["id"] == self.scope["user"].id):
-            await self.close()
+            await self.close(4002, "You've been kicked by the host")
             return
         if (self.scope["user"].id != rooms[self.room_id]["host"]["id"]):
             await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
