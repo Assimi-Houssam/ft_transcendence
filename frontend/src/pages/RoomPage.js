@@ -33,6 +33,7 @@ export class RoomPage extends HTMLElement {
         if (!roomData) {
             Toast.error("The room doesnt exist anymore");
             router.navigate("/home");
+            return;
         }
         this.roomData = roomData
         this.roomId = roomData.id;
