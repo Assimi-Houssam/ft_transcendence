@@ -49,7 +49,6 @@ export class RoomInfoCard extends HTMLElement {
             this.addEventListener("click", () => {
                 if (!this.enabled)
                     return;
-                console.log("ul: ", this.roomData.users.length, " lolz:", Number(this.roomData.teamSize) * 2);
                 if (this.roomData.users.length === Number(this.roomData.teamSize) * 2) {
                     Toast.error("This room is full");
                     return;
