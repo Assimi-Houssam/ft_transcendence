@@ -1,7 +1,7 @@
 import { OnlineMode } from "../components/GameComponents/GameMode/OnlineMode.js";
 import { OfflineMode } from "../components/GameComponents/GameMode/OfflineMode.js";
 import { router } from "../routes/routes.js";
-import { RoomsListPage } from "../components/GameComponents/GameOnlineRoom/RoomsListPage.js";
+import { RoomsListPage } from "../pages/RoomsListPage.js";
 import { InviteFriendsPopup } from "../components/GameComponents/GameOnlineRoom/InviteFriendsPopup.js";
 import { RoomName } from "../components/GameComponents/GameOnlineRoom/RoomName/RoomName.js";
 

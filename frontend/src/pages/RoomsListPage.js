@@ -1,10 +1,10 @@
-import { GameSelection } from "../../../pages/GameSelectionMenu.js"
-import { router } from "../../../routes/routes.js";
-import { RoomInfoCard } from "./RoomInfoCard.js";
-import { Loader } from "../../Loading.js";
-import ApiWrapper from "../../../utils/ApiWrapper.js";
+import { GameSelection } from "./GameSelectionMenu.js"
+import { router } from "../routes/routes.js";
+import { RoomInfoCard } from "../components/GameComponents/GameOnlineRoom/RoomInfoCard.js";
+import { Loader } from "../components/Loading.js";
+import ApiWrapper from "../utils/ApiWrapper.js";
 import { RoomPage } from "./RoomPage.js";
-import Toast from "../../Toast.js";
+import Toast from "../components/Toast.js";
 
 export class RoomsListPage extends HTMLElement {
     constructor() {

@@ -1,6 +1,6 @@
 import { router } from "../../../routes/routes.js";
 import Toast from "../../Toast.js";
-import { RoomPage } from "./RoomPage.js";
+import { RoomPage } from "../../../pages/RoomPage.js";
 
 export class RoomInfoCard extends HTMLElement {
     constructor(roomData, enabled = false) {

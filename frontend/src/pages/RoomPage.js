@@ -1,14 +1,14 @@
-import { ChatGame } from "./ChatGame.js";
-import { ParticipantsCard } from "./ParticipantsCard.js";
-import { ParticipantEntry } from "./ParticipantEntry.js";
-import { Loader } from "../../Loading.js"
-import { RoomInfoCard } from "./RoomInfoCard.js";
-import { RoomOptions } from "./RoomOptions.js";
-import { RoomName } from "./RoomName/RoomName.js";
-import ApiWrapper from "../../../utils/ApiWrapper.js";
-import userInfo from "../../../utils/services/userInfo.services.js";
-import { router } from "../../../routes/routes.js";
-import Toast from "../../Toast.js";
+import { ChatGame } from "../components/GameComponents/GameOnlineRoom/ChatGame.js";
+import { ParticipantsCard } from "../components/GameComponents/GameOnlineRoom/ParticipantsCard.js";
+import { ParticipantEntry } from "../components/GameComponents/GameOnlineRoom/ParticipantEntry.js";
+import { Loader } from "../components/Loading.js"
+import { RoomInfoCard } from "../components/GameComponents/GameOnlineRoom/RoomInfoCard.js";
+import { RoomOptions } from "../components/GameComponents/GameOnlineRoom/RoomOptions.js";
+import { RoomName } from "../components/GameComponents/GameOnlineRoom/RoomName/RoomName.js";
+import ApiWrapper from "../utils/ApiWrapper.js";
+import userInfo from "../utils/services/userInfo.services.js";
+import { router } from "../routes/routes.js";
+import Toast from "../components/Toast.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
