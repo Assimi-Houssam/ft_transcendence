@@ -12,8 +12,6 @@ export class RoomsListPage extends HTMLElement {
         this.rooms = [];
     }
     async fetchRooms() {
-        // fetch rooms from the server here and fill `this.rooms`
-        // testing:
         const resp = await ApiWrapper.get("/rooms/list");
         if (!resp.ok) {
             console.log("an error has occured fetching");
@@ -21,8 +19,9 @@ export class RoomsListPage extends HTMLElement {
         }
         const json = await resp.json();
         const rooms = JSON.parse(json);
+        console.log("[Rooms fetched]:", rooms);
+        this.rooms = [];
         for (let room of rooms) {
-            console.log(room);
             this.rooms.push(new RoomInfoCard(room, true));
         }
     }
@@ -56,9 +55,13 @@ export class RoomsListPage extends HTMLElement {
             console.log("room created!, room data:", parsed);
             router.navigate("/room/" + parsed.id, new RoomPage(parsed));
         }
-        for (let room of this.rooms) {
-            this.querySelector(".RoomListContainer").appendChild(room);
-        }
+        setInterval(async () => {
+            await this.fetchRooms();
+            this.querySelector(".RoomListContainer").innerHTML = "";
+            for (let room of this.rooms) {
+                this.querySelector(".RoomListContainer").appendChild(room);
+            }
+        }, 3000);
     }
 }
 
