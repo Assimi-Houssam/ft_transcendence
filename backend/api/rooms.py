@@ -37,7 +37,8 @@ def create_room(request):
         "host": host_dict,
         "users": [],
         "redTeam": [{}] * 4,
-        "blueTeam": [{}] * 4
+        "blueTeam": [{}] * 4,
+        "started": "false"
     }
     rooms[room_id] = room_data
     cache.set("rooms", rooms)

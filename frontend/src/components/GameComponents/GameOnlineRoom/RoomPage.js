@@ -43,10 +43,14 @@ export class RoomPage extends HTMLElement {
         this.socket = new WebSocket("ws://localhost:8000/ws/room/" + this.roomId + "/");
     
         this.socket.onclose = (evt) => {
-            // todo: check if the server closed the connection
-            // todo: make the server send errors
-            console.log("socket connection CLOSED");
-            Toast.error("An error occured connecting to the room");
+            console.log("socket connection CLOSED, error code:", evt.code, " reason: ", evt.reason);
+            if (evt.code === 4001) {
+                Toast.success("Game started!");
+                // temporary, should switch the game page
+                router.navigate("/home");
+                return;
+            }
+            Toast.error("An error occured connecting to the room: " + evt.reason);
             router.navigate("/rooms");
         }
     
@@ -56,13 +60,16 @@ export class RoomPage extends HTMLElement {
     
         this.socket.addEventListener("message", (event) => {
             const parsed_json = JSON.parse(event.data);
+            if (parsed_json.hasOwnProperty("message") && parsed_json.message == "start_game") {
+                const room_data_s = parsed_json.room_data;
+                console.log(room_data_s);
+                return;
+            }
             if (parsed_json.hasOwnProperty("room_data")) {
-                console.log("ROOM DATA EVENT RECEIVED:", parsed_json.room_data);
                 this.roomData = parsed_json.room_data;
                 this.participantsCard.update(this.roomData);
                 this.infoCard.update(this.roomData);
                 this.roomOptions.update(this.roomData);
-                console.log("updating room name");
                 this.querySelector(".room-name_").replaceChildren(new RoomName(this.roomData.name));
                 return;
             }
@@ -113,12 +120,11 @@ export class RoomPage extends HTMLElement {
         // im so sick of this, i dont care anymore
         document.addEventListener("roomNameChange", (evt) => {
             this.socket.send(JSON.stringify({"type": "room_name_change", "message": evt.detail}));
-            // this.roomData.name = evt.detail;
-            // this.infoCard.update(this.roomData);
         });
         this.querySelector(".BtnStartGame").onclick = (e) => {
             console.log("game start! | room data: ", this.roomData);
             // error check, swtich the game scene here, whatever
+            this.socket.send(JSON.stringify({"type": "start_game", "message": ""}));
         }
     }
     disconnectedCallback() {

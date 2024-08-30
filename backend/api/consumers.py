@@ -22,17 +22,14 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
 
-
-        # todo: check if the user is connected to another room
         for user in rooms[self.room_id]["users"]:
             if user["id"] == self.scope["user"].id:
                 await self.close()
                 return
-
+        
         await self.channel_layer.group_add(self.room_id, self.channel_name)
         
         if (int(rooms[self.room_id]["teamSize"]) * 2 == len(rooms[self.room_id]["users"])):
-            await self.close()
             return
 
         await self.accept()
@@ -74,6 +71,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
         rooms = cache.get("rooms", {})
         if (rooms.get(self.room_id) is None):
             return
+        if (rooms[self.room_id]["started"] == "true"):
+            return
         if (int(rooms[self.room_id]["host"]["id"]) == user.id):
             await self.channel_layer.group_send(self.room_id, { "type": "disconnect_everyone" })
             del rooms[self.room_id]
@@ -100,7 +99,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.remove_user(user)
         await self.channel_layer.group_discard(self.room_id, self.channel_name)
     
-    # todo: check if the user info is correct, compare it against the logged in user
     async def user_join(self, event):
         rooms = cache.get("rooms", {})
         await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
@@ -173,13 +171,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     # todo: refactor this
     def is_team_empty(self, team):
-        empty_count = 0
-        for entry in team:
-            if not entry:
-                empty_count += 1
-        if (empty_count == len(team)):
-            return True
-        return False
+        return all(not entry for entry in team)
 
     async def team_size_change(self, event):
         rooms = cache.get("rooms", {})
@@ -195,7 +187,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
         if rooms[self.room_id]["teamSize"] == event["message"]:
             return
         
-        # todo: maybe send an error message (?)
         if (len(rooms[self.room_id]["users"]) > 2):
             return
         
@@ -271,15 +262,26 @@ class RoomConsumer(AsyncWebsocketConsumer):
         
         await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
 
+    async def start_game(self, event):
+        rooms = cache.get("rooms", {})
+        if (rooms[self.room_id]["teamSize"] == "1" and len(rooms[self.room_id]["users"]) != 2):
+            return
+        if (rooms[self.room_id]["teamSize"] == "2" and len(rooms[self.room_id]["users"]) != 4):
+            return
+        rooms[self.room_id]["started"] = "true"
+        cache.set("rooms", rooms)
+        
+        await self.send(text_data=json.dumps({"message": "start_game", "room_data": rooms[self.room_id]}))
+        await self.close(4001)
 
     async def receive(self, text_data):
         try:
             event = json.loads(text_data)
         except:
-            await self.close()
+            await self.close(4002, "nuh uh")
             return
         if not all(key in event for key in ("type", "message")):
-            await self.close()
+            await self.close(4002, "nuh uh")
             return
 
         rooms = cache.get("rooms", {})
