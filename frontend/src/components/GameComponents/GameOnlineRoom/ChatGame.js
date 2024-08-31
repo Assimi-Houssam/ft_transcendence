@@ -1,5 +1,3 @@
-import { CharPopup } from "./ChatPopup.js";
-
 export class ContainerChat extends HTMLElement {
   constructor(){
     super();
