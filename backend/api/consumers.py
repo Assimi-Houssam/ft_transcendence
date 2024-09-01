@@ -237,6 +237,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
         if target_user not in rooms[self.room_id]["users"]:
             await self.close()
             return
+        if (target_user["id"] == rooms[self.room_id]["host"]["id"]):
+            return
         if (target_user["id"] == self.scope["user"].id):
             await self.close(4002, "You've been kicked by the host")
             return
