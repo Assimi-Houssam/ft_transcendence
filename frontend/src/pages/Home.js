@@ -1,15 +1,14 @@
+import { ProfileInfo } from "../components/profile/ProfileInfo.js";
 export class HomePage extends HTMLElement {
+  constructor() {
+    super();
+  }
   connectedCallback() {
     this.innerHTML = `
-      <div class="home_">
-        <div class="home_header_">
-          <h1>Home</h1>
-        </div>
-        <div class="home_frined_">
-          <p>Welcome to the home page!</p>  
-        </div>
-      </div>`
+      <profile-info> </profile-info>
+      <profile-friends></profile-friend-list>
+    `
   }
 };
 
-customElements.define("home-page", HomePage);
+customElements.define("profile-page", HomePage);
