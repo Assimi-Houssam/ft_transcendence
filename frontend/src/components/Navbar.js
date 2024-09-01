@@ -6,18 +6,21 @@ import { getUserInfo } from "../utils/utils.js";
 export class Navbar extends HTMLElement {
   constructor() {
     super();
-    this.data = null;
+    this.username = null;
   }
   async load() {
     const userInfo = await getUserInfo();
     if (!userInfo)
       return false;
-    this.data = userInfo;
+    this.username = userInfo;
     return true;
   }
-  async connectedCallback() {
+  update(userInfo) {
+    this.userInfo = userInfo;
+    this.connectedCallback();
+  }
+  connectedCallback() {
     this.classList.add("navbar_");
-    let log_username = this.data.username ? this.data.username : "loading..";
     this.innerHTML = `
           <search-component></search-component >
           <div class="navbar_right_elements" >
@@ -27,12 +30,11 @@ export class Navbar extends HTMLElement {
               </div>
               <div class="nav_username gradient-dark-bg gradient-dark-border">
                 <p class="nav_username_id">
-                ${log_username}
+                ${this.username.username}
                 </p>
-                <img src="${"http://localhost:8000" + this.data.pfp}" />
+                <img src="${"http://localhost:8000" + this.username.pfp}" />
               </div>
-          </div>
-      `;
+          </div>`;
   }
 }
 customElements.define('navbar-component', Navbar);

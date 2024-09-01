@@ -2,7 +2,6 @@ import { ForgotPasswordPage } from "../pages/ForgotPassword.js";
 import { LoginPage } from "../pages/Login.js";
 import { RegistrationPage } from "../pages/Registration.js";
 import { HomePage } from "../pages/Home.js"
-import { isAuthenticated } from "../utils/utils.js";
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
 import { ChatContainer } from "../pages/ChatContainer.js";
