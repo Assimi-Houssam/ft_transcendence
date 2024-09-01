@@ -45,6 +45,7 @@ export class RoomPage extends HTMLElement {
         this.userInfo = null;
         this.socket = null;
         getUserInfo().then((userinfo) => {
+            this.userInfo = userinfo;
             this.roomOptions = new RoomOptions(this.roomData, this.roomData.host.id !== userinfo.id);
         });
     }
@@ -62,7 +63,7 @@ export class RoomPage extends HTMLElement {
                 router.navigate("/rooms");
                 return;
             }
-            Toast.error("An error occured connecting to the room: " + evt.reason);
+            Toast.error("You have been disconnected from the room");
             router.navigate("/rooms");
         }
     
@@ -82,7 +83,7 @@ export class RoomPage extends HTMLElement {
                 this.participantsCard.update(this.roomData);
                 this.infoCard.update(this.roomData);
                 this.roomOptions.update(this.roomData);
-                this.querySelector(".room-name_").replaceChildren(new RoomName(this.roomData.name));
+                this.querySelector(".room-name_").replaceChildren(new RoomName(this.roomData.name, this.roomData.host.id !== this.userInfo.id));
                 return;
             }
         });
