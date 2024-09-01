@@ -61,3 +61,7 @@ export async function forceUpdateUserInfo() {
     userInfo = await req.json();
     return userInfo;
 }
+
+export function resetUserInfo() {
+    userInfo = null;
+}

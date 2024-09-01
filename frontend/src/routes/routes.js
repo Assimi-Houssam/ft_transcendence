@@ -12,6 +12,7 @@ import { GameSelection } from "../pages/GameSelectionMenu.js";
 import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
 import { RoomsListPage } from "../components/GameComponents/GameOnlineRoom/RoomsListPage.js";
 import { RoomPage } from "../components/GameComponents/GameOnlineRoom/RoomPage.js";
+import { forceUpdateUserInfo } from "../utils/utils.js";
 
 export const Routes = [
     {
