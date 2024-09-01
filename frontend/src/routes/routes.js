@@ -4,7 +4,6 @@ import { RegistrationPage } from "../pages/Registration.js";
 import { HomePage } from "../pages/Home.js"
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
-import { ChatContainer } from "../pages/ChatContainer.js";
 import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
@@ -12,7 +11,6 @@ import { GameSelection } from "../pages/GameSelectionMenu.js";
 import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
 import { RoomsListPage } from "../components/GameComponents/GameOnlineRoom/RoomsListPage.js";
 import { RoomPage } from "../components/GameComponents/GameOnlineRoom/RoomPage.js";
-import { forceUpdateUserInfo } from "../utils/utils.js";
 
 export const Routes = [
     {
@@ -52,12 +50,6 @@ export const Routes = [
         icon: '../assets/icons/game.png',
         icon_ac: '../assets/icons/active_game.png',
         component: GameSelection,
-        // subs: [
-        //     {
-        //         path: '/offline-room-1vs1',
-        //         component: RoomOneVsOne,
-        //     }
-        // ]
     },
     {
         path : "/tournament",
