@@ -5,11 +5,11 @@ import ApiWrapper from "../ApiWrapper.js";
  * @description Get user information form the server
  * @returns {Object} userInfo
  */
-export default async function userInfo() {
+export default async function getUserInfo() {
     try {
-        const res = await ApiWrapper.get("me");
+        const res = await ApiWrapper.get("/me");
+        // todo: data checks
         const data = await res.json();
-        console.log("[UserInfoService]: /me returned: ", data);
         return data;
     } catch(err) {
         Toast.error(err);

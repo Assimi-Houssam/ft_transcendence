@@ -9,8 +9,8 @@ import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
 import { GameSelection } from "../pages/GameSelectionMenu.js";
 import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
-import { RoomsListPage } from "../components/GameComponents/GameOnlineRoom/RoomsListPage.js";
-import { RoomPage } from "../components/GameComponents/GameOnlineRoom/RoomPage.js";
+import { RoomsListPage } from "../pages/RoomsListPage.js";
+import { RoomPage } from "../pages/RoomPage.js";
 
 export const Routes = [
     {

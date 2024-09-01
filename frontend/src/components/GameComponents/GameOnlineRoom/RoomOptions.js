@@ -1,5 +1,5 @@
 class RoomOption extends HTMLElement {
-    constructor(name, color, options, optionsImgs, evtName, optional = false) {
+    constructor(name, color, options, optionsImgs, evtName, optional = false, locked = false) {
         super();
         this.name = name;
         this.color = color;
@@ -8,6 +8,7 @@ class RoomOption extends HTMLElement {
         this.evtName = evtName;
         this.optional = optional;
         this.selected = !this.optional ? options[0] : null;
+        this.locked = locked;
     }
     connectedCallback() {
         this.innerHTML = `
@@ -25,7 +26,12 @@ class RoomOption extends HTMLElement {
         if (!this.optional)
             buttons[0].style.backgroundColor = this.color;
 
-        buttons.forEach((elem) => { elem.addEventListener("click", (evt) => {
+        buttons.forEach((elem) => {
+            if (this.locked) {
+                buttons.forEach((button) => { button.style.cursor = "not-allowed"; });                
+                return; 
+            }
+            elem.addEventListener("click", (evt) => {
             const target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
             if (this.selected === target.name && !this.optional)
                 return;
@@ -40,18 +46,69 @@ class RoomOption extends HTMLElement {
             this.dispatchEvent(new CustomEvent(this.evtName, { detail: this.selected, bubbles: true }));
         })});
     }
+    enableOpt(opt) {
+        const buttons = this.querySelectorAll("button");
+        if (this.optional && opt === "") {
+            buttons.forEach((buttonn) => { buttonn.style.backgroundColor = ""; });
+            this.selected = opt;
+            return;
+        }
+        if (!this.options.includes(opt))
+            return;
+        for (let button of buttons) {
+            if (button.name === opt) {
+                buttons.forEach((buttonn) => { buttonn.style.backgroundColor = ""; });
+                button.style.backgroundColor = this.color;
+                this.selected = opt;
+            }
+        }
+    }
 }
 
 customElements.define("room-option", RoomOption);
 
 
 export class RoomOptions extends HTMLElement {
-
+    constructor(roomData = null, locked = false) {
+        super();
+        this.gameModeOpt = new RoomOption("Gamemode", "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange", false, locked);
+        this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange", false, locked);
+        this.teamSizeOpt = new RoomOption("Team size", "#FAE744", ["1", "2"], [], "teamSizeChange", false, locked);
+        this.customizationsOpt = new RoomOption("Customizations", "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true, locked);
+        this.roomData = roomData;
+    }
     connectedCallback() {
-        this.appendChild(new RoomOption("Gamemode", "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange"));
-        this.appendChild(new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange"));
-        this.appendChild(new RoomOption("Team size", "#FAE744", ["1", "2"], [], "teamSizeChange"));
-        this.appendChild(new RoomOption("Customizations", "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true));
+        this.appendChild(this.gameModeOpt);
+        this.appendChild(this.timeOpt);
+        this.appendChild(this.teamSizeOpt);
+        this.appendChild(this.customizationsOpt);
+    }
+    update(roomData) {
+        this.roomData = roomData;
+        this.enableOption("Gamemode", roomData.gamemode);
+        this.enableOption("Time", roomData.time);
+        this.enableOption("Teamsize", roomData.teamSize);
+        this.enableOption("Customizations", roomData.customization);
+    }
+    enableOption(optName, optVal) {
+        switch (optName) {
+            case "Gamemode": {
+                this.gameModeOpt.enableOpt(optVal);
+                return;
+            }
+            case "Time": {
+                this.timeOpt.enableOpt(optVal);
+                return;
+            }
+            case "Teamsize": {
+                this.teamSizeOpt.enableOpt(optVal);
+                return;
+            }
+            case "Customizations": {
+                this.customizationsOpt.enableOpt(optVal);
+                return;
+            }
+        }
     }
 }
 
