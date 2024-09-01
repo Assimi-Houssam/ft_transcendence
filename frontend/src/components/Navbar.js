@@ -6,13 +6,13 @@ import { getUserInfo } from "../utils/utils.js";
 export class Navbar extends HTMLElement {
   constructor() {
     super();
-    this.username = null;
+    this.userInfo = null;
   }
   async load() {
     const userInfo = await getUserInfo();
     if (!userInfo)
       return false;
-    this.username = userInfo;
+    this.userInfo = userInfo;
     return true;
   }
   update(userInfo) {
@@ -30,9 +30,9 @@ export class Navbar extends HTMLElement {
               </div>
               <div class="nav_username gradient-dark-bg gradient-dark-border">
                 <p class="nav_username_id">
-                ${this.username.username}
+                ${this.userInfo.username}
                 </p>
-                <img src="${"http://localhost:8000" + this.username.pfp}" />
+                <img src="${"http://localhost:8000" + this.userInfo.pfp}" />
               </div>
           </div>`;
   }
