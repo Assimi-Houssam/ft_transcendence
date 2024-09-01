@@ -2,10 +2,8 @@ import { ForgotPasswordPage } from "../pages/ForgotPassword.js";
 import { LoginPage } from "../pages/Login.js";
 import { RegistrationPage } from "../pages/Registration.js";
 import { HomePage } from "../pages/Home.js"
-import { isAuthenticated } from "../utils/utils.js";
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
-import { ChatContainer } from "../pages/ChatContainer.js";
 import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
@@ -44,12 +42,6 @@ export const Routes = [
         component: ForgotPasswordPage
     },
     {
-        path: '/chat',
-        icon: '../assets/icons/chat.png',
-        icon_ac: '../assets/icons/active_chat.png',
-        component: ChatContainer,
-    },
-    {
         path: '/test/:id',
         component: Test,
     },
@@ -58,12 +50,6 @@ export const Routes = [
         icon: '../assets/icons/game.png',
         icon_ac: '../assets/icons/active_game.png',
         component: GameSelection,
-        // subs: [
-        //     {
-        //         path: '/offline-room-1vs1',
-        //         component: RoomOneVsOne,
-        //     }
-        // ]
     },
     {
         path : "/tournament",
@@ -116,52 +102,36 @@ class Router {
         return null
     }
 
-    render() {
-        if (this.active_path != window.location.pathname) {
+    async render() {
+        if (this.active_path !== window.location.pathname) {
             window.history.pushState({}, "", this.active_path);
         }
         const root = document.getElementById("root");
         if (!this.active_page)
             this.active_page = new this.route.component();
-        root.innerHTML = "<app-loader></app-loader>";
         if (this.public_routes.includes(this.route.path)) {
             root.innerHTML = this.active_page.outerHTML;
             return;
         }
         let layout = document.querySelector("layout-wrapper");
         if (!layout) {
-            console.log("[routes]: layoutwrapper is null, creating it");
+            console.log("reloading...");
+            root.innerHTML = "<app-loader></app-loader>";
             layout = new LayoutWrapper();
-            console.log("[routes]: loading layoutwrapper");
-            layout.load();
-            layout.isLoaded().then(() => {
-                console.log("[routes]: layout loaded successfully, calling replaceChildren on root");
-                root.replaceChildren(layout);
-                const content_ = layout.querySelector(".content_body_");
-                if (content_) {
-                    content_.replaceChildren(this.active_page);
-                }
-            })
-            // fixme: if fetch throws, everything will break, gotta refactor how errors are handled in the load methods
-            .catch(error => {
-                console.log("[routes]: layout threw:", error);
-                console.log("[routes]: redirecting to /login");
-                localStorage.clear();
-                this.navigate("/login");
-            });
+            const req = await layout.load();
+            if (!req) {
+                console.log("[routes]: An error occured fetching the userinfo");
+                return;
+            }
+            root.replaceChildren(layout);
         }
+        const content = layout.querySelector(".content_body_");
+        content.replaceChildren(this.active_page);
     }
 
     async navigate(path, customInstance = null) {
         if (path === "/")
             path = "/home";
-        const isLogged = await isAuthenticated();
-        if (!isLogged && !this.public_routes.includes(path)) {
-            path = "/login";
-        }
-        if (isLogged && this.public_routes.includes(path)) {
-            path = "/home";
-        }
         this.active_path = path;
         this.route = this.findSubpath(path);
         if (!this.route)
