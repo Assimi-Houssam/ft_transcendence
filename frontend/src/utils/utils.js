@@ -38,3 +38,11 @@ export async function OAuthIntercept() {
     }
     return "";
 }
+
+export async function getUserInfo() {
+    const req = await ApiWrapper.get("/me");
+    if (!req.ok)
+        return false;
+    const userInfo = await req.json();
+    return userInfo;
+}

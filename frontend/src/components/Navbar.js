@@ -1,36 +1,19 @@
 import ApiWrapper from "../utils/ApiWrapper.js"
 import { Search } from "./Search.js";
+import { getUserInfo } from "../utils/utils.js";
+
+
 export class Navbar extends HTMLElement {
   constructor() {
     super();
     this.data = null;
-    this.loaded_promise = new Promise((resolved, rejected) => {
-      this.resolved_callback = resolved;
-      this.rejected_callback = rejected;
-    });
   }
-  load() {
-    ApiWrapper.get("/me").then((req) => {
-      if (!req) {
-        throw new Error("/me request failed");
-      }
-      if (!req.ok) {
-        console.log("[Navar]: server returned: ", req.status);
-        throw new Error("Req failed");
-      }
-      return req.json();
-    })
-    .then((data) => {
-      console.log("[Navbar]: data was received successfully!");
-      this.data = data;
-      this.resolved_callback();
-    })
-    .catch(error => {
-      this.rejected_callback(error);
-    })
-  }
-  isLoaded() {
-    return this.loaded_promise;
+  async load() {
+    const userInfo = await getUserInfo();
+    if (!userInfo)
+      return false;
+    this.data = userInfo;
+    return true;
   }
   async connectedCallback() {
     this.classList.add("navbar_");

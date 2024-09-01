@@ -116,39 +116,32 @@ class Router {
         return null
     }
 
-    render() {
+    async render() {
         if (this.active_path != window.location.pathname) {
             window.history.pushState({}, "", this.active_path);
         }
         const root = document.getElementById("root");
         if (!this.active_page)
             this.active_page = new this.route.component();
-        root.innerHTML = "<app-loader></app-loader>";
         if (this.public_routes.includes(this.route.path)) {
             root.innerHTML = this.active_page.outerHTML;
             return;
         }
         let layout = document.querySelector("layout-wrapper");
         if (!layout) {
-            console.log("[routes]: layoutwrapper is null, creating it");
+            root.innerHTML = "<app-loader></app-loader>";
             layout = new LayoutWrapper();
-            console.log("[routes]: loading layoutwrapper");
-            layout.load();
-            layout.isLoaded().then(() => {
-                console.log("[routes]: layout loaded successfully, calling replaceChildren on root");
-                root.replaceChildren(layout);
-                const content_ = layout.querySelector(".content_body_");
-                if (content_) {
-                    content_.replaceChildren(this.active_page);
-                }
-            })
-            // fixme: if fetch throws, everything will break, gotta refactor how errors are handled in the load methods
-            .catch(error => {
-                console.log("[routes]: layout threw:", error);
-                console.log("[routes]: redirecting to /login");
-                localStorage.clear();
-                this.navigate("/login");
-            });
+            const req = await layout.load();
+            console.log("req:", req);
+            if (!req) {
+                console.log("[routes]: An error occured fetching the userinfo");
+                return;
+            }
+            root.replaceChildren(layout);
+        }
+        const content = layout.querySelector(".content_body_");
+        if (content) {
+            content.replaceChildren(this.active_page);
         }
     }
 
