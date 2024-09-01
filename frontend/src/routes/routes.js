@@ -44,12 +44,6 @@ export const Routes = [
         component: ForgotPasswordPage
     },
     {
-        path: '/chat',
-        icon: '../assets/icons/chat.png',
-        icon_ac: '../assets/icons/active_chat.png',
-        component: ChatContainer,
-    },
-    {
         path: '/test/:id',
         component: Test,
     },
