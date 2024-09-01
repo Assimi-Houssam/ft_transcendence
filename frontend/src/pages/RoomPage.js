@@ -9,6 +9,7 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import userInfo from "../utils/services/userInfo.services.js";
 import { router } from "../routes/routes.js";
 import Toast from "../components/Toast.js";
+import { getUserInfo } from "../utils/utils.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
@@ -41,9 +42,11 @@ export class RoomPage extends HTMLElement {
         this.infoCard = new RoomInfoCard(this.roomData);
         console.log("RoomPage ctor called, roomdata:", roomData);
         this.participantsCard = new ParticipantsCard(roomData);
-        this.roomOptions = new RoomOptions(this.roomData, false); // TODO: lock user input if the room is the host
+        this.userInfo = null;
         this.socket = null;
-        this.user = null;
+        getUserInfo().then((userinfo) => {
+            this.roomOptions = new RoomOptions(this.roomData, this.roomData.host.id !== userinfo.id);
+        });
     }
     async connectToRoom() {
         this.socket = new WebSocket("ws://localhost:8000/ws/room/" + this.roomId + "/");

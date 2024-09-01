@@ -27,8 +27,10 @@ class RoomOption extends HTMLElement {
             buttons[0].style.backgroundColor = this.color;
 
         buttons.forEach((elem) => {
-            if (this.locked)
+            if (this.locked) {
+                buttons.forEach((button) => { button.style.cursor = "not-allowed"; });                
                 return; 
+            }
             elem.addEventListener("click", (evt) => {
             const target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
             if (this.selected === target.name && !this.optional)
