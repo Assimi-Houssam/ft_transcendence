@@ -47,9 +47,14 @@ class RoomOption extends HTMLElement {
         })});
     }
     enableOpt(opt) {
+        const buttons = this.querySelectorAll("button");
+        if (this.optional && opt === "") {
+            buttons.forEach((buttonn) => { buttonn.style.backgroundColor = ""; });
+            this.selected = opt;
+            return;
+        }
         if (!this.options.includes(opt))
             return;
-        const buttons = this.querySelectorAll("button");
         for (let button of buttons) {
             if (button.name === opt) {
                 buttons.forEach((buttonn) => { buttonn.style.backgroundColor = ""; });

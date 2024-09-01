@@ -16,7 +16,8 @@ export class RoomName extends HTMLElement {
 
         const changeTitleRoom = document.getElementById("room-name_");
         const changeTitleBtn = document.getElementById("changeTitleBtn");
-
+        if (this.locked)
+            return;
         changeTitleBtn.addEventListener("click", () => {
             changeTitleRoom.replaceChildren(new EditRoomName(this.roomName));
         });
