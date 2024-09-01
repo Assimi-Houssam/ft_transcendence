@@ -21,7 +21,6 @@ export class RoomsListPage extends HTMLElement {
         }
         const json = await resp.json();
         const rooms = JSON.parse(json);
-        console.log("[Rooms fetched]:", rooms);
         this.rooms = [];
         for (let room of rooms) {
             this.rooms.push(new RoomInfoCard(room, true));

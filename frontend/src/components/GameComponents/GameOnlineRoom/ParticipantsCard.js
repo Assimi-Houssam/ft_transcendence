@@ -1,17 +1,18 @@
 import { ParticipantEntry, EmptySlot } from "./ParticipantEntry.js";
 
 export class ParticipantsCard extends HTMLElement {
-    constructor(roomData) {
+    constructor(roomData, locked = false) {
         super();
+        this.locked = locked;
         this.teamSize = Number(roomData.teamSize);
         this.hostId = roomData.host.id;
         this.redTeam = [];
         this.blueTeam = [];
         for (let redEntry of roomData.redTeam) {
-            this.redTeam.push(Object.keys(redEntry).length ? new ParticipantEntry(redEntry, redEntry.id === this.hostId) : new EmptySlot());
+            this.redTeam.push(Object.keys(redEntry).length ? new ParticipantEntry(redEntry, redEntry.id === this.hostId, this.locked) : new EmptySlot());
         }
         for (let blueEntry of roomData.blueTeam) {
-            this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId) : new EmptySlot());
+            this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId, this.locked) : new EmptySlot());
         }
         this.participantsCount = roomData.users.length;
     }
@@ -19,10 +20,10 @@ export class ParticipantsCard extends HTMLElement {
         this.redTeam = [];
         this.blueTeam = [];
         for (let redEntry of message.redTeam) {
-            this.redTeam.push(Object.keys(redEntry).length ? new ParticipantEntry(redEntry, redEntry.id === this.hostId) : new EmptySlot());
+            this.redTeam.push(Object.keys(redEntry).length ? new ParticipantEntry(redEntry, redEntry.id === this.hostId, this.locked) : new EmptySlot());
         }
         for (let blueEntry of message.blueTeam) {
-            this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId) : new EmptySlot());
+            this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId, this.locked) : new EmptySlot());
         }
         this.connectedCallback();
     }

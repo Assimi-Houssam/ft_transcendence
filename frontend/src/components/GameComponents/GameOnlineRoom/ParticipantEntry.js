@@ -17,10 +17,11 @@ export class EmptySlot extends HTMLElement {
 customElements.define("empty-slot", EmptySlot);
 
 export class ParticipantEntry extends HTMLElement {
-    constructor(userInfo, isHost) {
+    constructor(userInfo, isHost, locked = false) {
         super();
         this.userInfo = userInfo;
         this.isHost = isHost;
+        this.locked = locked;
     }
     getUserInfo() {
         return this.userInfo;
@@ -39,6 +40,8 @@ export class ParticipantEntry extends HTMLElement {
         } else {
             this.style.backgroundColor = "#212535";
         }
+        if (this.locked)
+            return;
         this.addEventListener("mouseover", (event) => {
             anime({
                 targets: this.querySelector(".ParticipantKick"),

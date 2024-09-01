@@ -40,12 +40,11 @@ export class RoomPage extends HTMLElement {
         this.roomId = roomData.id;
         this.chat = new ChatGame();
         this.infoCard = new RoomInfoCard(this.roomData);
-        console.log("RoomPage ctor called, roomdata:", roomData);
-        this.participantsCard = new ParticipantsCard(roomData);
         this.userInfo = null;
         this.socket = null;
         getUserInfo().then((userinfo) => {
             this.userInfo = userinfo;
+            this.participantsCard = new ParticipantsCard(roomData, this.roomData.host.id !== userinfo.id);
             this.roomOptions = new RoomOptions(this.roomData, this.roomData.host.id !== userinfo.id);
         });
     }
