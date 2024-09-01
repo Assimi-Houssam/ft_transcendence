@@ -60,6 +60,9 @@ export class RoomsListPage extends HTMLElement {
             console.log("room created!, room data:", parsed);
             router.navigate("/room/" + parsed.id, new RoomPage(parsed));
         }
+        for (let room of this.rooms) {
+            this.querySelector(".RoomListContainer").appendChild(room);
+        }
         this.fetchLoop = setInterval(async () => {
             const loader = this.querySelector("preloader-mini");
             anime({
