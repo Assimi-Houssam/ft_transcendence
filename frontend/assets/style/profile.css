@@ -1,0 +1,26 @@
+
+:root
+{
+    --bg-home: #1F2230;
+}
+
+.home_
+{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid;
+    height: 88vh;
+}
+
+.home_header_
+{
+    width: 70%;
+    border: 1px solid;
+}
+
+.home_frined_
+{
+    background-color: var(--bg-home);
+    padding: 5px;
+    width: 30%;
+}
