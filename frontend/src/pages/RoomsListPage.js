@@ -28,7 +28,7 @@ export class RoomsListPage extends HTMLElement {
         }
     }
     async connectedCallback() {
-        this.innerHTML = new Loader();
+        this.innerHTML = new Loader().outerHTML;
         await this.fetchRooms();
         this.innerHTML = `
             <div class="ContainerOnlineRoom">
