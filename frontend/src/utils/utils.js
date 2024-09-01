@@ -1,4 +1,7 @@
 import ApiWrapper from "./ApiWrapper.js";
+
+
+
 /** TODO: complete implementation of this function
  * Check if the user is authenticated
  * @returns {boolean} true if the user is authenticated, false otherwise
@@ -8,6 +11,7 @@ export async function isAuthenticated() {
     const req = await ApiWrapper.get("/me");
     return req;
 }
+
 export function genRandomString(length) {
     const array = new Uint8Array(length);
     window.crypto.getRandomValues(array);

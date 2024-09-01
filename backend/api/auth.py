@@ -63,6 +63,7 @@ def oauth_login(request):
     r = requests.post(access_token_endpoint, data=params, headers=headers)
     if (r.status_code != requests.codes.ok):
         print("an error has occured")
+        print(f"resp: {r.text}")
         return Response({"detail": "An error occured fetching an access token from 42"}, status=status.HTTP_400_BAD_REQUEST)
     access_token = r.json()["access_token"]
     headers = {

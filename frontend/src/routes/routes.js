@@ -117,7 +117,7 @@ class Router {
     }
 
     async render() {
-        if (this.active_path != window.location.pathname) {
+        if (this.active_path !== window.location.pathname) {
             window.history.pushState({}, "", this.active_path);
         }
         const root = document.getElementById("root");
@@ -129,10 +129,10 @@ class Router {
         }
         let layout = document.querySelector("layout-wrapper");
         if (!layout) {
+            console.log("reloading...");
             root.innerHTML = "<app-loader></app-loader>";
             layout = new LayoutWrapper();
             const req = await layout.load();
-            console.log("req:", req);
             if (!req) {
                 console.log("[routes]: An error occured fetching the userinfo");
                 return;
@@ -140,21 +140,12 @@ class Router {
             root.replaceChildren(layout);
         }
         const content = layout.querySelector(".content_body_");
-        if (content) {
-            content.replaceChildren(this.active_page);
-        }
+        content.replaceChildren(this.active_page);
     }
 
     async navigate(path, customInstance = null) {
         if (path === "/")
             path = "/home";
-        const isLogged = await isAuthenticated();
-        if (!isLogged && !this.public_routes.includes(path)) {
-            path = "/login";
-        }
-        if (isLogged && this.public_routes.includes(path)) {
-            path = "/home";
-        }
         this.active_path = path;
         this.route = this.findSubpath(path);
         if (!this.route)
