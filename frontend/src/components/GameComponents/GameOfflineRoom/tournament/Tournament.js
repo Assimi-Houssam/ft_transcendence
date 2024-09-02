@@ -1,5 +1,5 @@
 import { FinalTournament } from "./FinalTournament.js";
-import {LineDrawingDownWinSemiFinal} from "./components-line-drawing-semi-final/line-drawing-down-win-semi-final.js";
+import { LineDrawingDownWinSemiFinal } from "./components-line-drawing-semi-final/line-drawing-down-win-semi-final.js";
 
 export class GroupBrackets extends HTMLElement {
     constructor(teamSize = 1) {
@@ -25,8 +25,7 @@ export class GroupBrackets extends HTMLElement {
                 <div class="toor">
                     <line-drawing-down-win-semi-final></line-drawing-down-win-semi-final>
                 </div>
-            </div>
-        `;
+            </div>`;
         requestAnimationFrame(() => {
             this.applyAnimation();
         });
@@ -48,29 +47,29 @@ export class GroupBrackets extends HTMLElement {
 customElements.define("brackets-group", GroupBrackets);
 
 export class Tournament extends HTMLElement {
-    constructor(teamSize = 1, bracketsSize = 1) {
+    constructor(teamSize = 1, bracketSize = 1) {
         super();
         this.teamSize = teamSize;
-        this.bracketsSize = bracketsSize;
+        this.bracketSize = bracketSize;
         this.classList.add("ContainerCardOffline");
     }
-
+    update(newBracketSize, newTeamSize) {
+        this.teamSize = newTeamSize;
+        this.bracketSize = newBracketSize;
+        this.connectedCallback();
+    }
     connectedCallback() {
         this.innerHTML = `
-            ${this.bracketsSize > 1 ? (`
+            ${this.bracketSize > 1 ? (`
                 <div class="ContainerUsersTeams">
                 </div>
-            `) : ""}
-        `;
+            `) : ""}`;
         const ContainerUsersTeams = document.getElementsByClassName("ContainerUsersTeams")[0];
-        if (this.bracketsSize > 1) {
-            const bracketGroup1 = new GroupBrackets(this.teamSize);
-            const bracketGroup2 = new GroupBrackets(this.teamSize);
-            ContainerUsersTeams.appendChild(bracketGroup1);
-            ContainerUsersTeams.appendChild(bracketGroup2);
+        if (this.bracketSize > 1) {
+            ContainerUsersTeams.appendChild(new GroupBrackets(this.teamSize));
+            ContainerUsersTeams.appendChild(new GroupBrackets(this.teamSize));
         }
-        const t = new FinalTournament(this.teamSize, this.bracketsSize);
-        this.appendChild(t);
+        this.appendChild(new FinalTournament(this.teamSize, this.bracketSize));
     }
 }
 

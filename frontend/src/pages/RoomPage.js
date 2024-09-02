@@ -45,7 +45,7 @@ export class RoomPage extends HTMLElement {
         getUserInfo().then((userinfo) => {
             this.userInfo = userinfo;
             this.participantsCard = new ParticipantsCard(roomData, this.roomData.host.id !== userinfo.id);
-            this.roomOptions = new RoomOptions(this.roomData, this.roomData.host.id !== userinfo.id);
+            this.roomOptions = new RoomOptions(false, this.roomData, this.roomData.host.id !== userinfo.id);
         });
     }
     async connectToRoom() {

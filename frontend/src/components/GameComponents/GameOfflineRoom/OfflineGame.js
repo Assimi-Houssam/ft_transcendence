@@ -1,10 +1,12 @@
 import { Tournament } from "./tournament/Tournament.js";
+import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
 
 export class OfflineGame extends HTMLElement{
     constructor(){
         super();
-        this.bracketSize = 2;
-        this.teamSize = 2;
+        this.bracketSize = 1;
+        this.teamSize = 1;
+        this.bracket = new Tournament(this.teamSize, this.bracketSize);
     }
 
     connectedCallback(){
@@ -17,14 +19,23 @@ export class OfflineGame extends HTMLElement{
                     <div class="line_x"></div>
                 </div>
             </div>
-            <div id="tournament_node">
-                <tournament-group class="ContainerCardOffline"></tournament-group>
+            <div id="tournament_node" class="tournament_node">
             </div>
             <div class="content_line">
                 <div class="line_x"></div>
-            </div>
-            <container-game-options></container-game-options>
-    `
+            </div>`;
+        this.querySelector(".tournament_node").appendChild(this.bracket);
+        this.appendChild(new RoomOptions(true));
+        this.addEventListener("bracketChange", (evt) => {
+            this.bracketSize = evt.detail;
+            console.log("bracket size:", this.bracketSize, " | teamsize:", this.teamSize);
+            this.bracket.update(this.bracketSize, this.teamSize);
+        });
+        this.addEventListener("teamSizeChange", (evt) => {
+            this.teamSize = evt.detail;
+            console.log("bracket size:", this.bracketSize, " | teamsize:", this.teamSize);
+            this.bracket.update(this.bracketSize, this.teamSize);
+        });
     }
 }
 
