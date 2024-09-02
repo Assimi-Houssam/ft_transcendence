@@ -1,4 +1,5 @@
 import { ProfileStatistics } from "./ProfileStatistics.js";
+import { MatchHistory } from "./MtachHistory.js";
 
 export class ProfileInfo extends HTMLElement {
   constructor() {
@@ -28,6 +29,7 @@ export class ProfileInfo extends HTMLElement {
       </div>
       <div class="line_"></div>
       <profile-statistics></profile-statistics>
+      <match-history></match-history>
     `
   }
 }
