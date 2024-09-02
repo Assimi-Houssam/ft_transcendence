@@ -8,7 +8,7 @@ import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
 import { GameSelection } from "../pages/GameSelectionMenu.js";
-import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
+import { OfflineGame } from "../components/GameComponents/GameOfflineRoom/OfflineGame.js";
 import { RoomsListPage } from "../pages/RoomsListPage.js";
 import { RoomPage } from "../pages/RoomPage.js";
 
