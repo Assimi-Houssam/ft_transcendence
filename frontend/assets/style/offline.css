@@ -65,15 +65,10 @@
     background: none;
     border: 0;
     outline: none;
-    height: 3vh;
-    padding-left: 5px;
+    height: 4vh;
+    text-align: center;
     border-radius: 10px;
 
-}
-
-.player_ > input:valid
-{
-    border: 1px solid var(--shamrock);
 }
 
 .line_tourn
@@ -84,6 +79,7 @@
     flex-direction: column;
     justify-content: center;
     width: 30%;
+    z-index: -1;
 }
 
 .line-drawing-up-final
@@ -161,3 +157,10 @@
 rooms-list-page {
     position: relative;
 }
+
+/* .TournamentFooter
+{
+    position: absolute;
+    bottom: -166px;
+    right: 33px;
+} */

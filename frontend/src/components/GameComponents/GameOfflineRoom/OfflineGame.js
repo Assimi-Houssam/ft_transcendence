@@ -1,6 +1,23 @@
 import { Tournament } from "./tournament/Tournament.js";
 import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
 
+
+class TournamentFooter extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
+            <div class="ContainerFooter">
+                <div>
+                    <p style="display:none;" class="ContainerFooter_reminder">Unable to start the game: not enough players in the room</p>
+                </div>
+                <div class="BtnStartGame">
+                    <button type="button" id="BtnStartGame">Start game!</button>
+                </div>
+            </div>`;
+    }
+}
+
+customElements.define("tournament-footer", TournamentFooter);
+
 export class OfflineGame extends HTMLElement{
     constructor(){
         super();
@@ -23,9 +40,11 @@ export class OfflineGame extends HTMLElement{
             </div>
             <div class="content_line">
                 <div class="line_x"></div>
-            </div>`;
+            </div>
+            `;
         this.querySelector(".tournament_node").appendChild(this.bracket);
         this.appendChild(new RoomOptions(true));
+        this.appendChild(new TournamentFooter(true));
         this.addEventListener("bracketChange", (evt) => {
             this.bracketSize = evt.detail;
             console.log("bracket size:", this.bracketSize, " | teamsize:", this.teamSize);
@@ -36,7 +55,17 @@ export class OfflineGame extends HTMLElement{
             console.log("bracket size:", this.bracketSize, " | teamsize:", this.teamSize);
             this.bracket.update(this.bracketSize, this.teamSize);
         });
+        this.querySelector("#BtnStartGame").addEventListener("click", (e) => {
+            const tournamentinputs = document.querySelectorAll("tournament-group input");
+                const playersName = [];
+                tournamentinputs.forEach(input => {
+                    playersName.push(input.value)
+                })
+                console.log("player Names: ", playersName);
+        });
+
     }
+    
 }
 
 customElements.define("offline-game", OfflineGame);

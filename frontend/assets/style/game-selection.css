@@ -982,15 +982,6 @@ offline-room-1vs1, offline-room-2vs1, offline-room-2vs2
     border-radius: 15px;
 }
 
-.line_tourn
-{
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 30%;
-}
-
 .TwoVsTwo
 {
     display: flex;
