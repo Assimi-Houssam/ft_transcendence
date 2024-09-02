@@ -29,7 +29,7 @@ urlpatterns = [
     path("logout", auth.logout),
     path('admin/', admin.site.urls),
     path("user/update", update_profile.update_profile),
-
+    path("user/<int:userID>", views.get_user),
     path("friends/send_request/<int:userId>", manage_friends.send_friend_request),
     path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request),
     path("friends/requests", manage_friends.friend_requests),

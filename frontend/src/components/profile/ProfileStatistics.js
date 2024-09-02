@@ -1,4 +1,4 @@
-class StatisticCard extends HTMLElement {
+export class StatisticCard extends HTMLElement {
   constructor(icon, title, counter) {
     super();
     this.classList.add("statistic_card");

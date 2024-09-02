@@ -1,4 +1,4 @@
-class MatchHistoryCard extends HTMLElement {
+export class MatchHistoryCard extends HTMLElement {
   constructor(history) {
     super();
     this.history = history; //history need to be an js object

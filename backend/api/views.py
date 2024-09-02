@@ -31,3 +31,13 @@ def filter_users(request):
     return Response({
         'detail' : users.data
     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@authentication_classes([JWTAuth])
+@permission_classes([IsAuthenticated])
+def get_user(req, userID) :
+    user = User.objects.get(id=userID)
+    serializer = UserSerializer(user);
+    return Response({
+        "detail" : serializer.data
+    }, status=status.HTTP_200_OK)
