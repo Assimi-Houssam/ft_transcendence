@@ -9,7 +9,7 @@ export class ProfileInfo extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = `
-      <img id="profile_banner"></img>
+      <div  id="profile_banner"> </div>
       <div class="profile_user_info">
         <div class="profile_user_info_left_items">
             <img id="profile_pfp"  src="../../../assets/images/amine.png" ald="">
