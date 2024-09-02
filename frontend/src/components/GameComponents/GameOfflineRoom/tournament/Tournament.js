@@ -14,11 +14,11 @@ export class GroupBrackets extends HTMLElement {
                 <div class="player_">
                     <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required> 
                     ${this.teamSize > 1 ? 
-                        `<input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
+                        `<h2>&</h2> <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
                 </div>
                 <div class="player_">
                     <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required> 
-                    ${this.teamSize > 1 ? `<input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
+                    ${this.teamSize > 1 ? `<h2>&</h2> <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
                 </div>
             </div>
             <div class="line_tourn">
