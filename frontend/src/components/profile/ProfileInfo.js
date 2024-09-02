@@ -7,7 +7,16 @@ export class ProfileActions extends HTMLElement {
     this.user = user;
     this.auth = auth;
   }
+  addFriendEven() {
+    console.log("send request to [ ", this.user.username, " ]");
+  }
 
+  /**
+   * TODOS
+   *  send friend request by auth
+   *  check if the auth already sent request
+   *  hide the user friend list from the auth visitor 
+   */
   connectedCallback() {
     this.innerHTML = `
       <button id="add_friend">
@@ -18,6 +27,7 @@ export class ProfileActions extends HTMLElement {
       </button> 
       <button id="block_user">Block</button>
     `
+    document.getElementById("add_friend").onclick = () => this.addFriendEven();
   }
 }
 
