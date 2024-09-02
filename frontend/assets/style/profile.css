@@ -272,3 +272,40 @@ friend-card button > img {
     height: 10px;
     background-color : #FF0000;
 }
+
+.no_friends {
+    color: #4B4B4D;
+    font-size: 20px;
+    font: lighter;
+}
+
+profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+#send_message, #add_friend  {
+    all: unset;
+    height: 70px;
+    width: 70px;
+    text-align: center;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+#send_message img, #add_friend img  {
+    width: 40px;
+    height: 40px;
+}
+
+#block_user {
+    all: unset;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    background-color: #FF6666;
+    border-radius: 50px;
+    cursor: pointer;
+}

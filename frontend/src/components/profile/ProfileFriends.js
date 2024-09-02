@@ -1,4 +1,6 @@
-class FriendsCard extends HTMLElement {
+import ApiWrapper from "../../utils/ApiWrapper.js";
+
+export class FriendsCard extends HTMLElement {
   constructor(user) {
     super();
     this.user  = user;
@@ -7,10 +9,9 @@ class FriendsCard extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <div class="friend_cad_left">
-        <img src="../../../assets/images/amine.png" >
+        <img src="${ApiWrapper.getUrl()}${this.user.pfp}" >
         <div>
-          <h2>mamazzal</h2>
-          <p class="friend_status online">online</p>
+          <h2>${this.user.username}</h2>
         </div>
       </div>
       <button>
@@ -31,9 +32,7 @@ export class ProfileFriends extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <h1>Friends List</h1>
-      <div id="friends_list">
-        <friend-card></friend-card>
-      </div>
+      <div id="friends_list"></div>
     `
   }
 }
