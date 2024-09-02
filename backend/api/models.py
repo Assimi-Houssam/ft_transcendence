@@ -15,8 +15,22 @@ class User(AbstractUser):
     count_updates = models.IntegerField(default=2)
     can_update_on  = models.IntegerField(default=0)
     friends = models.ManyToManyField("User", blank=True)
+    match = models.ManyToManyField("Room", blank=True)
     class Meta:
         ordering = ['id']
+
+class Room(models.Model):
+    players = models.JSONField()
+    red_team = models.JSONField()
+    blue_team = models.JSONField()
+    red_team_score = models.IntegerField(default=0)
+    blue_team_score = models.IntegerField(default=0)
+    host = models.CharField(max_length=20)
+    room_name = models.CharField(max_length=20)
+    team_size = models.IntegerField(default=1)
+    gamemode = models.CharField(max_length=20)
+    time = models.IntegerField(default=3)
+    customization = models.CharField(default=3, null=True, blank=True)
 
 class FriendRequest(models.Model):
     from_user = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)

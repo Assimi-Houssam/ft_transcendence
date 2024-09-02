@@ -10,6 +10,7 @@ import userInfo from "../utils/services/userInfo.services.js";
 import { router } from "../routes/routes.js";
 import Toast from "../components/Toast.js";
 import { getUserInfo } from "../utils/utils.js";
+import { onlineGamePage } from "../components/GamePlay/onlineGame1v1.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
@@ -50,11 +51,13 @@ export class RoomPage extends HTMLElement {
     }
     async connectToRoom() {
         this.socket = new WebSocket("ws://localhost:8000/ws/room/" + this.roomId + "/");
-        this.socket.onclose = (evt) => {
+        this.socket.onclose = async (evt) => {
             console.log("socket connection CLOSED, error code:", evt.code, " reason: ", evt.reason);
             if (evt.code === 4001) {
                 Toast.success("Game started!");
-                router.navigate("/home");
+                this.user = await getUserInfo();
+                console.log("this user : ",this.user);
+                router.navigate("/game/" + this.roomId + "/", new onlineGamePage(this.roomData, this.user));
                 return;
             }
             if (evt.code === 4002) {
