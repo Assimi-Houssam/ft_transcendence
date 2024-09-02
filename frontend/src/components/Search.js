@@ -63,7 +63,7 @@ export class Search extends HTMLElement {
                         `
                             ${data.detail.map((user) => (
                                 `
-                                    <a href="#" class="search_result_user_card">
+                                    <a href="/user/${user.id}" class="search_result_user_card">
                                         <div class="search_result_user_card_left">
                                             <div>
                                                 <img 

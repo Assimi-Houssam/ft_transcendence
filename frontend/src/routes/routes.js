@@ -70,7 +70,7 @@ export const Routes = [
         service: logout,
     },
     {
-        path: "/profile/:userID",
+        path: "/user/:userID",
         component : Profile
     }
 ]
