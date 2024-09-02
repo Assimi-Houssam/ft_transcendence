@@ -13,7 +13,7 @@ class User(AbstractUser):
     pfp = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     banner = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     count_updates = models.IntegerField(default=2)
-    can_update_on  = models.IntegerField(default=(int(time.time())))
+    can_update_on  = models.IntegerField(default=0)
     friends = models.ManyToManyField("User", blank=True)
     class Meta:
         ordering = ['id']

@@ -1,6 +1,5 @@
 import Toast from "../../../Toast.js";
 import { RoomName } from "./RoomName.js";
-import { roomData } from "../RoomPage.js";
 
 export class EditRoomName extends HTMLElement {
     constructor(name = "") {
@@ -11,7 +10,7 @@ export class EditRoomName extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="TitleRoom" id="TitleRoom">
-                <input value="${this.roomName}" class="gradient-dark-bg gradient-dark-border" id="roomeNameInput" type="text" placeholder="edit room name" >
+                <input value="${this.roomName}" class="gradient-dark-bg gradient-dark-border" id="roomeNameInput" type="text" placeholder="Edit room name" >
                 <button id="saveRoomName">
                     <img src="../../../../../assets/icons/check.png" />
                 </button>
@@ -28,23 +27,21 @@ export class EditRoomName extends HTMLElement {
         const changeTitleRoom = document.getElementById("room-name_");
 
         const saveRoomName = () => {
-            if (this.roomName.length > 15) {
-                Toast.error("You can't set a name more than 15 characters");
+            if (this.roomName.length > 25) {
+                Toast.error("You can't set a name more than 25 characters");
                 return;
             } else if (this.roomName === "") {
                 Toast.error("You can't set an empty name");
                 return;
             }
-            roomData.roomName = this.roomName;
-            const RoomTitleName  = document.getElementById("RoomTitleName");
-            RoomTitleName.innerHTML = this.roomName;
             changeTitleRoom.replaceChildren(new RoomName(this.roomName));
+            document.dispatchEvent(new CustomEvent("roomNameChange", { detail: this.roomName, bubbles: true }));
         };
 
         saveRoomNameBtn.addEventListener("click", saveRoomName);
 
         roomNameInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
+            if (event.key === "Enter") {
                 saveRoomName();
             }
         });

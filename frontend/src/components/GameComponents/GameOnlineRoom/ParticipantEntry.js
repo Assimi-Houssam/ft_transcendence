@@ -17,28 +17,31 @@ export class EmptySlot extends HTMLElement {
 customElements.define("empty-slot", EmptySlot);
 
 export class ParticipantEntry extends HTMLElement {
-    constructor(username, pfp, banner, teamSide, isHost) {
+    constructor(userInfo, isHost, locked = false) {
         super();
-        this.teamSide = teamSide;
-        this.pfp = pfp;
-        this.username = username;
-        this.banner = banner;
+        this.userInfo = userInfo;
         this.isHost = isHost;
+        this.locked = locked;
+    }
+    getUserInfo() {
+        return this.userInfo;
     }
     connectedCallback() {
         this.innerHTML = `
             <div class="ParticipantEntryInfo">
-                <img src="${this.pfp}">
+                <img src="${this.userInfo.pfp}">
                 <div class="ParticipantUsername">
-                    <p>${this.username} ${this.isHost ? `<span style="color: var(--orchid); font-size: 65% ;">(Host)</span>` : ""}</p>
+                    <p>${this.userInfo.username} ${this.isHost ? `<span style="color: var(--orchid); font-size: 65% ;">(Host)</span>` : ""}</p>
                 </div>
             </div>
             <img class="ParticipantKick" src="../../../../assets/icons/circle-x.svg">`;
-        if (this.banner) {
-            this.style.backgroundImage = `url(${this.banner})`;
+        if (this.userInfo.banner) {
+            this.style.backgroundImage = `url(${this.userInfo.banner})`;
         } else {
             this.style.backgroundColor = "#212535";
         }
+        if (this.locked)
+            return;
         this.addEventListener("mouseover", (event) => {
             anime({
                 targets: this.querySelector(".ParticipantKick"),

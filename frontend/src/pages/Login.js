@@ -25,7 +25,7 @@ export class LoginPage extends HTMLElement {
 			const req = await ApiWrapper.post("/login", login_data);
 			const data = await req.json();
 			if (!req.ok) {
-				Toast.error(data.detail)
+				Toast.error(data.detail);
 				return;
 			}
 			router.navigate("/home");

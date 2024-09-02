@@ -18,7 +18,6 @@ export class OnlineMode extends HTMLElement{
         });
 
     }
-
 }
 
 customElements.define("online-mode", OnlineMode);

@@ -24,7 +24,7 @@ def me(request):
 @api_view(['GET'])
 @authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
-def filter_users(request) :
+def filter_users(request):
     query = request.GET["query"]
     data = User.objects.filter(username__icontains=query)
     users = UserSerializer(data, many=True)
