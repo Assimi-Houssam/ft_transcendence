@@ -150,6 +150,7 @@ layout-wrapper {
     padding-right: 2px;
     cursor: pointer;
     user-select: none;
+    text-decoration: none;
 }
 
 .navbar_ > .navbar_right_elements > .nav_username > p { 

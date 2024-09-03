@@ -24,8 +24,12 @@ profile-friends {
 }
 
 
+.profile_friends_title {
+    font-size: 20px;
+}
+
 #profile_banner {
-    height: 400px;
+    height: 300px;
     width: 100%;
     border: none !important;
     background-image: url("../images/banner.jpg");
@@ -45,8 +49,8 @@ profile-friends {
 }
 
 .profile_user_info #profile_pfp {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     margin-top: -30px;
@@ -60,12 +64,16 @@ profile-friends {
 }
 
 .profile_user_info_left_items h2 {
-    font-size: 40px;
+    font-size: 30px;
+}
+
+#profile_actions {
+    margin-top: 20px;
 }
 
 .profile_user_info_left_items .profile_joined #joined {
     color: #56576B;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .profile_user_info_left_items .profile_joined {
@@ -125,25 +133,25 @@ profile-statistics #statistics_cards statistic-card {
     padding: 10px;
     margin-top: 20px;
     gap: 20px;
-    height: 70px;
+    height: 50px;
 }
 
 profile-statistics #statistics_cards statistic-card img {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
 }
 
 profile-statistics #statistics_cards statistic-card p {
     color: #56576B;
-    font-size: 18px;
+    font-size: 15px;
 }
 
 profile-statistics #statistics_cards statistic-card h1 {
     font-size: 20px;
 } 
 .profile_titles {
-    font-size: 35px;
+    font-size: 25px;
 }
 
 match-history h2 {
@@ -218,49 +226,53 @@ friend-card {
     border-bottom: 1px solid transparent;
     border-image: linear-gradient(to left, #191C28, #4B4B4D, #191C28);
     border-image-slice: 2;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 #friends_list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     margin-top: 30px;
 }
 friend-card .friend_cad_left {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
 
 friend-card .friend_cad_left  img {
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
 }
 
 friend-card .friend_cad_left h2 {
-    font-size: 25px;
+    font-size: 15px;
 }
 
 friend-card button {
     all: unset;
 }
 friend-card button > img {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 25px;
+    object-fit: contain;
 }
 
 .friend_status {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
-.friend_status.online {color: #24CE90;}
+.friend_status.online {
+    color: #24CE90;
+    font-size: 10px;
+}
 .friend_status.online:before {
     content: "";
-    width: 10px;
-    height: 10px;
+    width: 5px;
+    height: 5px;
     background-color:#24CE90;
     border-radius: 50%;
 }
@@ -268,14 +280,14 @@ friend-card button > img {
 .friend_status.offline::before {
     content: "";
     border-radius: 50%;
-    width: 10px;
-    height: 10px;
+    width: 5px;
+    height: 5px;
     background-color : #FF0000;
 }
 
 .no_friends {
     color: #4B4B4D;
-    font-size: 20px;
+    font-size: 13px;
     font: lighter;
 }
 

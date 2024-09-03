@@ -25,8 +25,11 @@ export class ProfileActions extends HTMLElement {
     console.log(requestID)
     const res = await ApiWrapper.post(`/friends/accept_request/${requestID}`);
     const json = await res.json();
-    if (res.status === 200)
+    if (res.status === 200) {
+      const acceptFrientBtn = document.getElementById("accept_friend_request");
+      this.removeChild(acceptFrientBtn)
       Toast.success(json.detail)
+    }
     else
       Toast.error(res.detail)
   }
@@ -39,15 +42,17 @@ export class ProfileActions extends HTMLElement {
    */
   connectedCallback() {
     this.innerHTML = `
-      ${this.friendRequest.find(item => item.from_user.id === this.user.id) != undefined ? (`
-          <button id="accept_friend_request">
-            <img src="../../../assets/icons/accept_user.png" >
-          </button>
-        `) : (`
+      ${this.user.friends.find(item => item.id === this.auth.id) === undefined ?
+        this.friendRequest.find(item => item.from_user.id === this.user.id) != undefined ? (`
+            <button id="accept_friend_request">
+              <img src="../../../assets/icons/accept_user.png" >
+            </button>
+          `) : (`
             <button id="add_friend">
               <img src="../../../assets/icons/add_friend.png" >
             </button>
-          `)}
+        `) : ""
+      }
       <button id="send_message">
         <img src="../../../assets/icons/message.png"
       </button> 
