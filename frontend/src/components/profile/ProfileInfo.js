@@ -33,13 +33,7 @@ export class ProfileActions extends HTMLElement {
     else
       Toast.error(res.detail)
   }
-  /**
-   * TODOS
-   *  send friend request by auth => done
-   *  hide the user friend list from the auth visitor => done
-   *  remove the friend or  accept friend buttons if the auth and user already friends
-   *  make the items in friend list as link if i clicked on item should navigate  me to the  the friend profile
-   */
+
   connectedCallback() {
     this.innerHTML = `
       ${this.user.friends.find(item => item.id === this.auth.id) === undefined ?

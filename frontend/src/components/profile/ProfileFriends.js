@@ -1,3 +1,4 @@
+import { router } from "../../routes/routes.js";
 import ApiWrapper from "../../utils/ApiWrapper.js";
 export class FriendsCard extends HTMLElement {
   constructor(user) {
@@ -18,6 +19,7 @@ export class FriendsCard extends HTMLElement {
         <img src="../../../assets/icons/block_user.png" >
       </button>
     `
+    this.onclick = () =>  router.navigate(`/user/${this.user.id}`)
   }
 }
 
