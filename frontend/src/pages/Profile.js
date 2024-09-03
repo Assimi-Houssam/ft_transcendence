@@ -11,6 +11,7 @@ export class Profile extends HTMLElement {
     this.innerHTML = new PreloaderMini().outerHTML
     this.user = null;
     this.auth  = undefined;
+    this.friendRequest = undefined;
   }
 
   async getAuth()  {
@@ -29,6 +30,15 @@ export class Profile extends HTMLElement {
     } else {
       router.navigate("/404");
     }
+  }
+
+  async fetchFriendRequest() {
+    const res = await ApiWrapper.get("/friends/requests");
+    const json = await res.json();
+    if (res.status === 200)
+      this.friendRequest = json;
+    else
+      Toast.error("Faild to get your friends requests");
   }
 
   setUserUnfo() {
@@ -53,12 +63,13 @@ export class Profile extends HTMLElement {
   setActions() {
     const profileActions = document.getElementById("profile_actions");
     if (this.auth.id !== this.user.id)
-      profileActions.appendChild(new ProfileActions(this.user, this.auth));
+      profileActions.appendChild(new ProfileActions(this.user, this.auth, this.friendRequest));
   }
 
   async  connectedCallback() {
     await this.fetchUser();
     await this.getAuth();
+    await this.fetchFriendRequest();
     this.innerHTML = `
       <profile-info> </profile-info>
       <profile-friends></profile-friend-list>
@@ -66,6 +77,14 @@ export class Profile extends HTMLElement {
     this.setUserUnfo();
     this.setFriendsList();
     this.setActions();
+    const friendListComponent = document.querySelector("profile-friends");
+    if (friendListComponent) {
+      if (this.user.id !== this.auth.id) {
+        const profileInfo = document.querySelector("profile-info");
+        profileInfo.style.flex = 1;
+        this.removeChild(friendListComponent);
+      }
+    }
   }
 };
 

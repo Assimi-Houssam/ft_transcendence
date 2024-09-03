@@ -1,16 +1,35 @@
 import { ProfileStatistics } from "./ProfileStatistics.js";
 import { MatchHistory } from "./MtachHistory.js";
+import ApiWrapper from "../../utils/ApiWrapper.js"
+import Toast from "../Toast.js";
 
 export class ProfileActions extends HTMLElement {
-  constructor(user, auth) {
+  constructor(user, auth, requests) {
     super();
     this.user = user;
     this.auth = auth;
+    this.friendRequest = requests;
   }
-  addFriendEven() {
+  async addFriendEven() {
     console.log("send request to [ ", this.user.username, " ]");
+    const res = await ApiWrapper.post(`/friends/send_request/${this.user.id}`);
+    const json = await res.json();
+    if (res.status === 201)
+      Toast.success(json.detail);
+    else
+      Toast.error(json.detail);
   }
 
+  async acceptFriendRequest() {
+    const requestID = this.friendRequest.find(item => item.from_user.id === this.user.id).id
+    console.log(requestID)
+    const res = await ApiWrapper.post(`/friends/accept_request/${requestID}`);
+    const json = await res.json();
+    if (res.status === 200)
+      Toast.success(json.detail)
+    else
+      Toast.error(res.detail)
+  }
   /**
    * TODOS
    *  send friend request by auth
@@ -19,15 +38,25 @@ export class ProfileActions extends HTMLElement {
    */
   connectedCallback() {
     this.innerHTML = `
-      <button id="add_friend">
-        <img src="../../../assets/icons/add_friend.png" >
-      </button>
+      ${this.friendRequest.find(item => item.from_user.id === this.user.id) != undefined ? (`
+          <button id="accept_friend_request">
+            <img src="../../../assets/icons/accept_user.png" >
+          </button>
+        `) : (`
+            <button id="add_friend">
+              <img src="../../../assets/icons/add_friend.png" >
+            </button>
+          `)}
       <button id="send_message">
         <img src="../../../assets/icons/message.png"
       </button> 
       <button id="block_user">Block</button>
     `
-    document.getElementById("add_friend").onclick = () => this.addFriendEven();
+    const addFriendBtn = document.getElementById("add_friend");
+    if (addFriendBtn) addFriendBtn.onclick = () => this.addFriendEven();
+    const acceptFriendBtn = document.getElementById("accept_friend_request");
+    if (acceptFriendBtn) acceptFriendBtn.onclick = () => this.acceptFriendRequest();
+
   }
 }
 

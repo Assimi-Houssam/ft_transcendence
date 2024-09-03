@@ -286,7 +286,7 @@ profile-actions {
 }
 
 
-#send_message, #add_friend  {
+#send_message, #add_friend, #accept_friend_request  {
     all: unset;
     height: 70px;
     width: 70px;
@@ -295,7 +295,7 @@ profile-actions {
     cursor: pointer;
 }
 
-#send_message img, #add_friend img  {
+#send_message img, #add_friend img, #accept_friend_request img  {
     width: 40px;
     height: 40px;
 }
