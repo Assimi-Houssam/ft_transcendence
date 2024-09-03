@@ -76,3 +76,11 @@ def get_friends(req) :
     return Response({
         'detail' : friends.data
     }, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+@authentication_classes([JWTAuth])
+@permission_classes([IsAuthenticated])
+def block_user(req, userID):
+    return Response({
+        "detail" : "User add to block list successfuly"
+    }, status=status.HTTP_201_CREATED)

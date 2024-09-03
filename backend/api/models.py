@@ -14,7 +14,7 @@ class User(AbstractUser):
     banner = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     count_updates = models.IntegerField(default=2)
     can_update_on  = models.IntegerField(default=0)
-    friends = models.ManyToManyField("User", blank=True)
+    friends = models.ManyToManyField("User", symmetrical=True,related_name="friends",blank=True)
     class Meta:
         ordering = ['id']
 

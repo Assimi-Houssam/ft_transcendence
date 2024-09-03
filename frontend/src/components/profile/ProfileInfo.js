@@ -2,6 +2,7 @@ import { ProfileStatistics } from "./ProfileStatistics.js";
 import { MatchHistory } from "./MtachHistory.js";
 import ApiWrapper from "../../utils/ApiWrapper.js"
 import Toast from "../Toast.js";
+import { router } from "../../routes/routes.js";
 
 export class ProfileActions extends HTMLElement {
   constructor(user, auth, requests) {
@@ -34,6 +35,12 @@ export class ProfileActions extends HTMLElement {
       Toast.error(res.detail)
   }
 
+  async blockUser() {
+    //todo next : creat a best way for  blocking user 
+    const res = await ApiWrapper.post(`/user/block/${this.user.id}`);
+    const json  = await res.json();
+    Toast.success(json.detail);
+  }
   connectedCallback() {
     this.innerHTML = `
       ${this.user.friends.find(item => item.id === this.auth.id) === undefined ?
@@ -56,7 +63,8 @@ export class ProfileActions extends HTMLElement {
     if (addFriendBtn) addFriendBtn.onclick = () => this.addFriendEven();
     const acceptFriendBtn = document.getElementById("accept_friend_request");
     if (acceptFriendBtn) acceptFriendBtn.onclick = () => this.acceptFriendRequest();
-
+    const blockUserBtn = document.getElementById("block_user");
+    blockUserBtn.onclick = () => this.blockUser();
   }
 }
 

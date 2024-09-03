@@ -42,25 +42,30 @@ export class Profile extends HTMLElement {
   }
 
   setUserUnfo() {
-    document.getElementById("profile_banner").style.backgroundImage = `url(${ApiWrapper.getUrl()}${this.user.banner})`;
-    document.getElementById("profile_pfp").src = ApiWrapper.getUrl() + this.user.pfp;
-    document.getElementById("profile_login").innerHTML = this.user.username;
-    document.getElementById("joined").innerHTML = "joined " + new Date(this.user.date_joined).toDateString("en-US")
+    const banner = document.getElementById("profile_banner");
+    const pfp = document.getElementById("profile_pfp");
+    const username = document.getElementById("profile_login");
+    const joined = document.getElementById("joined");
+
+    banner && (banner.style.backgroundImage = `url(${ApiWrapper.getUrl()}${this.user.banner})`);
+    pfp && (pfp.src = ApiWrapper.getUrl() + this.user.pfp);
+    username && (username.innerHTML = this.user.username);
+    joined &&  (joined.innerHTML = "joined " + new Date(this.user.date_joined).toDateString("en-US"))
   }
 
   setFriendsList() {
     const friendsList = document.getElementById("friends_list")
-    if (this.user.friends.length > 0) {
+    if (this?.user?.friends.length > 0) {
       this.user.friends.map(item => friendsList.appendChild(new FriendsCard(item)))
       return ;
     }
-    friendsList.innerHTML = '<p class="no_friends"> You have no friends right now to display</p>'
+    friendsList && (friendsList.innerHTML = '<p class="no_friends"> You have no friends right now to display</p>');
   }
 
   //to set the  acions button (add as friend, send message, block)
   setActions() {
     const profileActions = document.getElementById("profile_actions");
-    if (this.auth.id !== this.user.id)
+    if (profileActions && this.auth.id !== this.user.id)
       profileActions.appendChild(new ProfileActions(this.user, this.auth, this.friendRequest));
   }
 
