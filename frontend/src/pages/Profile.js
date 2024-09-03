@@ -52,8 +52,7 @@ export class Profile extends HTMLElement {
   setFriendsList() {
     const friendsList = document.getElementById("friends_list")
     if (this.user.friends.length > 0) {
-        for (let item in this.user.friends)
-          friendsList.appendChild(new FriendsCard(item));
+      this.user.friends.map(item => friendsList.appendChild(new FriendsCard(item)))
         return ;
     } 
     friendsList.innerHTML = '<p class="no_friends"> You have no friends right now to display</p>'

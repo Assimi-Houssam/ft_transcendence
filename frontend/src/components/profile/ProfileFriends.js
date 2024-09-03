@@ -1,5 +1,4 @@
 import ApiWrapper from "../../utils/ApiWrapper.js";
-
 export class FriendsCard extends HTMLElement {
   constructor(user) {
     super();
@@ -12,6 +11,7 @@ export class FriendsCard extends HTMLElement {
         <img src="${ApiWrapper.getUrl()}${this.user.pfp}" >
         <div>
           <h2>${this.user.username}</h2>
+          <p class="friend_status online">online</p>
         </div>
       </div>
       <button>
