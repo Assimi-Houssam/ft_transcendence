@@ -15,7 +15,8 @@ def block(req, userID):
     return Response({
       "detail" : "faild to block this user"
     }, status=status.HTTP_208_ALREADY_REPORTED)
-  req.user.block_list.add(user_to_block)
+  user  = User.objects.get(id=req.user.id)
+  user.block_list.add(user_to_block)
   return Response({
     "detail" : "User blocked successfuly"
   }, status=status.HTTP_201_CREATED)
