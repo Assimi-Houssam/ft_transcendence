@@ -314,7 +314,7 @@ profile-actions {
     height: 40px;
 }
 
-#block_user {
+#block_user, #unblock_user {
     all: unset;
     width: 100px;
     height: 50px;

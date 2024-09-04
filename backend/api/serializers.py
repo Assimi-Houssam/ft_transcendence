@@ -11,9 +11,10 @@ class NestedUserSerializer(serializers.ModelSerializer):
 
 class UserSerializerMe(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)
+    block_list = NestedUserSerializer(many=True)
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends","date_joined", "email"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list","date_joined", "email"]
 
 class UserSerializer(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)

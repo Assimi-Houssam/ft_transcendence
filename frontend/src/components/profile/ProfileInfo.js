@@ -36,11 +36,27 @@ export class ProfileActions extends HTMLElement {
   }
 
   async blockUser() {
-    //todo next : creat a best way for  blocking user 
+    console.log("AUTH ---> ", this.auth)
     const res = await ApiWrapper.post(`/user/block/${this.user.id}`);
     const json  = await res.json();
-    Toast.success(json.detail);
+    if (res.status === 201) {
+      Toast.success(json.detail);
+    }else {
+      Toast.error(json.detail);
+    }
   }
+
+  async unblockUser() {
+    const res = await ApiWrapper.post(`/user/unblock/${this?.user?.id}`);
+    const json = await res.json();
+    if (res.status === 200) {
+      Toast.success(json.detail)
+      this.connectedCallback();
+    } else {
+      Toast.error(json.detail)
+    }
+  }
+
   connectedCallback() {
     this.innerHTML = `
       ${this.user.friends.find(item => item.id === this.auth.id) === undefined ?
@@ -54,17 +70,25 @@ export class ProfileActions extends HTMLElement {
             </button>
         `) : ""
       }
-      <button id="send_message">
-        <img src="../../../assets/icons/message.png"
-      </button> 
-      <button id="block_user">Block</button>
+      ${
+        this.auth.block_list.find(item => item.id === this.user.id) != undefined ? "" : `<button id="send_message">
+          <img src="../../../assets/icons/message.png" >
+        </button> `
+      }
+      ${
+        this.auth.block_list.find(item => item.id === this.user.id) != undefined ? 
+          `<button id="unblock_user">Unblock</button>`
+          : `<button id="block_user">Block</button>`
+      }
     `
     const addFriendBtn = document.getElementById("add_friend");
     if (addFriendBtn) addFriendBtn.onclick = () => this.addFriendEven();
     const acceptFriendBtn = document.getElementById("accept_friend_request");
     if (acceptFriendBtn) acceptFriendBtn.onclick = () => this.acceptFriendRequest();
     const blockUserBtn = document.getElementById("block_user");
-    blockUserBtn.onclick = () => this.blockUser();
+    blockUserBtn && (blockUserBtn.onclick = () => this.blockUser());
+    const unblockBtn = document.getElementById("unblock_user");
+    unblockBtn && (unblockBtn.onclick = () => this.unblockUser())
   }
 }
 

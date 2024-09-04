@@ -18,6 +18,7 @@ export class Profile extends HTMLElement {
     const res = await ApiWrapper.get("/me");
     const userJson = await res.json();
     this.auth = userJson;
+    console.log("auth ---> ", this.auth)
   }
 
   async fetchUser() {
