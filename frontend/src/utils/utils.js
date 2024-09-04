@@ -1,4 +1,5 @@
 import ApiWrapper from "./ApiWrapper.js";
+
 /** TODO: complete implementation of this function
  * Check if the user is authenticated
  * @returns {boolean} true if the user is authenticated, false otherwise
@@ -8,6 +9,7 @@ export async function isAuthenticated() {
     const req = await ApiWrapper.get("/me");
     return req;
 }
+
 export function genRandomString(length) {
     const array = new Uint8Array(length);
     window.crypto.getRandomValues(array);
@@ -37,4 +39,29 @@ export async function OAuthIntercept() {
         return "An exception has occured";
     }
     return "";
+}
+
+let userInfo = null;
+
+export async function getUserInfo() {
+    if (userInfo)
+        return userInfo;
+    console.log("updating user info!!");
+    const req = await ApiWrapper.get("/me");
+    if (!req.ok)
+        return null;
+    userInfo = await req.json();
+    return userInfo;
+}
+
+export async function forceUpdateUserInfo() {
+    const req = await ApiWrapper.get("/me");
+    if (!req.ok)
+        return null;
+    userInfo = await req.json();
+    return userInfo;
+}
+
+export function resetUserInfo() {
+    userInfo = null;
 }

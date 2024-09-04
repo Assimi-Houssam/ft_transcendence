@@ -6,8 +6,6 @@ export class HomePage extends HTMLElement {
       <div class="home_">
         <div class="home_header_">
           <h1>Home</h1>
-          <div class="test">klsdjflsdkf</div>
-          <a href="/chat/start">start chat</a>
         </div>
       </div>`
       // this.querySelector(".test").onclick = () => {

@@ -29,7 +29,7 @@ def login(request):
     password = request.data.get("password")
     user = authenticate(username=username, password=password)
     if user == None:
-        return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"detail": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
     # once a token is generated for a user, it'll always be able to log the user in, even if the user changes the password etc
     # todo: possibly start blacklisting tokens on logout/password change (but that kind of breaks jwt's purpose)
     token = AccessToken.for_user(user)
@@ -62,7 +62,6 @@ def oauth_login(request):
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     r = requests.post(access_token_endpoint, data=params, headers=headers)
     if (r.status_code != requests.codes.ok):
-        print("an error has occured")
         return Response({"detail": "An error occured fetching an access token from 42"}, status=status.HTTP_400_BAD_REQUEST)
     access_token = r.json()["access_token"]
     headers = {

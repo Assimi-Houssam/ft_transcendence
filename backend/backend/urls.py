@@ -16,12 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views, update_profile, auth, manage_friends
+from api import views, update_profile, auth, manage_friends, rooms
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
     path("me", views.me),
+    path("users/filter", views.filter_users),
     path("register", auth.register),
     path("oauth-login", auth.oauth_login),
     path("login", auth.login),
@@ -33,6 +34,9 @@ urlpatterns = [
     path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request),
     path("friends/requests", manage_friends.friend_requests),
     path("friends/all", manage_friends.get_friends),
+
+    path("rooms/create", rooms.create_room),
+    path("rooms/list", rooms.list_rooms)
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
