@@ -5,12 +5,9 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
     var KEY_DOWN = "s";
     let number1 = 0;
     let number2 = 0;
-    let round_bool = false;
     var minutes;
     var seconds;
-    var distance;
-    var countDownDate = new Date().getTime() + Number(time) * 60000;
-    // let player;
+    var distance = 10;
     let startGame = false;
     canvas.width = 1635;
     canvas.height = 585;
@@ -18,6 +15,7 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
     const widthcanva = canvas.width - 100;
     const keypresss = []
     let gamefinsihed = false;
+    let pause = false;
 
 
     ws.onmessage = async function (event) {
@@ -107,10 +105,10 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
 
 
     const bal = new ball(vec(widthcanva / 2 + 30, heightcanva / 2 + 30), vec(6, 5,), 10)
-    const paddle1 = new paddle(vec(60, 80), vec(8, 10), 10, 70, 'green')
-    const paddle2 = new paddle(vec(60, 120), vec(8, 10), 10, 70, 'blue')
-    const paddle3 = new paddle(vec(widthcanva - 10, 80), vec(8, 10), 10, 70, 'red')
-    const paddle4 = new paddle(vec(widthcanva - 10, 120), vec(8, 10), 10, 70, 'yellow')
+    const paddle1 = new paddle(vec(60, 300), vec(8, 10), 10, 70, 'green')
+    const paddle2 = new paddle(vec(60, 400), vec(8, 10), 10, 70, 'blue')
+    const paddle3 = new paddle(vec(widthcanva - 10, 300), vec(8, 10), 10, 70, 'red')
+    const paddle4 = new paddle(vec(widthcanva - 10, 400), vec(8, 10), 10, 70, 'yellow')
 
     const paddles = [paddle1, paddle2, paddle3, paddle4];
     const paddleNames = ['paddle1', 'paddle2', 'paddle3', 'paddle4'];
@@ -125,20 +123,23 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
             p2.textContent = number2.toString();
     }
 
-    var rounds = 1
     function gameupdate() {
 
-        if (round_bool) {
-            rounds += 1
-            round_bool = false
-            document.getElementById('rounds').textContent = 'rounds ' + rounds.toString()
-        }
         ballcoli(bal)
         for (let i = 0; i < paddles.length; i++) {
             if (player == paddleNames[i]) {
                 paddles[i].update()
             }
         }
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "p") {
+                if (ws.readyState === 1) {
+                    ws.send(JSON.stringify({
+                        'pause': true,
+                    }));
+                }
+            }
+        });
     }
 
     function gamedraw() {
@@ -156,8 +157,6 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
             try {
                 const data = JSON.parse(event.data);
                 await processMessage(data);
-                // min = data.minute;
-                // sec = data.second;
             } catch (error) {
                 console.error('Error processing message:', error);
             }
@@ -173,12 +172,36 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
         ctx.closePath();
         gameupdate();
         gamedraw();
+        if (pause === true) {
+            canvas.style.filter = 'blur(10px)';
+            countdownElement.textContent = "game paused for 10 seconds";
+            countdownElement.style.display = 'block';
+        }
+        else if (pause === false) {
+            canvas.style.filter = 'none';
+            countdownElement.style.display = 'none';
+        }
         const paddleKey = `paddle${player.slice(-1)}`;
-        const paddlePos = eval(`${paddleKey}.pos.y`);
+        let paddlepos;
+        console.log(paddleKey);
+        switch (paddleKey) {
+            case 'paddle1':
+                paddlepos = paddle1.pos.y;
+                break;
+            case 'paddle2':
+                paddlepos = paddle2.pos.y;
+                break
+            case 'paddle3':
+                paddlepos = paddle3.pos.y;
+                break
+            case 'paddle4':
+                 paddlepos = paddle4.pos.y;
+                 break}
         if (ws.readyState === 1) {
             ws.send(JSON.stringify({
-                [paddleKey]: paddlePos,
+                [paddleKey]: paddlepos,
                 'sender': player,
+                'pause': false,
             }));
         }
     }
@@ -213,20 +236,6 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
                 countdownElement.style.display = 'none';
                 gameloop();
                 interval = setInterval(function () {
-                    //   broadcast time from this client to other clients
-                    if (player === "paddle1") {
-                        var now = new Date().getTime();
-                        distance = countDownDate - now;
-                        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                        seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                        if (ws.readyState === 1) {
-                            ws.send(JSON.stringify({
-                                'distance': distance,
-                                'minute': minutes,
-                                'second': seconds,
-                            }));
-                        }
-                    }
                     let timeSelector = document.querySelector(".time-display");
                     if (timeSelector) {
                         timeSelector.textContent = minutes + ":" + seconds;
@@ -236,7 +245,7 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
                         cancelAnimationFrame(animationframe);
                     }
                     if (distance < 0 || gamefinsihed) {
-                        console.log('game finished');
+                        console.log('game finished', distance, gamefinsihed);
                         let timeSelector = document.querySelector(".time-display");
                         timeSelector.textContent = "Time's up!";
                         canvas.style.filter = 'blur(10px)';
@@ -277,12 +286,10 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
 
         drawInitialCanvas();
         const cool = setInterval(() => {
-            if (player == "paddle4") {
-
+            if (ws.readyState === 1)
                 ws.send(JSON.stringify({
                     'startgame': "True",
                 }));
-            }
             if (startGame) {
                 clearInterval(cool)
                 startCountdown(3);
@@ -302,16 +309,16 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
 
         if (startGame) {
             for (let i = 0; i < paddles.length; i++) {
-                if (player == paddleNames[i])
-                    continue;
-                if (data[paddleNames[i]])
-                    paddles[i].pos.y = data[paddleNames[i]];
                 if (data.minute)
                 {
                     minutes = data.minute;
                     seconds = data.second;
                     distance = data.distance;
                 }
+                if (player == paddleNames[i])
+                    continue;
+                if (data[paddleNames[i]])
+                    paddles[i].pos.y = data[paddleNames[i]];
             }
             if(data.positionx && data.positiony)
             {
@@ -319,13 +326,13 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
                 bal.pos.y = data.positiony;
             }
             if (data.score1 != number1 || data.score2 != number2) {
-                round_bool = true;
                 number1 = data.score1;
                 number2 = data.score2;
             }
             if (data.finish) {
                 gamefinsihed = true;
             }
+            pause = data.pause;
         }
 
     }

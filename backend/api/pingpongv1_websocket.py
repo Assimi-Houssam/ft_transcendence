@@ -8,77 +8,65 @@ from .models import User, Room
 
 
 
-BOUNDARY_LEFT = 30
-BOUNDARY_RIGHT = 1545
+BOUNDARY_LEFT = 40
+BOUNDARY_RIGHT = 1535
 BOUNDARY_TOP = 30
 BOUNDARY_BOTTOM = 516
 PADDLE_WIDTH = 10
-PADDLE_HEIGHT = 45
+PADDLE_HEIGHT = 55
 BALL_RADIUS = 15
 BALL_RESET_X = 1545/2
 BALL_RESET_Y = 516/2
 V_RESET_X = 10
 V_RESET_Y = 7
 class gameonline(AsyncWebsocketConsumer):
-    group_sizes = {}
     game_states = {}
     tosave = {}
-
     async def connect(self):
         self.room_group_name = self.scope['url_route']['kwargs']['room_id']
         rooms = cache.get('rooms')
-        self.user = await database_sync_to_async(User.objects.get)(id=self.scope['user'].id)
-        print(self.user.id)
+        self.user = self.scope['user']
         if rooms and self.room_group_name in rooms:
             self.tosave[self.room_group_name] = rooms[self.room_group_name]
             del rooms[self.room_group_name]
             cache.set('rooms', rooms)
-        if self.room_group_name not in self.group_sizes:
+        if self.room_group_name not in self.game_states:
             asyncio.create_task(self.update_game())
-            self.group_sizes[self.room_group_name] = 0
             self.game_states[self.room_group_name] = {
                 "finish": False,
                 "begin": False,
                 "start": False,
                 "pause": False,
                 'ball_state': {
-                    'position': {"x": 1535/2, "y": 516/2},
+                    'position': {"x": BALL_RESET_X, "y": BALL_RESET_Y},
                     'velocity': {"x": 10, "y": 7},
-                    'radius': 10
                 },
                 'paddle1': {
+                    'id' : 0,
                     'position': {"x": 70, "y": 300},
-                    'width': 10,
-                    'height': 60,
-                    'velocity': {"x": 8, "y": 4},
                     'pause_req' : 0,
-                    'channelname': {"id": None, "send": None, "user": None},
                 },
                 'paddle2': {
+                    'id' : 0,
                     'position': {"x": 1510, "y": 300},
-                    'width': 10,
-                    'height': 60,
-                    'velocity': {"x": 8, "y": 4},
                     'pause_req' : 0,
-                    'channelname': {"id": None, "send": None, "user": None},
                 },
                 'score': {"x": 0, "y": 0},
-                'minute': 0,
-                'second': 0,
-                'distance': 1,
                 'winner' : {},
-                'WinnerScor': 0,
-                'LoserScor': 0,
             }
         # Check group size
-        group_size = self.group_sizes[self.room_group_name]
-        if group_size >= 2:
+        user_in_group = any(user['id'] == self.user.id for user in self.tosave[self.room_group_name]['users'])
+        if not user_in_group:
             await self.close()
             return
-        # Increment group size in memory
-        self.group_sizes[self.room_group_name] += 1
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
+        rteams = self.tosave[self.room_group_name]['redTeam']
+        bteams = self.tosave[self.room_group_name]['blueTeam']
+        if any(user.get('id') == self.user.id for user in rteams):
+            self.game_states[self.room_group_name]["paddle2"]["id"] = self.user.id
+        elif any(user.get('id') == self.user.id for user in bteams):     
+            self.game_states[self.room_group_name]["paddle1"]["id"] = self.user.id
 
     async def disconnect(self, close_code):
         self.game_states[self.room_group_name]["finish"] = True
@@ -86,14 +74,9 @@ class gameonline(AsyncWebsocketConsumer):
             self.game_states[self.room_group_name]["winner"] = self.game_states[self.room_group_name]["paddle2"]["channelname"]["user"]
         else:
             self.game_states[self.room_group_name]["winner"] = self.game_states[self.room_group_name]["paddle1"]["channelname"]["user"]
-        # Decrement group size in memory
-        self.group_sizes[self.room_group_name] -= 1
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-        # Close the connection
         await self.close()
-        if self.group_sizes[self.room_group_name] == 0:
-            del self.game_states[self.room_group_name]
-            del self.group_sizes[self.room_group_name]
+        # del self.game_states[self.room_group_name]
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -123,11 +106,8 @@ class gameonline(AsyncWebsocketConsumer):
                     customization=room["customization"],
                     room_name=room["name"],
                 )
-                # await database_sync_to_async(match_history.save())
-                await database_sync_to_async(self.user.match.add)(match_history)
-                # await database_sync_to_async(self.user.save)()
+                await database_sync_to_async(match_history.save())
                 print("Match saved", self.user.id)
-
             except Exception as e:
                 print(f"An error occurred: {e}")
 
@@ -136,11 +116,6 @@ class gameonline(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         # if(text_data_json.get("finish") == 'True'):
         #     self.save_state(self)
-        channel_name = text_data_json.get("send")
-        if channel_name != None:
-            self.game_states[self.room_group_name][f"paddle{channel_name[-1]}"]["channelname"]["id"] = self.channel_name
-            self.game_states[self.room_group_name][f"paddle{channel_name[-1]}"]["channelname"]["send"] = channel_name
-            self.game_states[self.room_group_name][f"paddle{channel_name[-1]}"]["channelname"]["user"] = self.user
         if(text_data_json.get("costume") == 'True'):
             self.game_states[self.room_group_name]["costume"] = True
         startgame = text_data_json.get("startgame")
@@ -150,6 +125,8 @@ class gameonline(AsyncWebsocketConsumer):
             startgame = False
         if begin == 'go':
             self.game_states[self.room_group_name]["begin"] = True
+            thetime = int(self.tosave[self.room_group_name]['time']) * 60
+        
         player = text_data_json.get("sender")
         if(player != None):
             paddle_key = f"paddle{player[-1]}"
@@ -157,34 +134,36 @@ class gameonline(AsyncWebsocketConsumer):
                 pad = text_data_json.get(paddle_key)
                 if pad != None:
                     self.game_states[self.room_group_name][paddle_key]["position"]["y"] = pad
-        
         pause = text_data_json.get("pause")
         if(pause != None):
-            paddle_key = f"paddle{player[-1]}"
             if(pause == 'True' and self.game_states[self.room_group_name][paddle_key]["pause_req"] == 0):
                 self.game_states[self.room_group_name][paddle_key]["pause_req"] = 1\
                 
-        min = text_data_json.get("minute")
-        sec =  text_data_json.get("second")
-        if(min != None and sec != None):
-            self.game_states[self.room_group_name]["minute"] = text_data_json.get("minute")
-            self.game_states[self.room_group_name]["second"] = text_data_json.get("second")
-            self.game_states[self.room_group_name]["distance"] = text_data_json.get("distance")
 
+    def handle_pause_timer(self,paddle, game_states, room_group_name):
+        if  paddle["pause_req"] == 3:
+            elapsed_time = time.time() - paddle["pause_timer"]
+            if elapsed_time >= 10:
+                game_states[room_group_name]["pause"] = False
+                paddle["pause_req"] = 4
     async def update_game(self):
+        distance = 5
+        chrono = time.time() + int(self.tosave[self.room_group_name]['time']) * 60
         while True:
             state = self.game_states[self.room_group_name]
             paddle1 = state["paddle1"]
             paddle2 = state["paddle2"]
+            if(paddle1["pause_req"] == 2 or paddle2["pause_req"] == 2):
+                chrono = time.time() + distance
+            else:
+                now = time.time()
+                distance = chrono - now
+                minutes,seconds = divmod(distance, 60)
+                minutes = int(minutes)
+                seconds = int(seconds)
             pause = state["pause"]
-            def handle_pause_timer(paddle, game_states, room_group_name):
-                if pause and paddle["pause_req"] == 3:
-                    elapsed_time = time.time() - paddle["pause_timer"]
-                    if elapsed_time >= 10:
-                        game_states[room_group_name]["pause"] = False
-                        paddle["pause_req"] = 4
-            handle_pause_timer(paddle1, self.game_states, self.room_group_name)
-            handle_pause_timer(paddle2, self.game_states, self.room_group_name)
+            self.handle_pause_timer(paddle1, self.game_states, self.room_group_name)
+            self.handle_pause_timer(paddle2, self.game_states, self.room_group_name)
             await self.update_gamestate()
             state = self.game_states[self.room_group_name]
             ball_state = state["ball_state"]
@@ -192,7 +171,7 @@ class gameonline(AsyncWebsocketConsumer):
             paddle2 = state["paddle2"]
             score = state["score"]
             pause = state["pause"]
-            if(state["distance"] == 0):
+            if(distance <= 0):
                 self.game_states[self.room_group_name]["finish"] = True
                 await self.channel_layer.group_send(
                     self.room_group_name,
@@ -200,12 +179,6 @@ class gameonline(AsyncWebsocketConsumer):
                         "type": "padle_state",
                         "finish": True
                     })
-                if score["x"] > score["y"]:
-                    self.game_states[self.room_group_name]["winner"] =  self.game_states[self.room_group_name]["winner"]["paddle1"]["channelname"]["user"]
-                elif score["x"] > score["y"]:
-                    self.game_states[self.room_group_name]["winner"] = self.game_states[self.room_group_name]["winner"]["paddle2"]["channelname"]["user"]
-                else:
-                    self.game_states[self.room_group_name]["winner"] = None
                 break
             await asyncio.gather(
                 self.channel_layer.group_send(
@@ -223,9 +196,9 @@ class gameonline(AsyncWebsocketConsumer):
                         "score1": score["x"],
                         "score2": score["y"],
                         "pause": pause,
-                        "minute": state["minute"],
-                        "second": state["second"],
-                        "distance": state["distance"],
+                        "minute": minutes,
+                        "second": seconds,
+                        "distance": distance,
                         "finish": state["finish"]
                     }
                 ),
@@ -236,6 +209,11 @@ class gameonline(AsyncWebsocketConsumer):
                 break
 
        
+    def handle_pause_request(self, paddle, game_states, room_group_name):
+        if paddle["pause_req"] == 1:
+            paddle["pause_req"] = 3
+            game_states[room_group_name]["pause"] = True
+            paddle["pause_timer"] = time.time()
     
     async def update_gamestate(self):
             state = self.game_states[self.room_group_name]
@@ -246,11 +224,6 @@ class gameonline(AsyncWebsocketConsumer):
             begin = state["begin"]
             pause = state["pause"]
 
-            def handle_pause_request(paddle, game_states, room_group_name):
-                if paddle["pause_req"] == 1:
-                    paddle["pause_req"] = 3
-                    game_states[room_group_name]["pause"] = True
-                    paddle["pause_timer"] = time.time()
                
             if pause == False:
                 # Update position based on velocity
@@ -266,16 +239,18 @@ class gameonline(AsyncWebsocketConsumer):
                     ball_state["position"]["x"] = BALL_RESET_X
                     ball_state["position"]["y"] = BALL_RESET_Y
                     score["x"] += 1
-                    handle_pause_request(paddle1, self.game_states, self.room_group_name)
-                    handle_pause_request(paddle2, self.game_states, self.room_group_name)
+                    self.handle_pause_request(paddle1, self.game_states, self.room_group_name)
+                    self.handle_pause_request(paddle2, self.game_states, self.room_group_name)
+                    await asyncio.sleep(0.5)
                 elif posx + BALL_RADIUS >= BOUNDARY_RIGHT:
                     ball_state["velocity"]["x"] = V_RESET_X
                     ball_state["velocity"]["y"] = V_RESET_Y
                     ball_state["position"]["x"] = BALL_RESET_X
                     ball_state["position"]["y"] = BALL_RESET_Y
                     score["y"] += 1
-                    handle_pause_request(paddle1, self.game_states, self.room_group_name)
-                    handle_pause_request(paddle2, self.game_states, self.room_group_name)
+                    self.handle_pause_request(paddle1, self.game_states, self.room_group_name)
+                    self.handle_pause_request(paddle2, self.game_states, self.room_group_name)
+                    await asyncio.sleep(0.5)
                 if posy - BALL_RADIUS <= BOUNDARY_TOP or posy + BALL_RADIUS >= BOUNDARY_BOTTOM:
                     ball_state["velocity"]["y"] *= -1  # Reverse Y velocity
                 # Check for collisions with paddles
@@ -293,14 +268,8 @@ class gameonline(AsyncWebsocketConsumer):
                         ball_state["velocity"]["x"] *= -1
 
     async def padle_state(self, event):
-        keys = ["message", "start", "paddle1", "paddle2", "positionx", "positiony", "score1", "score2", "pause", "minute", "second", "distance", "finish", "velocityx", "velocityy"]
+        keys = ["start", "paddle1", "paddle2", "positionx", "positiony", "score1", "score2", "pause", "minute", "second", "distance", "finish", "velocityx", "velocityy"]
         event_data = {key: event.get(key) for key in keys}
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps(event_data))
-
-
-
-# check if id correct -> if correct connect  -> start playing when group size =2 if group size 1 let 
-        #player who stayed win and disconnect both players save to database the winner and loser
-        #delete the room from group size and game state and redis

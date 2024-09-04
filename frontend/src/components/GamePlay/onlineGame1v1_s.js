@@ -2,16 +2,11 @@
 export function gamePhisique(ctx, canvas, ws, time, custom, player) {
     let animationframe;
     let interval;
-    // let player;
     var KEY_UP = "w"
     var KEY_DOWN = "s"
     let number1 = 0
     let number2 = 0
     let pause = false;
-    let round_bool = false;
-    let remainingTime = Number(time) * 60000;
-    // let remainingTime = Number(0.3) * 60000;
-    let countDownDate = new Date().getTime() + remainingTime;
     let startGame = false;
     const keypresss = []
     canvas.width = 1635;
@@ -72,7 +67,7 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
         return { x: x, y: y };
     }
     function drawtable() {
-        
+
         ctx.beginPath();
         ctx.strokeStyle = '#CA33FF';
         ctx.shadowColor = '#E985FF';
@@ -124,14 +119,7 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
     }
 
 
-    var rounds = 1
     function gameupdate() {
-
-        if (round_bool) {
-            rounds += 1
-            round_bool = false
-            document.getElementById('rounds').textContent = 'rounds ' + rounds.toString()
-        }
         ballcoli(bal)
         if (player === "player1") {
             paddle1.update()
@@ -143,7 +131,7 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
             if (event.key === "p") {
                 if (ws.readyState === 1) {
                     ws.send(JSON.stringify({
-                        'pause': "True",
+                        'pause': "true",
                         'sender': player,
                     }));
                 }
@@ -156,7 +144,10 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
         paddle1.draw();
         paddle2.draw();
         if (custom != "hidden")
-            bal.draw();
+        {
+            if(bal.pos.x > 49 && bal.pos.x < 1520)
+                bal.draw();
+        }
         else if (custom === "hidden" && bal.pos.x > 300 && bal.pos.x < 1300)
             bal.draw();
     }
@@ -168,9 +159,6 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
                 const data = JSON.parse(event.data);
                 await processMessage(data);
                 pause = data.pause;
-                if (pause === true) {
-                    countDownDate = new Date().getTime() + remainingTime;
-                }
                 if (data.finish == true) {
                     gamefinsihed = true;
                 }
@@ -183,39 +171,43 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
     let lastposx;
     let lastposy;
     async function gameloop() {
-            ctx.beginPath();
-            ctx.fillStyle = 'rgba(24,27,38,0.4)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.closePath();
-            gameupdate()
-            await WebSocketHandlers();
-            if (bal.pos.x == lastposx && bal.pos.y == lastposy) {
-                let targetx = bal.pos.x + bal.veo.x;
-                let targety = bal.pos.y + bal.veo.y;
-                bal.pos.x += (targetx - lastposx) * 0.3;
-                bal.pos.y += (targety - lastposy) * 0.3;
-            }
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(24,27,38,0.4)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.closePath();
+        gameupdate()
+        await WebSocketHandlers();
+        if (bal.pos.x == lastposx && bal.pos.y == lastposy) {
+            let targetx = bal.pos.x + bal.veo.x;
+            let targety = bal.pos.y + bal.veo.y;
+            bal.pos.x += (targetx - lastposx) * 0.3;
+            bal.pos.y += (targety - lastposy) * 0.3;
+        }
 
-            gamedraw()
-            if (pause === true) {
-                canvas.style.filter = 'blur(10px)';
-                countdownElement.textContent = "game paused for 10 seconds";
-                countdownElement.style.display = 'block';
-            }
-            if (pause === false) {
-                canvas.style.filter = 'none';
-                countdownElement.style.display = 'none';
-            }
-            const paddleKey = `paddle${player.slice(-1)}`;
-            const paddlePos = eval(`${paddleKey}.pos.y`);
-            if (ws.readyState === 1) {
-                ws.send(JSON.stringify({
-                    [paddleKey]: paddlePos,
-                    'sender': player,
-                }));
-            }
-            lastposx = bal.pos.x;
-            lastposy = bal.pos.y;
+        gamedraw()
+        if (pause === true) {
+            canvas.style.filter = 'blur(10px)';
+            countdownElement.textContent = "game paused for 10 seconds";
+            countdownElement.style.display = 'block';
+        }
+        else if (pause === false) {
+            canvas.style.filter = 'none';
+            countdownElement.style.display = 'none';
+        }
+        const paddleKey = `paddle${player.slice(-1)}`;
+        let paddlePos ;
+        if(player === "player1")
+            paddlePos = paddle1.pos.y
+        else
+            paddlePos = paddle2.pos.y
+        if (ws.readyState === 1 ) {
+            ws.send(JSON.stringify({
+                [paddleKey]: paddlePos,
+                'sender': player,
+            }));
+        }
+        lastposx = bal.pos.x;
+        lastposy = bal.pos.y;
         animationframe = window.requestAnimationFrame(gameloop);
     }
 
@@ -253,7 +245,6 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
                 ws.send(JSON.stringify({
                     'begin': "go",
                     'custome': fals,
-                    'send': player,
                 }));
 
                 clearInterval(countdownInterval);
@@ -262,20 +253,6 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
                 gameloop();
                 interval = setInterval(function () {
                     if (pause === false) {
-                        if (player === "player1") {
-                            var now = new Date().getTime();
-                            distance = countDownDate - now;
-                            minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                            seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                            remainingTime = distance;
-                            if (ws.readyState === 1) {
-                                ws.send(JSON.stringify({
-                                    'distance': distance,
-                                    'minute': minutes,
-                                    'second': seconds,
-                                }));
-                            }
-                        }
                         let timeSelector = document.querySelector(".time-display");
                         if (timeSelector) {
                             timeSelector.textContent = minutes + ":" + seconds;
@@ -294,7 +271,7 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
                         canvas.style.filter = 'blur(10px)';
                         var winner = document.getElementById('winner');
                         setTimeout(() => {
-                        ws.send(JSON.stringify({"finish": "True"}));
+                            ws.send(JSON.stringify({ "finish": "True" }));
                         }, 100);
                         if (number1 < number2) {
                             console.log('green wins!');
@@ -342,16 +319,15 @@ export function gamePhisique(ctx, canvas, ws, time, custom, player) {
                 paddle2.pos.y = data.paddle2
             if (player === "player2") {
                 paddle1.pos.y = data.paddle1;
-                minutes = data.minute;
-                seconds = data.second;
-                distance = data.distance;
             }
+            minutes = data.minute;
+            seconds = data.second;
+            distance = data.distance;
             bal.pos.x = data.positionx
             bal.pos.y = data.positiony
             bal.veo.x = data.velocityx
             bal.veo.y = data.velocityy
             if (data.score1 != number1 || data.score2 != number2) {
-                round_bool = true
                 number1 = data.score1
                 number2 = data.score2
             }

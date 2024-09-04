@@ -2,6 +2,8 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
+# from channels.db import database_sync_to_async
+# from .models import Room
 
 
 class hockeygame(AsyncWebsocketConsumer):
@@ -48,7 +50,34 @@ class hockeygame(AsyncWebsocketConsumer):
             }
         )
         await self.close()
-    
+        
+    # async def save_state(self):
+    #     self.game_states[self.room_group_name]["finish"] = True
+    #     state = self.game_states[self.room_group_name]
+    #     room = self.tosave[self.room_group_name]
+    #     host_user = room['host']['username']
+    #     red_team_usernames = room['redTeam']
+    #     blue_team_usernames = room['blueTeam']
+    #     players = room['users']
+    #     try:
+    #         match_history = await database_sync_to_async(Room.objects.create)(
+    #             players=players,
+    #             red_team=red_team_usernames,
+    #             blue_team=blue_team_usernames,
+    #             host=host_user,
+    #             red_team_score=state["score"]["y"],
+    #             blue_team_score=state["score"]["x"],
+    #             gamemode=room["gamemode"],
+    #             time=room["time"],
+    #             team_size=room["teamSize"],
+    #             customization=room["customization"],
+    #             room_name=room["name"],
+    #         )
+    #         await database_sync_to_async(match_history.save())
+    #         print("Match saved", self.user.id)
+    #     except Exception as e:
+    #         print(f"An error occurred: {e}")
+
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         user = text_data_json.get('user', None)
@@ -61,6 +90,7 @@ class hockeygame(AsyncWebsocketConsumer):
         score1 = text_data_json.get('score1', None)
         score2 = text_data_json.get('score2', None)
 
+    
 
         await self.channel_layer.group_send(
             self.room_group_name,
