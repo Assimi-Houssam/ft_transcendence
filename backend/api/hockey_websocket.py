@@ -2,45 +2,44 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
-# from channels.db import database_sync_to_async
-# from .models import Room
+import time
+from channels.db import database_sync_to_async
+from .models import Room
 
 
 class hockeygame(AsyncWebsocketConsumer):
-    group_sizes = {}
     tosave = {}
     game_states = {}
     async def connect(self):
         self.room_group_name = self.scope['url_route']['kwargs']['room_id']
+        self.user = self.scope['user']
         rooms = cache.get('rooms')
         if rooms and self.room_group_name in rooms:
             self.tosave[self.room_group_name] = rooms[self.room_group_name]
-            self.group_sizes[self.room_group_name] = 0      
             del rooms[self.room_group_name]
             cache.set('rooms', rooms)
+            self.game_states[self.room_group_name] = {
+                'score': {'x': 0, 'y': 0},
+                'finish': False,
+            }
         # Initialize the group size if it doesn't exist
-        if self.group_sizes[self.room_group_name] >= 2 or self.room_group_name not in self.group_sizes:
+        if not any(user.get('id') == self.user.id for user in self.tosave[self.room_group_name]['users']):
             await self.close()
         else:
             await self.channel_layer.group_add(
                 self.room_group_name,
                 self.channel_name
             )
-            self.group_sizes[self.room_group_name] += 1
             await self.accept()     
     
     async def disconnect(self, close_code):
-        if self.room_group_name in self.group_sizes:
-            self.group_sizes[self.room_group_name] -= 1
         
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-        if(self.group_sizes[self.room_group_name] == 0):
-            del self.group_sizes[self.room_group_name]
-            del self.game_states[self.room_group_name]
-            del self.tosave[self.room_group_name]
+        del self.game_states[self.room_group_name]
+        del self.tosave[self.room_group_name]
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -51,32 +50,32 @@ class hockeygame(AsyncWebsocketConsumer):
         )
         await self.close()
         
-    # async def save_state(self):
-    #     self.game_states[self.room_group_name]["finish"] = True
-    #     state = self.game_states[self.room_group_name]
-    #     room = self.tosave[self.room_group_name]
-    #     host_user = room['host']['username']
-    #     red_team_usernames = room['redTeam']
-    #     blue_team_usernames = room['blueTeam']
-    #     players = room['users']
-    #     try:
-    #         match_history = await database_sync_to_async(Room.objects.create)(
-    #             players=players,
-    #             red_team=red_team_usernames,
-    #             blue_team=blue_team_usernames,
-    #             host=host_user,
-    #             red_team_score=state["score"]["y"],
-    #             blue_team_score=state["score"]["x"],
-    #             gamemode=room["gamemode"],
-    #             time=room["time"],
-    #             team_size=room["teamSize"],
-    #             customization=room["customization"],
-    #             room_name=room["name"],
-    #         )
-    #         await database_sync_to_async(match_history.save())
-    #         print("Match saved", self.user.id)
-    #     except Exception as e:
-    #         print(f"An error occurred: {e}")
+    async def save_state(self):
+        self.game_states[self.room_group_name]["finish"] = True
+        state = self.game_states[self.room_group_name]
+        room = self.tosave[self.room_group_name]
+        host_user = room['host']['username']
+        red_team_usernames = room['redTeam']
+        blue_team_usernames = room['blueTeam']
+        players = room['users']
+        try:
+            match_history = await database_sync_to_async(Room.objects.create)(
+                players=players,
+                red_team=red_team_usernames,
+                blue_team=blue_team_usernames,
+                host=host_user,
+                red_team_score=state["score"]["y"],
+                blue_team_score=state["score"]["x"],
+                gamemode=room["gamemode"],
+                time=room["time"],
+                team_size=room["teamSize"],
+                customization=room["customization"],
+                room_name=room["name"],
+            )
+            await database_sync_to_async(match_history.save())
+            print("Match saved", self.user.id)
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -89,6 +88,23 @@ class hockeygame(AsyncWebsocketConsumer):
         ball_y = text_data_json.get('ball_y', None)
         score1 = text_data_json.get('score1', None)
         score2 = text_data_json.get('score2', None)
+        finish = text_data_json.get('finish', None)
+        if finish == True and self.user.id == self.tosave[self.room_group_name]['host']['id']:
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'data_transfer',
+                    'finish': True,
+                    'sender_channel': 'none',
+                }
+            )
+            await self.save_state()
+            await self.close()
+            return
+        elif finish == True:
+            await self.close()
+            return
+
 
     
 

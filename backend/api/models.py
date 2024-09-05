@@ -15,7 +15,6 @@ class User(AbstractUser):
     count_updates = models.IntegerField(default=2)
     can_update_on  = models.IntegerField(default=0)
     friends = models.ManyToManyField("User", blank=True)
-    match = models.ManyToManyField("Room", blank=True)
     class Meta:
         ordering = ['id']
 

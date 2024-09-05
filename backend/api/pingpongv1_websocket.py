@@ -61,19 +61,9 @@ class gameonline(AsyncWebsocketConsumer):
             return
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
-        rteams = self.tosave[self.room_group_name]['redTeam']
-        bteams = self.tosave[self.room_group_name]['blueTeam']
-        if any(user.get('id') == self.user.id for user in rteams):
-            self.game_states[self.room_group_name]["paddle2"]["id"] = self.user.id
-        elif any(user.get('id') == self.user.id for user in bteams):     
-            self.game_states[self.room_group_name]["paddle1"]["id"] = self.user.id
 
     async def disconnect(self, close_code):
         self.game_states[self.room_group_name]["finish"] = True
-        if self.game_states[self.room_group_name]["paddle1"]["channelname"]["id"] == self.channel_name:
-            self.game_states[self.room_group_name]["winner"] = self.game_states[self.room_group_name]["paddle2"]["channelname"]["user"]
-        else:
-            self.game_states[self.room_group_name]["winner"] = self.game_states[self.room_group_name]["paddle1"]["channelname"]["user"]
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         await self.close()
         # del self.game_states[self.room_group_name]
@@ -136,8 +126,8 @@ class gameonline(AsyncWebsocketConsumer):
                     self.game_states[self.room_group_name][paddle_key]["position"]["y"] = pad
         pause = text_data_json.get("pause")
         if(pause != None):
-            if(pause == 'True' and self.game_states[self.room_group_name][paddle_key]["pause_req"] == 0):
-                self.game_states[self.room_group_name][paddle_key]["pause_req"] = 1\
+            if(pause == 'true' and self.game_states[self.room_group_name][paddle_key]["pause_req"] == 0):
+                self.game_states[self.room_group_name][paddle_key]["pause_req"] = 1
                 
 
     def handle_pause_timer(self,paddle, game_states, room_group_name):
@@ -205,7 +195,7 @@ class gameonline(AsyncWebsocketConsumer):
                 asyncio.sleep(0.0167),
             )
             if self.game_states[self.room_group_name]["finish"]:
-                print(self.user.id)
+                asyncio.sleep(0.1)
                 break
 
        

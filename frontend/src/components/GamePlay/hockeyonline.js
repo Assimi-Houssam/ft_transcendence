@@ -13,8 +13,11 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
   let number1 = 0;
   let number2 = 0;
   let animationframe;
+  let pauseApprove = false;
+  const countdownElement = document.getElementById('countdown');
 
   const keypress = [];
+  let goal = false;
 
   window.addEventListener("keydown", function (e) {
     keypress[e.keyCode] = true;
@@ -160,7 +163,7 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
           this.veolicity_x = -1;
           this.veolicity_y = 0;
           number1++;
-          // console.log("goal");
+          goal = true;
         } else {
           if (this.x < 37) this.x = 47;
           this.veolicity_x *= -1;
@@ -174,6 +177,7 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
           this.veolicity_x = 1;
           this.veolicity_y = 0;
           number2++;
+          goal = true;
         } else {
           if (this.x > END_X + 17) this.x = END_X - 17;
           this.veolicity_x *= -1;
@@ -187,11 +191,9 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
     };
   }
 
-
   const player2 = new player(100, 100, "blue", 87, 83, 65, 68);
   const player1 = new player(300, 100, "red", 87, 83, 65, 68);
   const hockeyBall = new ball(HALF_X + 50, HALF_Y + 50, "white");
-
 
   function sendMessage(data) {
     if (ws.readyState === WebSocket.OPEN) {
@@ -199,12 +201,13 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
     }
   }
   function scoring() {
-    const p1 = document.getElementById('player2');
-    const p2 = document.getElementById('player1');
-    if (p1)
-      p1.textContent = number1.toString();
-    if (p2)
-      p2.textContent = number2.toString();
+    const p1 = document.getElementById("player2");
+    const p2 = document.getElementById("player1");
+    if(number1 || number2)
+    {
+      if (p1) p1.textContent = number1.toString();
+      if (p2) p2.textContent = number2.toString();
+    }
   }
   function game() {
     if (player_p === "player1") {
@@ -214,20 +217,24 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
           player2.x = data.player2_x;
           player2.y = data.player2_y;
         }
-        if (data.finish)
-          gamefinsihed = data.finish;
+        if (data.finish) gamefinsihed = data.finish;
+        if(data.pause_rq == true) pauseApprove = true;
       };
     }
+    goal = false;
     ctx.beginPath();
     ctx.fillStyle = "#181B26";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.closePath();
     drawTable();
-    player1.move();
+    if(pauseApprove != true)
+    {
+      player1.move();
+      hockeyBall.collisions();
+      hockeyBall.draw();
+    }
     player2.draw();
     player1.draw();
-    hockeyBall.collisions();
-    hockeyBall.draw();
     scoring();
     if (player_p === "player1") {
       // console.log("send");
@@ -238,24 +245,34 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
         ball_y: hockeyBall.y,
         score1: number1,
         score2: number2,
+        goal: goal,
+        pauseApprove: pauseApprove,
+        pos : keypress[80],
       });
     }
     animationframe = requestAnimationFrame(game);
   }
 
+  document.addEventListener("keydown", function (e) {
+    if (e.key == "p") {
+      if (ws.readyState == 1) {
+        keypress[80] = true;
+      }
+    }
+
+  });
 
   function guest() {
     if (player_p === "player2") {
       ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
-          player1.x = data.player1_x;
-          player1.y = data.player1_y;
-          hockeyBall.x = data.ball_x;
-          hockeyBall.y = data.ball_y;
-          number1 = data.score1;
-          number2 = data.score2;
-        if (data.finish)
-          gamefinsihed = data.finish
+        player1.x = data.player1_x;
+        player1.y = data.player1_y;
+        hockeyBall.x = data.ball_x;
+        hockeyBall.y = data.ball_y;
+        number1 = data.score1;
+        number2 = data.score2;
+        if (data.finish) gamefinsihed = data.finish;
       };
     }
     ctx.beginPath();
@@ -273,6 +290,7 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
         player2_x: player2.x,
         player2_y: player2.y,
         user: player_p,
+        pos : keypress[80],
       });
     }
     animationframe = requestAnimationFrame(guest);
@@ -287,19 +305,32 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
   }
 
   function gamestart() {
+    let distance
+    let minutes 
+    let seconds 
+    var now
     canvas.style.filter = "none";
     delayedfunction();
     let interval = setInterval(function () {
       //   broadcast time from this client to other clients
-      var now = new Date().getTime();
-      let distance = countDownDate - now;
-      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      if (pauseApprove == true) {
+        distance = new Date().getTime() + distance;
+        canvas.style.filter = "blur(10px)";
+        countdownElement.textContent = "game paused for 10 seconds";
+        countdownElement.style.display = 'block';
+      }
+      else {
+        canvas.style.filter = "none";
+        countdownElement.style.display = 'none';
+        now = new Date().getTime();
+        distance = countDownDate - now;
+        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      }
       let timeSelector = document.querySelector(".time-display");
       if (timeSelector) {
         timeSelector.textContent = minutes + ":" + seconds;
-      } else
-        clearInterval(interval);
+      } else clearInterval(interval);
       if (distance < 0 || gamefinsihed) {
         let timeSelector = document.querySelector(".time-display");
         timeSelector.textContent = "Time's up!";
@@ -327,6 +358,4 @@ export function hockeyphisque(ctx, canvas, ws, time, player_p) {
   drawTable();
   canvas.style.filter = "blur(10px)";
   setTimeout(gamestart, 1000);
-
-
 }
