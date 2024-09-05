@@ -236,20 +236,23 @@ friend-card {
     gap: 10px;
     margin-top: 30px;
 }
-friend-card .friend_cad_left {
+friend-card .friend_card_left {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
+    text-decoration: none;
+    width: 100%;
 }
 
-friend-card .friend_cad_left  img {
+friend-card .friend_card_left  img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-friend-card .friend_cad_left h2 {
+friend-card .friend_card_left h2 {
     font-size: 15px;
 }
 
@@ -335,10 +338,16 @@ profile-actions {
     justify-content: center;
     align-items: center;
     transition: all 0.5s;
+    z-index: 99;
 }
 
 #unfriend_btn p {
     font-size: 13px;
     margin-left: 5px;
     margin-right: 15px;
+    flex-direction: 0.2;
+}
+
+#unfriend_btn:hover {
+    background-color: #71717159;
 }

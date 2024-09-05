@@ -36,7 +36,7 @@ urlpatterns = [
     path("friends/accept_request/<int:requestId>", manage_friends.accept_friend_request),
     path("friends/requests", manage_friends.friend_requests),
     path("friends/all", manage_friends.get_friends),
-
+    path("unfriend/<int:userID>", manage_friends.unfriend),
     path("rooms/create", rooms.create_room),
     path("rooms/list", rooms.list_rooms)
 ]
