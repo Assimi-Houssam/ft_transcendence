@@ -19,16 +19,13 @@ export class Profile extends HTMLElement {
     const res = await ApiWrapper.get("/me");
     const userJson = await res.json();
     this.auth = userJson;
-    console.log("auth ---> ", this.auth)
   }
 
   async fetchUser() {
     const res = await ApiWrapper.get(`/user/` + router.route.params["userID"]);
-    console.log(res)
     if (res.status == 200) {
       const userJson  = await res.json();
       this.user = userJson.detail;
-      console.log(this.user)
     } else {
       router.navigate("/404");
     }

@@ -12,7 +12,6 @@ export class ProfileActions extends HTMLElement {
     this.friendRequest = requests;
   }
   async addFriendEven() {
-    console.log("send request to [ ", this.user.username, " ]");
     const res = await ApiWrapper.post(`/friends/send_request/${this.user.id}`);
     const json = await res.json();
     if (res.status === 201)
@@ -23,7 +22,6 @@ export class ProfileActions extends HTMLElement {
 
   async acceptFriendRequest() {
     const requestID = this.friendRequest.find(item => item.from_user.id === this.user.id).id
-    console.log(requestID)
     const res = await ApiWrapper.post(`/friends/accept_request/${requestID}`);
     const json = await res.json();
     if (res.status === 200) {
