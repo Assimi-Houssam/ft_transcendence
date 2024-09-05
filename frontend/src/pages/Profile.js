@@ -4,6 +4,7 @@ import {router}  from '../routes/routes.js'
 import ApiWrapper from "../utils/ApiWrapper.js";
 import { Loader, PreloaderMini } from "../components/Loading.js";
 import { ProfileActions } from "../components/profile/ProfileInfo.js";
+import Toast from "../components/Toast.js";
 
 export class Profile extends HTMLElement {
   constructor() {
@@ -70,6 +71,30 @@ export class Profile extends HTMLElement {
       profileActions.appendChild(new ProfileActions(this.user, this.auth, this.friendRequest));
   }
 
+  async blockUser(e) {
+    e.target.innerHTML = new PreloaderMini().outerHTML;
+    const res = await ApiWrapper.post(`/user/block/${this.user.id}`);
+    const json  = await res.json();
+    if (res.status === 201) {
+      Toast.success(json.detail);
+      this.connectedCallback();
+    }else {
+      Toast.error(json.detail);
+    }
+  }
+
+  async unblockUser(e) {
+    e.target.innerHTML = new PreloaderMini().outerHTML;
+    const res = await ApiWrapper.post(`/user/unblock/${this?.user?.id}`);
+    const json = await res.json();
+    if (res.status === 200) {
+      Toast.success(json.detail)
+      this.connectedCallback();
+    } else {
+      Toast.error(json.detail)
+    }
+  }
+
   async  connectedCallback() {
     await this.fetchUser();
     await this.getAuth();
@@ -81,6 +106,10 @@ export class Profile extends HTMLElement {
     this.setUserUnfo();
     this.setFriendsList();
     this.setActions();
+    const blockUserBtn = document.getElementById("block_user");
+    blockUserBtn && (blockUserBtn.onclick = (e) => this.blockUser(e));
+    const unblockBtn = document.getElementById("unblock_user");
+    unblockBtn && (unblockBtn.onclick = (e) => this.unblockUser(e))
     const friendListComponent = document.querySelector("profile-friends");
     if (friendListComponent) {
       if (this.user.id !== this.auth.id) {

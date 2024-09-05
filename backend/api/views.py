@@ -31,10 +31,10 @@ def filter_users(request):
 def get_user(req, userID) :
     user = User.objects.get(id=userID)
     print(user.block_list.all())
-    # if req.user in user.block_list.all() :
-    #     return Response({
-    #         "detail" : "Couldn't find that user"
-    #     }, status=status.HTTP_404_NOT_FOUND)
+    if req.user in user.block_list.all() :
+        return Response({
+            "detail" : "Couldn't find that user"
+        }, status=status.HTTP_404_NOT_FOUND)
     serializer = UserSerializer(user);
     return Response({
         "detail" : serializer.data

@@ -35,28 +35,6 @@ export class ProfileActions extends HTMLElement {
       Toast.error(res.detail)
   }
 
-  async blockUser() {
-    console.log("AUTH ---> ", this.auth)
-    const res = await ApiWrapper.post(`/user/block/${this.user.id}`);
-    const json  = await res.json();
-    if (res.status === 201) {
-      Toast.success(json.detail);
-    }else {
-      Toast.error(json.detail);
-    }
-  }
-
-  async unblockUser() {
-    const res = await ApiWrapper.post(`/user/unblock/${this?.user?.id}`);
-    const json = await res.json();
-    if (res.status === 200) {
-      Toast.success(json.detail)
-      this.connectedCallback();
-    } else {
-      Toast.error(json.detail)
-    }
-  }
-
   connectedCallback() {
     this.innerHTML = `
       ${this.user.friends.find(item => item.id === this.auth.id) === undefined ?
@@ -85,10 +63,6 @@ export class ProfileActions extends HTMLElement {
     if (addFriendBtn) addFriendBtn.onclick = () => this.addFriendEven();
     const acceptFriendBtn = document.getElementById("accept_friend_request");
     if (acceptFriendBtn) acceptFriendBtn.onclick = () => this.acceptFriendRequest();
-    const blockUserBtn = document.getElementById("block_user");
-    blockUserBtn && (blockUserBtn.onclick = () => this.blockUser());
-    const unblockBtn = document.getElementById("unblock_user");
-    unblockBtn && (unblockBtn.onclick = () => this.unblockUser())
   }
 }
 

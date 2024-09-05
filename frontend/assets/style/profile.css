@@ -323,3 +323,22 @@ profile-actions {
     border-radius: 50px;
     cursor: pointer;
 }
+
+#unfriend_btn {
+    display: flex;
+    align-items: center;
+    background-color: #4b4b4d59;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 50px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s;
+}
+
+#unfriend_btn p {
+    font-size: 13px;
+    margin-left: 5px;
+    margin-right: 15px;
+}

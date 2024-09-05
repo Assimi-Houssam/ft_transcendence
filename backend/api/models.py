@@ -14,8 +14,8 @@ class User(AbstractUser):
     banner = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     count_updates = models.IntegerField(default=2)
     can_update_on  = models.IntegerField(default=0)
-    friends = models.ManyToManyField("User", symmetrical=True,related_name="friends",blank=True)
-    block_list = models.ManyToManyField("User", symmetrical=True, related_name="block_list", blank=True)
+    friends = models.ManyToManyField("self", symmetrical=True, related_name="friends_list", blank=True)
+    block_list = models.ManyToManyField("self", symmetrical=False, related_name="blocked_list", blank=True)
 
     class Meta:
         ordering = ['id']
@@ -23,8 +23,3 @@ class User(AbstractUser):
 class FriendRequest(models.Model):
     from_user = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)
     to_user = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
-
-# there is two way 1 =  to add a manyToMany field in user model or creat new model called Block
-# class Block(models.Model):
-#     user = models.ForeignKey(User, related_name="blocked_by", on_delete=models.CASCADE)
-#     blocked_user = models.ForeignKey(User, related_name="blocked_user", on_delete=models.CASCADE)

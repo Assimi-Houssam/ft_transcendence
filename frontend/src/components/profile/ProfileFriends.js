@@ -15,8 +15,8 @@ export class FriendsCard extends HTMLElement {
           <p class="friend_status online">online</p>
         </div>
       </div>
-      <button>
-        <img src="../../../assets/icons/block_user.png" >
+      <button id="unfriend_btn">
+        <img src="../../../assets/icons/unfriend.png" > <p>unfriend</p>
       </button>
     `
     this.onclick = () =>  router.navigate(`/user/${this.user.id}`)
