@@ -15,6 +15,7 @@ def block(req, userID):
     return Response({
       "detail" : "faild to block this user"
     }, status=status.HTTP_208_ALREADY_REPORTED)
+  req.user.friends.remove(user_to_block)
   req.user.block_list.add(user_to_block)
   return Response({
     "detail" : "User blocked successfuly"

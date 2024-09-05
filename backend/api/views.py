@@ -10,6 +10,7 @@ from .models import User
 @authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def me(request):
+    # todo : remove the frinds who blocked req.user
     serializer = UserSerializerMe(request.user);
     return Response(serializer.data)
 
