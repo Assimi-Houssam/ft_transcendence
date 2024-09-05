@@ -1,4 +1,4 @@
-export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
+export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     var interval;
     var animationframe;
     var KEY_UP = "w";
@@ -213,9 +213,6 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
         }
     });
 
-
-
-
     const countdownElement = document.getElementById('countdown');
     function drawInitialCanvas() {
         ctx.fillStyle = 'rgba(24,27,38,1)';
@@ -277,11 +274,6 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
             remaining--;
         }, 1000);
     }
-
-
-
-
-
     function before_evrything() {
 
         drawInitialCanvas();
@@ -296,15 +288,6 @@ export function gamePhisique2(ctx, canvas, ws, time, custom, player) {
             }
         }, 1000 / 60);
     }
-
-
-
-
-
-
-
-
-
     async function processMessage(data) {
 
         if (startGame) {

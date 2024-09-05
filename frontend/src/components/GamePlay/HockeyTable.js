@@ -1,4 +1,4 @@
-export function hockeyphisque(ctx, canvas, ws, time, player_p) {
+export function HockeyTable(ctx, canvas, ws, time, player_p) {
   canvas.width = 1100;
   canvas.height = 550;
   const START_X = 30;

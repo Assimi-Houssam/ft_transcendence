@@ -1,5 +1,5 @@
 // gamev1_phisique(ctx, canvas, ws, player . custome, time)
-export function gamePhisique(ctx, canvas, ws, time, custom, player) {
+export function PongTable(ctx, canvas, ws, time, custom, player) {
     let animationframe;
     let interval;
     var KEY_UP = "w"

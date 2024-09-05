@@ -10,7 +10,7 @@ import userInfo from "../utils/services/userInfo.services.js";
 import { router } from "../routes/routes.js";
 import Toast from "../components/Toast.js";
 import { getUserInfo } from "../utils/utils.js";
-import { onlineGamePage } from "../components/GamePlay/onlineGame1v1.js";
+import { GamePage } from "../components/GamePlay/GamePage.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
@@ -56,8 +56,7 @@ export class RoomPage extends HTMLElement {
             if (evt.code === 4001) {
                 Toast.success("Game started!");
                 this.user = await getUserInfo();
-                console.log("this user : ",this.user);
-                router.navigate("/game/" + this.roomId + "/", new onlineGamePage(this.roomData, this.user));
+                router.navigate("/game/" + this.roomId + "/", new GamePage(this.roomData, this.user));
                 return;
             }
             if (evt.code === 4002) {
