@@ -7,7 +7,7 @@ from channels.db import database_sync_to_async
 from .models import Room
 
 
-class hockeygame(AsyncWebsocketConsumer):
+class Hockey(AsyncWebsocketConsumer):
     tosave = {}
     game_states = {}
     async def connect(self):

@@ -17,6 +17,7 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
     var seconds;
     var distance;
     let gamefinsihed = false;
+    let desconnet = false;
     ws.onmessage = async function (event) {
         try {
             const data = JSON.parse(event.data);
@@ -29,6 +30,15 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
             console.error('Error processing message:', error);
         }
     };
+    ws.onclose = function (event) {
+        const code = event.code;
+
+        if(code === 4500)
+        {
+            desconnet = true
+        }
+
+    }
     function paddle(pos, velo, width, height, color) {
         this.pos = pos
         this.veo = velo
@@ -209,6 +219,8 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         lastposx = bal.pos.x;
         lastposy = bal.pos.y;
         animationframe = window.requestAnimationFrame(gameloop);
+        if(gamefinsihed == true)
+            cancelAnimationFrame(animationframe);
     }
 
 
@@ -239,18 +251,17 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         const countdownInterval = setInterval(async () => {
             countdownElement.textContent = remaining;
             if (remaining <= 0) {
-                let fals = 'false';
-                if (custom == "fastForward")
-                    fals = 'True';
-                ws.send(JSON.stringify({
-                    'begin': "go",
-                    'custome': fals,
-                }));
-
+                if(ws.readyState === 1)
+                {
+                    ws.send(JSON.stringify({
+                        'begin': "go",
+                    }));
+                }
                 clearInterval(countdownInterval);
                 canvas.style.filter = 'none';
                 countdownElement.style.display = 'none';
                 gameloop();
+                console.log(gamefinsihed);
                 interval = setInterval(function () {
                     if (pause === false) {
                         let timeSelector = document.querySelector(".time-display");
@@ -262,10 +273,13 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
                             cancelAnimationFrame(animationframe);
                         }
                     }
-                    if (distance < 0 || gamefinsihed) {
+                    if (distance < 0 || gamefinsihed || desconnet) {
                         console.log('game finished');
                         let timeSelector = document.querySelector(".time-display");
-                        timeSelector.textContent = "Time's up!";
+                        if(desconnet)
+                            timeSelector.textContent = "opponent disconnected";
+                        else
+                            timeSelector.textContent = "Time's up!";
                         clearInterval(interval);
                         cancelAnimationFrame(animationframe);
                         canvas.style.filter = 'blur(10px)';

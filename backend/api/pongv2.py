@@ -20,7 +20,7 @@ BALL_RESET_X = 773
 BALL_RESET_Y = 258
 
 
-class gameonline_v2(AsyncWebsocketConsumer):
+class PongV2(AsyncWebsocketConsumer):
     game_states = {}
     event_data = {}
     tosave = {}

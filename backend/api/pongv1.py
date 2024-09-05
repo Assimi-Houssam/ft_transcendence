@@ -19,7 +19,9 @@ BALL_RESET_X = 1545/2
 BALL_RESET_Y = 516/2
 V_RESET_X = 10
 V_RESET_Y = 7
-class gameonline(AsyncWebsocketConsumer):
+
+
+class PongV1(AsyncWebsocketConsumer):
     game_states = {}
     tosave = {}
     async def connect(self):
@@ -64,14 +66,14 @@ class gameonline(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         self.game_states[self.room_group_name]["finish"] = True
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-        await self.close()
-        del self.game_states[self.room_group_name]
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                "type": "padle_state",
-                "finish": True
+                "type": "disconnect_evryone",
+
             })
+    async def disconnect_evryone(self, event):
+        await self.close(4500)
     
     async def save_state(self):
             self.game_states[self.room_group_name]["finish"] = True
@@ -105,6 +107,7 @@ class gameonline(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         # if(text_data_json.get("finish") == 'True'):
         #     self.save_state(self)
+        
         if(text_data_json.get("costume") == 'True'):
             self.game_states[self.room_group_name]["costume"] = True
         startgame = text_data_json.get("startgame")
