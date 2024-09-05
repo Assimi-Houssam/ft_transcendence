@@ -52,7 +52,6 @@ class gameonline(AsyncWebsocketConsumer):
                     'pause_req' : 0,
                 },
                 'score': {"x": 0, "y": 0},
-                'winner' : {},
             }
         # Check group size
         user_in_group = any(user['id'] == self.user.id for user in self.tosave[self.room_group_name]['users'])
@@ -66,7 +65,7 @@ class gameonline(AsyncWebsocketConsumer):
         self.game_states[self.room_group_name]["finish"] = True
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         await self.close()
-        # del self.game_states[self.room_group_name]
+        del self.game_states[self.room_group_name]
         await self.channel_layer.group_send(
             self.room_group_name,
             {
