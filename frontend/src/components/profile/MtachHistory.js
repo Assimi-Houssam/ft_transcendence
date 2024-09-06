@@ -24,6 +24,9 @@ export class MatchHistoryCard extends HTMLElement {
                       <p id="RoomTeamTime">3 min</p>
                   </div>
               </div>
+              <div class="history_score">
+                3 : 4
+              </div>
               <div class="RoomContentCard_flex _RoomContentCard_flex_left">
                   <div class="RoomPlayer">
                       <p id="SizePlayers">WIN</p>

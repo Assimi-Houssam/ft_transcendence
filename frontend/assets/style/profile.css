@@ -363,3 +363,8 @@ match-history-card {
 ._RoomContentCard_flex_left {
     align-items: flex-end;
 }
+
+.history_score {
+    font-size: 25px;
+    color: #CA33FF;
+}
