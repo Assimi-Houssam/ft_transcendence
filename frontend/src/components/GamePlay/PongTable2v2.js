@@ -52,15 +52,26 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         this.veo = velo
         this.width = width
         this.height = height
-        this.update = function () {
+        this.update = function (player) {
             if (keypresss[KEY_UP]) {
                 if (this.pos.y > 50) {
-                    this.pos.y -= this.veo.y
+                    if(player == 'paddle2' && this.pos.y > paddle1.pos.y +70 )
+                        this.pos.y -= this.veo.y
+                    else if(player == 'paddle4' && this.pos.y > paddle3.pos.y +70 )
+                        this.pos.y -= this.veo.y
+                    else if(player == 'paddle1' || player == 'paddle3')
+                        this.pos.y -= this.veo.y
+
                 }
             }
             else if (keypresss[KEY_DOWN]) {
                 if (this.pos.y < heightcanva - 50 - 30) {
-                    this.pos.y += this.veo.y
+                    if(player == 'paddle1' && this.pos.y + 70 < paddle2.pos.y )
+                        this.pos.y += this.veo.y
+                    else if(player == 'paddle3' && this.pos.y + 70 < paddle4.pos.y )
+                        this.pos.y += this.veo.y
+                    else if(player == 'paddle2' || player == 'paddle4')
+                        this.pos.y += this.veo.y
                 }
             }
         }
@@ -119,9 +130,9 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
 
 
     const bal = new ball(vec(widthcanva / 2 + 30, heightcanva / 2 + 30), vec(6, 5,), 10, COLOR)
-    const paddle1 = new paddle(vec(60, 300), vec(8, PADDLE_VEO), 10, 70, 'green')
+    const paddle1 = new paddle(vec(60, 200), vec(8, PADDLE_VEO), 10, 70, 'green')
     const paddle2 = new paddle(vec(60, 400), vec(8, PADDLE_VEO), 10, 70, 'blue')
-    const paddle3 = new paddle(vec(widthcanva - 10, 300), vec(8, PADDLE_VEO), 10, 70, 'red')
+    const paddle3 = new paddle(vec(widthcanva - 10, 200), vec(8, PADDLE_VEO), 10, 70, 'red')
     const paddle4 = new paddle(vec(widthcanva - 10, 400), vec(8, PADDLE_VEO), 10, 70, 'yellow')
 
     const paddles = [paddle1, paddle2, paddle3, paddle4];
@@ -142,7 +153,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         ballcoli(bal)
         for (let i = 0; i < paddles.length; i++) {
             if (player == paddleNames[i]) {
-                paddles[i].update()
+                paddles[i].update(player)
             }
         }
         document.addEventListener('keydown', function (event) {
@@ -204,7 +215,6 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         }
         const paddleKey = `paddle${player.slice(-1)}`;
         let paddlepos;
-        console.log(paddleKey);
         switch (paddleKey) {
             case 'paddle1':
                 paddlepos = paddle1.pos.y;

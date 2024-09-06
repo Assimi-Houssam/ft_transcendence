@@ -106,7 +106,6 @@ class PongV2(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         # Close the connection
         await self.close()
-        del self.game_states[self.room_group_name]
         await self.channel_layer.group_send(
         self.room_group_name,
         {
