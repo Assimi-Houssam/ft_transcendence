@@ -1,7 +1,7 @@
 export class MatchHistoryCard extends HTMLElement {
   constructor(history) {
     super();
-    this.history = history; //history need to be an js object
+    this.history = history; //type => js obkect
   }
 
   connectedCallback() {
@@ -13,9 +13,9 @@ export class MatchHistoryCard extends HTMLElement {
         <div class="history_card_body">
           <div class="history_card_body_content">
             <div class="RoomContentCard_flex">
-              <p class="RoomTeam">2v2</p>
-              <p class="RoomName">mamazzal's room</p>
-              <p class="RoomTime">3 min</p>
+              <div class="RoomTeam"><p>2v2</p></div>
+              <div class="RoomName"><p>mamazzal's room</p></div>
+              <div class="RoomTime"><p>3 min</p></div>
             </div>
             <p class="match_hostory_score">3 : 4 </p>
             <div class="match_hostory_left_items">
