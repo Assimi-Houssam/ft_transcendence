@@ -104,13 +104,12 @@ class PongV2(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         self.game_states[self.room_group_name]["finish"] = True
         
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-        await self.close()
         await self.channel_layer.group_send(
         self.room_group_name,
         {
             "type": "desconnect_evryone",
         })
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
     
     async def desconnect_evryone(self, event):
         await self.close(4500)

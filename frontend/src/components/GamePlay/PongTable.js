@@ -157,7 +157,6 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         });
     }
 
-    //hade 9lawi fine kane rssam 
     function gamedraw() {
         drawtable();
         paddle1.draw();

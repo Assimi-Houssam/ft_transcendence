@@ -200,7 +200,7 @@ class PongV1(AsyncWebsocketConsumer):
                 asyncio.sleep(0.0167),
             )
             if self.game_states[self.room_group_name]["finish"]:
-                asyncio.sleep(0.1)
+                await asyncio.sleep(0.1)
                 await self.save_state()
                 break
 
