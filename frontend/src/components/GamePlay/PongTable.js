@@ -1,4 +1,5 @@
-// gamev1_phisique(ctx, canvas, ws, player . custome, time)
+import { router } from "../../routes/routes.js"
+
 export function PongTable(ctx, canvas, ws, time, custom, player) {
     let animationframe;
     let interval;
@@ -101,7 +102,7 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         ctx.lineTo(widthcanva / 2 + 30, heightcanva - 10);
         ctx.stroke();
         ctx.closePath();
-        ctx.setLineDash([]); // Reset to solid line;
+        ctx.setLineDash([]);
         ctx.shadowBlur = 0;
     }
 
@@ -117,22 +118,6 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
             ctx.fill();
             ctx.closePath();
         }
-        // this.fade = function () {
-        //     const minOpacity = 0;
-        //     const maxOpacity = 1;
-        //     if (this.x <=500)
-        //       this.opcaity = (this.x/ 500) * (maxOpacity - minOpacity);
-        //     else if (this.x >900)
-        //       this.opcaity = ((this.x - 900) / 300) * (maxOpacity - minOpacity);
-
-        //     ctx.beginPath();
-        //     ctx.fillStyle = this.color;
-        //     ctx.shadowBlur = 0;
-        //     ctx.globalAlpha = this.opcaity;
-        //     ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
-        //     ctx.fill();
-        //     ctx.closePath();
-        //   }
     }
 
 
@@ -221,7 +206,7 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         gamedraw()
         if (pause === true) {
             canvas.style.filter = 'blur(10px)';
-            countdownElement.textContent = "game paused for 10 seconds";
+            countdownElement.textContent = "Game paused for 10 seconds";
             countdownElement.style.display = 'block';
         }
         else if (pause === false) {
@@ -247,28 +232,19 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
             cancelAnimationFrame(animationframe);
     }
 
-
-
-
-
-
     document.addEventListener('keydown', function (event) {
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
         }
     });
 
-
     const countdownElement = document.getElementById('countdown');
-
 
     function drawInitialCanvas() {
         ctx.fillStyle = 'rgba(24,27,38,1)';
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         drawtable();
     }
-
-
 
     function startCountdown(duration) {
         let remaining = duration;
@@ -285,7 +261,6 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
                 canvas.style.filter = 'none';
                 countdownElement.style.display = 'none';
                 gameloop();
-                console.log(gamefinsihed);
                 interval = setInterval(function () {
                     if (pause === false) {
                         let timeSelector = document.querySelector(".time-display");
@@ -298,34 +273,40 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
                         }
                     }
                     if (distance < 0 || gamefinsihed || disconneted) {
-                        console.log('game finished');
                         let timeSelector = document.querySelector(".time-display");
-                        if(disconneted)
-                            timeSelector.textContent = "opponent disconnected";
-                        else
+                        if (disconneted) {
+                            canvas.style.filter = 'blur(10px)';
+                            countdownElement.textContent = "Opponent disconnected";
+                            countdownElement.style.display = 'block';
+                            setTimeout(() => {
+                                router.navigate("/home");
+                            }, 3000);
+                        }
+                        else {
                             timeSelector.textContent = "Time's up!";
+                        }
                         clearInterval(interval);
                         cancelAnimationFrame(animationframe);
                         canvas.style.filter = 'blur(10px)';
-                        var winner = document.getElementById('winner');
                         setTimeout(() => {
                             ws.send(JSON.stringify({ "finish": "True" }));
                         }, 100);
-                        if (number1 < number2) {
-                            console.log('green wins!');
-                            // winner.textContent = 'green wins!';
-                            // winner.style.color = 'green';
-                            // winner.classList.add('glow2')
-                        }
-                        else if (number1 > number2) {
-                            console.log('red wins!');
-                            // winner.textContent = 'red wins!';
-                            // winner.style.color = 'red';
-                            // winner.classList.add('glow1')
-                        }
-                        else {
-                            console.log('Draw!');
-                            // winner.textContent = 'Draw!';
+                        if (!disconneted) {
+                            setTimeout(() => {
+                                router.navigate("/home");
+                            }, 3000);
+                            if (number1 < number2) {
+                                countdownElement.textContent = "Blue Team Wins!";
+                                countdownElement.style.color = '#4496D4';
+                            }
+                            else if (number1 > number2) {
+                                countdownElement.textContent = "Red Team Wins!";
+                                countdownElement.style.color = '#FF6666';
+                            }
+                            else {
+                                countdownElement.textContent = "Draw!";
+                            }
+
                         }
                     }
                 }, 100);
@@ -393,5 +374,4 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         }
     });
     beforeEvrything()
-    // evrything broke  work hard for it motherfucker
 }

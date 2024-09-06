@@ -1,3 +1,5 @@
+import { router } from "../../routes/routes.js"
+
 export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     var interval;
     var animationframe;
@@ -110,7 +112,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         ctx.moveTo(widthcanva / 2 + 30, 30 + 50);
         ctx.lineTo(widthcanva / 2 + 30, heightcanva - 10);
         ctx.stroke();
-        ctx.setLineDash([]); // Reset to solid line;
+        ctx.setLineDash([]);
         ctx.shadowBlur = 0;
         ctx.closePath();
     }
@@ -274,34 +276,36 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                         cancelAnimationFrame(animationframe);
                     }
                     if (distance < 0 || gamefinsihed || disconneted) {
-                        console.log('game finished', distance, gamefinsihed);
                         let timeSelector = document.querySelector(".time-display");
-                        if (disconneted)
-                            timeSelector.textContent = "opponent disconnected!";
-                        else
+                        if (disconneted) {
+                            canvas.style.filter = 'blur(10px)';
+                            countdownElement.textContent = "Opponent disconnected";
+                            countdownElement.style.display = 'block';
+                            setTimeout(() => {
+                                router.navigate("/home");
+                            }, 3000);
+                        }
+                        else {
                             timeSelector.textContent = "Time's up!";
+                        }
                         canvas.style.filter = 'blur(10px)';
                         clearInterval(interval);
                         cancelAnimationFrame(animationframe);
                         setTimeout(() => {
                             ws.send(JSON.stringify({ 'finish': true }));
                         }, 100);
-                        var winner = document.getElementById('winner');
-                        if (number1 < number2) {
-                            console.log('green wins!');
-                            // winner.textContent = 'green wins!';
-                            // winner.style.color = 'green';
-                            // winner.classList.add('glow2')
-                        }
-                        else if (number1 > number2) {
-                            console.log('red wins!');
-                            // winner.textContent = 'red wins!';
-                            // winner.style.color = 'red';
-                            // winner.classList.add('glow1')
-                        }
-                        else {
-                            console.log('Draw!');
-                            // winner.textContent = 'Draw!';
+                        if (!disconneted) {
+                            if (number1 < number2) {
+                                countdownElement.textContent = "Blue Team Wins!";
+                                countdownElement.style.color = '#4496D4';
+                            }
+                            else if (number1 > number2) {
+                                countdownElement.textContent = "Red Team Wins!";
+                                countdownElement.style.color = '#FF6666';
+                            }
+                            else {
+                                countdownElement.textContent = "Draw!";
+                            }
                         }
                     }
                 }, 100);
