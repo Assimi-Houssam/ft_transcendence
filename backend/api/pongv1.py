@@ -54,7 +54,11 @@ class PongV1(AsyncWebsocketConsumer):
                     'pause_req' : 0,
                 },
                 'score': {"x": 0, "y": 0},
+                "costume": False,
             }
+            if self.tosave[self.room_group_name]['customization'] == "fastForward":
+                self.game_states[self.room_group_name]["ball_state"]["velocity"]["x"] = 14
+                self.game_states[self.room_group_name]["ball_state"]["velocity"]["y"] = 10
         # Check group size
         user_in_group = any(user['id'] == self.user.id for user in self.tosave[self.room_group_name]['users'])
         if not user_in_group:
@@ -198,6 +202,7 @@ class PongV1(AsyncWebsocketConsumer):
             )
             if self.game_states[self.room_group_name]["finish"]:
                 asyncio.sleep(0.1)
+                await self.save_state()
                 break
 
        
@@ -206,6 +211,13 @@ class PongV1(AsyncWebsocketConsumer):
             paddle["pause_req"] = 3
             game_states[room_group_name]["pause"] = True
             paddle["pause_timer"] = time.time()
+    
+    async def sign(self,x):
+        if x < 0:
+            return -1
+        elif x > 0:
+            return 1
+        
     
     async def update_gamestate(self):
             state = self.game_states[self.room_group_name]
@@ -220,14 +232,15 @@ class PongV1(AsyncWebsocketConsumer):
             if pause == False:
                 # Update position based on velocity
                 if begin:
+                    if self.game_states[self.room_group_name]["costume"] == True:
+                        ball_state["velocity"]["x"] += (2 * self.sign(int(ball_state["velocity"]["x"]))) 
+                        ball_state["velocity"]["y"] += (1 * self.sign(int(ball_state["velocity"]["y"])))
                     ball_state["position"]["x"] += ball_state["velocity"]["x"]
                     ball_state["position"]["y"] += ball_state["velocity"]["y"]
                 posx = ball_state["position"]["x"]
                 posy = ball_state["position"]["y"]
                 # Check for collisions with boundaries
                 if posx - BALL_RADIUS <= BOUNDARY_LEFT:
-                    ball_state["velocity"]["x"] = V_RESET_X
-                    ball_state["velocity"]["y"] = V_RESET_Y
                     ball_state["position"]["x"] = BALL_RESET_X
                     ball_state["position"]["y"] = BALL_RESET_Y
                     score["x"] += 1
@@ -235,8 +248,6 @@ class PongV1(AsyncWebsocketConsumer):
                     self.handle_pause_request(paddle2, self.game_states, self.room_group_name)
                     await asyncio.sleep(0.5)
                 elif posx + BALL_RADIUS >= BOUNDARY_RIGHT:
-                    ball_state["velocity"]["x"] = V_RESET_X
-                    ball_state["velocity"]["y"] = V_RESET_Y
                     ball_state["position"]["x"] = BALL_RESET_X
                     ball_state["position"]["y"] = BALL_RESET_Y
                     score["y"] += 1

@@ -34,21 +34,19 @@ class Hockey(AsyncWebsocketConsumer):
     
     async def disconnect(self, close_code):
         
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'disconnect_evryone',
+            }
+        )
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-        del self.game_states[self.room_group_name]
-        del self.tosave[self.room_group_name]
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'data_transfer',
-                'finish': True, 
-                'sender_channel': self.channel_name,
-            }
-        )
-        await self.close()
+    
+    async def disconnect_evryone(self, event):
+        await self.close(4500)
         
     async def save_state(self):
         self.game_states[self.room_group_name]["finish"] = True
@@ -98,6 +96,7 @@ class Hockey(AsyncWebsocketConsumer):
                     'sender_channel': 'none',
                 }
             )
+            # savng in data base
             await self.save_state()
             await self.close()
             return

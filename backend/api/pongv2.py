@@ -65,6 +65,10 @@ class PongV2(AsyncWebsocketConsumer):
             'red_pause_time': 0,
             'pause': False,
         }
+        
+        if self.tosave[self.room_group_name]['customization'] == "fastForward":
+            self.game_states[self.room_group_name]["ball_state"]["velocity"]["x"] = 14
+            self.game_states[self.room_group_name]["ball_state"]["velocity"]["y"] = 10
         # Increment group size in memory
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
@@ -106,9 +110,11 @@ class PongV2(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
         self.room_group_name,
         {
-            "type": "padle_state",
-            "finish": True
+            "type": "desconnect_evryone",
         })
+    
+    async def desconnect_evryone(self, event):
+        await self.close(4500)
     
     
     # Receive message from WebSocket

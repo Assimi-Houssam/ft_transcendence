@@ -1,4 +1,4 @@
-export function HockeyTable(ctx, canvas, ws, time, player_p) {
+export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
   canvas.width = 1100;
   canvas.height = 550;
   const START_X = 30;
@@ -15,9 +15,23 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
   let animationframe;
   let pauseApprove = false;
   const countdownElement = document.getElementById('countdown');
-
+  let disconnected = false;
   const keypress = [];
   let goal = false;
+  let COLOR = 'rgba(255,255,255,1)';
+  let forceMagnitude = 7;
+  if (custom == "fastForward") {
+    forceMagnitude = 12;
+    veolicity = 12;
+    COLOR = 'rgba(242,94,94,1)';
+  }
+
+  ws.onclose = function (event) {
+    if (event.code === 4500) {
+      disconnected = true;
+      console.log("opponent disconnected");
+    }
+  };
 
   window.addEventListener("keydown", function (e) {
     keypress[e.keyCode] = true;
@@ -70,8 +84,6 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
     this.x = x;
     this.y = y;
     this.color = color;
-    this.veolicity_y;
-    this.veolicity_x;
     this.draw = function () {
       ctx.strokeStyle = this.color;
       ctx.beginPath();
@@ -117,6 +129,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
     this.veolicity_y = 0;
     this.color = color;
 
+
     this.draw = function () {
       ctx.beginPath();
       ctx.fillStyle = this.color;
@@ -125,6 +138,23 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
       ctx.fill();
       ctx.closePath();
     };
+
+    // this.fade = function () {
+    //   const minOpacity = 0;
+    //   const maxOpacity = 1;
+    //   if (this.x <=500)
+    //     this.opcaity = (this.x/ 500) * (maxOpacity - minOpacity);
+    //   if (this.x >900)
+    //     this.opcaity = ((this.x - 900) / 300) * (maxOpacity - minOpacity);
+    //   ctx.beginPath();
+    //   ctx.fillStyle = this.color;
+    //   ctx.shadowBlur = 0;
+    //   ctx.globalAlpha = this.opcaity;
+    //   ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+    //   ctx.fill();
+    //   ctx.closePath();
+    // }
+
     this.collisions = function () {
       for (let i = 0; i < 2; i++) {
         let playeri = i === 0 ? player1 : player2;
@@ -136,10 +166,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
 
         if (distance <= 32) {
           var angle = Math.atan2(distanceY, distanceX);
-          let sin = Math.sin(angle);
-          let cos = Math.cos(angle);
 
-          const forceMagnitude = 7;
           const forceX = forceMagnitude * Math.cos(angle);
           const forceY = forceMagnitude * Math.sin(angle);
           this.veolicity_x += forceX;
@@ -192,8 +219,8 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
   }
 
   const player2 = new player(100, 100, "blue", 87, 83, 65, 68);
-  const player1 = new player(300, 100, "red", 87, 83, 65, 68);
-  const hockeyBall = new ball(HALF_X + 50, HALF_Y + 50, "white");
+  const player1 = new player(700, 100, "red", 87, 83, 65, 68);
+  const hockeyBall = new ball(HALF_X + 50, HALF_Y + 50, COLOR);
 
   function sendMessage(data) {
     if (ws.readyState === WebSocket.OPEN) {
@@ -203,8 +230,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
   function scoring() {
     const p1 = document.getElementById("player2");
     const p2 = document.getElementById("player1");
-    if(number1 || number2)
-    {
+    if (number1 || number2) {
       if (p1) p1.textContent = number1.toString();
       if (p2) p2.textContent = number2.toString();
     }
@@ -218,7 +244,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
           player2.y = data.player2_y;
         }
         if (data.finish) gamefinsihed = data.finish;
-        if(data.pause_rq == true) pauseApprove = true;
+        if (data.pause_rq == true) pauseApprove = true;
       };
     }
     goal = false;
@@ -227,17 +253,17 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.closePath();
     drawTable();
-    if(pauseApprove != true)
-    {
-      player1.move();
-      hockeyBall.collisions();
+    player1.move();
+    hockeyBall.collisions();
+    // hna fine kane rssam fel 9lawi  han dire fading shit
+    if (custom != "hidden")
       hockeyBall.draw();
-    }
+  else if (custom === "hidden" && hockeyBall.x > 300 && hockeyBall.x < 810)
+    hockeyBall.draw();
     player2.draw();
     player1.draw();
     scoring();
     if (player_p === "player1") {
-      // console.log("send");
       sendMessage({
         player1_x: player1.x,
         player1_y: player1.y,
@@ -247,20 +273,11 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
         score2: number2,
         goal: goal,
         pauseApprove: pauseApprove,
-        pos : keypress[80],
+        pos: keypress[80],
       });
     }
     animationframe = requestAnimationFrame(game);
   }
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key == "p") {
-      if (ws.readyState == 1) {
-        keypress[80] = true;
-      }
-    }
-
-  });
 
   function guest() {
     if (player_p === "player2") {
@@ -283,14 +300,17 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
     player2.move();
     player1.draw();
     player2.draw();
-    hockeyBall.draw();
+    if (custom != "hidden")
+        hockeyBall.draw();
+    else if (custom === "hidden" && hockeyBall.x > 300 && hockeyBall.x < 810)
+      hockeyBall.draw();
     scoring();
     if (player_p === "player2") {
       sendMessage({
         player2_x: player2.x,
         player2_y: player2.y,
         user: player_p,
-        pos : keypress[80],
+        pos: keypress[80],
       });
     }
     animationframe = requestAnimationFrame(guest);
@@ -306,13 +326,12 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
 
   function gamestart() {
     let distance
-    let minutes 
-    let seconds 
+    let minutes
+    let seconds
     var now
     canvas.style.filter = "none";
     delayedfunction();
     let interval = setInterval(function () {
-      //   broadcast time from this client to other clients
       if (pauseApprove == true) {
         distance = new Date().getTime() + distance;
         canvas.style.filter = "blur(10px)";
@@ -331,12 +350,20 @@ export function HockeyTable(ctx, canvas, ws, time, player_p) {
       if (timeSelector) {
         timeSelector.textContent = minutes + ":" + seconds;
       } else clearInterval(interval);
-      if (distance < 0 || gamefinsihed) {
+      if (distance < 0 || gamefinsihed || disconnected) {
         let timeSelector = document.querySelector(".time-display");
-        timeSelector.textContent = "Time's up!";
+        if (disconnected)
+          timeSelector.textContent = "Opponent disconnected!";
+        else
+          timeSelector.textContent = "Time's up!";
         canvas.style.filter = "blur(10px)";
         clearInterval(interval);
         cancelAnimationFrame(animationframe);
+        if (disconnected) {
+          setTimeout(() => {
+            // router navigate 
+          }, 10000);
+        }
         var winner = document.getElementById("winner");
         if (number1 < number2) {
           console.log("green wins!");

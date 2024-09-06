@@ -106,7 +106,7 @@ export class GamePage extends HTMLElement {
                         }
                     }
                     else
-                        HockeyTable(ctx, canvas, this.ws, this.roomData.time, player);
+                        HockeyTable(ctx, canvas, this.ws, this.roomData.time, player,this.roomData.customization);
                 }
             }, 0);
         }

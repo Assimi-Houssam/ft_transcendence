@@ -17,7 +17,13 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
     var seconds;
     var distance;
     let gamefinsihed = false;
-    let desconnet = false;
+    let disconneted = false;
+    let PADDLE_VEO = 8;
+    let COLOR = 'rgba(255,255,255,1)';
+    if (custom == "fastForward") {
+        PADDLE_VEO = 12;
+        COLOR = 'rgba(242,94,94,1)';
+    }
     ws.onmessage = async function (event) {
         try {
             const data = JSON.parse(event.data);
@@ -35,10 +41,10 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
 
         if(code === 4500)
         {
-            desconnet = true
+            disconneted = true
         }
-
     }
+
     function paddle(pos, velo, width, height, color) {
         this.pos = pos
         this.veo = velo
@@ -99,23 +105,40 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         ctx.shadowBlur = 0;
     }
 
-    function ball(pos, veo, radius) {
+    function ball(pos, veo, radius, COLOR) {
         this.pos = pos
         this.veo = veo
         this.redius = radius
+        this.opcaity = 1
         this.draw = function () {
             ctx.beginPath();
             ctx.arc(this.pos.x, this.pos.y, this.redius, 0, Math.PI * 2);;
-            ctx.fillStyle = 'rgba(255,255,255,1)';
+            ctx.fillStyle = COLOR;
             ctx.fill();
             ctx.closePath();
         }
+        // this.fade = function () {
+        //     const minOpacity = 0;
+        //     const maxOpacity = 1;
+        //     if (this.x <=500)
+        //       this.opcaity = (this.x/ 500) * (maxOpacity - minOpacity);
+        //     else if (this.x >900)
+        //       this.opcaity = ((this.x - 900) / 300) * (maxOpacity - minOpacity);
+
+        //     ctx.beginPath();
+        //     ctx.fillStyle = this.color;
+        //     ctx.shadowBlur = 0;
+        //     ctx.globalAlpha = this.opcaity;
+        //     ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+        //     ctx.fill();
+        //     ctx.closePath();
+        //   }
     }
 
 
-    const bal = new ball(vec(widthcanva / 2 + 30, heightcanva / 2 + 30), vec(7, 6), 10)
-    const paddle1 = new paddle(vec(60, 80), vec(4, 5), 10, 45, 'blue')
-    const paddle2 = new paddle(vec(widthcanva - 10, 80), vec(4, 5), 10, 45, 'red')
+    const bal = new ball(vec(widthcanva / 2 + 30, heightcanva / 2 + 30), vec(7, 6), 10, COLOR)
+    const paddle1 = new paddle(vec(60, 80), vec(4, PADDLE_VEO), 10, 45, 'blue')
+    const paddle2 = new paddle(vec(widthcanva - 10, 80), vec(4, PADDLE_VEO), 10, 45, 'red')
 
 
 
@@ -149,6 +172,7 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         });
     }
 
+    //hade 9lawi fine kane rssam 
     function gamedraw() {
         drawtable();
         paddle1.draw();
@@ -273,10 +297,10 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
                             cancelAnimationFrame(animationframe);
                         }
                     }
-                    if (distance < 0 || gamefinsihed || desconnet) {
+                    if (distance < 0 || gamefinsihed || disconneted) {
                         console.log('game finished');
                         let timeSelector = document.querySelector(".time-display");
-                        if(desconnet)
+                        if(disconneted)
                             timeSelector.textContent = "opponent disconnected";
                         else
                             timeSelector.textContent = "Time's up!";

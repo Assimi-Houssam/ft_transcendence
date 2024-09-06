@@ -16,7 +16,13 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     const keypresss = []
     let gamefinsihed = false;
     let pause = false;
-
+    let disconneted = false;
+    let PADDLE_VEO = 7;
+    let COLOR = 'rgba(255,255,255,1)';
+    if (custom == "fastForward") {
+        PADDLE_VEO = 12;
+        COLOR = 'rgba(242,94,94,1)';
+    }
 
     ws.onmessage = async function (event) {
         try {
@@ -31,6 +37,14 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             console.error('Error processing message:', error);
         }
     };
+
+    ws.onclose = function (event) {
+        const code = event.code;
+
+        if (code === 4500) {
+            disconneted = true
+        }
+    }
 
 
     function paddle(pos, velo, width, height, color) {
@@ -90,13 +104,13 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         ctx.closePath();
     }
 
-    function ball(pos, veo, radius) {
+    function ball(pos, veo, radius, COLOR) {
         this.pos = pos
         this.veo = veo
         this.redius = radius
         this.draw = function () {
             ctx.beginPath();
-            ctx.fillStyle = 'rgba(255,255,255,1)';;
+            ctx.fillStyle = COLOR;;
             ctx.arc(this.pos.x, this.pos.y, this.redius, 0, Math.PI * 2);;
             ctx.fill();
             ctx.closePath();
@@ -104,11 +118,11 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     }
 
 
-    const bal = new ball(vec(widthcanva / 2 + 30, heightcanva / 2 + 30), vec(6, 5,), 10)
-    const paddle1 = new paddle(vec(60, 300), vec(8, 10), 10, 70, 'green')
-    const paddle2 = new paddle(vec(60, 400), vec(8, 10), 10, 70, 'blue')
-    const paddle3 = new paddle(vec(widthcanva - 10, 300), vec(8, 10), 10, 70, 'red')
-    const paddle4 = new paddle(vec(widthcanva - 10, 400), vec(8, 10), 10, 70, 'yellow')
+    const bal = new ball(vec(widthcanva / 2 + 30, heightcanva / 2 + 30), vec(6, 5,), 10, COLOR)
+    const paddle1 = new paddle(vec(60, 300), vec(8, PADDLE_VEO), 10, 70, 'green')
+    const paddle2 = new paddle(vec(60, 400), vec(8, PADDLE_VEO), 10, 70, 'blue')
+    const paddle3 = new paddle(vec(widthcanva - 10, 300), vec(8, PADDLE_VEO), 10, 70, 'red')
+    const paddle4 = new paddle(vec(widthcanva - 10, 400), vec(8, PADDLE_VEO), 10, 70, 'yellow')
 
     const paddles = [paddle1, paddle2, paddle3, paddle4];
     const paddleNames = ['paddle1', 'paddle2', 'paddle3', 'paddle4'];
@@ -141,14 +155,21 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             }
         });
     }
+    
 
+    // hna fine khassak tfade 9lawi 
     function gamedraw() {
         drawtable();
         paddle1.draw();
         paddle2.draw();
         paddle3.draw();
         paddle4.draw();
-        bal.draw();
+        if (custom != "hidden") {
+            if (bal.pos.x > 49 && bal.pos.x < 1520)
+                bal.draw();
+        }
+        else if (custom === "hidden" && bal.pos.x > 300 && bal.pos.x < 1300)
+            bal.draw();
 
     }
 
@@ -195,8 +216,9 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                 paddlepos = paddle3.pos.y;
                 break
             case 'paddle4':
-                 paddlepos = paddle4.pos.y;
-                 break}
+                paddlepos = paddle4.pos.y;
+                break
+        }
         if (ws.readyState === 1) {
             ws.send(JSON.stringify({
                 [paddleKey]: paddlepos,
@@ -241,10 +263,13 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                         clearInterval(interval);
                         cancelAnimationFrame(animationframe);
                     }
-                    if (distance < 0 || gamefinsihed) {
+                    if (distance < 0 || gamefinsihed || disconneted) {
                         console.log('game finished', distance, gamefinsihed);
                         let timeSelector = document.querySelector(".time-display");
-                        timeSelector.textContent = "Time's up!";
+                        if (disconneted)
+                            timeSelector.textContent = "opponent disconnected!";
+                        else
+                            timeSelector.textContent = "Time's up!";
                         canvas.style.filter = 'blur(10px)';
                         clearInterval(interval);
                         cancelAnimationFrame(animationframe);
@@ -292,8 +317,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
 
         if (startGame) {
             for (let i = 0; i < paddles.length; i++) {
-                if (data.minute)
-                {
+                if (data.minute) {
                     minutes = data.minute;
                     seconds = data.second;
                     distance = data.distance;
@@ -303,8 +327,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                 if (data[paddleNames[i]])
                     paddles[i].pos.y = data[paddleNames[i]];
             }
-            if(data.positionx && data.positiony)
-            {
+            if (data.positionx && data.positiony) {
                 bal.pos.x = data.positionx;
                 bal.pos.y = data.positiony;
             }
