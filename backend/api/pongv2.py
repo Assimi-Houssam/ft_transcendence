@@ -29,6 +29,9 @@ class PongV2(AsyncWebsocketConsumer):
         self.user = self.scope['user']
         rooms = cache.get('rooms')
         if rooms and self.room_group_name in rooms:
+            if (rooms[self.room_group_name]["started"] == "false"):
+                await self.close()
+                return
             self.tosave[self.room_group_name] = rooms[self.room_group_name]
             del rooms[self.room_group_name]
             cache.set('rooms', rooms)
@@ -69,7 +72,6 @@ class PongV2(AsyncWebsocketConsumer):
         if self.tosave[self.room_group_name]['customization'] == "fastForward":
             self.game_states[self.room_group_name]["ball_state"]["velocity"]["x"] = 14
             self.game_states[self.room_group_name]["ball_state"]["velocity"]["y"] = 10
-        # Increment group size in memory
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
         
@@ -100,11 +102,9 @@ class PongV2(AsyncWebsocketConsumer):
                 print(f"An error occurred: {e}")
 
     async def disconnect(self, close_code):
-        # Decrement group size in memory
         self.game_states[self.room_group_name]["finish"] = True
         
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-        # Close the connection
         await self.close()
         await self.channel_layer.group_send(
         self.room_group_name,
@@ -116,7 +116,6 @@ class PongV2(AsyncWebsocketConsumer):
         await self.close(4500)
     
     
-    # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         if text_data_json.get("pause", False) == True:
@@ -166,7 +165,6 @@ class PongV2(AsyncWebsocketConsumer):
                 minutes,seconds = divmod(distance, 60)
                 minutes = int(minutes)
                 seconds = int(seconds)
-            # Wait before the next update
             if(distance <= 0):
                 self.game_states[self.room_group_name]["finish"] = True
                 await self.save_state()
@@ -216,14 +214,12 @@ class PongV2(AsyncWebsocketConsumer):
             paddle4 = state["paddle4"]
             score = state["score"]
             begin = state["begin"]
-            # Update position based on velocity
             if begin:
                 if not state["pause"]:
                     ball_state["position"]["x"] += ball_state["velocity"]["x"]
                     ball_state["position"]["y"] += ball_state["velocity"]["y"]
             posx = ball_state["position"]["x"]
             posy = ball_state["position"]["y"]
-            # Check for collisions with boundaries
             if posx - BALL_RADIUS <= BOUNDARY_LEFT:
                 ball_state["position"]["x"] = BALL_RESET_X
                 ball_state["position"]["y"] = BALL_RESET_Y
@@ -243,7 +239,6 @@ class PongV2(AsyncWebsocketConsumer):
                 dx = abs(posx - (paddle["position"]["x"] + HALF_PADDLE_WIDTH))
                 dy = abs(posy - paddlcenter)
                 return dx <= BALL_RADIUS and dy <= HALF_PADDLE_HEIGHT
-            # Check for collisions with paddles  i need to change this to a for loop and make it more dynamic
             if posx <= paddle1["position"]["x"] + PADDLE_WIDTH and ball_state["velocity"]["x"] < 0:
                   if check_collison(posx, posy, paddle1) or check_collison(posx, posy, paddle2):
                     ball_state["velocity"]["x"] *= -1
@@ -268,5 +263,4 @@ class PongV2(AsyncWebsocketConsumer):
             "finish": event.get("finish"),
             "pause": event.get("pause")
         }
-        # Send message to WebSocket
         await self.send(text_data=json.dumps(data))

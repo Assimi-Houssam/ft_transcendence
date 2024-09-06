@@ -29,6 +29,9 @@ class PongV1(AsyncWebsocketConsumer):
         rooms = cache.get('rooms')
         self.user = self.scope['user']
         if rooms and self.room_group_name in rooms:
+            if (rooms[self.room_group_name]["started"] == "false"):
+                await self.close()
+                return
             self.tosave[self.room_group_name] = rooms[self.room_group_name]
             del rooms[self.room_group_name]
             cache.set('rooms', rooms)
@@ -59,7 +62,6 @@ class PongV1(AsyncWebsocketConsumer):
             if self.tosave[self.room_group_name]['customization'] == "fastForward":
                 self.game_states[self.room_group_name]["ball_state"]["velocity"]["x"] = 14
                 self.game_states[self.room_group_name]["ball_state"]["velocity"]["y"] = 10
-        # Check group size
         user_in_group = any(user['id'] == self.user.id for user in self.tosave[self.room_group_name]['users'])
         if not user_in_group:
             await self.close()
@@ -106,11 +108,8 @@ class PongV1(AsyncWebsocketConsumer):
             except Exception as e:
                 print(f"An error occurred: {e}")
 
-    # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        # if(text_data_json.get("finish") == 'True'):
-        #     self.save_state(self)
         
         if(text_data_json.get("costume") == 'True'):
             self.game_states[self.room_group_name]["costume"] = True
@@ -121,7 +120,6 @@ class PongV1(AsyncWebsocketConsumer):
             startgame = False
         if begin == 'go':
             self.game_states[self.room_group_name]["begin"] = True
-            thetime = int(self.tosave[self.room_group_name]['time']) * 60
         
         player = text_data_json.get("sender")
         if(player != None):
@@ -142,6 +140,7 @@ class PongV1(AsyncWebsocketConsumer):
             if elapsed_time >= 10:
                 game_states[room_group_name]["pause"] = False
                 paddle["pause_req"] = 4
+
     async def update_game(self):
         distance = 5
         chrono = time.time() + int(self.tosave[self.room_group_name]['time']) * 60
@@ -230,7 +229,6 @@ class PongV1(AsyncWebsocketConsumer):
 
                
             if pause == False:
-                # Update position based on velocity
                 if begin:
                     if self.game_states[self.room_group_name]["costume"] == True:
                         ball_state["velocity"]["x"] += (2 * self.sign(int(ball_state["velocity"]["x"]))) 
@@ -239,7 +237,6 @@ class PongV1(AsyncWebsocketConsumer):
                     ball_state["position"]["y"] += ball_state["velocity"]["y"]
                 posx = ball_state["position"]["x"]
                 posy = ball_state["position"]["y"]
-                # Check for collisions with boundaries
                 if posx - BALL_RADIUS <= BOUNDARY_LEFT:
                     ball_state["position"]["x"] = BALL_RESET_X
                     ball_state["position"]["y"] = BALL_RESET_Y
@@ -256,7 +253,6 @@ class PongV1(AsyncWebsocketConsumer):
                     await asyncio.sleep(0.5)
                 if posy - BALL_RADIUS <= BOUNDARY_TOP or posy + BALL_RADIUS >= BOUNDARY_BOTTOM:
                     ball_state["velocity"]["y"] *= -1  # Reverse Y velocity
-                # Check for collisions with paddles
                 if posx <= paddle1["position"]["x"] + PADDLE_WIDTH and ball_state["velocity"]["x"] < 0:
                     paddlcenter1y = paddle1["position"]["y"] + PADDLE_HEIGHT / 2    
                     dx = abs(posx - (paddle1["position"]["x"] + PADDLE_WIDTH / 2))
@@ -274,5 +270,4 @@ class PongV1(AsyncWebsocketConsumer):
         keys = ["start", "paddle1", "paddle2", "positionx", "positiony", "score1", "score2", "pause", "minute", "second", "distance", "finish", "velocityx", "velocityy"]
         event_data = {key: event.get(key) for key in keys}
 
-        # Send message to WebSocket
         await self.send(text_data=json.dumps(event_data))

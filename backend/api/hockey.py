@@ -1,8 +1,6 @@
 import json
-
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
-import time
 from channels.db import database_sync_to_async
 from .models import Room
 
@@ -15,6 +13,9 @@ class Hockey(AsyncWebsocketConsumer):
         self.user = self.scope['user']
         rooms = cache.get('rooms')
         if rooms and self.room_group_name in rooms:
+            if (rooms[self.room_group_name]["started"] == "false"):
+                await self.close()
+                return
             self.tosave[self.room_group_name] = rooms[self.room_group_name]
             del rooms[self.room_group_name]
             cache.set('rooms', rooms)
@@ -22,7 +23,6 @@ class Hockey(AsyncWebsocketConsumer):
                 'score': {'x': 0, 'y': 0},
                 'finish': False,
             }
-        # Initialize the group size if it doesn't exist
         if not any(user.get('id') == self.user.id for user in self.tosave[self.room_group_name]['users']):
             await self.close()
         else:
