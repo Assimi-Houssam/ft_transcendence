@@ -6,8 +6,6 @@ from django.core.cache import cache
 from channels.db import database_sync_to_async
 from .models import User, Room
 
-
-
 BOUNDARY_LEFT = 40
 BOUNDARY_RIGHT = 1535
 BOUNDARY_TOP = 30
@@ -103,7 +101,7 @@ class PongV1(AsyncWebsocketConsumer):
                     customization=room["customization"],
                     room_name=room["name"],
                 )
-                await database_sync_to_async(match_history.save())
+                await database_sync_to_async(match_history.save)()
                 print("Match saved", self.user.id)
             except Exception as e:
                 print(f"An error occurred: {e}")
@@ -168,6 +166,8 @@ class PongV1(AsyncWebsocketConsumer):
             pause = state["pause"]
             if(distance <= 0):
                 self.game_states[self.room_group_name]["finish"] = True
+                await self.save_state()
+                asyncio.wait(0.1)
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -201,7 +201,6 @@ class PongV1(AsyncWebsocketConsumer):
             )
             if self.game_states[self.room_group_name]["finish"]:
                 await asyncio.sleep(0.1)
-                await self.save_state()
                 break
 
        
