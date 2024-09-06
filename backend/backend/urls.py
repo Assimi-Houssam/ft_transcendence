@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api import views, update_profile, auth, manage_friends, rooms, block
+from api import views, update_profile, auth, manage_friends, rooms, block, scores
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -38,7 +38,8 @@ urlpatterns = [
     path("friends/all", manage_friends.get_friends),
     path("unfriend/<int:userID>", manage_friends.unfriend),
     path("rooms/create", rooms.create_room),
-    path("rooms/list", rooms.list_rooms)
+    path("rooms/list", rooms.list_rooms),
+    path("scores/<int:user_id>", scores.get_user_scores)
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

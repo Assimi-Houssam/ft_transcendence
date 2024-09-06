@@ -92,10 +92,13 @@ export class Profile extends HTMLElement {
     }
   }
 
-  async  connectedCallback() {
+  async connectedCallback() {
     await this.fetchUser();
     await this.getAuth();
     await this.fetchFriendRequest();
+    const req = await ApiWrapper.get("/scores/" + router.route.params["userID"]);
+    const json = await req.json();
+    console.log("scores:", json);
     this.innerHTML = `
       <profile-info> </profile-info>
       <profile-friends></profile-friend-list>

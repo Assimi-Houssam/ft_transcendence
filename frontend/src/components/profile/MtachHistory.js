@@ -1,3 +1,5 @@
+import ApiWrapper from "../../utils/ApiWrapper.js"
+
 export class MatchHistoryCard extends HTMLElement {
   constructor(history) {
     super();
@@ -49,29 +51,29 @@ export class MatchHistory extends HTMLElement {
     super();
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     this.innerHTML = `
       <h2 class="profile_titles">Match History</h2>
       <div id="match_historys"></div>
     `;
     const matchHistorysParrent = document.getElementById("match_historys");
-    matchHistorysParrent.appendChild(
-      new MatchHistoryCard({
-        mood: "pong",
-        users: [],
-        winner: [],
-        teamSize: 2,
-        time: 3,
-        scor: { winTean: 2, loseTeam: 1 },
-      })
-    );
-    matchHistorysParrent.appendChild(
-      new MatchHistoryCard({
-        mood: "pong",
-        teamSize: 2,
-        time: 3,
-      })
-    );
+    // matchHistorysParrent.appendChild(
+    //   new MatchHistoryCard({
+    //     mood: "pong",
+    //     users: [],
+    //     winner: [],
+    //     teamSize: 2,
+    //     time: 3,
+    //     scor: { winTean: 2, loseTeam: 1 },
+    //   })
+    // );
+    // matchHistorysParrent.appendChild(
+    //   new MatchHistoryCard({
+    //     mood: "pong",
+    //     teamSize: 2,
+    //     time: 3,
+    //   })
+    // );
   }
 }
 

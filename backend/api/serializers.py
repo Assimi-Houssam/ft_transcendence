@@ -1,8 +1,13 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Room
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
 from .models import FriendRequest
+
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ["players", "red_team", "blue_team", "red_team_score", "blue_team_score", "host", "room_name", "team_size", "gamemode", "time", "customization"]
 
 class NestedUserSerializer(serializers.ModelSerializer):
     class Meta:

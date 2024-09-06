@@ -70,7 +70,7 @@ class Hockey(AsyncWebsocketConsumer):
                 customization=room["customization"],
                 room_name=room["name"],
             )
-            await database_sync_to_async(match_history.save())
+            await database_sync_to_async(match_history.save)()
             print("Match saved", self.user.id)
         except Exception as e:
             print(f"An error occurred: {e}")
