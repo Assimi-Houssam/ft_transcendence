@@ -100,6 +100,7 @@ class PongV2(AsyncWebsocketConsumer):
                 print("Match saved", self.user.id)
             except Exception as e:
                 print(f"An error occurred: {e}")
+            
 
     async def disconnect(self, close_code):
         self.game_states[self.room_group_name]["finish"] = True

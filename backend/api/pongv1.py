@@ -142,6 +142,7 @@ class PongV1(AsyncWebsocketConsumer):
     async def update_game(self):
         distance = 5
         chrono = time.time() + int(self.tosave[self.room_group_name]['time']) * 60
+        #  if you want to test it in fast time (chrono = time.time() + 15)
         while True:
             state = self.game_states[self.room_group_name]
             paddle1 = state["paddle1"]
