@@ -360,3 +360,6 @@ match-history-card {
     background-color: #71717159;
 }
 
+._RoomContentCard_flex_left {
+    align-items: flex-end;
+}

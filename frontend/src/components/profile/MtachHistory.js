@@ -2,32 +2,40 @@ export class MatchHistoryCard extends HTMLElement {
   constructor(history) {
     super();
     this.history = history; //type => js obkect
+    this.classList.add("RoomListContainerBtn")
   }
 
   connectedCallback() {
     this.innerHTML = `
-      <div class="history_card">
-        <div class="RoomTypeGame">
-          <img id="RoomTeamGameType" src="../../../assets/images/pong.png" width="28px" height="28px">
-        </div>
-        <div class="history_card_body">
-          <div class="history_card_body_content">
-            <div class="RoomContentCard_flex">
-              <div class="RoomTeam"><p>2v2</p></div>
-              <div class="RoomName"><p>mamazzal's room</p></div>
-              <div class="RoomTime"><p>3 min</p></div>
-            </div>
-            <p class="match_hostory_score">3 : 4 </p>
-            <div class="match_hostory_left_items">
-              <p class="game_status win" id="SizePlayers">WIN</p>
-              <p class="game_history_host">hosted by <span style="color: var(--orchid)">mamazzal<span></p>
-              <div class="RoomUsers">
-                <img src="s" >
+    <div class="Room">
+      <div class="RoomTypeGame">
+        <img id="RoomTeamGameType" src="../../../assets/images/pong.png" width="28px" height="28px">
+      </div>
+      <div class="RoomContent">
+          <div class="RoomContentCard">
+              <div class="RoomContentCard_flex">
+                  <div class="RoomTeam">
+                      <p id="RoomTeamSize">2v2</p>
+                  </div>
+                  <div class="RoomName">
+                      <p id="RoomTitleName">mamazzal's room</p>
+                  </div>
+                  <div class="RoomTime">
+                      <p id="RoomTeamTime">3 min</p>
+                  </div>
               </div>
-            </div>
+              <div class="RoomContentCard_flex _RoomContentCard_flex_left">
+                  <div class="RoomPlayer">
+                      <p id="SizePlayers">WIN</p>
+                  </div>
+                  <div class="RoomHosted">
+                      <p>hosted by <span style="color: var(--orchid)">mamazzal<span></p>
+                  </div>
+                  <div class="RoomUsers"> <img src="img" > </div>
+              </div>
           </div>
-        </div>
-      </div>`;
+      </div>
+  </div>`;
   }
 }
 
