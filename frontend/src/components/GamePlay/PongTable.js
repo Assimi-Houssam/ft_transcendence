@@ -306,7 +306,6 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
                             else {
                                 countdownElement.textContent = "Draw!";
                             }
-
                         }
                     }
                 }, 100);

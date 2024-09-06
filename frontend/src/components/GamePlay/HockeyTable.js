@@ -255,7 +255,6 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     drawTable();
     player1.move();
     hockeyBall.collisions();
-    // hna fine kane rssam fel 9lawi  han dire fading shit
     if (custom != "hidden")
       hockeyBall.draw();
   else if (custom === "hidden" && hockeyBall.x > 300 && hockeyBall.x < 810)
@@ -352,32 +351,34 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
       } else clearInterval(interval);
       if (distance < 0 || gamefinsihed || disconnected) {
         let timeSelector = document.querySelector(".time-display");
-        if (disconnected)
-          timeSelector.textContent = "Opponent disconnected!";
-        else
-          timeSelector.textContent = "Time's up!";
-        canvas.style.filter = "blur(10px)";
+        if (disconnected) {
+          canvas.style.filter = 'blur(10px)';
+          countdownElement.textContent = "Opponent disconnected";
+          countdownElement.style.display = 'block';
+          setTimeout(() => {
+              router.navigate("/home");
+          }, 3000);
+        }
+        else {
+            timeSelector.textContent = "Time's up!";
+        }
         clearInterval(interval);
         cancelAnimationFrame(animationframe);
-        if (disconnected) {
+        if (!disconnected) {
           setTimeout(() => {
-            // router navigate 
-          }, 10000);
-        }
-        var winner = document.getElementById("winner");
-        if (number1 < number2) {
-          console.log("green wins!");
-          // winner.textContent = 'green wins!';
-          // winner.style.color = 'green';
-          // winner.classList.add('glow2')
-        } else if (number1 > number2) {
-          console.log("red wins!");
-          // winner.textContent = 'red wins!';
-          // winner.style.color = 'red';
-          // winner.classList.add('glow1')
-        } else {
-          console.log("Draw!");
-          // winner.textContent = 'Draw!';
+              router.navigate("/home");
+          }, 3000);
+          if (number1 < number2) {
+              countdownElement.textContent = "Blue Team Wins!";
+              countdownElement.style.color = '#4496D4';
+          }
+          else if (number1 > number2) {
+              countdownElement.textContent = "Red Team Wins!";
+              countdownElement.style.color = '#FF6666';
+          }
+          else {
+              countdownElement.textContent = "Draw!";
+          }
         }
       }
     }, 100);
