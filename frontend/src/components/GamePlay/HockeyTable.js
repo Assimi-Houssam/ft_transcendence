@@ -138,23 +138,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
       ctx.fill();
       ctx.closePath();
     };
-
-    // this.fade = function () {
-    //   const minOpacity = 0;
-    //   const maxOpacity = 1;
-    //   if (this.x <=500)
-    //     this.opcaity = (this.x/ 500) * (maxOpacity - minOpacity);
-    //   if (this.x >900)
-    //     this.opcaity = ((this.x - 900) / 300) * (maxOpacity - minOpacity);
-    //   ctx.beginPath();
-    //   ctx.fillStyle = this.color;
-    //   ctx.shadowBlur = 0;
-    //   ctx.globalAlpha = this.opcaity;
-    //   ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
-    //   ctx.fill();
-    //   ctx.closePath();
-    // }
-
+    
     this.collisions = function () {
       for (let i = 0; i < 2; i++) {
         let playeri = i === 0 ? player1 : player2;

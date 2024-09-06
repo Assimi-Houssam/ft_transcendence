@@ -22,6 +22,8 @@ class Hockey(AsyncWebsocketConsumer):
             self.game_states[self.room_group_name] = {
                 'score': {'x': 0, 'y': 0},
                 'finish': False,
+                'blue_pause': False,
+                'red_pause': False,
             }
         if not any(user.get('id') == self.user.id for user in self.tosave[self.room_group_name]['users']):
             await self.close()
@@ -70,7 +72,7 @@ class Hockey(AsyncWebsocketConsumer):
                 customization=room["customization"],
                 room_name=room["name"],
             )
-            await database_sync_to_async(match_history.save())
+            await database_sync_to_async(match_history.save)()
             print("Match saved", self.user.id)
         except Exception as e:
             print(f"An error occurred: {e}")
