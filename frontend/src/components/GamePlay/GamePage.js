@@ -73,6 +73,12 @@ export class GamePage extends HTMLElement {
                     <div id="countdown"></div>
                 </div>`;
             setTimeout(async () => {
+                let p1 = document.getElementById('player2');
+                if (p1)
+                    p1.textContent = "0";
+                let p2 = document.getElementById('player1');
+                if (p2)
+                    p2.textContent = "0";
                 const canvas = document.getElementById('canvas');
                 const ctx = canvas.getContext('2d');
                 if (this.roomData) {
@@ -86,7 +92,7 @@ export class GamePage extends HTMLElement {
                                 let blueimg = document.getElementById('blueteam');
                                 let newImg = document.createElement('img');
                                 newImg.className = "profile-pic";
-                                newImg.src = this.roomData.blueTeam[1].pfp; // replace with your image source
+                                newImg.src = this.roomData.blueTeam[1].pfp;
                                 newImg.alt = "Profile picture";
                                 newImg.style.border = "3px solid blue";
                                 newImg.style.borderRadius = "10px";
@@ -95,7 +101,7 @@ export class GamePage extends HTMLElement {
                                 let redimg = document.getElementById('readteam');
                                 let newImg2 = document.createElement('img');
                                 newImg2.className = "profile-pic";
-                                newImg2.src = this.roomData.redTeam[1].pfp; // replace with your image source
+                                newImg2.src = this.roomData.redTeam[1].pfp; 
                                 newImg2.alt = "Profile picture";
                                 newImg2.style.border = "3px solid red";
                                 newImg2.style.borderRadius = "10px";

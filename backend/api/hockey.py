@@ -22,6 +22,8 @@ class Hockey(AsyncWebsocketConsumer):
             self.game_states[self.room_group_name] = {
                 'score': {'x': 0, 'y': 0},
                 'finish': False,
+                'blue_pause': False,
+                'red_pause': False,
             }
         if not any(user.get('id') == self.user.id for user in self.tosave[self.room_group_name]['users']):
             await self.close()

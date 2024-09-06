@@ -134,6 +134,7 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         let p2 = document.getElementById('player1');
         if (p2)
             p2.textContent = number2.toString();
+
     }
 
 
@@ -157,7 +158,6 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         });
     }
 
-    //hade 9lawi fine kane rssam 
     function gamedraw() {
         drawtable();
         paddle1.draw();
@@ -348,6 +348,10 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
             if (data.score1 != number1 || data.score2 != number2) {
                 number1 = data.score1
                 number2 = data.score2
+                ctx.beginPath();
+                ctx.fillStyle = 'rgba(24,27,38,1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.closePath();
             }
         }
     }
