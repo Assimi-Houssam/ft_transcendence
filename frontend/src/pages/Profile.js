@@ -5,6 +5,7 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import { Loader, PreloaderMini } from "../components/Loading.js";
 import { ProfileActions } from "../components/profile/ProfileInfo.js";
 import Toast from "../components/Toast.js";
+import { getUserInfo } from "../utils/utils.js";
 
 export class Profile extends HTMLElement {
   constructor() {
@@ -16,9 +17,7 @@ export class Profile extends HTMLElement {
   }
 
   async getAuth()  {
-    const res = await ApiWrapper.get("/me");
-    const userJson = await res.json();
-    this.auth = userJson;
+    this.auth = getUserInfo();
   }
 
   async fetchUser() {
@@ -96,9 +95,6 @@ export class Profile extends HTMLElement {
     await this.fetchUser();
     await this.getAuth();
     await this.fetchFriendRequest();
-    const req = await ApiWrapper.get("/scores/" + router.route.params["userID"]);
-    const json = await req.json();
-    console.log("scores:", json);
     this.innerHTML = `
       <profile-info> </profile-info>
       <profile-friends></profile-friend-list>
