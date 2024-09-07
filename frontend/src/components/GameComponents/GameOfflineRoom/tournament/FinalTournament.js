@@ -1,4 +1,4 @@
-import { LineDrawingUpWinFinal } from "./components-line-drawing-final/line-drawing-up-win-final.js";
+import { LineDrawingUpFinal } from "./components-line-drawing-final/line-drawing-final.js";
 
 export class FinalTournament extends HTMLElement {
     constructor(teamSize = 1, bracketsSize = 1) {
@@ -15,14 +15,14 @@ export class FinalTournament extends HTMLElement {
                     <div class="player_">
                             <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>
                             ${this.teamSize > 1 ? `<h2>&</h2> <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
-                    </div>
+                    </div>  
                     <div class="player_">
                         <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>
                         ${this.teamSize > 1 ? `<h2>&</h2> <input type="text" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>` : ""}
                     </div>
                 </div>
                 <div class="line_tourn">
-                    <line-drawing-up-win-final></line-drawing-up-win-final>
+                    <line-drawing-up-final></line-drawing-up-final>
                 </div>
             </div>
         `;

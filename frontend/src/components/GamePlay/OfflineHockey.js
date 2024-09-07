@@ -1,4 +1,4 @@
-import { router } from "../../routes/routes";
+import { router } from "../../routes/routes.js";
 
 export function hockeygame(ctx, canvas, gameData) {
 

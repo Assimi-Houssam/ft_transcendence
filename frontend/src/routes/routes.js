@@ -13,6 +13,7 @@ import { RoomsListPage } from "../pages/RoomsListPage.js";
 import { RoomPage } from "../pages/RoomPage.js";
 import { GamePage } from "../components/GamePlay/GamePage.js";
 import { OfflineGamePage } from "../components/GamePlay/OfflineGamePage.js";
+import { NextTournament } from "../components/GameComponents/GameOfflineRoom/tournament/NextTournament.js";
 
 
 export const Routes = [
@@ -78,6 +79,10 @@ export const Routes = [
     {
         path: '/OfflineGame',
         component: OfflineGamePage,
+    },
+    {
+        path: '/next-tournament',
+        component: NextTournament,
     }
 ]
 

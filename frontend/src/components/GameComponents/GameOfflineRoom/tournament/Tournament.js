@@ -1,5 +1,5 @@
 import { FinalTournament } from "./FinalTournament.js";
-import { LineDrawingDownWinSemiFinal } from "./components-line-drawing-semi-final/line-drawing-down-win-semi-final.js";
+import { LineDrawingSemiFinal } from "./components-line-drawing-semi-final/line-drawing-semi-final.js";
 
 export class GroupBrackets extends HTMLElement {
     constructor(teamSize = 1) {
@@ -23,7 +23,7 @@ export class GroupBrackets extends HTMLElement {
             </div>
             <div class="line_tourn">
                 <div class="toor">
-                    <line-drawing-down-win-semi-final></line-drawing-down-win-semi-final>
+                    <line-drawing-semi-final></line-drawing-semi-final>
                 </div>
             </div>`;
         requestAnimationFrame(() => {

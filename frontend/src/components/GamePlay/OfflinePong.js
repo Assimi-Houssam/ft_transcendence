@@ -21,6 +21,7 @@ export function game(ctx, canvas, gameData) {
         ballcolor = 'rgba(242,94,94,1)';
         paddveolicty = 13;
     }
+    ;
 
 
 
@@ -306,7 +307,7 @@ export function game(ctx, canvas, gameData) {
                             canvas.style.filter = 'blur(10px)';
                             var winner = document.getElementById('winner');
                             setTimeout(() => {
-                                router.navigate('/home');
+                                router.navigate('/next-tournament', new NextTournament(gameData, winner, loser));
                             }, 3000);
                             if (number1 > number2) {
                                 countdownElement.style.display = 'block';
