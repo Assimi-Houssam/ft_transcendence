@@ -12,6 +12,8 @@ import { OfflineGame } from "../components/GameComponents/GameOfflineRoom/Offlin
 import { RoomsListPage } from "../pages/RoomsListPage.js";
 import { RoomPage } from "../pages/RoomPage.js";
 import { GamePage } from "../components/GamePlay/GamePage.js";
+import { OfflineGamePage } from "../components/GamePlay/OfflineGamePage.js";
+
 
 export const Routes = [
     {
@@ -73,6 +75,10 @@ export const Routes = [
         path: '/game/:id',
         component: GamePage,
     },
+    {
+        path: '/OfflineGame',
+        component: OfflineGamePage,
+    }
 ]
 
 class Router {

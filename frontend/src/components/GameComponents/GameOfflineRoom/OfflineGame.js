@@ -1,5 +1,7 @@
 import { Tournament } from "./tournament/Tournament.js";
 import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
+import { router } from "../../../routes/routes.js";
+import { OfflineGamePage } from "../../../components/GamePlay/OfflineGamePage.js";
 
 
 class TournamentFooter extends HTMLElement {
@@ -79,11 +81,8 @@ export class OfflineGame extends HTMLElement{
             tournamentInputs.forEach(input => {
                 playersName.push(input.value);
             });
-            console.log("Bracket Size: ", this.gameData.bracketSize);
-            console.log("Team Size: ", this.gameData.teamSize);
-            console.log("Game Mode: ", this.gameData.gameMode);
-            console.log("Custom Elements: ", this.gameData.customElements);
-            console.log("Player Names: ", playersName);
+                console.log(this.gameData);
+                router.navigate("/OfflineGame", new OfflineGamePage(this.gameData));
         });
 
     }
