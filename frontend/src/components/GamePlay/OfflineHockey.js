@@ -1,7 +1,11 @@
-export function hockeygame(ctx, canvas, custom) {
+import { router } from "../../routes/routes";
+
+export function hockeygame(ctx, canvas, gameData) {
 
     canvas.width = 1100;
     canvas.height = 550;
+    const time =  gameData.time;
+    const custom = gameData.customization;
     const START_X = 30
     const START_Y = 30
     const END_X = canvas.width - 50
@@ -11,7 +15,17 @@ export function hockeygame(ctx, canvas, custom) {
     let number1 = 0;
     let number2 = 0;
     let veolicity = 7;
+    let ballcolor = 'rgba(255,255,255,1)';
+    let forceMagnitude = 4;
+
     const keypress = [];
+    if(custom == "fastForword"){
+        veolicity = 9
+        ballcolor = 'rgba(242,94,94,1)';
+        forceMagnitude = 6;
+    }
+
+
     window.addEventListener('keydown', function (e) {
         keypress[e.keyCode] = true;
     });
@@ -132,7 +146,6 @@ export function hockeygame(ctx, canvas, custom) {
 
                 if (distance <= 32) {
                     var angle = Math.atan2(distanceY, distanceX);
-                    const forceMagnitude = 4;
                     const forceX = forceMagnitude * Math.cos(angle);
                     const forceY = forceMagnitude * Math.sin(angle);
                     this.veolicity_x += forceX;
@@ -214,7 +227,11 @@ export function hockeygame(ctx, canvas, custom) {
         player2.draw();
         player1.draw();
         hockeyBall.collisions();
-        hockeyBall.draw();
+        if (custom == "hidden" && (bal.pos.x > 300 && bal.pos.x < 900)) {
+            hockeyBall.draw();
+        }
+        else if(custom != "hidden")
+            hockeyBall.draw();
         scoring();
     }
 
@@ -223,7 +240,8 @@ export function hockeygame(ctx, canvas, custom) {
     let minutes;
     let seconds;
     let now;
-
+    const countdownElement = document.getElementById("countdown");
+    
 
     function gamestart() {
         drawTable();
@@ -231,7 +249,7 @@ export function hockeygame(ctx, canvas, custom) {
         setTimeout(() => { }, 1000);
         canvas.style.fiter = 'none';
         game();
-        let countDownDate = new Date().getTime() + 3 + 60000;
+        let countDownDate = new Date().getTime() + time + 60000;
         let interval = setInterval(() => {
             now = new Date().getTime();
             distance = countDownDate - now;
@@ -254,11 +272,17 @@ export function hockeygame(ctx, canvas, custom) {
                     clearInterval(interval);
                     cancelAnimationFrame(animationframe);
                     canvas.style.fiter = 'blur(10px)';
+                    setTimeout(() => { 
+                        router.navigate('/home');
+                    }, 3000);
+                    countdownElement.style.display = "block"
                     if (number1 > number2) {
-                        alert("Player 1 wins");
+                        countdownElement.textContent = "Blue Team Wins!";
+                        countdownElement.style.color = '#4496D4';
                     }
                     else {
-                        alert("Player 2 wins");
+                        countdownElement.textContent = "Red Team Wins!";
+                        countdownElement.style.color = '#FF6666';
 
                     }
                 }

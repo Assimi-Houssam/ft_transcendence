@@ -1,6 +1,10 @@
-export function game(ctx, canvas, custom) {
+import { router } from "../../routes/routes.js"
+
+export function game(ctx, canvas, gameData) {
     var number1 = 0
     var number2 = 0
+    const time = gameData.time;
+    const custom = gameData.customization;
     canvas.width = 1635;
     canvas.height = 585;
     let heightcanva = canvas.height - 100;
@@ -9,7 +13,6 @@ export function game(ctx, canvas, custom) {
     let velocityy = 8;
     let goal = false;
     let teamsize = 1;
-    custom = "zabi";
     let paddveolicty = 8;
     let ballcolor = 'rgba(255,255,255,1)';
     if (custom == "fastForward") {
@@ -267,7 +270,7 @@ export function game(ctx, canvas, custom) {
                 canvas.style.filter = 'none';
                 countdownElement.style.display = 'none';
                 startGame();
-                var countDownDate = new Date().getTime() + 3 * 60000;
+                var countDownDate = new Date().getTime() + 1 * 60000;
                 var x = setInterval(function () {
                     var now = new Date().getTime();
                     var distance = countDownDate - now;
@@ -302,15 +305,18 @@ export function game(ctx, canvas, custom) {
                             cancelAnimationFrame(cancel);
                             canvas.style.filter = 'blur(10px)';
                             var winner = document.getElementById('winner');
+                            setTimeout(() => {
+                                router.navigate('/home');
+                            }, 3000);
                             if (number1 > number2) {
-                                // winner.textContent = 'green wins!';
-                                // winner.style.color = 'green';
-                                // winner.classList.add('glow2')
+                                countdownElement.style.display = 'block';
+                                countdownElement.textContent = "Blue Team Wins!";
+                                countdownElement.style.color = '#4496D4';
                             }
                             else if (number1 < number2) {
-                                // winner.textContent = 'red wins!';
-                                // winner.style.color = 'red';
-                                // winner.classList.add('glow1')
+                                countdownElement.style.display = 'block';
+                                countdownElement.textContent = "Red Team Wins!";
+                                countdownElement.style.color = '#FF6666';
                             }
 
                         }

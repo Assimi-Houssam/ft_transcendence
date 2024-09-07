@@ -24,7 +24,7 @@ export class OfflineGamePage extends HTMLElement {
                             <p id="player1" style="color: white; font-size:40px;">0</p>
                         </div>
                         <div class="block-text">
-                            <time class="time-display">03:00</time>
+                            <time class="time-display">0${this.gameData.time}:00</time>
                         </div>
                         <div class="pingpongProfile">
                             <p id="player2" style="color: white; font-size: 40px;">0</p>
@@ -50,11 +50,9 @@ export class OfflineGamePage extends HTMLElement {
                 const ctx = canvas.getContext('2d');
                 console.log(this.gameData);
                 if (this.gameData.gameMode === "pong")
-                    game(ctx, canvas);
+                    game(ctx, canvas, this.gameData);
                 else if (this.gameData.gameMode === "hockey")
-                    hockeygame(ctx, canvas);
-                // game(ctx, canvas)
-                // hockeygame(ctx, canvas);
+                    hockeygame(ctx, canvas, this.gameData);
 
             }, 0);
         
