@@ -11,6 +11,7 @@ import { GameSelection } from "../pages/GameSelectionMenu.js";
 import { OfflineGame } from "../components/GameComponents/GameOfflineRoom/OfflineGame.js";
 import { RoomsListPage } from "../pages/RoomsListPage.js";
 import { RoomPage } from "../pages/RoomPage.js";
+import { GamePage } from "../components/GamePlay/GamePage.js";
 
 export const Routes = [
     {
@@ -67,6 +68,10 @@ export const Routes = [
         path: '/logout',
         component: null,
         service: logout,
+    },
+    {
+        path: '/game/:id',
+        component: GamePage,
     },
 ]
 
