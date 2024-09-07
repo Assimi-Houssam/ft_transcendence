@@ -23,9 +23,7 @@ export class NextTournament extends HTMLElement {
             </div>
             <div class="content_line">
                 <div class="line_x"></div>
-            </div>
-        `
-
+            </div>`;
         this.querySelector(".tournament_node").appendChild(this.bracket);
     }
 

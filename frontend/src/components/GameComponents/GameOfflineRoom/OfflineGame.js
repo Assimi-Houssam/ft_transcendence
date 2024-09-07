@@ -3,6 +3,7 @@ import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
 import { router } from "../../../routes/routes.js";
 import { OfflineGamePage } from "../../../components/GamePlay/OfflineGamePage.js";
 
+import { TournamentBracket } from "./tournament/Tournament.js";
 
 class TournamentFooter extends HTMLElement {
     connectedCallback() {
@@ -53,7 +54,7 @@ export class OfflineGame extends HTMLElement{
                 <div class="line_x"></div>
             </div>
             `;
-        this.querySelector(".tournament_node").appendChild(this.bracket);
+        this.querySelector(".tournament_node").appendChild(new TournamentBracket());
         this.appendChild(new RoomOptions(true));
         this.appendChild(new TournamentFooter(true));
         this.addEventListener("bracketChange", (evt) => {

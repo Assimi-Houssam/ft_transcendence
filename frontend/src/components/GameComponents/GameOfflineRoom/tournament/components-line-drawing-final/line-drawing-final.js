@@ -12,8 +12,7 @@ export class LineDrawingUpFinal extends HTMLElement {
             </svg>
             <svg class="line-drawing-down-final" width="66" height="103" viewBox="0 0 66 103" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 102H38.4827C46.7669 102 53.4827 95.2843 53.4827 87V13.5173C53.4827 6.6042 59.0869 1 66 1V1" stroke="#828E97"/>
-            </svg>
-        `
+            </svg>`;
     }
 
 }
