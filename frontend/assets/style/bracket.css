@@ -42,8 +42,9 @@ tournament-bracket {
 }
 
 .line-dir {
-    height: 1px;
+    height: 27px;
     width: 7.2vh;
+    margin-left: -1.3vh;
 }
 
 .crown {
