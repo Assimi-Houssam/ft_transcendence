@@ -24,15 +24,16 @@ export class OfflineGame extends HTMLElement{
     constructor(){
         super();
         this.bracketSize = 1;
-        this.teamSize = 1;
+        this.time = 3;
         this.gameMode = "pong";
-        this.customElements = [];
-        this.bracket = new Tournament(this.teamSize, this.bracketSize);
+        this.customElements = "";
+        this.bracket = new Tournament(1, this.bracketSize);
         this.gameData = {
             bracketSize: this.bracketSize,
-            teamSize: this.teamSize,
+            time: this.time,
             gameMode: this.gameMode,
-            customElements: this.customElements,
+            customization: this.customization,
+
         };
     }
 
@@ -58,12 +59,12 @@ export class OfflineGame extends HTMLElement{
         this.addEventListener("bracketChange", (evt) => {
             this.gameData.bracketSize = evt.detail;
             console.log("bracket size:", this.gameData.bracketSize, " | teamsize:", this.gameData.teamSize);
-            this.bracket.update(this.gameData.bracketSize, this.gameData.teamSize);
+            this.bracket.update(this.gameData.bracketSize, 1);
         });
-        this.addEventListener("teamSizeChange", (evt) => {
-            this.gameData.teamSize = evt.detail;
-            console.log("bracket size:", this.gameData.bracketSize, " | teamsize:", this.gameData.teamSize);
-            this.bracket.update(this.gameData.bracketSize, this.gameData.teamSize);
+        this.addEventListener("timeChange", (evt) => {
+            this.gameData.time = evt.detail;
+            console.log("bracket size:", this.gameData.bracketSize, " | time:", this.gameData.time);
+            this.bracket.update(this.gameData.bracketSize, 1);
         });
         this.addEventListener("gameModeChange", (evt) => {
             this.gameData.gameMode = evt.detail;
@@ -71,9 +72,9 @@ export class OfflineGame extends HTMLElement{
             this.bracket.update(this.gameData.gameMode);
         });
         this.addEventListener("customizationChange", (evt) => {
-            this.gameData.customElements = evt.detail;
-            console.log("customization :", this.gameData.customElements);
-            this.bracket.update(this.gameData.customElements);
+            this.gameData.customization = evt.detail;
+            console.log("customization :", this.gameData.customization);
+            this.bracket.update(this.gameData.customization);
         });
         this.querySelector(".BtnStartGame").addEventListener("click", (e) => {
             const tournamentInputs = document.querySelectorAll("tournament-group input");

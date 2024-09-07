@@ -74,10 +74,8 @@ export class RoomOptions extends HTMLElement {
         this.isOffline = isOffline;
         this.gameModeOpt = new RoomOption("Gamemode", "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange", false, locked);
         this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange", false, locked);
-        if (this.isOffline)
-            this.bracketSize = new RoomOption("Bracket size", "#24CE90", ["1", "2"], [], "bracketChange", false, locked);
-        else
-            this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange", false, locked); 
+        this.bracketSize = new RoomOption("Bracket size", "#FAE744", ["1", "2"], [], "bracketChange", false, locked);
+        this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange", false, locked);
         this.teamSizeOpt = new RoomOption("Team size", "#FAE744", ["1", "2"], [], "teamSizeChange", false, locked);
         this.customizationsOpt = new RoomOption("Customizations", "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true, locked);
         this.roomData = roomData;
@@ -85,7 +83,7 @@ export class RoomOptions extends HTMLElement {
     connectedCallback() {
         this.appendChild(this.gameModeOpt);
         this.appendChild(this.isOffline ? this.bracketSize : this.timeOpt);
-        this.appendChild(this.teamSizeOpt);
+        this.appendChild(this.isOffline ? this.timeOpt : this.teamSizeOpt);
         this.appendChild(this.customizationsOpt);
     }
     update(roomData) {
