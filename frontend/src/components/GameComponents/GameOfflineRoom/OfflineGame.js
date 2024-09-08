@@ -1,7 +1,5 @@
-import { Tournament } from "./tournament/Tournament.js";
 import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
 import { router } from "../../../routes/routes.js";
-import { OfflineGamePage } from "../../../components/GamePlay/OfflineGamePage.js";
 
 import { TournamentBracket } from "./tournament/Tournament.js";
 
@@ -28,7 +26,7 @@ export class OfflineGame extends HTMLElement{
         this.time = 3;
         this.gameMode = "pong";
         this.customElements = "";
-        this.bracket = new Tournament(1, this.bracketSize);
+        this.bracket = new TournamentBracket();
         this.gameData = {
             bracketSize: this.bracketSize,
             time: this.time,
@@ -54,17 +52,17 @@ export class OfflineGame extends HTMLElement{
                 <div class="line_x"></div>
             </div>
             `;
-        this.querySelector(".tournament_node").appendChild(new TournamentBracket());
+        this.querySelector(".tournament_node").appendChild(this.bracket);
         this.appendChild(new RoomOptions(true));
         this.appendChild(new TournamentFooter(true));
         this.addEventListener("bracketChange", (evt) => {
             this.gameData.bracketSize = evt.detail;
-            console.log("bracket size:", this.gameData.bracketSize, " | teamsize:", this.gameData.teamSize);
-            this.bracket.update(this.gameData.bracketSize, 1);
+            console.log("bracket size:", this.gameData.bracketSize);
+            this.bracket.update(this.gameData.bracketSize);
         });
         this.addEventListener("timeChange", (evt) => {
             this.gameData.time = evt.detail;
-            console.log("bracket size:", this.gameData.bracketSize, " | time:", this.gameData.time);
+            console.log("time:", this.gameData.time);
             this.bracket.update(this.gameData.bracketSize, 1);
         });
         this.addEventListener("gameModeChange", (evt) => {

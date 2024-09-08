@@ -1,4 +1,4 @@
-import { Tournament } from "./Tournament.js";
+// import { Tournament } from "./Tournament.js";
 
 export class NextTournament extends HTMLElement {
     constructor(gameData = null, winner = null, loser = null) {
@@ -6,7 +6,7 @@ export class NextTournament extends HTMLElement {
         this.gameData = gameData;
         this.winner = winner;
         this.loser = loser;
-        this.bracket = new Tournament(1, this.bracketSize);
+        // this.bracket = new Tournament(1, this.bracketSize);
     }
     
     connectedCallback() {
@@ -24,10 +24,8 @@ export class NextTournament extends HTMLElement {
             <div class="content_line">
                 <div class="line_x"></div>
             </div>`;
-        this.querySelector(".tournament_node").appendChild(this.bracket);
+        // this.querySelector(".tournament_node").appendChild(this.bracket);
     }
-
-    
 }
 
 customElements.define("next-tournament", NextTournament)

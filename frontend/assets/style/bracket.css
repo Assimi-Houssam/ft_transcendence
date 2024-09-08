@@ -1,16 +1,26 @@
 tournament-bracket {
     display: flex;
-    flex-direction: row;
+    /* flex-direction: column; */
     width: 100%;
-    height: 50vh;
+    height: 60vh;
     align-items: center;
     justify-content: center;
+}
+
+single-bracket {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+single-bracket * {
+    transition: none !important;
 }
 
 .single-bracket {
     display: flex;
     flex-direction: column;
-    gap: 18.4vh;
+    gap: 22vh;
 }
 
 .single-bracket > input {
@@ -20,7 +30,7 @@ tournament-bracket {
     background-color: var(--bg2_);
     outline: none;
     border: 0;
-    /* width: 23vh; */
+    width: 23vh;
     height: 4vh;
 }
 
@@ -32,22 +42,76 @@ tournament-bracket {
 }
 
 .top-path {
-    height: 11.18vh;
+    height: 16.18vh;
     width: 6.9vh;
 }
 
 .bottom-path {
-    height: 11.18vh;
+    height: 16.18vh;
     width: 6.9vh;
 }
 
 .line-dir {
     height: 27px;
     width: 7.2vh;
-    margin-left: -1.3vh;
+    margin-left: -1.55vh;
+}
+
+
+single-bracket-mini {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    height: auto;
+}
+
+single-bracket-mini * {
+    transition: none !important;
+}
+
+.single-bracket-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 13.9vh;
+}
+
+.single-bracket-mini > input {
+    display: flex;
+    text-align: center;
+    border-radius: 10px;
+    background-color: var(--bg2_);
+    outline: none;
+    border: 0;
+    width: 23vh;
+    height: 4vh;
+}
+
+.top-path-mini {
+    height: 9vh;
+    width: 6.9vh;
+}
+
+.bottom-path-mini {
+    height: 9vh;
+    width: 6.9vh;
+}
+
+.line-dir-mini {
+    height: 27px;
+    width: 7.2vh;
+    margin-left: -0.25vh;
+    z-index: -1;
 }
 
 .crown {
+    margin-left: -0.2vh;
     width: 5vh;
     height: 5vh;
+}
+
+.semi-final-bracket {
+    display: flex;
+    flex-direction: column;
+    gap: 4vh;
 }
