@@ -1,6 +1,7 @@
 import { router } from "../../routes/routes.js"
 
-export function game(ctx, canvas, gameData) {
+export function game(ctx, canvas, gameData, bracket) {
+    console.log("bracket : ", bracket);
     var number1 = 0
     var number2 = 0
     const time = gameData.time;
@@ -21,6 +22,10 @@ export function game(ctx, canvas, gameData) {
         ballcolor = 'rgba(242,94,94,1)';
         paddveolicty = 13;
     }
+    // status: "quarter" / "semi" / "final" / "ended",
+    const brackeLvl = [ 'quarter', 'semi', 'final', 'ended'];
+
+
 
     function paddle(pos, velo, width, height, color, button) {
         this.pos = pos
@@ -61,20 +66,29 @@ export function game(ctx, canvas, gameData) {
         }
     }
 
+
+
+    let pause = 0;
     const keypresss = []
 
-    window.addEventListener('keydown', function (e) {
+    document.addEventListener('keydown', function (e) {
         keypresss[e.keyCode] = true;
     });
 
 
-    window.addEventListener('keyup', function (e) {
+    document.addEventListener('keyup', function (e) {
         keypresss[e.keyCode] = false
     });
 
+    document.addEventListener('keydown', function (e) {
+        if (e.keyCode == 80 && pause == 0)
+            pause = 1;
+
+    });
     function vec(x, y) {
         return { x: x, y: y };
     }
+
 
     function drawtable() {
         ctx.beginPath();
@@ -145,6 +159,14 @@ export function game(ctx, canvas, gameData) {
             }
         }
     }
+    let elapsedTime
+    function pauseAprove() {
+        if (pause == 1)
+        {
+            pause = 2;
+            elapsedTime = new Date().getTime() + 5 * 1000;
+        }
+    }
 
 
     function ballcoli(bal) {
@@ -152,8 +174,9 @@ export function game(ctx, canvas, gameData) {
             bal.pos.x = widthcanva / 2 + 30;
             bal.pos.y = heightcanva / 2 + 30;
             number1 += 1;
+            pauseAprove();
             let player1 = document.getElementById('player1')
-            if(player1)
+            if (player1)
                 player1.textContent = number1.toString();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
@@ -167,8 +190,9 @@ export function game(ctx, canvas, gameData) {
             bal.pos.x = widthcanva / 2 + 30;
             bal.pos.y = heightcanva / 2 + 30;
             number2 += 1;
+            pauseAprove();
             let player2 = document.getElementById('player2')
-            if (player2) 
+            if (player2)
                 player2.textContent = number2.toString();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
@@ -226,18 +250,37 @@ export function game(ctx, canvas, gameData) {
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.closePath();
-        gameupdate()
+        if (pause == 2)
+        {
+            countdownElement.style.display = 'block';
+            countdownElement.textContent = "Game Paused!";
+            canvas.style.filter = 'blur(10px)';
+            if (new Date().getTime() > elapsedTime)
+                pause = 3;
+        }
+        else
+        {
+            countdownElement.style.display = 'none';
+            canvas.style.filter = 'none';
+            gameupdate()
+        }
         gamedraw()
         if (goal == true)
             setTimeout(() => { goal = false }, 500);
 
     }
 
+
+
+
     document.addEventListener('keydown', function (event) {
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
         }
     });
+
+
+
 
     const countdownElement = document.getElementById('countdown');
     function drawInitialCanvas() {
@@ -246,10 +289,14 @@ export function game(ctx, canvas, gameData) {
         drawtable();
     }
 
+    let distance  
+    let minutes 
+    let seconds 
+    let timeDisplay
     function startCountdown(duration) {
         let remaining = duration;
         const countdownInterval = setInterval(() => {
-            if(countdownElement)
+            if (countdownElement)
                 countdownElement.textContent = remaining;
             else
                 clearInterval(countdownInterval);
@@ -258,17 +305,22 @@ export function game(ctx, canvas, gameData) {
                 canvas.style.filter = 'none';
                 countdownElement.style.display = 'none';
                 startGame();
-                var countDownDate = new Date().getTime() + 1 * 60000;
+                // tiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiime
+                var countDownDate = new Date().getTime() + time * 60000;
                 var x = setInterval(function () {
-                    var now = new Date().getTime();
-                    var distance = countDownDate - now;
-                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    let timeDisplay = document.querySelector(".time-display");
+                    if(pause == 2){
+                        distance = new Date().getTime() + distance;
+                    }
+                    else{
+                        let now = new Date().getTime();
+                        distance = countDownDate - now;
+                        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    }
+                    timeDisplay = document.querySelector(".time-display");
                     if (timeDisplay)
                         timeDisplay.textContent = minutes + ":" + seconds;
-                    else
-                    {
+                    else {
                         clearInterval(x);
                         cancelAnimationFrame(cancel);
                     }
@@ -294,18 +346,26 @@ export function game(ctx, canvas, gameData) {
                             canvas.style.filter = 'blur(10px)';
                             var winner = document.getElementById('winner');
                             setTimeout(() => {
-                                router.navigate('/next-tournament', new NextTournament(gameData, winner, loser));
+                                router.navigate('/home');
                             }, 3000);
                             if (number1 > number2) {
                                 countdownElement.style.display = 'block';
                                 countdownElement.textContent = "Blue Team Wins!";
                                 countdownElement.style.color = '#4496D4';
+                                bracket.groups[0][0].status = 1;
+                                bracket.groups[0][1].status = 0;
                             }
                             else if (number1 < number2) {
                                 countdownElement.style.display = 'block';
                                 countdownElement.textContent = "Red Team Wins!";
                                 countdownElement.style.color = '#FF6666';
+                                bracket.groups[0][0].status = 0;
+                                bracket.groups[0][1].status = 1;
                             }
+                            console.log("bracket : ", bracket);
+                            setTimeout(() => {
+                                router.navigate('/');   
+                            }, 1000);
 
                         }
                     }

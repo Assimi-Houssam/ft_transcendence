@@ -17,6 +17,7 @@ export function hockeygame(ctx, canvas, gameData) {
     let veolicity = 7;
     let ballcolor = 'rgba(255,255,255,1)';
     let forceMagnitude = 4;
+    let pause = 0
 
     const keypress = [];
     if(custom == "fastForword"){
@@ -69,7 +70,14 @@ export function hockeygame(ctx, canvas, gameData) {
         ctx.fillRect(START_X - 15, HALF_Y + 50 - 96, START_X + 5, HALF_Y + 50 - 96)
         ctx.fillRect(END_X + 15, HALF_Y + 50 - 96, END_X, HALF_Y + 50 - 96)
         ctx.closePath();
+        
     }
+
+
+    document.addEventListener('keydown',function (e) {
+        if (e.keyCode ==80  && pause == 0)
+            pause = 1;
+    });
 
     function player(x, y, color, up, down, left, right) {
         this.x = x;
@@ -79,18 +87,18 @@ export function hockeygame(ctx, canvas, gameData) {
         this.veolicity_x;
         this.draw = function () {
             ctx.strokeStyle = this.color;
+            ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.arc(this.x, this.y, 17, 0, Math.PI * 2);
             ctx.stroke();
             ctx.closePath();
             ctx.beginPath();
-
             ctx.shadowColor = this.color;
             ctx.shadowBlur = 10;
             ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
             ctx.stroke();
-            ctx.closePath();
             ctx.shadowColor = 'transparent';
+            ctx.closePath();
         }
         this.move = function () {
             if (keypress[up] && this.y > 50) {
@@ -166,6 +174,7 @@ export function hockeygame(ctx, canvas, gameData) {
                     this.veolicity_x = -1;
                     this.veolicity_y = 0;
                     number1++;
+                    this.approvepause()
                 }
                 else {
                     if (this.x < 37)
@@ -181,6 +190,7 @@ export function hockeygame(ctx, canvas, gameData) {
                     this.veolicity_x = 1;
                     this.veolicity_y = 0;
                     number2++;
+                    this.approvepause()
                 }
                 else {
                     if (this.x > END_X + 17)
@@ -195,8 +205,14 @@ export function hockeygame(ctx, canvas, gameData) {
                     this.y = END_Y - 17;
                 this.veolicity_y *= -1;
             }
-
-
+        }
+        this.approvepause = function ()
+        {
+            if(pause == 1)
+                {
+                    pause = 2
+                    elapsedTime = new Date().getTime() + 10 * 1000
+                }
         }
 
     }
@@ -217,16 +233,28 @@ export function hockeygame(ctx, canvas, gameData) {
         }
     }
     let animationframe
+    let elapsedTime;
+
     function game() {
         animationframe = requestAnimationFrame(game);
+        console.log(pause)
         ctx.fillStyle = '#181B26';
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         drawTable();
-        player1.move();
-        player2.move();
+        if(pause == 2)
+        {
+          canvas.style.filter = 'blur(10px)';
+          if (new Date().getTime() > elapsedTime)
+                pause = 3
+        }
+        else{
+            canvas.style.filter = 'none';
+            player1.move();
+            player2.move();
+            hockeyBall.collisions();
+        }
         player2.draw();
         player1.draw();
-        hockeyBall.collisions();
         if (custom == "hidden" && (bal.pos.x > 300 && bal.pos.x < 900)) {
             hockeyBall.draw();
         }
@@ -249,12 +277,22 @@ export function hockeygame(ctx, canvas, gameData) {
         setTimeout(() => { }, 1000);
         canvas.style.fiter = 'none';
         game();
-        let countDownDate = new Date().getTime() + time + 60000;
+        let countDownDate = new Date().getTime() + time * 60000;
         let interval = setInterval(() => {
-            now = new Date().getTime();
-            distance = countDownDate - now;
-            minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            if(pause == 2)
+            {
+                countdownElement.textContent = "game Paused for 10s";
+                countdownElement.style.display = "block";
+                distance = new Date().getTime() + distance
+            }
+            else
+            {
+                countdownElement.style.display = "none";
+                now = new Date().getTime();
+                distance = countDownDate - now;
+                minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            }
             let timeDisplay = document.querySelector(".time-display");
             if (timeDisplay)
                 timeDisplay.textContent = minutes + ":" + seconds;

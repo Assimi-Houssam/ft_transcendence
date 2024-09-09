@@ -12,10 +12,12 @@ export class OfflineGamePage extends HTMLElement {
         this.bracket = bracket;
     }
     async connectedCallback() {
+
             this.innerHTML = `
                 <div id="pingpongcontainer">
                     <div class="ts">
-                        <div class="pingpongProfile">
+                    <div class="pingpongProfile">
+                            <p>${this.bracket.groups[0][0].username}</p>
                             <div id="blueteam" style="display: flex; ">
                                 <img class="profile-pic" src="${this.url}/media/default.jpeg" alt="Profile picture"
                                     style="border: 3px solid blue; border-radius: 10px;">
@@ -28,9 +30,10 @@ export class OfflineGamePage extends HTMLElement {
                         <div class="pingpongProfile">
                             <p id="player2" style="color: white; font-size: 40px;">0</p>
                             <div id="readteam" style="display: flex; flex-direction: row;">
-                                <img class="profile-pic" src="${this.url + this.user.pfp}" alt="Profile picture"
-                                    style="border: 3px solid red; border-radius: 10px;">
+                                <img class="profile-pic" src="${this.url}/media/default.jpeg" alt="Profile picture"
+                                style="border: 3px solid red; border-radius: 10px;">
                             </div>
+                            <p>${this.bracket.groups[0][1].username}</p>
                         </div>
                     </div>
                     <div style="width: 100%; height: 80vh;">
@@ -49,7 +52,7 @@ export class OfflineGamePage extends HTMLElement {
                 const ctx = canvas.getContext('2d');
                 console.log(this.gameData);
                 if (this.gameData.gameMode === "pong")
-                    game(ctx, canvas, this.gameData);
+                    game(ctx, canvas, this.gameData, this.bracket);
                 else if (this.gameData.gameMode === "hockey")
                     hockeygame(ctx, canvas, this.gameData);
 
