@@ -53,7 +53,7 @@ export class OfflineGamePage extends HTMLElement {
                 if (this.gameData.gameMode === "pong")
                     game(ctx, canvas, this.gameData, this.bracket);
                 else if (this.gameData.gameMode === "hockey")
-                    hockeygame(ctx, canvas, this.gameData);
+                    hockeygame(ctx, canvas, this.gameData, this.bracket);
 
             }, 0);
         

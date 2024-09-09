@@ -1,10 +1,12 @@
 import { router } from "../../routes/routes.js";
+import { NextTournament } from "../GameComponents/GameOfflineRoom/tournament/NextTournament.js";
 
-export function hockeygame(ctx, canvas, gameData) {
+
+export function hockeygame(ctx, canvas, gameData, bracket) {
 
     canvas.width = 1100;
     canvas.height = 550;
-    const time =  gameData.time;
+    const time = gameData.time;
     const custom = gameData.customization;
     const START_X = 30
     const START_Y = 30
@@ -20,7 +22,7 @@ export function hockeygame(ctx, canvas, gameData) {
     let pause = 0
 
     const keypress = [];
-    if(custom == "fastForword"){
+    if (custom == "fastForword") {
         veolicity = 9
         ballcolor = 'rgba(242,94,94,1)';
         forceMagnitude = 6;
@@ -70,12 +72,12 @@ export function hockeygame(ctx, canvas, gameData) {
         ctx.fillRect(START_X - 15, HALF_Y + 50 - 96, START_X + 5, HALF_Y + 50 - 96)
         ctx.fillRect(END_X + 15, HALF_Y + 50 - 96, END_X, HALF_Y + 50 - 96)
         ctx.closePath();
-        
+
     }
 
 
-    document.addEventListener('keydown',function (e) {
-        if (e.keyCode ==80  && pause == 0)
+    document.addEventListener('keydown', function (e) {
+        if (e.keyCode == 80 && pause == 0)
             pause = 1;
     });
 
@@ -206,13 +208,11 @@ export function hockeygame(ctx, canvas, gameData) {
                 this.veolicity_y *= -1;
             }
         }
-        this.approvepause = function ()
-        {
-            if(pause == 1)
-                {
-                    pause = 2
-                    elapsedTime = new Date().getTime() + 10 * 1000
-                }
+        this.approvepause = function () {
+            if (pause == 1) {
+                pause = 2
+                elapsedTime = new Date().getTime() + 10 * 1000
+            }
         }
 
     }
@@ -241,13 +241,12 @@ export function hockeygame(ctx, canvas, gameData) {
         ctx.fillStyle = '#181B26';
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         drawTable();
-        if(pause == 2)
-        {
-          canvas.style.filter = 'blur(10px)';
-          if (new Date().getTime() > elapsedTime)
+        if (pause == 2) {
+            canvas.style.filter = 'blur(10px)';
+            if (new Date().getTime() > elapsedTime)
                 pause = 3
         }
-        else{
+        else {
             canvas.style.filter = 'none';
             player1.move();
             player2.move();
@@ -258,7 +257,7 @@ export function hockeygame(ctx, canvas, gameData) {
         if (custom == "hidden" && (bal.pos.x > 300 && bal.pos.x < 900)) {
             hockeyBall.draw();
         }
-        else if(custom != "hidden")
+        else if (custom != "hidden")
             hockeyBall.draw();
         scoring();
     }
@@ -269,7 +268,7 @@ export function hockeygame(ctx, canvas, gameData) {
     let seconds;
     let now;
     const countdownElement = document.getElementById("countdown");
-    
+
 
     function gamestart() {
         drawTable();
@@ -277,16 +276,14 @@ export function hockeygame(ctx, canvas, gameData) {
         setTimeout(() => { }, 1000);
         canvas.style.fiter = 'none';
         game();
-        let countDownDate = new Date().getTime() + time * 60000;
+        let countDownDate = new Date().getTime() + 0.1 * 60000;
         let interval = setInterval(() => {
-            if(pause == 2)
-            {
+            if (pause == 2) {
                 countdownElement.textContent = "game Paused for 10s";
                 countdownElement.style.display = "block";
                 distance = new Date().getTime() + distance
             }
-            else
-            {
+            else {
                 countdownElement.style.display = "none";
                 now = new Date().getTime();
                 distance = countDownDate - now;
@@ -296,8 +293,7 @@ export function hockeygame(ctx, canvas, gameData) {
             let timeDisplay = document.querySelector(".time-display");
             if (timeDisplay)
                 timeDisplay.textContent = minutes + ":" + seconds;
-            else
-            {
+            else {
                 clearInterval(interval);
                 cancelAnimationFrame(animationframe);
             }
@@ -310,19 +306,38 @@ export function hockeygame(ctx, canvas, gameData) {
                     clearInterval(interval);
                     cancelAnimationFrame(animationframe);
                     canvas.style.fiter = 'blur(10px)';
-                    setTimeout(() => { 
-                        router.navigate('/home');
-                    }, 3000);
                     countdownElement.style.display = "block"
                     if (number1 > number2) {
-                        countdownElement.textContent = "Blue Team Wins!";
-                        countdownElement.style.color = '#4496D4';
-                    }
-                    else {
                         countdownElement.textContent = "Red Team Wins!";
                         countdownElement.style.color = '#FF6666';
-
+                        bracket.groups[bracket.status][0].status = 0;
+                        bracket.groups[bracket.status][1].status = 1;
                     }
+                    else {
+                        countdownElement.textContent = "Blue Team Wins!";
+                        countdownElement.style.color = '#4496D4';
+                        bracket.groups[bracket.status][0].status = 1;
+                        bracket.groups[bracket.status][1].status = 0;
+                    }
+                    if (gameData.bracketSize === 2) {
+                        var r = bracket.status == 0 ? 0 : 1;
+                        for (let i = 0; i < 2; i++) {
+                            if (bracket.status == 2)
+                                break;
+                            if (bracket.groups[bracket.status][i].status == 1) {
+                                console.log(r);
+                                bracket.groups[2][r].username = bracket.groups[bracket.status][i].username;
+                                break;
+                            }
+                        }
+                        console.log("bracket : ", bracket);
+                        bracket.status += 1;
+                        console.log("bracketlvl : ", bracket.status);
+                    }
+                    setTimeout(() => {
+                        router.navigate('/next-tournament', new NextTournament(gameData, bracket));
+                    }, 1000);
+
                 }
 
             }
