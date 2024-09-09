@@ -1,8 +1,12 @@
+import { router } from "../../../routes/routes.js";
+import ApiWrapper from "../../../utils/ApiWrapper.js";
+
 class FriendInviteEntry extends HTMLElement {
-    constructor(username, pfp) {
+    constructor(username, pfp, userId) {
         super();
         this.username = username;
         this.pfp = pfp;
+        this.userId = userId;
     }
     connectedCallback() {
         this.innerHTML = `
@@ -29,15 +33,20 @@ export class InviteFriendsPopup extends HTMLElement {
             }
         }
     }
-    sendInviteTo(username) {
-        console.log("sending invite to:", username);
-        // your code here
+    async sendInviteTo(user) {
+        const username = user.username;
+        const userId = user.userId; // currently hardcoded to 2
+        const roomId = router.route.params["id"];
+        console.log("sending invite to:", userId, " roomId:", roomId);
+        const inviteData = { userId, roomId };
+        const req = await ApiWrapper.post("/rooms/invite", inviteData);
+        const resp = await req.json();
         this.hide();
     }
     show() {
-        // here you fetch the user's friends from the server, then create FriendInviteEntries for each friend, and add them to an array
+        // here you fetch thse user's friends from the server, then create FriendInviteEntries for each friend, and add them to an array
         // example:
-        this.friendsList.push(new FriendInviteEntry("lolz", "../../../assets/images/p1.png"));
+        this.friendsList.push(new FriendInviteEntry("lolz", "../../../assets/images/p1.png", 2));
         document.body.appendChild(this);
     }
     connectedCallback() {
@@ -47,7 +56,7 @@ export class InviteFriendsPopup extends HTMLElement {
         `;
         for (let friend of this.friendsList)
             this.querySelector(".InviteFriendsPopupEntries").append(friend);
-        this.addEventListener("friendinvite", (event) => { this.sendInviteTo(event.detail.username) })
+        this.addEventListener("friendinvite", (event) => { this.sendInviteTo(event.detail); })
         document.getElementById('root').style.pointerEvents = 'none';
         document.getElementById('root').classList.add("blur");
         anime({

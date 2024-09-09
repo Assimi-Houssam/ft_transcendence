@@ -19,27 +19,39 @@ notes:
 - should make links that has a user's profile page automatically redirect to the profile page
 */
 
+import { RoomPage } from "../pages/RoomPage.js";
+import { router } from "../routes/routes.js";
+
 const anime = window.anime;
 
 const NotificationType = {
     ReceivedFriendRequest: "ReceivedFriendRequest",
     AcceptedFriendRequest: "AcceptedFriendRequest",
     RoomInvite: "RoomInvite",
-    TournamentInvite: "TournamentInvite"
 }
 
 class Notification extends HTMLElement {
-    constructor(notificationType, sender, gameMode = null, gameSize = null) {
+    constructor(notificationData) {
         super();
-        this.sender = sender; // should be userid instead
-        this.notificationType = notificationType;
-        this.gameMode = gameMode
-        this.gameSize = gameSize;
+        this.notificationData = notificationData;
+        console.log("notification data:", notificationData);
+        this.notificationType = notificationData.type;
+
+        this.senderUsername = notificationData.from.username;
+        this.senderPfp = "http://localhost:8000" + notificationData.from.pfp;
+        this.senderId = notificationData.from.id;
+        
+        if (this.notificationType === NotificationType.RoomInvite) {
+            this.roomData = notificationData.roomData;
+
+            this.gamemode = this.roomData.gamemode;
+            this.teamSize = this.roomData.teamSize;
+        }
         this.content = this.getNotificationContent();
-        // todo: figure out how to handle errors like these
+        
         if (!this.content)
             return;
-        this.pfpUrl = "http://localhost:8000/media/default.jpeg"; // temporary
+        console.log("noti content:", this.content);
     }
     getNotificationContent() {
         switch (this.notificationType) {
@@ -48,9 +60,7 @@ class Notification extends HTMLElement {
             case NotificationType.AcceptedFriendRequest:
                 return "accepted your friend request";
             case NotificationType.RoomInvite:
-                return `challenged you on ${this.gameMode} (${this.gameSize})`;
-            case NotificationType.TournamentInvite:
-                return `invited you to a ${this.gameMode} tournament (${this.gameSize})`;
+                return `challenged you on ${this.gamemode} (${this.teamSize})`;
             default:
                 return "";
         }
@@ -58,9 +68,9 @@ class Notification extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="notification-c">
-                <img class="notification-img" src="${this.pfpUrl}"></img>
+                <img class="notification-img" src="${this.senderPfp}"></img>
                 <div class="notification-content-container">
-                    <div class="notification-content"><a class="notification-src">${this.sender}</a> ${this.content}</div>
+                    <div class="notification-content"><a class="notification-src">${this.senderUsername}</a> ${this.content}</div>
                     <div class="notification-date">22-7-2024 8:28</div>
                 </div>
             </div>
@@ -75,6 +85,12 @@ class Notification extends HTMLElement {
         this.querySelector(".notification-delete").onclick = () => {
             this.dispatchEvent(new CustomEvent("notificationDelete", { detail: this, bubbles: true }));
         };
+        this.addEventListener("click", () => {
+            switch (this.notificationType) {
+                case NotificationType.RoomInvite:
+                    router.navigate("/rooms/" + this.notificationData.roomId, new RoomPage(this.roomData));
+            }
+        })
     }
     delete(animateMinHeight = true) {
         anime({
@@ -96,16 +112,24 @@ export class NotificationCenter extends HTMLElement {
     constructor() {
         super();
         console.log("ctor called");
-        // todo: here, we connect to the server, and get the unread notifications and append them here
+        
+        this.ws = new WebSocket("ws://localhost:8000/ws/cable/");
+        this.ws.onopen = (evt) => {
+            console.log("connected to cable");
+        }
         this.notifications = [];
+        this.ws.onmessage = this.onNotificationReceived.bind(this);
+
         this.outerClickHandler = (e) => {
             if (!e.target.className.startsWith("notification") && !e.target.localName.startsWith("notification"))
                 this.hide();
         }
-        
-        // testing
-        for (let i = 0; i < 5; i++)
-            this.notifications.push(new Notification(NotificationType.AcceptedFriendRequest, "miyako" + i));
+    }
+    onNotificationReceived(evt) {
+        console.log("received notification:", evt.data);
+        const incommingNoti = JSON.parse(evt.data).notification;
+        this.notifications.push(new Notification(incommingNoti));
+        // this.connectedCallback();
     }
     connectedCallback() {
         this.innerHTML = `
@@ -116,7 +140,6 @@ export class NotificationCenter extends HTMLElement {
             <div class="notifications-list"></div>`;
         this.querySelector(".notification-clear").onclick = () => { this.clearNotifications(); }
 
-        // testing
         for (let noti in this.notifications)
             this.querySelector(".notifications-list").append(this.notifications[noti]);
     }
@@ -148,7 +171,7 @@ export class NotificationCenter extends HTMLElement {
             }
         });
         anime({
-            targets: this.querySelectorAll('notification-item'),
+            targets: this.notifications,
             opacity: 1,
             marginLeft: ["100%", "0%"], 
             delay: anime.stagger(20),

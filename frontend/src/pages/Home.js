@@ -1,4 +1,3 @@
-import { NotificationCenter } from "../components/NotificationCenter.js"; 
 import { MessageBox } from "../components/MessageBox.js"
 export class HomePage extends HTMLElement {
   connectedCallback() {
@@ -8,10 +7,6 @@ export class HomePage extends HTMLElement {
           <h1>Home</h1>
         </div>
       </div>`
-      // this.querySelector(".test").onclick = () => {
-      //   new MessageBox("sadasd", "asldksald", "sdasd", () => {}).show();
-      // }
-      // this.querySelector(".home_").appendChild(new NotificationCenter());
   }
 };
 

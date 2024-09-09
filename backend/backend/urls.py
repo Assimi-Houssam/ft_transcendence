@@ -36,7 +36,8 @@ urlpatterns = [
     path("friends/all", manage_friends.get_friends),
 
     path("rooms/create", rooms.create_room),
-    path("rooms/list", rooms.list_rooms)
+    path("rooms/list", rooms.list_rooms),
+    path("rooms/invite", rooms.invite_user)
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

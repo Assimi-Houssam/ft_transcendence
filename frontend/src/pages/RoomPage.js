@@ -37,7 +37,7 @@ export class RoomPage extends HTMLElement {
             router.navigate("/home");
             return;
         }
-        this.roomData = roomData
+        this.roomData = roomData;
         this.roomId = roomData.id;
         this.chat = new ChatGame();
         this.infoCard = new RoomInfoCard(this.roomData);
