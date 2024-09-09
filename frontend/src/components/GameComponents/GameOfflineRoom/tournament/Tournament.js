@@ -1,3 +1,5 @@
+import Toast from "../../../Toast.js";
+
 class SingleBracket extends HTMLElement {
     constructor() {
         super();
@@ -50,6 +52,10 @@ class SingleBracket extends HTMLElement {
     getFields() {
         if (!this.inputOne.value || !this.inputTwo.value)
             return null;
+        if (this.inputOne.value === this.inputTwo.value) {
+            Toast.error("Input values is the same");
+            return null;
+        }
         return [this.inputOne.value, this.inputTwo.value];
     }
     animateLine() {
@@ -229,6 +235,10 @@ class SingleBracketMini extends HTMLElement {
     getFields() {
         if (!this.inputOne.value || !this.inputTwo.value)
             return null;
+        if (this.inputOne.value === this.inputTwo.value) {
+            Toast.error("Input values is the same");
+            return null;
+        }
         return [this.inputOne.value, this.inputTwo.value];
     }
     animateLine() {
@@ -335,6 +345,7 @@ export class TournamentBracket extends HTMLElement {
 
 
     }
+
     connectedCallback() {
         this.innerHTML = "";
 

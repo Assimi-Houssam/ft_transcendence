@@ -590,12 +590,51 @@ participants-card {
     background-size: 100% 100%, 100% 100%;
 }
 
-
 .BtnStartGame button[disabled]
 {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* ///////////////////////////////////// */
+
+.NextTournamentBtn
+{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.BtnTournament
+{
+    width: 235px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.BtnTournament #BtnTournamentGame
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+
+    box-shadow: 0 0 8px 2px rgba(50, 50, 50, 0.3);
+    transition: background-size 0.3s, box-shadow 0.3s, color 0.3s;
+    border: 2px solid transparent;
+    background-image: linear-gradient(#242735, #1E293A), linear-gradient(to left, #1675BD, #5232B2);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 200% 100%;
+}
+
+.BtnTournament #BtnTournamentGame:hover
+{
+    background-image: linear-gradient(#212d3e, #2a2d3c), linear-gradient(to right, #1675BD, #5232B2);
+    background-size: 100% 100%, 100% 100%;
+}
+
+
+
 
 .ContainerFooter
 {
@@ -921,14 +960,14 @@ game-selection {
 }
 
 
-.OfflineTournamentTitle
+/* .OfflineTournamentTitle
 {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 80px;
-}
+} */
 
 .ContainerCardOffline
 {

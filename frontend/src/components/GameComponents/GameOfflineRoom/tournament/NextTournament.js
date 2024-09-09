@@ -22,10 +22,15 @@ export class NextTournament extends HTMLElement {
                 }
             }
         }
+        let hasReachedFinals = false;
+        if (this.bracketInfo.groups.length === 1)
+            hasReachedFinals = true;
+        if (this.bracketInfo.groups.length === 3 && this.bracketInfo.status === 3)
+            hasReachedFinals = true;
         this.innerHTML = `
             <div>
-                <div class="OfflineTournamentTitle">
-                    <h2>Next Up</h2>
+                <div class="OfflineTournamentTitleNextUp">
+                    <h2>${hasReachedFinals === true ? "Results" : "Next Up!"}</h2>
                 </div>
                 <div class="content_line">
                     <div class="line_x"></div>
@@ -36,19 +41,30 @@ export class NextTournament extends HTMLElement {
             <div class="content_line">
                 <div class="line_x"></div>
             </div>
-            <div>
-                <div class="OfflineTournamentTitle">
-                    <h2>${this.bracketInfo ? "The Winner Is" : ""} <span style="color: #24CE90;">${winner}</span></h2>
+            <div class="OfflineTournamentTitleWinner">
+                <h2 style="font-size: 3.5vh;">${this.bracketInfo ? "The Winner Is" : ""} <span style="color: #24CE90;">${winner}</span></h2>
+            </div>
+            <div class="NextTournamentBtn">
+                <div class="BtnTournament">
+                    <button type="button" id="BtnTournamentGame">${hasReachedFinals === true ? "Go Home" : "Next Game!"}</button>
                 </div>
             </div>`;
         this.querySelector(".tournament_node").appendChild(this.bracket);
-        console.log("status:", this.gameData.bracketSize === 2 && this.bracketInfo.status <= 2);
-        if (this.gameData.bracketSize === 2 && this.bracketInfo.status <= 2) {
-            console.log("tournament hasnt finished yet, switching to game page in 1.5s");
-            setTimeout(() => {
-                    router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, this.bracketInfo));
-            }, 4000);
+        const button = this.querySelector("#BtnTournamentGame");
+        button.onclick = () => {
+            if (hasReachedFinals)
+                router.navigate("/home");
+            else
+                router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, this.bracketInfo));
         }
+        // console.log("status:", this.gameData.bracketSize === 2 && this.bracketInfo.status <= 2);
+        // if (!hasReachedFinals) {
+        //     console.log("tournament hasnt finished yet, switching to game page in 1.5s");
+        //     setTimeout(() => {
+        //         if ()
+        //             router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, this.bracketInfo));
+        //     }, 4000);
+        // }
     }
 }
 
