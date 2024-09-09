@@ -3,6 +3,7 @@ import { router } from "../../../routes/routes.js";
 
 import { TournamentBracket } from "./tournament/Tournament.js";
 import Toast from "../../Toast.js";
+import { OfflineGamePage } from "../../GamePlay/OfflineGamePage.js";
 
 class TournamentFooter extends HTMLElement {
     connectedCallback() {
@@ -20,7 +21,7 @@ class TournamentFooter extends HTMLElement {
 
 customElements.define("tournament-footer", TournamentFooter);
 
-export class OfflineGame extends HTMLElement{
+export class OfflineGame extends HTMLElement {
     constructor(){
         super();
         this.bracketSize = 1;
@@ -32,8 +33,7 @@ export class OfflineGame extends HTMLElement{
             bracketSize: this.bracketSize,
             time: this.time,
             gameMode: this.gameMode,
-            customization: this.customization,
-
+            customization: this.customization
         };
     }
 
@@ -64,17 +64,14 @@ export class OfflineGame extends HTMLElement{
         this.addEventListener("timeChange", (evt) => {
             this.gameData.time = evt.detail;
             console.log("time:", this.gameData.time);
-            this.bracket.update(this.gameData.bracketSize, 1);
         });
         this.addEventListener("gameModeChange", (evt) => {
             this.gameData.gameMode = evt.detail;
             console.log("game mode:", this.gameData.gameMode);
-            this.bracket.update(this.gameData.gameMode);
         });
         this.addEventListener("customizationChange", (evt) => {
             this.gameData.customization = evt.detail;
             console.log("customization :", this.gameData.customization);
-            this.bracket.update(this.gameData.customization);
         });
         this.querySelector(".BtnStartGame").addEventListener("click", (e) => {
             const bracket = this.bracket.generateBracket();
@@ -84,7 +81,8 @@ export class OfflineGame extends HTMLElement{
                 return;
             }
             Toast.success("Game started");
-            console.log("bracket:", bracket);
+            router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, this.bracket));
+            // console.log("bracket:", bracket);
         });
 
     }

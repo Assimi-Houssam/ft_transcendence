@@ -4,15 +4,14 @@ import { game } from "./OfflinePong.js";
 import { hockeygame } from "./OfflineHockey.js";
 
 export class OfflineGamePage extends HTMLElement {
-    constructor(gameData = null) {
+    constructor(gameData = null, bracket = null) {
         super();
         this.user = null;
         this.url = ApiWrapper.getUrl();
         this.gameData = gameData;
+        this.bracket = bracket;
     }
     async connectedCallback() {
-            this.user = await getUserInfo();
-            console.log(this.user);
             this.innerHTML = `
                 <div id="pingpongcontainer">
                     <div class="ts">
