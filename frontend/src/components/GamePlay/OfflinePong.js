@@ -1,4 +1,5 @@
 import { router } from "../../routes/routes.js"
+import { NextTournament } from "../GameComponents/GameOfflineRoom/tournament/NextTournament.js";
 
 export function game(ctx, canvas, gameData, bracket) {
     console.log("bracket : ", bracket);
@@ -23,7 +24,6 @@ export function game(ctx, canvas, gameData, bracket) {
         paddveolicty = 13;
     }
     // status: "quarter" / "semi" / "final" / "ended",
-    const bracketLvl = ['quarter', 'semi', 'final', 'ended'];
 
 
 
@@ -267,17 +267,11 @@ export function game(ctx, canvas, gameData, bracket) {
 
     }
 
-
-
-
     document.addEventListener('keydown', function (event) {
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
         }
     });
-
-
-
 
     const countdownElement = document.getElementById('countdown');
     function drawInitialCanvas() {
@@ -303,7 +297,7 @@ export function game(ctx, canvas, gameData, bracket) {
                 countdownElement.style.display = 'none';
                 startGame();
                 // tiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiime
-                var countDownDate = new Date().getTime() + time * 60000;
+                var countDownDate = new Date().getTime() + 0.25 * 60000;
                 var x = setInterval(function () {
                     if (pause == 2) {
                         distance = new Date().getTime() + distance;
@@ -342,33 +336,29 @@ export function game(ctx, canvas, gameData, bracket) {
                             cancelAnimationFrame(cancel);
                             canvas.style.filter = 'blur(10px)';
                             var winner = document.getElementById('winner');
-                            setTimeout(() => {
-                                router.navigate('/home');
-                            }, 3000);
+                            // setTimeout(() => {
+                            //     router.navigate('/home');
+                            // }, 3000);
                             if (number1 > number2) {
                                 countdownElement.style.display = 'block';
                                 countdownElement.textContent = "Blue Team Wins!";
                                 countdownElement.style.color = '#4496D4';
-                                bracket.groups[0][0].status = 1;
-                                bracket.groups[0][1].status = 0;
+                                bracket.groups[bracket.status][0].status = 1;
+                                bracket.groups[bracket.status][1].status = 0;
                             }
                             else if (number1 < number2) {
                                 countdownElement.style.display = 'block';
                                 countdownElement.textContent = "Red Team Wins!";
                                 countdownElement.style.color = '#FF6666';
-                                bracket.groups[0][0].status = 0;
-                                bracket.groups[0][1].status = 1;
+                                bracket.groups[bracket.status][0].status = 0;
+                                bracket.groups[bracket.status][1].status = 1;
                             }
                             console.log("bracket : ", bracket);
-                            for(let i = 0 ; i < bracketLvl ; i++){
-                                if(bracket.status == bracketLvl[i]){
-                                    bracket.status = bracketLvl[i+1];
-                                    break;
-                                }
-                            }
+                            bracket.status += 1;
+                            
                             console.log("bracketlvl : ", bracket.status);
                             setTimeout(() => {
-                                router.navigate('/');
+                                router.navigate('/next-tournament', new NextTournament(gameData, bracket));
                             }, 1000);
                         }
                     }

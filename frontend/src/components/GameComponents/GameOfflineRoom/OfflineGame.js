@@ -82,7 +82,6 @@ export class OfflineGame extends HTMLElement {
             }
             Toast.success("Game started");
             router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, bracket));
-            // console.log("bracket:", bracket);
         });
 
     }

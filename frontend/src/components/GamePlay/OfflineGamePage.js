@@ -12,12 +12,11 @@ export class OfflineGamePage extends HTMLElement {
         this.bracket = bracket;
     }
     async connectedCallback() {
-
             this.innerHTML = `
                 <div id="pingpongcontainer">
                     <div class="ts">
                     <div class="pingpongProfile">
-                            <p>${this.bracket.groups[0][0].username}</p>
+                            <p>${this.bracket.groups[this.bracket.status][0].username}</p>
                             <div id="blueteam" style="display: flex; ">
                                 <img class="profile-pic" src="${this.url}/media/default.jpeg" alt="Profile picture"
                                     style="border: 3px solid blue; border-radius: 10px;">
@@ -33,7 +32,7 @@ export class OfflineGamePage extends HTMLElement {
                                 <img class="profile-pic" src="${this.url}/media/default.jpeg" alt="Profile picture"
                                 style="border: 3px solid red; border-radius: 10px;">
                             </div>
-                            <p>${this.bracket.groups[0][1].username}</p>
+                            <p>${this.bracket.groups[this.bracket.status][1].username}</p>
                         </div>
                     </div>
                     <div style="width: 100%; height: 80vh;">

@@ -306,6 +306,7 @@ customElements.define("single-bracket-mini", SingleBracketMini);
  *  groups: [ 
  *      [{username: "silentzer", status: -1}, {username: "miyako", status: -1}], // 0 = lost, 1 = won, -1 = not yet started
  *      [{username: "ayaya", status: -1}, {username: "rouali", status: -1}],
+ *      []
  *  ]
  * }
  */
@@ -315,25 +316,55 @@ export class TournamentBracket extends HTMLElement {
         this.locked = locked;
         this.bracketSize = bracketSize;
         this.bracketInfo = bracketInfo;
+
         this.bracketMiniTop = new SingleBracketMini();
         this.bracketMiniBottom = new SingleBracketMini();
         this.bracketFinal = new SingleBracket();
+
+
     }
     connectedCallback() {
         this.innerHTML = "";
 
         if (this.bracketSize === 1) {
             this.appendChild(this.bracketFinal);
+            if (this.bracketInfo) {
+                this.bracketFinal.lockInput();
+                this.bracketFinal.setFields(this.bracketInfo.groups[0][0].username, this.bracketInfo.groups[0][1].username);
+                if (this.bracketInfo.groups[0][0].status === 1)
+                    this.bracketFinal.moveUp();
+                else
+                    this.bracketFinal.moveDown();
+            }
             return;
         }
         this.innerHTML = `
             <div class="semi-final-bracket"></div>
             <div class="final-bracket"></div>`;
-
+        
         this.querySelector(".semi-final-bracket").appendChild(this.bracketMiniTop);
         this.querySelector(".semi-final-bracket").appendChild(this.bracketMiniBottom);
         this.querySelector(".final-bracket").appendChild(this.bracketFinal);
         this.bracketFinal.emptyFields();
+        if (this.bracketInfo) {
+            this.bracketMiniTop.lockInput();
+            this.bracketMiniBottom.lockInput();
+
+            this.bracketMiniTop.setFields(this.bracketInfo.groups[0][0].username, this.bracketInfo.groups[0][1].username);
+            this.bracketMiniBottom.setFields(this.bracketInfo.groups[1][0].username, this.bracketInfo.groups[1][1].username);
+            switch (this.bracketInfo.status) {
+                case 1: {
+                    if (this.bracketInfo.groups[0][0].status === 1)
+                        this.bracketMiniTop.moveUp();
+                    else
+                        this.bracketMiniTop.moveUp();
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        
     }
     generateBracket() {
         if (this.bracketSize === 1) {
@@ -341,14 +372,26 @@ export class TournamentBracket extends HTMLElement {
             if (!fields)
                 return null;
             const bracket = {
-                status: "final",
+                status: 0,
                 groups: [
                     [{username: fields[0], status: -1}, {username: fields[1], status: -1}]
                 ]
             }
             return bracket;
         }
-        return null;
+        const groupOneFields = this.bracketMiniTop.getFields();
+        const groupTwoFields = this.bracketMiniBottom.getFields();
+        if (!groupOneFields || !groupTwoFields)
+            return null;
+        const bracket = {
+            status: 0,
+            groups: [
+                [{username: groupOneFields[0], status: -1}, {username: groupOneFields[1], status: -1}],
+                [{username: groupTwoFields[0], status: -1}, {username: groupTwoFields[1], status: -1}],
+                [{username: null, status: -1}, {username: null, status: -1}]
+            ]
+        }
+        return bracket;
     }
     updateBracket() { 
 
