@@ -353,6 +353,13 @@ export function game(ctx, canvas, gameData, bracket) {
                                 bracket.groups[bracket.status][0].status = 0;
                                 bracket.groups[bracket.status][1].status = 1;
                             }
+                            let j = 2;
+                            for (let i = 0 ; i< 2 ; i++){
+                                if (bracket.groups[bracket.status][i].status == 1){
+                                    bracket.groups[bracket.status + j][i].username =  bracket.groups[bracket.status][i].username;
+                                }
+                                j--;
+                            }
                             console.log("bracket : ", bracket);
                             bracket.status += 1;
                             
