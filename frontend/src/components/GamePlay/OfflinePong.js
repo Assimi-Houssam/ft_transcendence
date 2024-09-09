@@ -352,20 +352,21 @@ export function game(ctx, canvas, gameData, bracket) {
                                 bracket.groups[bracket.status][0].status = 0;
                                 bracket.groups[bracket.status][1].status = 1;
                             }
-                            var r = bracket.status == 0 ? 0 : 1;
-                            for (let i = 0 ; i< 2 ; i++){
-                                if(bracket.status == 2)
-                                    break;
-                                if (bracket.groups[bracket.status][i].status == 1){
-                                    console.log(r);
-                                    bracket.groups[2][r].username =  bracket.groups[bracket.status][i].username;
-                                    break;
+                            if (gameData.bracketSize === 2) {
+                                var r = bracket.status == 0 ? 0 : 1;
+                                for (let i = 0 ; i < 2 ; i++){
+                                    if(bracket.status == 2)
+                                        break;
+                                    if (bracket.groups[bracket.status][i].status == 1){
+                                        console.log(r);
+                                        bracket.groups[2][r].username =  bracket.groups[bracket.status][i].username;
+                                        break;
+                                    }
                                 }
+                                console.log("bracket : ", bracket);
+                                bracket.status += 1;
+                                console.log("bracketlvl : ", bracket.status);
                             }
-                            console.log("bracket : ", bracket);
-                            bracket.status += 1;
-                            
-                            console.log("bracketlvl : ", bracket.status);
                             setTimeout(() => {
                                 router.navigate('/next-tournament', new NextTournament(gameData, bracket));
                             }, 1000);
