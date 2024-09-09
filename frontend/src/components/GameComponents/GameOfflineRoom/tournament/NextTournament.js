@@ -26,11 +26,12 @@ export class NextTournament extends HTMLElement {
                 <div class="line_x"></div>
             </div>`;
         this.querySelector(".tournament_node").appendChild(this.bracket);
-        if (this.gameData.bracketSize === 2 && this.bracketInfo.status > 2) {
+        console.log("status:", this.gameData.bracketSize === 2 && this.bracketInfo.status <= 2);
+        if (this.gameData.bracketSize === 2 && this.bracketInfo.status <= 2) {
             console.log("tournament hasnt finished yet, switching to game page in 1.5s");
             setTimeout(() => {
-                    router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, bracket));
-            }, 1500);
+                    router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, this.bracketInfo));
+            }, 4000);
         }
     }
 }

@@ -357,7 +357,14 @@ export class TournamentBracket extends HTMLElement {
                     if (this.bracketInfo.groups[0][0].status === 1)
                         this.bracketMiniTop.moveUp();
                     else
-                        this.bracketMiniTop.moveUp();
+                        this.bracketMiniTop.moveDown();
+                    break;
+                }
+                case 2: {
+                    if (this.bracketInfo.groups[1][0].status === 1)
+                        this.bracketMiniBottom.moveUp();
+                    else
+                        this.bracketMiniBottom.moveDown();
                     break;
                 }
                 default:
@@ -397,7 +404,7 @@ export class TournamentBracket extends HTMLElement {
 
     }
     update(newBracketSize) {
-        this.bracketSize = Number(newBracketSize);
+        this.bracketSize = newBracketSize;
         this.connectedCallback();
     }
 }

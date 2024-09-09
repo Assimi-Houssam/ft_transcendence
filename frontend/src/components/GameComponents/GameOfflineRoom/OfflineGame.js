@@ -57,7 +57,7 @@ export class OfflineGame extends HTMLElement {
         this.appendChild(new RoomOptions(true));
         this.appendChild(new TournamentFooter(true));
         this.addEventListener("bracketChange", (evt) => {
-            this.gameData.bracketSize = evt.detail;
+            this.gameData.bracketSize = Number(evt.detail);
             console.log("bracket size:", this.gameData.bracketSize);
             this.bracket.update(this.gameData.bracketSize);
         });
