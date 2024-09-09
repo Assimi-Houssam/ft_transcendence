@@ -23,7 +23,7 @@ export function game(ctx, canvas, gameData, bracket) {
         paddveolicty = 13;
     }
     // status: "quarter" / "semi" / "final" / "ended",
-    const brackeLvl = [ 'quarter', 'semi', 'final', 'ended'];
+    const bracketLvl = ['quarter', 'semi', 'final', 'ended'];
 
 
 
@@ -161,8 +161,7 @@ export function game(ctx, canvas, gameData, bracket) {
     }
     let elapsedTime
     function pauseAprove() {
-        if (pause == 1)
-        {
+        if (pause == 1) {
             pause = 2;
             elapsedTime = new Date().getTime() + 5 * 1000;
         }
@@ -250,16 +249,14 @@ export function game(ctx, canvas, gameData, bracket) {
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.closePath();
-        if (pause == 2)
-        {
+        if (pause == 2) {
             countdownElement.style.display = 'block';
             countdownElement.textContent = "Game Paused!";
             canvas.style.filter = 'blur(10px)';
             if (new Date().getTime() > elapsedTime)
                 pause = 3;
         }
-        else
-        {
+        else {
             countdownElement.style.display = 'none';
             canvas.style.filter = 'none';
             gameupdate()
@@ -289,9 +286,9 @@ export function game(ctx, canvas, gameData, bracket) {
         drawtable();
     }
 
-    let distance  
-    let minutes 
-    let seconds 
+    let distance
+    let minutes
+    let seconds
     let timeDisplay
     function startCountdown(duration) {
         let remaining = duration;
@@ -308,10 +305,10 @@ export function game(ctx, canvas, gameData, bracket) {
                 // tiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiime
                 var countDownDate = new Date().getTime() + time * 60000;
                 var x = setInterval(function () {
-                    if(pause == 2){
+                    if (pause == 2) {
                         distance = new Date().getTime() + distance;
                     }
-                    else{
+                    else {
                         let now = new Date().getTime();
                         distance = countDownDate - now;
                         minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -363,10 +360,16 @@ export function game(ctx, canvas, gameData, bracket) {
                                 bracket.groups[0][1].status = 1;
                             }
                             console.log("bracket : ", bracket);
+                            for(let i = 0 ; i < bracketLvl ; i++){
+                                if(bracket.status == bracketLvl[i]){
+                                    bracket.status = bracketLvl[i+1];
+                                    break;
+                                }
+                            }
+                            console.log("bracketlvl : ", bracket.status);
                             setTimeout(() => {
-                                router.navigate('/');   
+                                router.navigate('/');
                             }, 1000);
-
                         }
                     }
                 }, 1000);
