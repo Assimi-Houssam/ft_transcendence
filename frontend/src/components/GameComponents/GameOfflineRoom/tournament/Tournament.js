@@ -352,6 +352,7 @@ export class TournamentBracket extends HTMLElement {
 
             this.bracketMiniTop.setFields(this.bracketInfo.groups[0][0].username, this.bracketInfo.groups[0][1].username);
             this.bracketMiniBottom.setFields(this.bracketInfo.groups[1][0].username, this.bracketInfo.groups[1][1].username);
+            this.bracketFinal.setFields(this.bracketInfo.groups[2][0].username, this.bracketInfo.groups[2][1].username);
             switch (this.bracketInfo.status) {
                 case 1: {
                     if (this.bracketInfo.groups[0][0].status === 1)
@@ -366,6 +367,12 @@ export class TournamentBracket extends HTMLElement {
                     else
                         this.bracketMiniBottom.moveDown();
                     break;
+                }
+                case 3: {
+                    if (this.bracketInfo.groups[2][0].status === 1)
+                        this.bracketFinal.moveUp();
+                    else
+                        this.bracketFinal.moveDown();
                 }
                 default:
                     break;
@@ -395,7 +402,7 @@ export class TournamentBracket extends HTMLElement {
             groups: [
                 [{username: groupOneFields[0], status: -1}, {username: groupOneFields[1], status: -1}],
                 [{username: groupTwoFields[0], status: -1}, {username: groupTwoFields[1], status: -1}],
-                [{username: null, status: -1}, {username: null, status: -1}]
+                [{username: "", status: -1}, {username: "", status: -1}]
             ]
         }
         return bracket;
