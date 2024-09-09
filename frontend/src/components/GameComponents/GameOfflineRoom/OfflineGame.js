@@ -2,6 +2,7 @@ import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
 import { router } from "../../../routes/routes.js";
 
 import { TournamentBracket } from "./tournament/Tournament.js";
+import Toast from "../../Toast.js";
 
 class TournamentFooter extends HTMLElement {
     connectedCallback() {
@@ -76,13 +77,14 @@ export class OfflineGame extends HTMLElement{
             this.bracket.update(this.gameData.customization);
         });
         this.querySelector(".BtnStartGame").addEventListener("click", (e) => {
-            const tournamentInputs = document.querySelectorAll("tournament-group input");
-            const playersName = [];
-            tournamentInputs.forEach(input => {
-                playersName.push(input.value);
-            });
-                console.log(this.gameData);
-                router.navigate("/OfflineGame", new OfflineGamePage(this.gameData));
+            const bracket = this.bracket.generateBracket();
+            if (!bracket) {
+                // testing only
+                Toast.error("Some fields are empty");
+                return;
+            }
+            Toast.success("Game started");
+            console.log("bracket:", bracket);
         });
 
     }

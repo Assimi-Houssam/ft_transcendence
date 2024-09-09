@@ -21,9 +21,6 @@ export function game(ctx, canvas, gameData) {
         ballcolor = 'rgba(242,94,94,1)';
         paddveolicty = 13;
     }
-    ;
-
-
 
     function paddle(pos, velo, width, height, color, button) {
         this.pos = pos
@@ -64,9 +61,6 @@ export function game(ctx, canvas, gameData) {
         }
     }
 
-
-
-
     const keypresss = []
 
     window.addEventListener('keydown', function (e) {
@@ -81,7 +75,6 @@ export function game(ctx, canvas, gameData) {
     function vec(x, y) {
         return { x: x, y: y };
     }
-
 
     function drawtable() {
         ctx.beginPath();
@@ -240,17 +233,11 @@ export function game(ctx, canvas, gameData) {
 
     }
 
-
-
-
     document.addEventListener('keydown', function (event) {
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
         }
     });
-
-
-
 
     const countdownElement = document.getElementById('countdown');
     function drawInitialCanvas() {
