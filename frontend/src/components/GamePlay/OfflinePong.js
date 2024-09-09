@@ -82,6 +82,8 @@ export function game(ctx, canvas, gameData, bracket) {
     document.addEventListener('keydown', function (e) {
         if (e.keyCode == 80 && pause == 0)
             pause = 1;
+        else if (e.keyCode == 80 && pause == 2)
+            pause = 0;
 
     });
     function vec(x, y) {
@@ -158,7 +160,6 @@ export function game(ctx, canvas, gameData, bracket) {
             }
         }
     }
-    let elapsedTime
     function pauseAprove() {
         if (pause == 1) {
             pause = 2;
@@ -252,8 +253,6 @@ export function game(ctx, canvas, gameData, bracket) {
             countdownElement.style.display = 'block';
             countdownElement.textContent = "Game Paused!";
             canvas.style.filter = 'blur(10px)';
-            if (new Date().getTime() > elapsedTime)
-                pause = 3;
         }
         else {
             countdownElement.style.display = 'none';
@@ -280,8 +279,8 @@ export function game(ctx, canvas, gameData, bracket) {
     }
 
     let distance
-    let minutes
-    let seconds
+    let minutes = time;
+    let seconds = 0;
     let timeDisplay
     function startCountdown(duration) {
         let remaining = duration;

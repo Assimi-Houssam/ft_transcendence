@@ -79,6 +79,8 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
     document.addEventListener('keydown', function (e) {
         if (e.keyCode == 80 && pause == 0)
             pause = 1;
+        else if ( e.keyCode == 80 && pause == 2)
+            pause = 0;
     });
 
     function player(x, y, color, up, down, left, right) {
@@ -233,7 +235,6 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         }
     }
     let animationframe
-    let elapsedTime;
 
     function game() {
         animationframe = requestAnimationFrame(game);
@@ -243,8 +244,6 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         drawTable();
         if (pause == 2) {
             canvas.style.filter = 'blur(10px)';
-            if (new Date().getTime() > elapsedTime)
-                pause = 3
         }
         else {
             canvas.style.filter = 'none';
@@ -264,8 +263,8 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
 
 
     let distance = 1;
-    let minutes;
-    let seconds;
+    let minutes = time;
+    let seconds =  0;
     let now;
     const countdownElement = document.getElementById("countdown");
 
