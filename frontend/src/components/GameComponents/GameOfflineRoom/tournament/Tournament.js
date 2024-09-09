@@ -295,6 +295,18 @@ class SingleBracketMini extends HTMLElement {
             });
         });
     }
+    heightLineUp() {
+        let linePath = this.querySelector('.line-dir-mini-svg line');
+        let path = this.querySelector('.top-path-mini path');
+        path.style.stroke = "#24CE90";
+        linePath.style.stroke = "#24CE90";
+    }
+    heightLineDown() {
+        let linePath = this.querySelector('.line-dir-mini-svg line');
+        let path = this.querySelector('.bottom-path-mini path');
+        path.style.stroke = "#24CE90";
+        linePath.style.stroke = "#24CE90";
+    }
 }
 
 customElements.define("single-bracket", SingleBracket);
@@ -363,16 +375,64 @@ export class TournamentBracket extends HTMLElement {
                 }
                 case 2: {
                     if (this.bracketInfo.groups[1][0].status === 1)
+                    {
+                        if (this.bracketInfo.groups[0][0].status === 1)
+                            this.bracketMiniTop.heightLineUp();
+                        else
+                            this.bracketMiniTop.heightLineDown();
                         this.bracketMiniBottom.moveUp();
+                    }
                     else
+                    {
+                        if (this.bracketInfo.groups[0][0].status === 1)
+                            this.bracketMiniTop.heightLineUp();
+                        else
+                            this.bracketMiniTop.heightLineDown();
                         this.bracketMiniBottom.moveDown();
+                    }
                     break;
                 }
                 case 3: {
                     if (this.bracketInfo.groups[2][0].status === 1)
+                    {
+                        if (this.bracketInfo.groups[1][0].status === 1)
+                        {
+                            if (this.bracketInfo.groups[0][0].status === 1)
+                                this.bracketMiniTop.heightLineUp();
+                            else
+                                this.bracketMiniTop.heightLineDown();
+                            this.bracketMiniBottom.heightLineUp();
+                        }
+                        else
+                        {
+                            if (this.bracketInfo.groups[0][0].status === 1)
+                                this.bracketMiniTop.heightLineUp();
+                            else
+                                this.bracketMiniTop.heightLineDown();
+                            this.bracketMiniBottom.heightLineDown();
+                        }
                         this.bracketFinal.moveUp();
+                    }
                     else
+                    {
+                        if (this.bracketInfo.groups[1][0].status === 1)
+                        {
+                            if (this.bracketInfo.groups[0][0].status === 1)
+                                this.bracketMiniTop.heightLineUp();
+                            else
+                                this.bracketMiniTop.heightLineDown();
+                            this.bracketMiniBottom.heightLineUp();
+                        }
+                        else
+                        {
+                            if (this.bracketInfo.groups[0][0].status === 1)
+                                this.bracketMiniTop.heightLineUp();
+                            else
+                                this.bracketMiniTop.heightLineDown();
+                            this.bracketMiniBottom.heightLineDown();
+                        }
                         this.bracketFinal.moveDown();
+                    }
                 }
                 default:
                     break;

@@ -11,6 +11,17 @@ export class NextTournament extends HTMLElement {
     }
     
     connectedCallback() {
+        let winner = "";
+        if (this.bracketInfo)
+        {
+            for(let i = 0; i < this.bracketInfo.groups.length; i++) {
+                for(let j = 0; j < this.bracketInfo.groups[i].length; j++){
+                    if (this.bracketInfo.groups[i][j].status === 1){
+                        winner = this.bracketInfo.groups[i][j].username;
+                    }
+                }
+            }
+        }
         this.innerHTML = `
             <div>
                 <div class="OfflineTournamentTitle">
@@ -24,6 +35,11 @@ export class NextTournament extends HTMLElement {
             </div>
             <div class="content_line">
                 <div class="line_x"></div>
+            </div>
+            <div>
+                <div class="OfflineTournamentTitle">
+                    <h2>${this.bracketInfo ? "The Winner Is" : ""} <span style="color: #24CE90;">${winner}</span></h2>
+                </div>
             </div>`;
         this.querySelector(".tournament_node").appendChild(this.bracket);
         console.log("status:", this.gameData.bracketSize === 2 && this.bracketInfo.status <= 2);
