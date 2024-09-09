@@ -10,14 +10,14 @@ import { getUserInfo } from "../utils/utils.js";
 export class Profile extends HTMLElement {
   constructor() {
     super();
-    this.innerHTML = new Loader().outerHTML
+    this.innerHTML = new Loader().outerHTML;
     this.user = null;
-    this.auth  = undefined;
-    this.friendRequest = undefined;
+    this.auth = null;
+    this.friendRequest = null;
   }
 
   async getAuth()  {
-    this.auth = getUserInfo();
+    this.auth = await getUserInfo();
   }
 
   async fetchUser() {

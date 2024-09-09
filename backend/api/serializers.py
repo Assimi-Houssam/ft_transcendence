@@ -19,7 +19,7 @@ class UserSerializerMe(serializers.ModelSerializer):
     block_list = NestedUserSerializer(many=True)
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list","date_joined", "email"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email"]
 
 class UserSerializer(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)
