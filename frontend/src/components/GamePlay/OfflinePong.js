@@ -2,7 +2,6 @@ import { router } from "../../routes/routes.js"
 import { NextTournament } from "../GameComponents/GameOfflineRoom/tournament/NextTournament.js";
 
 export function game(ctx, canvas, gameData, bracket) {
-    console.log("bracket : ", bracket);
     var number1 = 0
     var number2 = 0
     const time = gameData.time;
@@ -297,7 +296,7 @@ export function game(ctx, canvas, gameData, bracket) {
                 countdownElement.style.display = 'none';
                 startGame();
                 // tiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiime
-                var countDownDate = new Date().getTime() + 0.25 * 60000;
+                var countDownDate = new Date().getTime() + 0.1 * 60000;
                 var x = setInterval(function () {
                     if (pause == 2) {
                         distance = new Date().getTime() + distance;
@@ -353,12 +352,16 @@ export function game(ctx, canvas, gameData, bracket) {
                                 bracket.groups[bracket.status][0].status = 0;
                                 bracket.groups[bracket.status][1].status = 1;
                             }
-                            let j = 2;
+                            let  j =  bracket.status == 0 ? 2 : 1;
+                            let r = bracket.status == 1 ? 1 : 0;
+                            console.log(j, r);
                             for (let i = 0 ; i< 2 ; i++){
+                                if(bracket.status == 2)
+                                    break;
                                 if (bracket.groups[bracket.status][i].status == 1){
-                                    bracket.groups[bracket.status + j][i].username =  bracket.groups[bracket.status][i].username;
+                                    bracket.groups[bracket.status + j][i].username =  bracket.groups[bracket.status][r].username;
+                                    break;
                                 }
-                                j--;
                             }
                             console.log("bracket : ", bracket);
                             bracket.status += 1;
