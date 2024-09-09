@@ -352,14 +352,13 @@ export function game(ctx, canvas, gameData, bracket) {
                                 bracket.groups[bracket.status][0].status = 0;
                                 bracket.groups[bracket.status][1].status = 1;
                             }
-                            let  j =  bracket.status == 0 ? 2 : 1;
-                            let r = bracket.status == 1 ? 1 : 0;
-                            console.log(j, r);
+                            var r = bracket.status == 0 ? 0 : 1;
                             for (let i = 0 ; i< 2 ; i++){
                                 if(bracket.status == 2)
                                     break;
                                 if (bracket.groups[bracket.status][i].status == 1){
-                                    bracket.groups[bracket.status + j][i].username =  bracket.groups[bracket.status][r].username;
+                                    console.log(r);
+                                    bracket.groups[2][r].username =  bracket.groups[bracket.status][i].username;
                                     break;
                                 }
                             }
