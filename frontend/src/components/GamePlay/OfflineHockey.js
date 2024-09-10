@@ -374,9 +374,11 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
                     timeDisplay.textContent = "over time";
                 }
                 else {
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        cancelAnimationFrame(animationframe);
+                    }, 3000);
                     timeDisplay.textContent = "time up";
-                    clearInterval(interval);
-                    cancelAnimationFrame(animationframe);
                     canvas.style.fiter = 'blur(10px)';
                     countdownElement.style.display = "block"
                     if (number1 > number2) {

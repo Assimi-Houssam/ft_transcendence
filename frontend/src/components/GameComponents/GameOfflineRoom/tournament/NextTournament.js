@@ -30,6 +30,8 @@ export class NextTournament extends HTMLElement {
             hasReachedFinals = true;
         if (this.bracketInfo.groups.length === 3 && this.bracketInfo.status === 3)
             hasReachedFinals = true;
+
+        let nextBracket = this.bracketInfo.groups[this.bracketInfo.status];
         this.innerHTML = `
             <div>
                 <div class="OfflineTournamentTitleNextUp">
@@ -47,6 +49,12 @@ export class NextTournament extends HTMLElement {
             <div class="OfflineTournamentTitleWinner">
                 <h2 style="font-size: 3.5vh;">${this.bracketInfo ? "The Winner Is" : ""} <span style="color: #24CE90;">${winner}</span></h2>
             </div>
+            ${
+                this.bracketInfo.status != 3 && this.bracketInfo.groups.length > 1 ?
+                    `<div class="OfflineTournamentTitleNextMatch">
+                        <h2>Next Up: <span style="color: #24CE90;">${nextBracket[0].username}</span> vs <span style="color: #24CE90;">${nextBracket[1].username}</span></h2>
+                    </div>` : ""
+            }
             <div class="NextTournamentBtn">
                 <div class="BtnTournament">
                     <button type="button" id="BtnTournamentGame">${hasReachedFinals === true ? "Go Home" : "Next Game!"}</button>
