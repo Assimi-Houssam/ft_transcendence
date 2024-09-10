@@ -309,7 +309,6 @@ export function game(ctx, canvas, gameData, bracket) {
         ctx.beginPath();
         ctx.fillStyle = 'rgba(24,27,38,0.4)';
         ctx.fillRect(0, 0, canvas.width, canvas.height)
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.closePath();
         if (pause == 2) {
             countdownElement.style.display = 'block';

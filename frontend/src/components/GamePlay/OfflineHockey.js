@@ -136,7 +136,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.fillStyle = '#181B26';
+        ctx.fillStyle = 'rgba(24,27,38,1)';
         ctx.fillRect(START_X - 15, HALF_Y + 50 - 96, START_X + 5, HALF_Y + 50 - 96)
         ctx.fillRect(END_X + 15, HALF_Y + 50 - 96, END_X, HALF_Y + 50 - 96)
         ctx.closePath();
@@ -212,7 +212,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
             ctx.beginPath();
             ctx.fillStyle = this.color;
             ctx.shadowBlur = 0;
-            ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
             ctx.fill();
             ctx.closePath();
         }

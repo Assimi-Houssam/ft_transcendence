@@ -112,7 +112,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
   function drawTable() {
     ctx.beginPath();
     ctx.shadowColor = "#E985FF";
-    ctx.strokeStyle = "purple";
+    ctx.strokeStyle = 'purple';
     ctx.shadowBlur = 10;
     ctx.lineWidth = 2;
     ctx.roundRect(START_X, START_Y, END_X, END_Y, [20]);
@@ -141,10 +141,10 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     ctx.shadowBlur = 0;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.setLineDash([]);
-    ctx.fillStyle = "#181B26";
-    ctx.fillRect(START_X - 15, HALF_Y + 50 - 96, START_X + 5, HALF_Y + 50 - 96);
-    ctx.fillRect(END_X + 15, HALF_Y + 50 - 96, END_X, HALF_Y + 50 - 96);
+    ctx.setLineDash([]);  
+    ctx.fillStyle = 'rgba(24,27,38,1)';
+    ctx.fillRect(START_X - 30, HALF_Y + 50 - 96, START_X + 10, HALF_Y + 50 - 96);
+    ctx.fillRect(END_X + 20, HALF_Y + 50 - 96, END_X, HALF_Y + 50 - 96);
     ctx.closePath();
   }
 
@@ -202,7 +202,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
       ctx.beginPath();
       ctx.fillStyle = this.color;
       ctx.shadowBlur = 0;
-      ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
       ctx.fill();
       ctx.closePath();
     };
@@ -244,6 +244,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
           this.veolicity_x = -1;
           this.veolicity_y = 0;
           number1++;
+          triggerExplosion(x, y);
         } else {
           if (this.x < 37) this.x = 47;
           this.veolicity_x *= -1;
@@ -259,6 +260,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
           this.veolicity_x = 1;
           this.veolicity_y = 0;
           number2++;
+          triggerExplosion(x, y);
         } else {
           if (this.x > END_X + 17) this.x = END_X - 17;
           this.veolicity_x *= -1;
@@ -303,7 +305,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     }
     goal = false;
     ctx.beginPath();
-    ctx.fillStyle = "#181B26";
+    ctx.fillStyle = 'rgba(24,27,38,0.7)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.closePath();
     drawTable();
@@ -341,19 +343,21 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
         const data = JSON.parse(event.data);
         player1.x = data.player1_x;
         player1.y = data.player1_y;
-        hockeyBall.x = data.ball_x;
-        hockeyBall.y = data.ball_y;
+        if (number1 != data.score1 || number2 != data.score2) {
         number1 = data.score1;
         number2 = data.score2;
-          // trigerx = hockeyBall.x;
-          // trigerY = hockeyBall.y;
-          // trigerbool = true;
+        trigerx = hockeyBall.x;
+        trigerY = hockeyBall.y;
+        trigerbool = true;
+      }
+        hockeyBall.x = data.ball_x;
+        hockeyBall.y = data.ball_y;
         if (data.finish) gamefinsihed = data.finish;
       };
     }
     ctx.beginPath();
-    ctx.fillStyle = "#181B26";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(24,27,38,0.7)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
     ctx.closePath();
     drawTable();
     player2.move();
@@ -365,10 +369,10 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
       hockeyBall.draw();
     
     scoring();
-    // if(trigerbool){
-      // triggerExplosion(500, 500);
-    //   trigerbool = false;
-    // }
+    if(trigerbool){
+      triggerExplosion(trigerx, trigerY);
+      trigerbool = false;
+    }
     if (player_p === "player2") {
       sendMessage({
         player2_x: player2.x,
