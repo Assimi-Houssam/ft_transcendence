@@ -1,0 +1,194 @@
+* {
+    user-select: none;
+}
+
+:root {
+    --bg-button_: #222838;
+    --orchid: #CA33FF;
+    --bg: #181B26;
+    --bg1_: #191C28;
+    --bg2_: #363B4F;
+    --bg3_: #2B2F40;
+    --white_: #FFFFFF;
+    --title: #A8A8A8;
+    --text: #63656F;
+    --shamrock: #24CE90;
+    --byzantium: #581352;
+    --byzanitumnew: #321A3E;
+    --box: #2E3345;
+    --yellow: #FAE744;
+    --red: #FF6666;
+    --blue: #4496D4;
+    --btn_slot: #373739;
+    
+}
+
+.OfflineTournamentTitle
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+}
+
+.OfflineTournamentTitleNextUp
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 12vh;
+    font-size: 2vh;
+}
+
+.OfflineTournamentTitleNextMatch
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 7vh;
+    font-size: 2vh;
+}
+
+.OfflineTournamentTitleWinner
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12vh;
+}
+
+.ContainerCardOffline
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 650px;
+}
+
+.player_
+{
+    display: flex;
+    align-items: center;
+    height: 8%;
+    background-color: var(--bg2_);
+    border-radius: 10px;
+    font-size: 10px;
+    gap: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.player_ img
+{
+    border-radius: 15px;
+}
+
+.player_ > input
+{
+    flex: 1;
+    width: 100%;
+    background: none;
+    border: 0;
+    outline: none;
+    height: 4vh;
+    text-align: center;
+    border-radius: 10px;
+
+}
+
+.line_tourn
+{
+    position: relative;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    z-index: -1;
+}
+
+.line-drawing-up-final
+{
+    position: absolute;
+    top: 3px;
+}
+
+.line-drawing-down-final
+{
+    position: absolute;
+    bottom: 0;
+}
+
+.line-drawing-up-semi-final
+{
+    position: absolute;
+    top: -5px;
+}
+
+.line-drawing-down-semi-final
+{
+    position: absolute;
+    bottom: -8px;
+}
+
+.TwoVsTwo
+{
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+}
+
+.usersTeams2v2
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 69%;
+    width: 70%;
+}
+
+.usersTeams2v2_final
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 58%;
+    width: 70%;
+}
+
+.ContainerUsersTeams
+{
+    display: flex;
+    flex-direction: column;
+    height: 64%;
+    width: 23%;
+}
+
+.toor
+{
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+}
+
+.linee
+{
+    border: 0.7px solid #828E97;
+    width: 100%;
+}
+
+rooms-list-page {
+    position: relative;
+}
+
+/* .TournamentFooter
+{
+    position: absolute;
+    bottom: -166px;
+    right: 33px;
+} */

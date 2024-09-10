@@ -25,6 +25,72 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         PADDLE_VEO = 12;
         COLOR = 'rgba(242,94,94,1)';
     }
+    let particles = [];
+    let explosionTriggered = false;
+
+    class Particle {
+        constructor(x, y, radius, dx, dy) {
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.dx = dx;
+            this.dy = dy;
+            this.alpha = 1;
+        }
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.fillStyle = COLOR;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.restore();
+        }
+        update() {
+            this.draw();
+            this.alpha -= 0.01;
+            this.x += this.dx;
+            this.y += this.dy;
+        }
+    }
+
+    /* Function to initialize particles */
+    function initializeParticles(x, y) {
+        particles = []; // Reset particles array
+        for (let i = 0; i <= 150; i++) {
+            let dx = (Math.random() - 0.5) * (Math.random() * 6);
+            let dy = (Math.random() - 0.5) * (Math.random() * 6);
+            let radius = Math.random() * 3;
+            let particle = new Particle(x, y, radius, dx, dy);
+            particles.push(particle);
+        }
+    }
+
+    /* Particle explosion function */
+    function explode() {
+        particles = particles.filter(particle => {
+            if (particle.alpha > 0) {
+                particle.update();
+                return true;
+            }
+            return false;
+        });
+
+        if (particles.length > 0) {
+            requestAnimationFrame(explode);
+        } else {
+            explosionTriggered = false; // Reset the trigger flag
+        }
+    }
+
+    /* Function to trigger explosion effect */
+    function triggerExplosion(x, y) {
+        if (!explosionTriggered) {
+            initializeParticles(x, y);
+            explode();
+            explosionTriggered = true;
+        }
+    }
 
     ws.onmessage = async function (event) {
         try {
@@ -206,6 +272,11 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         ctx.closePath();
         gameupdate();
         gamedraw();
+        if(trigerbool)
+        {
+            triggerExplosion(trigerx, trigery)
+            trigerbool = false
+        }
         if (pause === true) {
             canvas.style.filter = 'blur(10px)';
             countdownElement.textContent = "game paused for 10 seconds";
@@ -327,6 +398,11 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             }
         }, 1000 / 60);
     }
+
+    let trigerx
+    let trigery
+    let trigerbool
+
     async function processMessage(data) {
 
         if (startGame) {
@@ -341,13 +417,16 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                 if (data[paddleNames[i]])
                     paddles[i].pos.y = data[paddleNames[i]];
             }
-            if (data.positionx && data.positiony) {
-                bal.pos.x = data.positionx;
-                bal.pos.y = data.positiony;
-            }
             if (data.score1 != number1 || data.score2 != number2) {
                 number1 = data.score1;
                 number2 = data.score2;
+                trigerx = bal.pos.x
+                trigery = bal.pos.y
+                trigerbool = true
+            }
+            if (data.positionx && data.positiony) {
+                bal.pos.x = data.positionx;
+                bal.pos.y = data.positiony;
             }
             if (data.finish) {
                 gamefinsihed = true;

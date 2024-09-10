@@ -1,0 +1,317 @@
+* {
+    user-select: none;
+}
+
+:root {
+    --bg-button_: #222838;
+    --orchid: #CA33FF;
+    --bg: #181B26;
+    --bg1_: #191C28;
+    --bg2_: #363B4F;
+    --bg3_: #2B2F40;
+    --white_: #FFFFFF;
+    --title: #A8A8A8;
+    --text: #63656F;
+    --shamrock: #24CE90;
+    --byzantium: #581352;
+    --byzanitumnew: #321A3E;
+    --box: #2E3345;
+    --yellow: #FAE744;
+    --red: #FF6666;
+    --blue: #4496D4;
+    --btn_slot: #373739;
+    
+}
+
+.BlueTeam
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.vs
+{
+    /* flex: 1; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8vh;
+}
+
+participants-card {
+    width: 45vh;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0.38;
+}
+
+.Room
+{
+    display:flex;
+    position: relative;
+    background: var(--bg3_);
+    height: 100%;
+    border-radius: 15px;
+    width: 95%;
+}
+
+.RoomTypeGame
+{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    width: 50px;
+    background: var(--bg3_);
+    border-radius: 15px 0 0 15px;
+}
+
+.RoomContent
+{
+    border-radius: 15px;
+    background: var(--bg2_);
+    width: 100%;
+}
+
+.RoomContentCard
+{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.RoomName > p {
+    font-size: 1.7vh;
+}
+
+.RoomContentCard_flex
+{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.RoomTeam
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--byzanitumnew);
+    width: 55px;
+    height: 20px;
+    border-radius: 15px;
+}
+
+.RoomTeam p
+{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    font-size: 1.3vh;
+}
+
+.RoomTime
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--byzanitumnew);
+    width: 55px;
+    height: 20px;
+    border-radius: 15px;
+}
+
+.RoomTime p
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1vh;
+}
+
+.RoomName
+{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+}
+
+.RoomPlayer p
+{
+    color: var(--yellow);
+    font-size: 1.8vh;
+}
+
+.RoomHosted
+{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: 10px;
+}
+
+.RoomUsers
+{
+    display: flex;
+    justify-content: end;
+}
+
+.RoomUsers img
+{
+    border-radius: 15px;
+    background-size: cover;
+}
+
+.ContainerCardParticipants
+{
+    display: flex;
+    justify-content: space-around;
+    margin: 25px;
+    height: 40vh;
+}
+
+.TitleRoom
+{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    height: 80px;
+}
+
+.TitleRoom #changeTitleBtn
+{
+    background-image: url("../icons/editer.png");
+    background-size: cover;
+    transition: transform 1s ease;
+    background-color: transparent;
+    width: 15px;
+    height: 15px;
+    border: 0;
+}
+
+.TitleRoom #changeTitleBtn:hover
+{
+    transform: scale(1.5);
+    background-image: url("../icons/activ_editer.png");
+}
+
+.CardParticipants
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 60%;
+    height: 100%;
+    background-color: var(--bg2_);
+    border-radius: 15px;
+}
+
+.ParticipantsTeam
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 5px;
+    height: 100%;
+    width: 100%;
+}
+
+.RedTeam
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.TeamTitle
+{
+    display: flex;
+    justify-self: flex-start;
+    align-self: flex-start;
+    padding-left: 1.3vh;
+    width: 85%;
+}
+
+.TeamTitle > p {
+    font-size: 12px;
+}
+
+.ParticipantsText {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to right, transparent, #E0E0E0, transparent);
+    border-image-slice: 2;
+}
+
+pariticipant-entry {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    height: 5.5vh;
+    width: 90%;
+    border-radius: 15px;
+}
+
+pariticipant-entry > img {
+    width: 1.5vh;
+    height: 1.5vh;
+    padding-right: 15px;
+    opacity: 0;
+}
+
+.ParticipantEntryInfo {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 15px;
+    align-items: center;
+}
+
+.ParticipantEntryInfo > img {
+    width: 3.5vh;
+    height: 3.5vh;
+    border-radius: 5px;
+}
+
+empty-slot {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 5.5vh;
+    width: 95%;
+    background-color: #373739;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+empty-slot > p {
+    margin-left: 35%;
+}
+
+empty-slot > img {
+    width: 2vh;
+    height: 2vh;
+    margin-right: 5%;
+}

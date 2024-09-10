@@ -50,6 +50,7 @@ export class GamePage extends HTMLElement {
                 <div id="pingpongcontainer">
                     <div class="ts">
                         <div class="pingpongProfile">
+                            <p id="blueplayer">${blueTeam.username}</p>
                             <div id="blueteam" style="display: flex; ">
                                 <img class="profile-pic" src="${blueTeam.pfp}" alt="Profile picture"
                                     style="border: 3px solid blue; border-radius: 10px;">
@@ -65,6 +66,7 @@ export class GamePage extends HTMLElement {
                                 <img class="profile-pic" src="${redTeam.pfp}" alt="Profile picture"
                                     style="border: 3px solid red; border-radius: 10px;">
                             </div>
+                            <p id="redplayer">${redTeam.username}</p>
                         </div>
                     </div>
                     <div style="width: 100%; height: 70vh;">
@@ -89,6 +91,10 @@ export class GamePage extends HTMLElement {
                                 PongTable(ctx, canvas, this.ws, this.roomData.time, this.roomData.customization, player);
                                 break;
                             case "2":
+                                let redplayer = document.getElementById('redplayer');
+                                redplayer.textContent = redTeam.username + " & " +this.roomData.redTeam[1].username;
+                                let blueplayer = document.getElementById('blueplayer');
+                                blueplayer.textContent = blueTeam.username + " & " + this.roomData.blueTeam[1].username;
                                 let blueimg = document.getElementById('blueteam');
                                 let newImg = document.createElement('img');
                                 newImg.className = "profile-pic";
