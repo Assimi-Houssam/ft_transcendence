@@ -433,7 +433,7 @@ export function game(ctx, canvas, gameData, bracket) {
                   "/next-tournament",
                   new NextTournament(gameData, bracket)
                 );
-              }, 1000);
+              }, 2500);
             }
           }
         }, 1000);
