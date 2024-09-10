@@ -24,6 +24,76 @@ export function game(ctx, canvas, gameData, bracket) {
     }
     // status: "quarter" / "semi" / "final" / "ended",
 
+    /* Initialize particle array */
+    let particles = [];
+    let explosionTriggered = false;
+
+    class Particle {
+        constructor(x, y, radius, dx, dy) {
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.dx = dx;
+            this.dy = dy;
+            this.alpha = 1;
+        }
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.fillStyle = ballcolor;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.restore();
+        }
+        update() {
+            this.draw();
+            this.alpha -= 0.01;
+            this.x += this.dx;
+            this.y += this.dy;
+        }
+    }
+
+    /* Function to initialize particles */
+    function initializeParticles(x, y) {
+        particles = []; // Reset particles array
+        for (let i = 0; i <= 150; i++) {
+            let dx = (Math.random() - 0.5) * (Math.random() * 6);
+            let dy = (Math.random() - 0.5) * (Math.random() * 6);
+            let radius = Math.random() * 3;
+            let particle = new Particle(x, y, radius, dx, dy);
+            particles.push(particle);
+        }
+    }
+
+    /* Particle explosion function */
+    function explode() {
+        drawInitialCanvas();
+        paddle1.draw();
+        paddle2.draw();
+        particles = particles.filter(particle => {
+            if (particle.alpha > 0) {
+                particle.update();
+                return true;
+            }
+            return false;
+        });
+
+        if (particles.length > 0) {
+            requestAnimationFrame(explode);
+        } else {
+            explosionTriggered = false; // Reset the trigger flag
+        }
+    }
+
+    /* Function to trigger explosion effect */
+    function triggerExplosion(x, y) {
+        if (!explosionTriggered) {
+            initializeParticles(x, y);
+            explode();
+            explosionTriggered = true;
+        }
+    }
 
 
     function paddle(pos, velo, width, height, color, button) {
@@ -135,9 +205,7 @@ export function game(ctx, canvas, gameData, bracket) {
 
     const bal = new ball(vec(widthcanva / 2 + 30, heightcanva / 2 + 30), vec(velocityx, velocityy), 10, ballcolor)
     const paddle1 = new paddle(vec(60, 80), vec(8, paddveolicty), 10, 50, 'blue', vec(87, 83))
-    const paddle3 = new paddle(vec(60, 300), vec(8, paddveolicty), 10, 50, 'green', vec(82, 70))
     const paddle2 = new paddle(vec(widthcanva - 10, 80), vec(8, paddveolicty), 10, 50, 'red', vec(38, 40))
-    const paddle4 = new paddle(vec(widthcanva - 10, 300), vec(8, paddveolicty), 10, 50, 'yellow', vec(75, 77))
 
 
 
@@ -170,6 +238,8 @@ export function game(ctx, canvas, gameData, bracket) {
 
     function ballcoli(bal) {
         if (bal.pos.x + 20 > widthcanva + 40) {
+            let x = bal.pos.x;
+            let y = bal.pos.y;
             bal.pos.x = widthcanva / 2 + 30;
             bal.pos.y = heightcanva / 2 + 30;
             number1 += 1;
@@ -184,8 +254,11 @@ export function game(ctx, canvas, gameData, bracket) {
             ctx.fillRect(0, 0, canvas.width, canvas.height)
             ctx.closePath();
             goal = true;
+            triggerExplosion(x, y);
         }
         if (bal.pos.x - 20 <= 40) {
+            let x = bal.pos.x;
+            let y = bal.pos.y;
             bal.pos.x = widthcanva / 2 + 30;
             bal.pos.y = heightcanva / 2 + 30;
             number2 += 1;
@@ -200,6 +273,7 @@ export function game(ctx, canvas, gameData, bracket) {
             ctx.fillRect(0, 0, canvas.width, canvas.height)
             ctx.closePath();
             goal = true;
+            triggerExplosion(x, y);
         }
 
         if (bal.pos.y + 15 > heightcanva + 30 || bal.pos.y - 15 <= 30) {
@@ -212,27 +286,15 @@ export function game(ctx, canvas, gameData, bracket) {
             bal.update()
         paddle1.update()
         paddle2.update()
-        if (teamsize == 2) {
-            paddle3.update()
-            paddle4.update()
-        }
         ballcoli(bal)
         ballPadllColision(bal, paddle1)
         ballPadllColision1(bal, paddle2)
-        if (teamsize == 2) {
-            ballPadllColision(bal, paddle3)
-            ballPadllColision1(bal, paddle4)
-        }
     }
 
     function gamedraw() {
         drawtable();
         paddle1.draw();
         paddle2.draw();
-        if (teamsize == 2) {
-            paddle3.draw();
-            paddle4.draw();
-        }
         if (custom == "hidden" && (bal.pos.x > 300 && bal.pos.x < 1300)) {
             bal.draw();
         }
@@ -334,9 +396,6 @@ export function game(ctx, canvas, gameData, bracket) {
                             cancelAnimationFrame(cancel);
                             canvas.style.filter = 'blur(10px)';
                             var winner = document.getElementById('winner');
-                            // setTimeout(() => {
-                            //     router.navigate('/home');
-                            // }, 3000);
                             if (number1 > number2) {
                                 countdownElement.style.display = 'block';
                                 countdownElement.textContent = "Blue Team Wins!";
@@ -353,12 +412,12 @@ export function game(ctx, canvas, gameData, bracket) {
                             }
                             if (gameData.bracketSize === 2) {
                                 var r = bracket.status == 0 ? 0 : 1;
-                                for (let i = 0 ; i < 2 ; i++){
-                                    if(bracket.status == 2)
+                                for (let i = 0; i < 2; i++) {
+                                    if (bracket.status == 2)
                                         break;
-                                    if (bracket.groups[bracket.status][i].status == 1){
+                                    if (bracket.groups[bracket.status][i].status == 1) {
                                         console.log(r);
-                                        bracket.groups[2][r].username =  bracket.groups[bracket.status][i].username;
+                                        bracket.groups[2][r].username = bracket.groups[bracket.status][i].username;
                                         break;
                                     }
                                 }

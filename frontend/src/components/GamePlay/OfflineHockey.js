@@ -20,13 +20,81 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
     let ballcolor = 'rgba(255,255,255,1)';
     let forceMagnitude = 4;
     let pause = 0
-
     const keypress = [];
     if (custom == "fastForword") {
         veolicity = 9
         ballcolor = 'rgba(242,94,94,1)';
         forceMagnitude = 6;
     }
+
+     /* Initialize particle array */
+     let particles = [];
+     let explosionTriggered = false;
+ 
+     class Particle {
+         constructor(x, y, radius, dx, dy) {
+             this.x = x;
+             this.y = y;
+             this.radius = radius;
+             this.dx = dx;
+             this.dy = dy;
+             this.alpha = 1;
+         }
+         draw() {
+             ctx.save();
+             ctx.globalAlpha = this.alpha;
+             ctx.fillStyle = ballcolor;
+             ctx.beginPath();
+             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+             ctx.fill();
+             ctx.restore();
+         }
+         update() {
+             this.draw();
+             this.alpha -= 0.01;
+             this.x += this.dx;
+             this.y += this.dy;
+         }
+     }
+ 
+     /* Function to initialize particles */
+     function initializeParticles(x, y) {
+         particles = []; // Reset particles array
+         for (let i = 0; i <= 150; i++) {
+             let dx = (Math.random() - 0.5) * (Math.random() * 6);
+             let dy = (Math.random() - 0.5) * (Math.random() * 6);
+             let radius = Math.random() * 3;
+             let particle = new Particle(x, y, radius, dx, dy);
+             particles.push(particle);
+         }
+     }
+ 
+     /* Particle explosion function */
+     function explode() {
+         particles = particles.filter(particle => {
+             if (particle.alpha > 0) {
+                 particle.update();
+                 return true;
+             }
+             return false;
+         });
+ 
+         if (particles.length > 0) {
+             requestAnimationFrame(explode);
+         } else {
+             explosionTriggered = false; // Reset the trigger flag
+         }
+     }
+ 
+     /* Function to trigger explosion effect */
+     function triggerExplosion(x, y) {
+         if (!explosionTriggered) {
+             initializeParticles(x, y);
+             explode();
+             explosionTriggered = true;
+         }
+     }
+
 
 
     window.addEventListener('keydown', function (e) {
@@ -173,12 +241,16 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
 
             if ((this.x <= 42)) {
                 if (this.y > HALF_Y + 50 - 96 && this.y < HALF_Y + 50 + 96) {
+                    let x = this.x;
+                    let y = this.y;
                     this.x = HALF_X + 40;
                     this.y = HALF_Y + 50;
                     this.veolicity_x = -1;
                     this.veolicity_y = 0;
                     number1++;
                     this.approvepause()
+                    triggerExplosion(x, y);
+                    
                 }
                 else {
                     if (this.x < 37)
@@ -188,6 +260,8 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
             }
 
             if ((this.x >= END_X + 12)) {
+                let x = this.x;
+                let y = this.y;
                 if (this.y > HALF_Y + 50 - 96 && this.y < HALF_Y + 50 + 96) {
                     this.x = HALF_X + 60;
                     this.y = HALF_Y + 50;
@@ -195,6 +269,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
                     this.veolicity_y = 0;
                     number2++;
                     this.approvepause()
+                    triggerExplosion(x, y);
                 }
                 else {
                     if (this.x > END_X + 17)

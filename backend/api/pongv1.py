@@ -230,9 +230,6 @@ class PongV1(AsyncWebsocketConsumer):
                
             if pause == False:
                 if begin:
-                    if self.game_states[self.room_group_name]["costume"] == True:
-                        ball_state["velocity"]["x"] += (2 * self.sign(int(ball_state["velocity"]["x"]))) 
-                        ball_state["velocity"]["y"] += (1 * self.sign(int(ball_state["velocity"]["y"])))
                     ball_state["position"]["x"] += ball_state["velocity"]["x"]
                     ball_state["position"]["y"] += ball_state["velocity"]["y"]
                 posx = ball_state["position"]["x"]
