@@ -371,3 +371,14 @@ match-history-card {
     font-size: 25px;
     color: #CA33FF;
 }
+
+.player-chart {
+    padding-top: 40px;
+}
+
+.empty-section {
+    color: #7d7d80;
+    font-size: 1.5vh;
+    padding-top: 15px;
+    padding-left: 10px;
+}

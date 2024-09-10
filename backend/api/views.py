@@ -31,7 +31,7 @@ def filter_users(request):
 @permission_classes([IsAuthenticated])
 def get_user(req, userID) :
     user = User.objects.get(id=userID)
-    if req.user in user.block_list.all() :
+    if req.user in user.block_list.all():
         return Response({
             "detail" : "Couldn't find that user"
         }, status=status.HTTP_404_NOT_FOUND)

@@ -14,6 +14,7 @@ export class Profile extends HTMLElement {
     this.user = null;
     this.auth = null;
     this.friendRequest = null;
+    this.scores = null;
   }
 
   async getAuth()  {
@@ -69,13 +70,22 @@ export class Profile extends HTMLElement {
       Toast.error(json.detail)
     }
   }
-
+  async fetchUserScores(){
+    const req = await ApiWrapper.get("/scores/" + router.route.params["userID"]);
+    if (!req.ok) {
+      return null;
+    }
+    const matches = await req.json();
+    this.scores = matches;
+    return this.scores;
+  }
   async connectedCallback() {
     await this.fetchUser();
     await this.getAuth();
     await this.fetchFriendRequest();
+    await this.fetchUserScores();
     this.innerHTML = ``
-    this.appendChild(new ProfileInfo(this.user, true)); //true means user onkine,  u need to get it from the sockets olla dbr krrk meaha a hbibi 
+    this.appendChild(new ProfileInfo(this.user, this.scores, true)); //true means user onkine,  u need to get it from the sockets olla dbr krrk meaha a hbibi 
     this.appendChild(new ProfileFriends(this.user));
     this.setActions();
     const blockUserBtn = document.getElementById("block_user");

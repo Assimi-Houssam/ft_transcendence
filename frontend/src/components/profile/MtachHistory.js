@@ -77,7 +77,7 @@ export class MatchHistoryCard extends HTMLElement {
                   <div class="RoomHosted">
                       <p>hosted by <span style="color: var(--orchid)">${this.roomData.host}<span></p>
                   </div>
-                  <div class="RoomUsers"> ${this.roomData.players.map(user => `<img src="${user.pfp}" width="20px">`).join('')}</div>
+                  <div class="RoomUsers"> ${this.roomData.players.map(user => `<img src="http://localhost:8000${user.pfp}" width="20px">`).join('')}</div>
               </div>
           </div>
       </div>
@@ -88,31 +88,24 @@ export class MatchHistoryCard extends HTMLElement {
 customElements.define("match-history-card", MatchHistoryCard);
 
 export class MatchHistory extends HTMLElement {
-  constructor() {
+  constructor(scores) {
     super();
-    this.matches = [];
-  }
-  async fetchMatchHistory() {
-    const req = await ApiWrapper.get("/scores/" + router.route.params["userID"]);
-    if (!req.ok) {
-      return false;
-    }
-    const matches = await req.json();
-    console.log(matches);
-    for (let match of matches) {
-      this.matches.push(new MatchHistoryCard(match));
-    }
-    return true;
+    this.scores = scores;
   }
   async connectedCallback() {
+    if (!this.scores.length) {
+      this.innerHTML = `
+        <h2 class="profile_titles">Match History</h2>
+        <div class="empty-section">No matches played</div>
+      `;
+      return;
+    }
     this.innerHTML = `
       <h2 class="profile_titles">Match History</h2>
-      <div id="match_historys"></div>
-    `;
+      <div id="match_historys"></div>`;
     const matchHistorysParrent = document.getElementById("match_historys");
-    await this.fetchMatchHistory();
-    for (let match of this.matches) {
-      matchHistorysParrent.appendChild(match);
+    for (let score of this.scores) {
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
     }
   }
 }

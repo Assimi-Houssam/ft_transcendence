@@ -10,6 +10,6 @@ from .models import Room
 @authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def get_user_scores(req, user_id):
-    user_scores_raw = Room.objects.filter(players__contains=[{"id": user_id}])
+    user_scores_raw = Room.objects.filter(players__id=user_id)
     user_scores = MatchSerializer(user_scores_raw, many=True)
     return Response(user_scores.data)

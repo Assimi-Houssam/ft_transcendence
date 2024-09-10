@@ -21,8 +21,9 @@ export class StatisticCard extends HTMLElement {
 customElements.define("statistic-card", StatisticCard);
 
 export class ProfileStatistics extends HTMLElement {
-  constructor() {
+  constructor(userInfo) {
     super();
+    this.userInfo = userInfo;
   }
 
   connectedCallback() {
@@ -31,9 +32,9 @@ export class ProfileStatistics extends HTMLElement {
       <div id="statistics_cards"></div>
     `
     const statisticsCards = document.getElementById("statistics_cards");
-    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/cup.png", "WINS", 0))
-    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/xp.png", "YOUR XP", 253))
-    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/controle.png", "MATCHES PLAYED", 4))
+    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/cup.png", "WINS", this.userInfo.matches_won))
+    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/xp.png", "YOUR XP", this.userInfo.xp))
+    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/controle.png", "MATCHES PLAYED", this.userInfo.matches_played))
   }
 }
 

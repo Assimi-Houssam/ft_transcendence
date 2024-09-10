@@ -3,6 +3,7 @@ import { MatchHistory } from "./MtachHistory.js";
 import ApiWrapper from "../../utils/ApiWrapper.js"
 import Toast from "../Toast.js";
 import { router } from "../../routes/routes.js";
+import { ProfileGraph } from "./ProfileGraph.js";
 
 export class ProfileActions extends HTMLElement {
   constructor(user, auth, requests) {
@@ -67,11 +68,12 @@ export class ProfileActions extends HTMLElement {
 customElements.define("profile-actions", ProfileActions);
 
 export class ProfileInfo extends HTMLElement {
-  constructor(user, status=false) {
+  constructor(user, scores, status=false) {
     super();
     this.user = user;
     this.classList.add("profile_left_items");
     this.status = status;
+    this.scores = scores;
   }
 
   connectedCallback() {
@@ -92,12 +94,12 @@ export class ProfileInfo extends HTMLElement {
         </div>
         <div id="profile_actions"></div>
       </div>
-      <div class="line_"></div>
-      <profile-statistics></profile-statistics>
-      <match-history></match-history>
-    `
+      <div class="line_"></div>`;
     const banner  = document.getElementById("profile_banner");
     banner && (banner.style.backgroundImage = `url(${ApiWrapper.getUrl()}${this.user.banner})`);
+    this.appendChild(new ProfileStatistics(this.user));
+    this.appendChild(new MatchHistory(this.scores));
+    this.appendChild(new ProfileGraph(this.scores));
   }
 }
 
