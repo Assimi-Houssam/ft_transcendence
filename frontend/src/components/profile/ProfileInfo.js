@@ -1,5 +1,5 @@
 import { ProfileStatistics } from "./ProfileStatistics.js";
-import { MatchHistory } from "./MtachHistory.js";
+import { MatchHistory } from "./MatchHistory.js";
 import ApiWrapper from "../../utils/ApiWrapper.js"
 import Toast from "../Toast.js";
 import { router } from "../../routes/routes.js";

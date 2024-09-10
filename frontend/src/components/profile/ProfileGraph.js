@@ -39,7 +39,7 @@ export class ProfileGraph extends HTMLElement {
         const scoreValues = scores.map(score => score.score);
 
         const canvas = this.querySelector(".player-chart");
-        canvas.width = window.innerHeight * 1.2;
+        canvas.width = window.innerHeight * 1.4;
         canvas.height = window.innerHeight * 0.4;
         var ctx = canvas.getContext("2d");
         new Chart(ctx, {

@@ -25,6 +25,7 @@ export class MatchHistoryCard extends HTMLElement {
     let leftScore = "";
     let rightScore = "";
     let winCondition = null;
+    let color = "white";
     if (userTeam === "red") {
       leftScore = this.roomData.red_team_score;
       rightScore = this.roomData.blue_team_score;
@@ -34,18 +35,26 @@ export class MatchHistoryCard extends HTMLElement {
       rightScore = this.roomData.red_team_score;
     }
     if (userTeam === "red") {
-      if (this.roomData.red_team_score > this.roomData.blue_team_score)
+      if (this.roomData.red_team_score > this.roomData.blue_team_score) {
         winCondition = "WIN";
-      else if (this.roomData.red_team_score < this.roomData.blue_team_score)
+        color = "#FAE744";
+      }
+      else if (this.roomData.red_team_score < this.roomData.blue_team_score) {
         winCondition = "LOSS";
+        color = "#FF6666";
+      }
       else
         winCondition = "DRAW";
     }
     if (userTeam === "blue") {
-      if (this.roomData.blue_team_score > this.roomData.red_team_score)
+      if (this.roomData.blue_team_score > this.roomData.red_team_score) {
         winCondition = "WIN";
-      else if (this.roomData.blue_team_score < this.roomData.red_team_score)
+        color = "#FAE744";
+      }
+      else if (this.roomData.blue_team_score < this.roomData.red_team_score) {
         winCondition = "LOSS";
+        color = "#FF6666";
+      }
       else
         winCondition = "DRAW";
     }
@@ -72,7 +81,7 @@ export class MatchHistoryCard extends HTMLElement {
               </div>
               <div class="RoomContentCard_flex _RoomContentCard_flex_left">
                   <div class="RoomPlayer">
-                      <p id="SizePlayers">${winCondition}</p>
+                      <p id="SizePlayers" style="color: ${color};">${winCondition}</p>
                   </div>
                   <div class="RoomHosted">
                       <p>hosted by <span style="color: var(--orchid)">${this.roomData.host}<span></p>
@@ -105,7 +114,7 @@ export class MatchHistory extends HTMLElement {
       <div id="match_historys"></div>`;
     const matchHistorysParrent = document.getElementById("match_historys");
     let index = 0;
-    for (let score of this.scores) {
+    for (let score of [...this.scores].reverse()) {
       if (index >= 5) 
         break;
       matchHistorysParrent.appendChild(new MatchHistoryCard(score));
