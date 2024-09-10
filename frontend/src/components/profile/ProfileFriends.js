@@ -54,8 +54,8 @@ export class ProfileFriends extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = `
-      <h1 class="profile_friends_title">Friends List</h1>
-      <div id="friends_list"></div>
+        <h1 class="profile_friends_title">Friends List</h1>
+        <div id="friends_list"></div>
     `
     const friendsList = document.getElementById("friends_list")
     this?.user?.friends.length > 0 ?

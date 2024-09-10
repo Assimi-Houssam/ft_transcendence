@@ -3,7 +3,7 @@ profile-page {
     justify-content: flex-start;
     gap: 20px;
     margin-top: 30px;
-    position: relative; 
+    overflow-x: hidden;
 }
 
 profile-info {
@@ -12,18 +12,23 @@ profile-info {
     width: 100%;
     padding: 10px;
 }
+
 profile-friends {
-    flex: 0.3;
-    height: calc(100vh - 180px);
     width: 100%;
     border-radius: 20px;
     background-color: #1F2230;
     overflow-y: scroll;
-    min-height: 1000px;
+    height: calc(100vh - 200px);
+    /* min-height: 717px; */
     padding: 30px;
+    position: sticky;
+    top: 0;
+    flex: 0.3;
 }
 
-
+.Room_width {
+    width: 100%;
+}
 .profile_friends_title {
     font-size: 20px;
 }

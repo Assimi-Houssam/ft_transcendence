@@ -50,7 +50,7 @@ export class MatchHistoryCard extends HTMLElement {
         winCondition = "DRAW";
     }
     this.innerHTML = `
-    <div class="Room">
+    <div class="Room Room_width">
       <div class="RoomTypeGame">
         <img id="RoomTeamGameType" src="${this.roomData.gamemode === "pong" ? "../../../assets/images/pong.png" : "../../../assets/images/hockey.png"}" width="28px" height="28px">
       </div>
@@ -105,6 +105,21 @@ export class MatchHistory extends HTMLElement {
       <div id="match_historys"></div>`;
     const matchHistorysParrent = document.getElementById("match_historys");
     for (let score of this.scores) {
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
       matchHistorysParrent.appendChild(new MatchHistoryCard(score));
     }
   }
