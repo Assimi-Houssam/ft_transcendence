@@ -328,9 +328,8 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         }
         player2.draw();
         player1.draw();
-        if (custom == "hidden" && (hockeyBall.x > 300 && hockeyBall.x < 900)) {
+        if (custom == "hidden" && (hockeyBall.x > 300 && hockeyBall.x < 900))
             hockeyBall.draw();
-        }
         else if (custom != "hidden")
             hockeyBall.draw();
         scoring();
@@ -399,7 +398,6 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
                             if (bracket.status == 2)
                                 break;
                             if (bracket.groups[bracket.status][i].status == 1) {
-                                console.log(r);
                                 bracket.groups[2][r].username = bracket.groups[bracket.status][i].username;
                                 break;
                             }
