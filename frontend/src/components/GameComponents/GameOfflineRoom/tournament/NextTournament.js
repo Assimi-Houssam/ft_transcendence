@@ -7,11 +7,14 @@ export class NextTournament extends HTMLElement {
         super();
         this.gameData = gameData;
         this.bracketInfo = bracketInfo;
-        this.bracket = new TournamentBracket(true, this.gameData.bracketSize, this.bracketInfo);
     }
     
     connectedCallback() {
         let winner = "";
+        if (this.gameData == undefined || this.bracketInfo == undefined)
+            return router.navigate("/home");
+        else
+            this.bracket = new TournamentBracket(true, this.gameData.bracketSize, this.bracketInfo);
         if (this.bracketInfo)
         {
             for(let i = 0; i < this.bracketInfo.groups.length; i++) {
