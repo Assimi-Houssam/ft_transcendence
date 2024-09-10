@@ -144,7 +144,6 @@ class PongV1(AsyncWebsocketConsumer):
         chrono = time.time() + int(self.tosave[self.room_group_name]['time']) * 60
         self.goal = False
         self.cooldown = 0
-        #  if you want to test it in fast time (chrono = time.time() + 15)
         while True:
             state = self.game_states[self.room_group_name]
             paddle1 = state["paddle1"]
@@ -257,7 +256,7 @@ class PongV1(AsyncWebsocketConsumer):
                     self.goal = True
                     self.cooldown = time.time() + 0.5
                 if posy - BALL_RADIUS <= BOUNDARY_TOP or posy + BALL_RADIUS >= BOUNDARY_BOTTOM:
-                    ball_state["velocity"]["y"] *= -1  # Reverse Y velocity
+                    ball_state["velocity"]["y"] *= -1  
                 if posx <= paddle1["position"]["x"] + PADDLE_WIDTH and ball_state["velocity"]["x"] < 0:
                     paddlcenter1y = paddle1["position"]["y"] + PADDLE_HEIGHT / 2    
                     dx = abs(posx - (paddle1["position"]["x"] + PADDLE_WIDTH / 2))

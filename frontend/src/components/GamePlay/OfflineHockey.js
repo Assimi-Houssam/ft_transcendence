@@ -348,7 +348,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         setTimeout(() => { }, 1000);
         canvas.style.fiter = 'none';
         game();
-        let countDownDate = new Date().getTime() + 0.1 * 60000;
+        let countDownDate = new Date().getTime() + time * 60000;
         let interval = setInterval(() => {
             if (pause == 2) {
                 countdownElement.textContent = "game Paused for 10s";

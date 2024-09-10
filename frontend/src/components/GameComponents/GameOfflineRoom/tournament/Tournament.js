@@ -1,5 +1,3 @@
-import Toast from "../../../Toast.js";
-
 class SingleBracket extends HTMLElement {
     constructor() {
         super();
@@ -13,17 +11,13 @@ class SingleBracket extends HTMLElement {
                 <input type="text" class="player_bracket_name_2" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>             
             </div>
             <div class="bracket-lines">
-                
-                <svg class="top-path" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 83">
-                <path d="M0 1H31C37.0751 1 42 5.92487 42 12V104" stroke="white"/>
+                <svg class="top-path" fill="none" viewBox="0 0 54 83">
+                    <path d="M0 1H31C37.0751 1 42 5.92487 42 12V104" stroke="white"/>
                 </svg>
-
                 <svg class="bottom-path" fill="none" viewBox="0 0 54 118">
-                <path d="M0 97H31C37.0751 97 42 92.0751 42 86V-6.5" stroke="white"/>
+                    <path d="M0 97H31C37.0751 97 42 92.0751 42 86V-6.5" stroke="white"/>
                 </svg>
-            
             </div>
-
             <div class="line-dir">
                 <svg class="line-dir-svg" fill="none" viewBox="0 0 70 3">
                     <line y1="0.5" x2="70" y2="0.5" stroke="white" stroke-width="3"/>
@@ -110,7 +104,6 @@ class SingleBracket extends HTMLElement {
     }
     animateCircle() {
         return new Promise(resolve => {
-            console.log("animating circle");
             let path = this.querySelector('.crown circle');
             anime({
                 targets: path,
@@ -135,7 +128,6 @@ class SingleBracket extends HTMLElement {
         });
     }
     async moveUp() {
-        // setup everything
         let crownCircle = this.querySelector('.crown circle');
         let lenCrownCircle = crownCircle.getTotalLength();
             
@@ -196,17 +188,13 @@ class SingleBracketMini extends HTMLElement {
                 <input type="text" class="player_bracket_name_2" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>             
             </div>
             <div class="bracket-lines">
-                
                 <svg class="top-path-mini" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 70">
                     <path d="M0 1H42C48.0751 1 53 5.92487 53 12V70" stroke="white"/>
                 </svg>
-
                 <svg class="bottom-path-mini" fill="none" viewBox="0 0 54 70">
                     <path d="M0 69H42C48.0751 69 53 64.0751 53 58V-2.14577e-06" stroke="white"/>
                 </svg>
-            
             </div>
-
             <div class="line-dir-mini">
                 <svg class="line-dir-mini-svg" "fill="none" viewBox="0 0 70 3">
                     <line y1="0.5" x2="70" y2="0.5" stroke="white" stroke-width="3"/>
@@ -314,16 +302,6 @@ class SingleBracketMini extends HTMLElement {
 customElements.define("single-bracket", SingleBracket);
 customElements.define("single-bracket-mini", SingleBracketMini);
 
-/**
- * bracket = {
- *  status: "quarter" / "semi" / "final" / "ended",
- *  groups: [ 
- *      [{username: "silentzer", status: -1}, {username: "miyako", status: -1}], // 0 = lost, 1 = won, -1 = not yet started
- *      [{username: "ayaya", status: -1}, {username: "rouali", status: -1}],
- *      []
- *  ]
- * }
- */
 export class TournamentBracket extends HTMLElement {
     constructor(locked = false, bracketSize = 1, bracketInfo = null) {
         super();
@@ -334,13 +312,10 @@ export class TournamentBracket extends HTMLElement {
         this.bracketMiniTop = new SingleBracketMini();
         this.bracketMiniBottom = new SingleBracketMini();
         this.bracketFinal = new SingleBracket();
-
-
     }
 
     connectedCallback() {
         this.innerHTML = "";
-
         if (this.bracketSize === 1) {
             this.appendChild(this.bracketFinal);
             if (this.bracketInfo) {
@@ -356,7 +331,6 @@ export class TournamentBracket extends HTMLElement {
         this.innerHTML = `
             <div class="semi-final-bracket"></div>
             <div class="final-bracket"></div>`;
-        
         this.querySelector(".semi-final-bracket").appendChild(this.bracketMiniTop);
         this.querySelector(".semi-final-bracket").appendChild(this.bracketMiniBottom);
         this.querySelector(".final-bracket").appendChild(this.bracketFinal);
@@ -440,8 +414,7 @@ export class TournamentBracket extends HTMLElement {
                 default:
                     break;
             }
-        }
-        
+        } 
     }
     generateBracket() {
         if (this.bracketSize === 1) {
@@ -468,11 +441,7 @@ export class TournamentBracket extends HTMLElement {
                 [{username: "", status: -1}, {username: "", status: -1}]
             ]
         }
-        console.log("Braaaaak: ", bracket);
         return bracket;
-    }
-    updateBracket() { 
-
     }
     update(newBracketSize) {
         this.bracketSize = newBracketSize;

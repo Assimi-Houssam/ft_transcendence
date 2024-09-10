@@ -1,5 +1,4 @@
 import { router } from "../../../routes/routes.js";
-import { OfflineGame } from "../GameOfflineRoom/OfflineGame.js";
 
 export class OfflineMode extends HTMLElement{
     constructor(){
@@ -12,10 +11,8 @@ export class OfflineMode extends HTMLElement{
                 <p>Offline Mode</p>
             </button>
         `
-
         const BtnOnlineMode = document.getElementById("BtnOfflineMode");
         BtnOnlineMode.addEventListener("click", () => {
-            // const parrentElemnt = document.querySelector("game-selection");
             router.navigate("/tournament");
         });
     }

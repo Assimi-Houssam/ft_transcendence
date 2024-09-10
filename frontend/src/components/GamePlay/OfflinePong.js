@@ -369,8 +369,7 @@ export function game(ctx, canvas, gameData, bracket) {
         canvas.style.filter = "none";
         countdownElement.style.display = "none";
         startGame();
-        // tiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiime
-        var countDownDate = new Date().getTime() + 0.1 * 60000;
+        var countDownDate = new Date().getTime() + time * 60000;
         var x = setInterval(function () {
           if (pause == 2) {
             distance = new Date().getTime() + distance;
