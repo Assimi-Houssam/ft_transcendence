@@ -1,4 +1,4 @@
-import { Toast } from "../../Toast.js";
+import Toast from "../../Toast.js";
 import { router } from "../../../routes/routes.js";
 import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
 import { TournamentBracket } from "./tournament/Tournament.js";
