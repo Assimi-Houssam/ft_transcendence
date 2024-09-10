@@ -328,7 +328,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         }
         player2.draw();
         player1.draw();
-        if (custom == "hidden" && (bal.pos.x > 300 && bal.pos.x < 900)) {
+        if (custom == "hidden" && (hockeyBall.x > 300 && hockeyBall.x < 900)) {
             hockeyBall.draw();
         }
         else if (custom != "hidden")
