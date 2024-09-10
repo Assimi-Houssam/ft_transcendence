@@ -105,6 +105,11 @@ class Hockey(AsyncWebsocketConsumer):
         elif finish == True:
             await self.close()
             return
+        if ( text_data_json.get('pause', None) == True):
+            if (self.user.id == self.tosave[self.room_group_name]['redTeam'][0]['id']):
+                self.game_states[self.room_group_name]['red_pause'] = True
+            else:
+                self.game_states[self.room_group_name]['blue_pause'] = True
 
 
     

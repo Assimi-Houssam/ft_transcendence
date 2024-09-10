@@ -25,7 +25,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     veolicity = 12;
     COLOR = 'rgba(242,94,94,1)';
   }
-
+  let pause = false;
        /* Initialize particle array */
        let particles = [];
        let explosionTriggered = false;
@@ -50,7 +50,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
            }
            update() {
                this.draw();
-               this.alpha -= 0.01;
+               this.alpha -= 0.02;
                this.x += this.dx;
                this.y += this.dy;
            }
@@ -59,7 +59,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
        /* Function to initialize particles */
        function initializeParticles(x, y) {
            particles = []; // Reset particles array
-           for (let i = 0; i <= 150; i++) {
+           for (let i = 0; i <= 80; i++) {
                let dx = (Math.random() - 0.5) * (Math.random() * 6);
                let dy = (Math.random() - 0.5) * (Math.random() * 6);
                let radius = Math.random() * 3;
@@ -101,12 +101,18 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     }
   };
 
-  window.addEventListener("keydown", function (e) {
+  document.addEventListener("keydown", function (e) {
     keypress[e.keyCode] = true;
   });
 
-  window.addEventListener("keyup", function (e) {
+  document.addEventListener("keyup", function (e) {
     keypress[e.keyCode] = false;
+  });
+
+  document.addEventListener("keydown", function () {
+    if (keypress[80]) {
+          pause = true;
+    }
   });
 
   function drawTable() {
@@ -196,8 +202,6 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     this.veolicity_x = -3;
     this.veolicity_y = 0;
     this.color = color;
-
-
     this.draw = function () {
       ctx.beginPath();
       ctx.fillStyle = this.color;
@@ -328,7 +332,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
         score2: number2,
         goal: goal,
         pauseApprove: pauseApprove,
-        pos: keypress[80],
+        pause: pause,
       });
     }
     animationframe = requestAnimationFrame(game);
@@ -378,7 +382,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
         player2_x: player2.x,
         player2_y: player2.y,
         user: player_p,
-        pos: keypress[80],
+        pause: pause,
       });
     }
     animationframe = requestAnimationFrame(guest);
