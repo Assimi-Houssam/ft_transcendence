@@ -52,10 +52,6 @@ class SingleBracket extends HTMLElement {
     getFields() {
         if (!this.inputOne.value || !this.inputTwo.value)
             return null;
-        if (this.inputOne.value === this.inputTwo.value) {
-            Toast.error("Input values is the same");
-            return null;
-        }
         return [this.inputOne.value, this.inputTwo.value];
     }
     animateLine() {
@@ -235,10 +231,6 @@ class SingleBracketMini extends HTMLElement {
     getFields() {
         if (!this.inputOne.value || !this.inputTwo.value)
             return null;
-        if (this.inputOne.value === this.inputTwo.value) {
-            Toast.error("Input values is the same");
-            return null;
-        }
         return [this.inputOne.value, this.inputTwo.value];
     }
     animateLine() {
@@ -476,6 +468,7 @@ export class TournamentBracket extends HTMLElement {
                 [{username: "", status: -1}, {username: "", status: -1}]
             ]
         }
+        console.log("Braaaaak: ", bracket);
         return bracket;
     }
     updateBracket() { 

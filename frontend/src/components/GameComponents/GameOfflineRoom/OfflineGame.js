@@ -37,6 +37,40 @@ export class OfflineGame extends HTMLElement {
         };
     }
 
+    validateBracketsFields(brackts) {
+        if (!brackts || !brackts.groups) {
+            Toast.error("Some fields are empty")
+            return false;
+        }
+        const groups = brackts.groups;
+        for (let i = 0; i < groups.length; i++) {
+            if (groups.length > 2) {
+                if (i === 2)
+                    break;
+            }
+            const arr = groups[i];
+            if (arr[0].username.toLowerCase() === arr[1].username.toLowerCase()) {
+                Toast.error("usernames should be unique")
+                return false;
+            } else {
+                const first = arr[0];
+                const sec = arr[1];
+                for (let j = 0; j < groups.length; j++) {
+                    if (j !== i) {
+                        const arr_ = groups[j];
+                        for (let a = 0; a < arr_.length; a++ ) {
+                            if (arr_[a].username.toLowerCase() === first.username.toLowerCase() || arr_[a].username.toLowerCase() === sec.username.toLowerCase()) {
+                                Toast.error("usernames should be unique");
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     connectedCallback(){
         this.innerHTML = `
             <div>
@@ -75,11 +109,8 @@ export class OfflineGame extends HTMLElement {
         });
         this.querySelector(".BtnStartGame").addEventListener("click", (e) => {
             const bracket = this.bracket.generateBracket();
-            if (!bracket) {
-                // testing only
-                Toast.error("Some fields are empty");
+            if (!this.validateBracketsFields(bracket)) 
                 return;
-            }
             Toast.success("Game started");
             router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, bracket));
         });
