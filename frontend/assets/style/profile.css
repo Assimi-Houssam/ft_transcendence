@@ -285,7 +285,10 @@ friend-card button > img {
     background-color:#24CE90;
     border-radius: 50%;
 }
-.friend_status.offline {color: #FF0000;}
+.friend_status.offline {
+    font-size: 10px;
+    color: #FF0000;
+}
 .friend_status.offline::before {
     content: "";
     border-radius: 50%;
