@@ -46,7 +46,6 @@ let userInfo = null;
 export async function getUserInfo() {
     if (userInfo)
         return userInfo;
-    console.log("updating user info!!");
     const req = await ApiWrapper.get("/me");
     if (!req.ok)
         return null;

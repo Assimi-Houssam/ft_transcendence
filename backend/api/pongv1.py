@@ -5,6 +5,7 @@ import time
 from django.core.cache import cache
 from channels.db import database_sync_to_async
 from .models import User, Room
+from django.db.models import F
 
 BOUNDARY_LEFT = 40
 BOUNDARY_RIGHT = 1535
@@ -79,32 +80,66 @@ class PongV1(AsyncWebsocketConsumer):
     async def disconnect_evryone(self, event):
         await self.close(4500)
     
+    def is_winner(self, user_id, red_team, blue_team, red_team_score, blue_team_score):
+        red_team_ids = [player['id'] for player in red_team if player]
+        blue_team_ids = [player['id'] for player in blue_team if player]
+
+        if red_team_score > blue_team_score:
+            winning_team_ids = red_team_ids
+        elif blue_team_score > red_team_score:
+            winning_team_ids = blue_team_ids
+        else:
+            return False
+        return user_id in winning_team_ids
+
     async def save_state(self):
-            self.game_states[self.room_group_name]["finish"] = True
-            state = self.game_states[self.room_group_name]
-            room = self.tosave[self.room_group_name]
-            host_user = room['host']['username']
-            red_team_usernames = room['redTeam']
-            blue_team_usernames = room['blueTeam']
-            players = room['users']
-            try:
-                match_history = await database_sync_to_async(Room.objects.create)(
-                    players=players,
-                    red_team=red_team_usernames,
-                    blue_team=blue_team_usernames,
-                    host=host_user,
-                    red_team_score=state["score"]["y"],
-                    blue_team_score=state["score"]["x"],
-                    gamemode=room["gamemode"],
-                    time=room["time"],
-                    team_size=room["teamSize"],
-                    customization=room["customization"],
-                    room_name=room["name"],
-                )
-                await database_sync_to_async(match_history.save)()
-                print("Match saved", self.user.id)
-            except Exception as e:
-                print(f"An error occurred: {e}")
+        self.game_states[self.room_group_name]["finish"] = True
+        state = self.game_states[self.room_group_name]
+        room = self.tosave[self.room_group_name]
+        host_user = room['host']['username']
+        red_team_usernames = room['redTeam']
+        blue_team_usernames = room['blueTeam']
+        players = room['users']
+
+        red_team_ids = [player['id'] for player in red_team_usernames if player]
+        red_team_usernames_db = await database_sync_to_async(User.objects.filter)(id__in=red_team_ids)
+
+        blue_team_ids = [player['id'] for player in blue_team_usernames if player]
+        blue_team_usernames_db = await database_sync_to_async(User.objects.filter)(id__in=blue_team_ids)
+
+        player_ids = [player['id'] for player in players]
+        players_db = await database_sync_to_async(list)(User.objects.filter(id__in=player_ids))
+        
+        for player in players_db:
+            if self.is_winner(player.id, red_team_usernames, blue_team_usernames, state["score"]["x"], state["score"]["y"]):
+                player.matches_won = F('matches_won') + 1
+            player.matches_played = F('matches_played') + 1
+            if player.id in red_team_ids:
+                player.xp = F('xp') + state["score"]["x"]
+            elif player.id in blue_team_ids:
+                player.xp = F('xp') + state["score"]["y"]
+            await database_sync_to_async(player.save)()
+
+        try:
+            match_history = await database_sync_to_async(Room.objects.create)(
+                host=host_user,
+                red_team_score=state["score"]["x"],
+                blue_team_score=state["score"]["y"],
+                gamemode=room["gamemode"],
+                time=room["time"],
+                team_size=room["teamSize"],
+                customization=room["customization"],
+                room_name=room["name"],
+                timestamp=int(time.time())
+            )
+
+            await database_sync_to_async(match_history.players.set)(players_db)
+            await database_sync_to_async(match_history.red_team.set)(red_team_usernames_db)
+            await database_sync_to_async(match_history.blue_team.set)(blue_team_usernames_db)
+            await database_sync_to_async(match_history.save)()
+        except Exception as e:
+            print(f"An error occurred: {e}, Score not saved")
+            pass
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
