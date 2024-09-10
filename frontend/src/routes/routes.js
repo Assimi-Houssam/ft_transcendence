@@ -12,6 +12,7 @@ import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/Offlin
 import { RoomsListPage } from "../pages/RoomsListPage.js";
 import { RoomPage } from "../pages/RoomPage.js";
 import { GamePage } from "../components/GamePlay/GamePage.js";
+import { Profile } from "../pages/Profile.js";
 
 export const Routes = [
     {
@@ -61,7 +62,7 @@ export const Routes = [
         component: RoomsListPage,
     },
     {
-        path: "/room/:id",
+        path: "/room/:userID",
         component: RoomPage
     },
     {
@@ -70,9 +71,13 @@ export const Routes = [
         service: logout,
     },
     {
+        path: "/user/:userID",
+        component : Profile
+    },
+    {
         path: '/game/:id',
         component: GamePage,
-    },
+    }
 ]
 
 class Router {

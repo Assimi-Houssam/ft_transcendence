@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-import time
 
 # django is way too bloated and using any custom User model would result in the admin
 # pannel + auth support getting broken, we'll just inherit from AbstractUser
@@ -14,14 +13,18 @@ class User(AbstractUser):
     banner = models.ImageField(upload_to='profile_pictures/', null=True, blank=True, default='default.jpeg')
     count_updates = models.IntegerField(default=2)
     can_update_on  = models.IntegerField(default=0)
-    friends = models.ManyToManyField("User", blank=True)
+    friends = models.ManyToManyField("self", symmetrical=True, related_name="friends_list", blank=True)
+    block_list = models.ManyToManyField("self", symmetrical=False, related_name="blocked_list", blank=True)
+    matches_played = models.IntegerField(default=0)
+    matches_won = models.IntegerField(default=0)
+    xp = models.IntegerField(default=0)
     class Meta:
         ordering = ['id']
 
 class Room(models.Model):
-    players = models.JSONField()
-    red_team = models.JSONField()
-    blue_team = models.JSONField()
+    players = models.ManyToManyField(User, related_name="room_players")
+    red_team = models.ManyToManyField(User, related_name="room_red_team")
+    blue_team = models.ManyToManyField(User, related_name="room_blue_team")
     red_team_score = models.IntegerField(default=0)
     blue_team_score = models.IntegerField(default=0)
     host = models.CharField(max_length=20)
@@ -30,6 +33,7 @@ class Room(models.Model):
     gamemode = models.CharField(max_length=20)
     time = models.IntegerField(default=3)
     customization = models.CharField(default=3, null=True, blank=True)
+    timestamp = models.IntegerField(default=0)
 
 class FriendRequest(models.Model):
     from_user = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)

@@ -76,3 +76,13 @@ def get_friends(req) :
     return Response({
         'detail' : friends.data
     }, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@authentication_classes([JWTAuth])
+@permission_classes([IsAuthenticated])
+def unfriend(req, userID) : 
+    user = User.objects.get(id=userID)
+    if user in req.user.friends.all() :
+        req.user.friends.remove(user);
+        return Response({"detail" : "User removed from your friend list"}, status=status.HTTP_200_OK)
+    return Response({"detail" : "faild to remove friend"}, status=status.HTTP_406_NOT_ACCEPTABLE)

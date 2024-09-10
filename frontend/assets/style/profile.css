@@ -1,0 +1,389 @@
+profile-page {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    margin-top: 30px;
+    overflow-x: hidden;
+}
+
+profile-info {
+    flex: 0.7;
+    height: 100vh;
+    width: 100%;
+    padding: 10px;
+}
+
+profile-friends {
+    width: 100%;
+    border-radius: 20px;
+    background-color: #1F2230;
+    overflow-y: scroll;
+    height: calc(100vh - 200px);
+    min-height: calc(100vh - 100px);
+    padding: 30px;
+    position: sticky;
+    top: 0;
+    flex: 0.3;
+}
+
+.Room_width {
+    width: 100%;
+}
+.profile_friends_title {
+    font-size: 20px;
+}
+
+#profile_banner {
+    height: 300px;
+    width: 100%;
+    border: none !important;
+    background-image: url("../images/banner.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+}
+
+.profile_user_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -50px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.profile_user_info #profile_pfp {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: -30px;
+}
+
+.profile_user_info_left_items {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.profile_user_info_left_items h2 {
+    font-size: 30px;
+}
+
+#profile_actions {
+    margin-top: 20px;
+}
+
+.profile_user_info_left_items .profile_joined #joined {
+    color: #56576B;
+    font-size: 15px;
+}
+
+.profile_user_info_left_items .profile_joined {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    line-height: 40px;
+}
+.profile_user_info_left_items .profile_joined #online {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #24CE90;
+}
+.profile_user_info_left_items .profile_joined #online::before {
+    content: "";
+    height: 10px !important;
+    width: 10px !important;
+    background-color: #24CE90;
+    border-radius: 50%;
+}
+
+.profile_user_info_settings_link a {
+    text-decoration: none;
+    color: #CA33FF;
+    font-size: 20px;
+}
+
+.line_ {
+    background-color: var(--bg);
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to left, #191C28, #4B4B4D, #191C28);
+    border-image-slice: 2;
+    height: 10px;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+profile-statistics .statistics_title {
+    font-size: 30px;
+}
+
+profile-statistics #statistics_cards {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+profile-statistics #statistics_cards statistic-card {
+    display: flex;
+    align-items: center;
+    border: 3px solid #282C3B;
+    flex: 1;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 20px;
+    gap: 20px;
+    height: 50px;
+}
+
+profile-statistics #statistics_cards statistic-card img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+profile-statistics #statistics_cards statistic-card p {
+    color: #56576B;
+    font-size: 15px;
+}
+
+profile-statistics #statistics_cards statistic-card h1 {
+    font-size: 20px;
+} 
+.profile_titles {
+    font-size: 25px;
+}
+
+match-history h2 {
+    margin-top: 30px;
+}
+
+#match_historys {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history_card {
+    display: flex;
+    position: relative;
+    background: var(--bg3_);
+    height: 100%;
+    border-radius: 15px;
+    width: 100%;
+}
+
+.history_card_body_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+.history_card_body {
+    border-radius: 15px;
+    background: var(--bg2_);
+    width: 100%;
+}
+
+.game_status {
+    text-align: right;
+    font-size: 25px;
+}
+
+.game_status.win {
+    color: #FAE744;
+}
+.game_status.lose {
+    color: red;
+}
+
+.game_history_host {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: 15px;
+    gap: 5px;
+}
+
+.match_hostory_left_items {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+.match_hostory_score {
+    color: #CA33FF;
+    font-size: 25px;
+}
+
+friend-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(to left, #191C28, #4B4B4D, #191C28);
+    border-image-slice: 2;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+#friends_list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 30px;
+}
+friend-card .friend_card_left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    text-decoration: none;
+    width: 100%;
+}
+
+friend-card .friend_card_left  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+friend-card .friend_card_left h2 {
+    font-size: 15px;
+}
+
+friend-card button {
+    all: unset;
+}
+friend-card button > img {
+    width: 35px;
+    height: 25px;
+    object-fit: contain;
+}
+
+.friend_status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.friend_status.online {
+    color: #24CE90;
+    font-size: 10px;
+}
+.friend_status.online:before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background-color:#24CE90;
+    border-radius: 50%;
+}
+.friend_status.offline {
+    font-size: 10px;
+    color: #FF0000;
+}
+.friend_status.offline::before {
+    content: "";
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+    background-color : #FF0000;
+}
+
+.no_friends {
+    color: #4B4B4D;
+    font-size: 13px;
+    font: lighter;
+}
+
+profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+#send_message, #add_friend, #accept_friend_request  {
+    all: unset;
+    height: 70px;
+    width: 70px;
+    text-align: center;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+match-history-card {
+    height: 100px;
+}
+
+#send_message img, #add_friend img, #accept_friend_request img  {
+    width: 40px;
+    height: 40px;
+}
+
+#block_user, #unblock_user {
+    all: unset;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    background-color: #FF6666;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+#unfriend_btn {
+    display: flex;
+    align-items: center;
+    background-color: #4b4b4d59;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 50px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s;
+    z-index: 99;
+}
+
+#unfriend_btn p {
+    font-size: 13px;
+    margin-left: 5px;
+    margin-right: 15px;
+    flex-direction: 0.2;
+}
+
+#unfriend_btn:hover {
+    background-color: #71717159;
+}
+
+._RoomContentCard_flex_left {
+    align-items: flex-end;
+}
+
+.history_score {
+    font-size: 25px;
+    color: #CA33FF;
+}
+
+.player-chart {
+    padding-top: 20px;
+}
+
+.empty-section {
+    color: #7d7d80;
+    font-size: 1.5vh;
+    padding-top: 15px;
+    padding-left: 10px;
+}

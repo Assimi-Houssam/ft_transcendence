@@ -1,14 +1,26 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Room
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
 from .models import FriendRequest
 
-
-class UserSerializer(serializers.ModelSerializer):
+class NestedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "match"]
+        fields = ["id", "username", "pfp"]
+
+class UserSerializerMe(serializers.ModelSerializer):
+    friends = NestedUserSerializer(many=True)
+    block_list = NestedUserSerializer(many=True)
+    class Meta:
+        model = User
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email", "matches_won", "matches_played", "xp"]
+
+class UserSerializer(serializers.ModelSerializer):
+    friends = NestedUserSerializer(many=True)
+    class Meta:
+        model = User
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "date_joined", "matches_won", "matches_played", "xp"]
 
 class UserFriendsSerializer(serializers.ModelSerializer):
     friends = UserSerializer(many=True)
@@ -69,3 +81,16 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
             'pfp': {'required': False},
             'banner': {'required': False}
         }
+
+class UserScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "pfp"]
+
+class MatchSerializer(serializers.ModelSerializer):
+    red_team = UserScoreSerializer(many=True, read_only=True)
+    blue_team = UserScoreSerializer(many=True, read_only=True)
+    players = UserScoreSerializer(many=True, read_only=True)
+    class Meta:
+        model = Room
+        fields = ["players", 'id', 'host', 'red_team', 'blue_team', 'gamemode', 'time', 'team_size', 'customization', 'room_name', "red_team_score", "blue_team_score", "timestamp"]
