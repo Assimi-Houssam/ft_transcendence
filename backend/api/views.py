@@ -3,22 +3,16 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .auth import JWTAuth
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserSerializerMe
 from .models import User
 
 @api_view(['GET'])
 @authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def me(request):
-    user = request.user
-    return Response({
-        "username": user.username, 
-        "email": user.email, 
-        "id": user.id, 
-        "intra_id": user.intra_id, 
-        "pfp": user.pfp.url,
-        "banner": user.banner.url
-    })
+    # todo : remove the frinds who blocked req.user
+    serializer = UserSerializerMe(request.user);
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -33,11 +27,15 @@ def filter_users(request):
     }, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-# @authentication_classes([JWTAuth])
-# @permission_classes([IsAuthenticated])
-def get_user(request, userID):
+@authentication_classes([JWTAuth])
+@permission_classes([IsAuthenticated])
+def get_user(req, userID) :
     user = User.objects.get(id=userID)
-    data = UserSerializer(user)
+    if req.user in user.block_list.all():
+        return Response({
+            "detail" : "Couldn't find that user"
+        }, status=status.HTTP_404_NOT_FOUND)
+    serializer = UserSerializer(user);
     return Response({
-        'detail': data.data
+        "detail" : serializer.data
     }, status=status.HTTP_200_OK)

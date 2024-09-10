@@ -5,7 +5,9 @@ import asyncio
 from django.core.cache import cache
 import time
 from channels.db import database_sync_to_async
-from .models import Room
+from .models import Room, User
+from django.db.models import F
+
 
 BOUNDARY_LEFT = 30
 BOUNDARY_RIGHT = 1545
@@ -76,30 +78,53 @@ class PongV2(AsyncWebsocketConsumer):
         await self.accept()
         
     async def save_state(self):
-            state = self.game_states[self.room_group_name]
-            room = self.tosave[self.room_group_name]
-            host_user = room['host']['username']
-            red_team_usernames = room['redTeam']
-            blue_team_usernames = room['blueTeam']
-            players = room['users']
-            try:
-                match_history = await database_sync_to_async(Room.objects.create)(
-                    players=players,
-                    red_team=red_team_usernames,
-                    blue_team=blue_team_usernames,
-                    host=host_user,
-                    red_team_score=state["score"]["y"],
-                    blue_team_score=state["score"]["x"],
-                    gamemode=room["gamemode"],
-                    time=room["time"],
-                    team_size=room["teamSize"],
-                    customization=room["customization"],
-                    room_name=room["name"],
-                )
-                await database_sync_to_async(match_history.save)()
-                print("Match saved", self.user.id)
-            except Exception as e:
-                print(f"An error occurred: {e}")
+        self.game_states[self.room_group_name]["finish"] = True
+        state = self.game_states[self.room_group_name]
+        room = self.tosave[self.room_group_name]
+        host_user = room['host']['username']
+        red_team_usernames = room['redTeam']
+        blue_team_usernames = room['blueTeam']
+        players = room['users']
+
+        red_team_ids = [player['id'] for player in red_team_usernames if player]
+        red_team_usernames_db = await database_sync_to_async(User.objects.filter)(id__in=red_team_ids)
+
+        blue_team_ids = [player['id'] for player in blue_team_usernames if player]
+        blue_team_usernames_db = await database_sync_to_async(User.objects.filter)(id__in=blue_team_ids)
+
+        player_ids = [player['id'] for player in players]
+        players_db = await database_sync_to_async(list)(User.objects.filter(id__in=player_ids))
+        
+        for player in players_db:
+            if self.is_winner(player.id, red_team_usernames, blue_team_usernames, state["score"]["x"], state["score"]["y"]):
+                player.matches_won = F('matches_won') + 1
+            player.matches_played = F('matches_played') + 1
+            if player.id in red_team_ids:
+                player.xp = F('xp') + state["score"]["x"]
+            elif player.id in blue_team_ids:
+                player.xp = F('xp') + state["score"]["y"]
+            await database_sync_to_async(player.save)()
+
+        try:
+            match_history = await database_sync_to_async(Room.objects.create)(
+                host=host_user,
+                red_team_score=state["score"]["x"],
+                blue_team_score=state["score"]["y"],
+                gamemode=room["gamemode"],
+                time=room["time"],
+                team_size=room["teamSize"],
+                customization=room["customization"],
+                room_name=room["name"],
+                timestamp=int(time.time())
+            )
+
+            await database_sync_to_async(match_history.players.set)(players_db)
+            await database_sync_to_async(match_history.red_team.set)(red_team_usernames_db)
+            await database_sync_to_async(match_history.blue_team.set)(blue_team_usernames_db)
+            await database_sync_to_async(match_history.save)()
+        except Exception as e:
+            print(f"An error occurred: {e}, Score not saved")
+            pass
             
 
     async def disconnect(self, close_code):
@@ -152,6 +177,8 @@ class PongV2(AsyncWebsocketConsumer):
     async def update_game(self):
         distance = 2
         chrono = time.time() + (int(self.tosave[self.room_group_name]['time']) * 60)
+        self.goal = False
+        self.cooldown = 0
         while True:
             if self.game_states[self.room_group_name]["begin"]:
                 self.handle_pause_timer("blue_pause_time","blue_pause",self.room_group_name)
@@ -214,10 +241,15 @@ class PongV2(AsyncWebsocketConsumer):
             paddle4 = state["paddle4"]
             score = state["score"]
             begin = state["begin"]
+            if self.goal == True:
+                if self.cooldown < time.time():
+                    self.goal = False
+
             if begin:
                 if not state["pause"]:
-                    ball_state["position"]["x"] += ball_state["velocity"]["x"]
-                    ball_state["position"]["y"] += ball_state["velocity"]["y"]
+                    if self.goal == False:
+                        ball_state["position"]["x"] += ball_state["velocity"]["x"]
+                        ball_state["position"]["y"] += ball_state["velocity"]["y"]
             posx = ball_state["position"]["x"]
             posy = ball_state["position"]["y"]
             if posx - BALL_RADIUS <= BOUNDARY_LEFT:
@@ -226,12 +258,16 @@ class PongV2(AsyncWebsocketConsumer):
                 score["x"] += 1
                 self.handle_pause_request("blue_pause_time","blue_pause",self.room_group_name)
                 self.handle_pause_request("red_pause_time","red_pause",self.room_group_name)
+                self.goal = True
+                self.cooldown = time.time() + 0.5
             elif posx + BALL_RADIUS >= BOUNDARY_RIGHT:
                 ball_state["position"]["x"] = BALL_RESET_X
                 ball_state["position"]["y"] = BALL_RESET_Y
                 score["y"] += 1
                 self.handle_pause_request("blue_pause_time","blue_pause",self.room_group_name)
                 self.handle_pause_request("red_pause_time","red_pause",self.room_group_name)
+                self.goal = True
+                self.cooldown = time.time() + 0.5
             if posy - BALL_RADIUS <= BOUNDARY_TOP or posy + BALL_RADIUS >= BOUNDARY_BOTTOM:
                 ball_state["velocity"]["y"] *= -1  # Reverse Y velocity
             def check_collison(posx, posy, paddle):

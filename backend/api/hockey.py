@@ -2,7 +2,10 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
 from channels.db import database_sync_to_async
-from .models import Room
+from .models import Room, User
+import time
+from django.db.models import F
+
 
 
 class Hockey(AsyncWebsocketConsumer):
@@ -58,24 +61,46 @@ class Hockey(AsyncWebsocketConsumer):
         red_team_usernames = room['redTeam']
         blue_team_usernames = room['blueTeam']
         players = room['users']
+
+        red_team_ids = [player['id'] for player in red_team_usernames if player]
+        red_team_usernames_db = await database_sync_to_async(User.objects.filter)(id__in=red_team_ids)
+
+        blue_team_ids = [player['id'] for player in blue_team_usernames if player]
+        blue_team_usernames_db = await database_sync_to_async(User.objects.filter)(id__in=blue_team_ids)
+
+        player_ids = [player['id'] for player in players]
+        players_db = await database_sync_to_async(list)(User.objects.filter(id__in=player_ids))
+        
+        for player in players_db:
+            if self.is_winner(player.id, red_team_usernames, blue_team_usernames, state["score"]["x"], state["score"]["y"]):
+                player.matches_won = F('matches_won') + 1
+            player.matches_played = F('matches_played') + 1
+            if player.id in red_team_ids:
+                player.xp = F('xp') + state["score"]["x"]
+            elif player.id in blue_team_ids:
+                player.xp = F('xp') + state["score"]["y"]
+            await database_sync_to_async(player.save)()
+
         try:
             match_history = await database_sync_to_async(Room.objects.create)(
-                players=players,
-                red_team=red_team_usernames,
-                blue_team=blue_team_usernames,
                 host=host_user,
-                red_team_score=state["score"]["y"],
-                blue_team_score=state["score"]["x"],
+                red_team_score=state["score"]["x"],
+                blue_team_score=state["score"]["y"],
                 gamemode=room["gamemode"],
                 time=room["time"],
                 team_size=room["teamSize"],
                 customization=room["customization"],
                 room_name=room["name"],
+                timestamp=int(time.time())
             )
+
+            await database_sync_to_async(match_history.players.set)(players_db)
+            await database_sync_to_async(match_history.red_team.set)(red_team_usernames_db)
+            await database_sync_to_async(match_history.blue_team.set)(blue_team_usernames_db)
             await database_sync_to_async(match_history.save)()
-            print("Match saved", self.user.id)
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"An error occurred: {e}, Score not saved")
+            pass
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -105,6 +130,11 @@ class Hockey(AsyncWebsocketConsumer):
         elif finish == True:
             await self.close()
             return
+        if ( text_data_json.get('pause', None) == True):
+            if (self.user.id == self.tosave[self.room_group_name]['redTeam'][0]['id']):
+                self.game_states[self.room_group_name]['red_pause'] = True
+            else:
+                self.game_states[self.room_group_name]['blue_pause'] = True
 
 
     

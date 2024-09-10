@@ -30,12 +30,12 @@ export class Navbar extends HTMLElement {
                 <div class="dot_"></div>
                 <img src="../../assets/icons/notification.png" />
               </div>
-              <div class="nav_username gradient-dark-bg gradient-dark-border">
+              <a href="/user/${this.userInfo.id}" class="nav_username gradient-dark-bg gradient-dark-border">
                 <p class="nav_username_id">
                 ${this.userInfo.username}
                 </p>
                 <img src="${"http://localhost:8000" + this.userInfo.pfp}" />
-              </div>
+              </a>
           </div>
       `;
       const noti_btn = this.querySelector(".navbar_notification_btn");

@@ -8,10 +8,14 @@ import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
 import { GameSelection } from "../pages/GameSelectionMenu.js";
-import { OfflineRoom } from "../components/GameComponents/GameOfflineRoom/OfflineRoom.js";
+import { OfflineGame } from "../components/GameComponents/GameOfflineRoom/OfflineGame.js";
 import { RoomsListPage } from "../pages/RoomsListPage.js";
 import { RoomPage } from "../pages/RoomPage.js";
 import { GamePage } from "../components/GamePlay/GamePage.js";
+import { OfflineGamePage } from "../components/GamePlay/OfflineGamePage.js";
+import { NextTournament } from "../components/GameComponents/GameOfflineRoom/tournament/NextTournament.js";
+
+import { Profile } from "../pages/Profile.js";
 
 export const Routes = [
     {
@@ -54,14 +58,14 @@ export const Routes = [
     },
     {
         path : "/tournament",
-        component : OfflineRoom,
+        component : OfflineGame,
     },
     {
         path: "/rooms",
         component: RoomsListPage,
     },
     {
-        path: "/room/:id",
+        path: "/room/:userID",
         component: RoomPage
     },
     {
@@ -70,9 +74,21 @@ export const Routes = [
         service: logout,
     },
     {
+        path: "/user/:userID",
+        component : Profile
+    },
+    {
         path: '/game/:id',
         component: GamePage,
     },
+    {
+        path: '/OfflineGame',
+        component: OfflineGamePage,
+    },
+    {
+        path: '/next-tournament',
+        component: NextTournament,
+    }
 ]
 
 class Router {
