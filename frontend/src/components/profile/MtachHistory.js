@@ -104,23 +104,12 @@ export class MatchHistory extends HTMLElement {
       <h2 class="profile_titles">Match History</h2>
       <div id="match_historys"></div>`;
     const matchHistorysParrent = document.getElementById("match_historys");
+    let index = 0;
     for (let score of this.scores) {
+      if (index >= 5) 
+        break;
       matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
-      matchHistorysParrent.appendChild(new MatchHistoryCard(score));
+      index++;
     }
   }
 }
