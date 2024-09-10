@@ -67,22 +67,26 @@ export class ProfileActions extends HTMLElement {
 customElements.define("profile-actions", ProfileActions);
 
 export class ProfileInfo extends HTMLElement {
-  constructor() {
+  constructor(user, status=false) {
     super();
+    this.user = user;
     this.classList.add("profile_left_items");
+    this.status = status;
   }
 
   connectedCallback() {
     this.innerHTML = `
-      <div  id="profile_banner"> </div>
+      <div  
+        style="background-image=url(${ApiWrapper.getUrl()}${this.user.banner})"
+        id="profile_banner"> </div>
       <div class="profile_user_info">
         <div class="profile_user_info_left_items">
-            <img id="profile_pfp"  src="" alt="user profile">
+            <img id="profile_pfp"  src="${ApiWrapper.getUrl() + this.user.pfp}" alt="user profile">
             <div>
-              <h2 id="profile_login">mamazzal</h2>
+              <h2 id="profile_login">${this.user.username}</h2>
               <div class="profile_joined">
-                <p id="joined">Joined Jul 11, 2024</p>
-                <p id="online">online</p>
+                <p id="joined">Joined ${new Date(this.user.date_joined).toDateString("en-US")}</p>
+                <p id="${this.status ? "online" : "offline"}">${this.status ? "online" : "offline"}</p>
               </div>
             </div>
         </div>
@@ -92,6 +96,8 @@ export class ProfileInfo extends HTMLElement {
       <profile-statistics></profile-statistics>
       <match-history></match-history>
     `
+    const banner  = document.getElementById("profile_banner");
+    banner && (banner.style.backgroundImage = `url(${ApiWrapper.getUrl()}${this.user.banner})`);
   }
 }
 

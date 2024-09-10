@@ -39,27 +39,6 @@ export class Profile extends HTMLElement {
       Toast.error("Faild to get your friends requests");
   }
 
-  setUserUnfo() {
-    const banner = document.getElementById("profile_banner");
-    const pfp = document.getElementById("profile_pfp");
-    const username = document.getElementById("profile_login");
-    const joined = document.getElementById("joined");
-
-    banner && (banner.style.backgroundImage = `url(${ApiWrapper.getUrl()}${this.user.banner})`);
-    pfp && (pfp.src = ApiWrapper.getUrl() + this.user.pfp);
-    username && (username.innerHTML = this.user.username);
-    joined &&  (joined.innerHTML = "joined " + new Date(this.user.date_joined).toDateString("en-US"))
-  }
-
-  setFriendsList() {
-    const friendsList = document.getElementById("friends_list")
-    if (this?.user?.friends.length > 0) {
-      this.user.friends.map(item => friendsList.appendChild(new FriendsCard(item)))
-      return ;
-    }
-    friendsList && (friendsList.innerHTML = '<p class="no_friends"> You have no friends right now to display</p>');
-  }
-
   //to set the  acions button (add as friend, send message, block)
   setActions() {
     const profileActions = document.getElementById("profile_actions");
@@ -95,12 +74,9 @@ export class Profile extends HTMLElement {
     await this.fetchUser();
     await this.getAuth();
     await this.fetchFriendRequest();
-    this.innerHTML = `
-      <profile-info> </profile-info>
-      <profile-friends></profile-friend-list>
-    `
-    this.setUserUnfo();
-    this.setFriendsList();
+    this.innerHTML = ``
+    this.appendChild(new ProfileInfo(this.user, true)); //true means user onkine,  u need to get it from the sockets olla dbr krrk meaha a hbibi 
+    this.appendChild(new ProfileFriends(this.user));
     this.setActions();
     const blockUserBtn = document.getElementById("block_user");
     blockUserBtn && (blockUserBtn.onclick = (e) => this.blockUser(e));
