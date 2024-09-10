@@ -265,13 +265,6 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
         ctx.closePath();
         gameupdate()
         await WebSocketHandlers();
-        // if (bal.pos.x == lastposx && bal.pos.y == lastposy) {
-        //     let targetx = bal.pos.x + bal.veo.x;
-        //     let targety = bal.pos.y + bal.veo.y;
-        //     bal.pos.x += (targetx - lastposx) * 0.3;
-        //     bal.pos.y += (targety - lastposy) * 0.3;
-        // }
-
         gamedraw()
         if(trigerbool)
         {

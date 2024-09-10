@@ -26,6 +26,74 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     COLOR = 'rgba(242,94,94,1)';
   }
 
+       /* Initialize particle array */
+       let particles = [];
+       let explosionTriggered = false;
+   
+       class Particle {
+           constructor(x, y, radius, dx, dy) {
+               this.x = x;
+               this.y = y;
+               this.radius = radius;
+               this.dx = dx;
+               this.dy = dy;
+               this.alpha = 1;
+           }
+           draw() {
+               ctx.save();
+               ctx.globalAlpha = this.alpha;
+               ctx.fillStyle = COLOR;
+               ctx.beginPath();
+               ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+               ctx.fill();
+               ctx.restore();
+           }
+           update() {
+               this.draw();
+               this.alpha -= 0.01;
+               this.x += this.dx;
+               this.y += this.dy;
+           }
+       }
+   
+       /* Function to initialize particles */
+       function initializeParticles(x, y) {
+           particles = []; // Reset particles array
+           for (let i = 0; i <= 150; i++) {
+               let dx = (Math.random() - 0.5) * (Math.random() * 6);
+               let dy = (Math.random() - 0.5) * (Math.random() * 6);
+               let radius = Math.random() * 3;
+               let particle = new Particle(x, y, radius, dx, dy);
+               particles.push(particle);
+           }
+       }
+   
+       /* Particle explosion function */
+       function explode() {
+           particles = particles.filter(particle => {
+               if (particle.alpha > 0) {
+                   particle.update();
+                   return true;
+               }
+               return false;
+           });
+   
+           if (particles.length > 0) {
+               requestAnimationFrame(explode);
+           } else {
+               explosionTriggered = false; // Reset the trigger flag
+           }
+       }
+   
+       /* Function to trigger explosion effect */
+       function triggerExplosion(x, y) {
+           if (!explosionTriggered) {
+               initializeParticles(x, y);
+               explode();
+               explosionTriggered = true;
+           }
+       }
+
   ws.onclose = function (event) {
     if (event.code === 4500) {
       disconnected = true;
@@ -138,7 +206,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
       ctx.fill();
       ctx.closePath();
     };
-    
+
     this.collisions = function () {
       for (let i = 0; i < 2; i++) {
         let playeri = i === 0 ? player1 : player2;
@@ -169,12 +237,13 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
 
       if (this.x <= 42) {
         if (this.y > HALF_Y + 50 - 96 && this.y < HALF_Y + 50 + 96) {
+          let x = this.x;
+          let y = this.y;
           this.x = HALF_X;
           this.y = HALF_Y + 50;
           this.veolicity_x = -1;
           this.veolicity_y = 0;
           number1++;
-          goal = true;
         } else {
           if (this.x < 37) this.x = 47;
           this.veolicity_x *= -1;
@@ -183,12 +252,13 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
 
       if (this.x >= END_X + 12) {
         if (this.y > HALF_Y + 50 - 96 && this.y < HALF_Y + 50 + 96) {
+          let x = this.x;
+          let y = this.y;
           this.x = HALF_X + 90;
           this.y = HALF_Y + 50;
           this.veolicity_x = 1;
           this.veolicity_y = 0;
           number2++;
-          goal = true;
         } else {
           if (this.x > END_X + 17) this.x = END_X - 17;
           this.veolicity_x *= -1;
@@ -241,8 +311,8 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     hockeyBall.collisions();
     if (custom != "hidden")
       hockeyBall.draw();
-  else if (custom === "hidden" && hockeyBall.x > 300 && hockeyBall.x < 810)
-    hockeyBall.draw();
+    else if (custom === "hidden" && hockeyBall.x > 300 && hockeyBall.x < 810)
+      hockeyBall.draw();
     player2.draw();
     player1.draw();
     scoring();
@@ -261,7 +331,10 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     }
     animationframe = requestAnimationFrame(game);
   }
-
+  
+  let trigerx
+  let trigerY
+  let trigerbool = true
   function guest() {
     if (player_p === "player2") {
       ws.onmessage = function (event) {
@@ -272,6 +345,9 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
         hockeyBall.y = data.ball_y;
         number1 = data.score1;
         number2 = data.score2;
+          // trigerx = hockeyBall.x;
+          // trigerY = hockeyBall.y;
+          // trigerbool = true;
         if (data.finish) gamefinsihed = data.finish;
       };
     }
@@ -284,10 +360,15 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     player1.draw();
     player2.draw();
     if (custom != "hidden")
-        hockeyBall.draw();
+      hockeyBall.draw();
     else if (custom === "hidden" && hockeyBall.x > 300 && hockeyBall.x < 810)
       hockeyBall.draw();
+    
     scoring();
+    // if(trigerbool){
+      // triggerExplosion(500, 500);
+    //   trigerbool = false;
+    // }
     if (player_p === "player2") {
       sendMessage({
         player2_x: player2.x,
@@ -340,28 +421,28 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
           countdownElement.textContent = "Opponent disconnected";
           countdownElement.style.display = 'block';
           setTimeout(() => {
-              router.navigate("/home");
+            router.navigate("/home");
           }, 3000);
         }
         else {
-            timeSelector.textContent = "Time's up!";
+          timeSelector.textContent = "Time's up!";
         }
         clearInterval(interval);
         cancelAnimationFrame(animationframe);
         if (!disconnected) {
           setTimeout(() => {
-              router.navigate("/home");
+            router.navigate("/home");
           }, 3000);
           if (number1 < number2) {
-              countdownElement.textContent = "Blue Team Wins!";
-              countdownElement.style.color = '#4496D4';
+            countdownElement.textContent = "Blue Team Wins!";
+            countdownElement.style.color = '#4496D4';
           }
           else if (number1 > number2) {
-              countdownElement.textContent = "Red Team Wins!";
-              countdownElement.style.color = '#FF6666';
+            countdownElement.textContent = "Red Team Wins!";
+            countdownElement.style.color = '#FF6666';
           }
           else {
-              countdownElement.textContent = "Draw!";
+            countdownElement.textContent = "Draw!";
           }
         }
       }

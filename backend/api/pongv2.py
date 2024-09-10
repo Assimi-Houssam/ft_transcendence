@@ -152,6 +152,8 @@ class PongV2(AsyncWebsocketConsumer):
     async def update_game(self):
         distance = 2
         chrono = time.time() + (int(self.tosave[self.room_group_name]['time']) * 60)
+        self.goal = False
+        self.cooldown = 0
         while True:
             if self.game_states[self.room_group_name]["begin"]:
                 self.handle_pause_timer("blue_pause_time","blue_pause",self.room_group_name)
@@ -214,10 +216,15 @@ class PongV2(AsyncWebsocketConsumer):
             paddle4 = state["paddle4"]
             score = state["score"]
             begin = state["begin"]
+            if self.goal == True:
+                if self.cooldown < time.time():
+                    self.goal = False
+
             if begin:
                 if not state["pause"]:
-                    ball_state["position"]["x"] += ball_state["velocity"]["x"]
-                    ball_state["position"]["y"] += ball_state["velocity"]["y"]
+                    if self.goal == False:
+                        ball_state["position"]["x"] += ball_state["velocity"]["x"]
+                        ball_state["position"]["y"] += ball_state["velocity"]["y"]
             posx = ball_state["position"]["x"]
             posy = ball_state["position"]["y"]
             if posx - BALL_RADIUS <= BOUNDARY_LEFT:
@@ -226,12 +233,16 @@ class PongV2(AsyncWebsocketConsumer):
                 score["x"] += 1
                 self.handle_pause_request("blue_pause_time","blue_pause",self.room_group_name)
                 self.handle_pause_request("red_pause_time","red_pause",self.room_group_name)
+                self.goal = True
+                self.cooldown = time.time() + 0.5
             elif posx + BALL_RADIUS >= BOUNDARY_RIGHT:
                 ball_state["position"]["x"] = BALL_RESET_X
                 ball_state["position"]["y"] = BALL_RESET_Y
                 score["y"] += 1
                 self.handle_pause_request("blue_pause_time","blue_pause",self.room_group_name)
                 self.handle_pause_request("red_pause_time","red_pause",self.room_group_name)
+                self.goal = True
+                self.cooldown = time.time() + 0.5
             if posy - BALL_RADIUS <= BOUNDARY_TOP or posy + BALL_RADIUS >= BOUNDARY_BOTTOM:
                 ball_state["velocity"]["y"] *= -1  # Reverse Y velocity
             def check_collison(posx, posy, paddle):

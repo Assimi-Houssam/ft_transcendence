@@ -142,6 +142,8 @@ class PongV1(AsyncWebsocketConsumer):
     async def update_game(self):
         distance = 5
         chrono = time.time() + int(self.tosave[self.room_group_name]['time']) * 60
+        self.goal = False
+        self.cooldown = 0
         #  if you want to test it in fast time (chrono = time.time() + 15)
         while True:
             state = self.game_states[self.room_group_name]
@@ -229,9 +231,13 @@ class PongV1(AsyncWebsocketConsumer):
 
                
             if pause == False:
+                if(self.goal == True):
+                    if self.cooldown < time.time():
+                        self.goal = False
                 if begin:
-                    ball_state["position"]["x"] += ball_state["velocity"]["x"]
-                    ball_state["position"]["y"] += ball_state["velocity"]["y"]
+                    if self.goal == False:
+                        ball_state["position"]["x"] += ball_state["velocity"]["x"]
+                        ball_state["position"]["y"] += ball_state["velocity"]["y"]
                 posx = ball_state["position"]["x"]
                 posy = ball_state["position"]["y"]
                 if posx - BALL_RADIUS <= BOUNDARY_LEFT:
@@ -240,14 +246,16 @@ class PongV1(AsyncWebsocketConsumer):
                     score["x"] += 1
                     self.handle_pause_request(paddle1, self.game_states, self.room_group_name)
                     self.handle_pause_request(paddle2, self.game_states, self.room_group_name)
-                    await asyncio.sleep(0.5)
+                    self.goal = True
+                    self.cooldown = time.time() + 0.5
                 elif posx + BALL_RADIUS >= BOUNDARY_RIGHT:
                     ball_state["position"]["x"] = BALL_RESET_X
                     ball_state["position"]["y"] = BALL_RESET_Y
                     score["y"] += 1
                     self.handle_pause_request(paddle1, self.game_states, self.room_group_name)
                     self.handle_pause_request(paddle2, self.game_states, self.room_group_name)
-                    await asyncio.sleep(0.5)
+                    self.goal = True
+                    self.cooldown = time.time() + 0.5
                 if posy - BALL_RADIUS <= BOUNDARY_TOP or posy + BALL_RADIUS >= BOUNDARY_BOTTOM:
                     ball_state["velocity"]["y"] *= -1  # Reverse Y velocity
                 if posx <= paddle1["position"]["x"] + PADDLE_WIDTH and ball_state["velocity"]["x"] < 0:
