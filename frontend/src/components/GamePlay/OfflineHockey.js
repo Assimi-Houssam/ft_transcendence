@@ -313,7 +313,6 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
 
     function game() {
         animationframe = requestAnimationFrame(game);
-        console.log(pause)
         ctx.fillStyle = '#181B26';
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         drawTable();
