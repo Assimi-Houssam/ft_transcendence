@@ -195,6 +195,7 @@ class PongV2(AsyncWebsocketConsumer):
             if(distance <= 0):
                 self.game_states[self.room_group_name]["finish"] = True
                 await self.save_state()
+                await asyncio.sleep(1)
             state = self.game_states[self.room_group_name]
             ball_state = state["ball_state"]
             paddle1 = state["paddle1"]
@@ -239,7 +240,6 @@ class PongV2(AsyncWebsocketConsumer):
             paddle2 = state["paddle2"]
             paddle3 = state["paddle3"]
             paddle4 = state["paddle4"]
-            score = state["score"]
             begin = state["begin"]
             if self.goal == True:
                 if self.cooldown < time.time():
@@ -255,7 +255,7 @@ class PongV2(AsyncWebsocketConsumer):
             if posx - BALL_RADIUS <= BOUNDARY_LEFT:
                 ball_state["position"]["x"] = BALL_RESET_X
                 ball_state["position"]["y"] = BALL_RESET_Y
-                score["x"] += 1
+                self.game_states[self.room_group_name]["score"]["x"] += 1
                 self.handle_pause_request("blue_pause_time","blue_pause",self.room_group_name)
                 self.handle_pause_request("red_pause_time","red_pause",self.room_group_name)
                 self.goal = True
@@ -263,7 +263,7 @@ class PongV2(AsyncWebsocketConsumer):
             elif posx + BALL_RADIUS >= BOUNDARY_RIGHT:
                 ball_state["position"]["x"] = BALL_RESET_X
                 ball_state["position"]["y"] = BALL_RESET_Y
-                score["y"] += 1
+                self.game_states[self.room_group_name]["score"]["x"] += 1
                 self.handle_pause_request("blue_pause_time","blue_pause",self.room_group_name)
                 self.handle_pause_request("red_pause_time","red_pause",self.room_group_name)
                 self.goal = True

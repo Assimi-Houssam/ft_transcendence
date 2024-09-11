@@ -123,22 +123,22 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         this.update = function (player) {
             if (keypresss[KEY_UP]) {
                 if (this.pos.y > 50) {
-                    if(player == 'paddle2' && this.pos.y > paddle1.pos.y +70 )
+                    if (player == 'paddle2' && this.pos.y > paddle1.pos.y + 70)
                         this.pos.y -= this.veo.y
-                    else if(player == 'paddle4' && this.pos.y > paddle3.pos.y +70 )
+                    else if (player == 'paddle4' && this.pos.y > paddle3.pos.y + 70)
                         this.pos.y -= this.veo.y
-                    else if(player == 'paddle1' || player == 'paddle3')
+                    else if (player == 'paddle1' || player == 'paddle3')
                         this.pos.y -= this.veo.y
 
                 }
             }
             else if (keypresss[KEY_DOWN]) {
                 if (this.pos.y < heightcanva - 50 - 30) {
-                    if(player == 'paddle1' && this.pos.y + 70 < paddle2.pos.y )
+                    if (player == 'paddle1' && this.pos.y + 70 < paddle2.pos.y)
                         this.pos.y += this.veo.y
-                    else if(player == 'paddle3' && this.pos.y + 70 < paddle4.pos.y )
+                    else if (player == 'paddle3' && this.pos.y + 70 < paddle4.pos.y)
                         this.pos.y += this.veo.y
-                    else if(player == 'paddle2' || player == 'paddle4')
+                    else if (player == 'paddle2' || player == 'paddle4')
                         this.pos.y += this.veo.y
                 }
             }
@@ -234,7 +234,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             }
         });
     }
-    
+
 
     // hna fine khassak tfade 9lawi 
     function gamedraw() {
@@ -272,8 +272,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         ctx.closePath();
         gameupdate();
         gamedraw();
-        if(trigerbool)
-        {
+        if (trigerbool) {
             triggerExplosion(trigerx, trigery)
             trigerbool = false
         }
@@ -360,8 +359,10 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                             timeSelector.textContent = "Time's up!";
                         }
                         canvas.style.filter = 'blur(10px)';
-                        clearInterval(interval);
-                        cancelAnimationFrame(animationframe);
+                        setTimeout(() => {
+                            clearInterval(interval);
+                            cancelAnimationFrame(animationframe);
+                        }, 3000);
                         setTimeout(() => {
                             ws.send(JSON.stringify({ 'finish': true }));
                         }, 100);
@@ -417,12 +418,14 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                 if (data[paddleNames[i]])
                     paddles[i].pos.y = data[paddleNames[i]];
             }
-            if (data.score1 != number1 || data.score2 != number2) {
-                number1 = data.score1;
-                number2 = data.score2;
-                trigerx = bal.pos.x
-                trigery = bal.pos.y
-                trigerbool = true
+            if (data.score1 && data.score2) {
+                if (data.score1 != number1 || data.score2 != number2) {
+                    number1 = data.score1;
+                    number2 = data.score2;
+                    trigerx = bal.pos.x
+                    trigery = bal.pos.y
+                    trigerbool = true
+                }
             }
             if (data.positionx && data.positiony) {
                 bal.pos.x = data.positionx;
