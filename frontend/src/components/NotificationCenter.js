@@ -52,6 +52,7 @@ class Notification extends HTMLElement {
         if (!this.content)
             return;
         console.log("noti content:", this.content);
+        this.addEventListener("click", this.onClickHandler.bind(this));
     }
     getNotificationContent() {
         switch (this.notificationType) {
@@ -63,6 +64,26 @@ class Notification extends HTMLElement {
                 return `challenged you on ${this.gamemode} (${this.teamSize})`;
             default:
                 return "";
+        }
+    }
+    onClickHandler(evt) {
+        this.dispatchEvent(new CustomEvent("notificationDelete", { detail: this, bubbles: true }));
+        if (evt.target.classList.contains('notification-delete')) {
+            return;
+        }
+        switch (this.notificationType) {
+            case NotificationType.RoomInvite:
+                router.navigate("/rooms/" + this.notificationData.roomId, new RoomPage(this.roomData));
+                break;
+            case NotificationType.ReceivedFriendRequest:
+                router.navigate("/user/" + this.senderId);
+                console.log("navigating to:", "/user" + this.senderId);
+                break;
+            case NotificationType.AcceptedFriendRequest:
+                router.navigate("/user/" + this.senderId);
+                break;
+            default: 
+                break;
         }
     }
     connectedCallback() {
@@ -82,25 +103,6 @@ class Notification extends HTMLElement {
         this.addEventListener('mouseout', () => {
             this.style.backgroundColor = "rgba(56, 60, 78, 0.0)";
         });
-        this.querySelector(".notification-delete").onclick = () => {
-            this.dispatchEvent(new CustomEvent("notificationDelete", { detail: this, bubbles: true }));
-        };
-        this.addEventListener("click", () => {
-            switch (this.notificationType) {
-                case NotificationType.RoomInvite:
-                    router.navigate("/rooms/" + this.notificationData.roomId, new RoomPage(this.roomData));
-                    break;
-                case NotificationType.ReceivedFriendRequest:
-                    router.navigate("/user/" + this.senderId);
-                    console.log("navigating to:", "/user" + this.senderId);
-                    break;
-                case NotificationType.AcceptedFriendRequest:
-                    router.navigate("/user/" + this.senderId);
-                    break;
-                default: 
-                    break;
-            }
-        })
     }
     delete(animateMinHeight = true) {
         anime({
@@ -111,7 +113,7 @@ class Notification extends HTMLElement {
             easing: "easeOutExpo",
             opacity: 0,
             duration: 600,
-            complete: () => {this.remove();}
+            complete: () => { this.remove(); }
         });
     }
 }
@@ -121,12 +123,8 @@ customElements.define("notification-item", Notification);
 export class NotificationCenter extends HTMLElement {
     constructor() {
         super();
-        console.log("ctor called");
         
         this.ws = new WebSocket("ws://localhost:8000/ws/cable/");
-        this.ws.onopen = (evt) => {
-            console.log("connected to cable");
-        }
         this.notifications = [];
         this.ws.onmessage = this.onNotificationReceived.bind(this);
 
@@ -136,7 +134,6 @@ export class NotificationCenter extends HTMLElement {
         }
     }
     onNotificationReceived(evt) {
-        console.log("received notification:", evt.data);
         const incommingNoti = JSON.parse(evt.data).notification;
         const notiElem = new Notification(incommingNoti);
         notiElem.style.opacity = '1';
@@ -153,8 +150,8 @@ export class NotificationCenter extends HTMLElement {
             <div class="notifications-list"></div>`;
         this.querySelector(".notification-clear").onclick = () => { this.clearNotifications(); }
 
-        for (let noti in this.notifications)
-            this.querySelector(".notifications-list").append(this.notifications[noti]);
+        for (let noti of this.notifications)
+            this.querySelector(".notifications-list").append(noti);
     }
     clearNotifications() {
         const notis = this.notifications;
