@@ -317,7 +317,8 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     ctx.closePath();
     drawTable();
     player1.move();
-    hockeyBall.collisions();
+    if(distance < 0);
+      hockeyBall.collisions();
     if (custom != "hidden")
       hockeyBall.draw();
     else if (custom === "hidden" && hockeyBall.x > 300 && hockeyBall.x < 810)
