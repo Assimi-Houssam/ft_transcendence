@@ -52,9 +52,21 @@ class Hockey(AsyncWebsocketConsumer):
     
     async def disconnect_evryone(self, event):
         await self.close(4500)
+
+    def is_winner(self, user_id, red_team, blue_team, red_team_score, blue_team_score):
+        red_team_ids = [player['id'] for player in red_team if player]
+        blue_team_ids = [player['id'] for player in blue_team if player]
+
+        if red_team_score > blue_team_score:
+            winning_team_ids = red_team_ids
+        elif blue_team_score > red_team_score:
+            winning_team_ids = blue_team_ids
+        else:
+            return False
+        return user_id in winning_team_ids
         
     async def save_state(self):
-        self.game_states[self.room_group_name]["finish"] = True
+        print("Saving state")
         state = self.game_states[self.room_group_name]
         room = self.tosave[self.room_group_name]
         host_user = room['host']['username']

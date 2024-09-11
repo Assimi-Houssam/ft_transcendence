@@ -1,4 +1,7 @@
+import { router } from "../../routes/routes.js";
+
 export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
+  time = 1;
   canvas.width = 1100;
   canvas.height = 550;
   const START_X = 30;
@@ -423,11 +426,11 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
         timeSelector.textContent = minutes + ":" + seconds;
       } else clearInterval(interval);
       if (distance < 0 || gamefinsihed || disconnected) {
+        countdownElement.style.display = 'block';
+        canvas.style.filter = 'blur(10px)';
         let timeSelector = document.querySelector(".time-display");
         if (disconnected) {
-          canvas.style.filter = 'blur(10px)';
           countdownElement.textContent = "Opponent disconnected";
-          countdownElement.style.display = 'block';
           setTimeout(() => {
             router.navigate("/home");
           }, 3000);
@@ -440,6 +443,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
           cancelAnimationFrame(animationframe);
         }, 3000);
         if (!disconnected) {
+          ws.send(JSON.stringify({ finish: true }));
           setTimeout(() => {
             router.navigate("/home");
           }, 3000);

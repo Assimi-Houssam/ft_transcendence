@@ -76,6 +76,19 @@ class PongV2(AsyncWebsocketConsumer):
             self.game_states[self.room_group_name]["ball_state"]["velocity"]["y"] = 10
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
+
+        
+    def is_winner(self, user_id, red_team, blue_team, red_team_score, blue_team_score):
+        red_team_ids = [player['id'] for player in red_team if player]
+        blue_team_ids = [player['id'] for player in blue_team if player]
+
+        if red_team_score > blue_team_score:
+            winning_team_ids = red_team_ids
+        elif blue_team_score > red_team_score:
+            winning_team_ids = blue_team_ids
+        else:
+            return False
+        return user_id in winning_team_ids
         
     async def save_state(self):
         self.game_states[self.room_group_name]["finish"] = True
@@ -196,6 +209,7 @@ class PongV2(AsyncWebsocketConsumer):
                 self.game_states[self.room_group_name]["finish"] = True
                 await self.save_state()
                 await asyncio.sleep(1)
+                break
             state = self.game_states[self.room_group_name]
             ball_state = state["ball_state"]
             paddle1 = state["paddle1"]
