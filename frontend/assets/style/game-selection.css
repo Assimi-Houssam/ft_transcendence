@@ -892,6 +892,12 @@ friend-invite-entry {
     border-radius: 10px;
 }
 
+.FriendInviteEntryC {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .FriendInviteEntryInfo {
     display: flex;
     align-items: center;

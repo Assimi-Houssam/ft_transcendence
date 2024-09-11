@@ -1,18 +1,23 @@
 import { router } from "../../../routes/routes.js";
 import ApiWrapper from "../../../utils/ApiWrapper.js";
+import { getUserInfo } from "../../../utils/utils.js";
 
 class FriendInviteEntry extends HTMLElement {
-    constructor(username, pfp, userId) {
+    constructor(username, pfp, userId, status) {
         super();
         this.username = username;
         this.pfp = pfp;
         this.userId = userId;
+        this.status = status;
     }
     connectedCallback() {
         this.innerHTML = `
             <div class="FriendInviteEntryInfo">
                 <img src="${this.pfp}"></img>
-                <div class="FriendInviteEntryUsername">${this.username}</div>
+                <div class="FriendInviteEntryC">
+                    <div class="FriendInviteEntryUsername">${this.username}</div>
+                    <p class="friend_status ${this.status ? "online" : "offline"}">${this.status ? "online" : "offline"}</p>
+                </div>
             </div>
             <button class="FriendInviteButton">Invite!</button>`;
         this.querySelector(".FriendInviteButton").onclick = () => {
@@ -44,12 +49,17 @@ export class InviteFriendsPopup extends HTMLElement {
         this.hide();
     }
     show() {
-        // here you fetch thse user's friends from the server, then create FriendInviteEntries for each friend, and add them to an array
-        // example:
-        this.friendsList.push(new FriendInviteEntry("lolz", "../../../assets/images/p1.png", 2));
-        document.body.appendChild(this);
+        getUserInfo().then((userinfo) => {
+            const friends = userinfo.friends;
+            console.log("friends: ", friends);
+            for (let friend of friends) {
+                this.friendsList.push(new FriendInviteEntry(friend.username, ApiWrapper.getUrl() + friend.pfp, friend.id, friend.online_status));
+            }
+            document.body.appendChild(this);
+
+        })
     }
-    connectedCallback() {
+    async connectedCallback() {
         this.innerHTML = `
             <div class="InviteFriendsPopupHeader">Invite friends</div>
             <div class="InviteFriendsPopupEntries"></div>

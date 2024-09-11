@@ -93,11 +93,27 @@ profile-friends {
     gap: 5px;
     color: #24CE90;
 }
+
 .profile_user_info_left_items .profile_joined #online::before {
     content: "";
     height: 10px !important;
     width: 10px !important;
     background-color: #24CE90;
+    border-radius: 50%;
+}
+
+.profile_user_info_left_items .profile_joined #offline {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #FF0000;
+}
+
+.profile_user_info_left_items .profile_joined #offline::before {
+    content: "";
+    height: 10px !important;
+    width: 10px !important;
+    background-color: #FF0000;
     border-radius: 50%;
 }
 
