@@ -68,11 +68,11 @@ export class ProfileActions extends HTMLElement {
 customElements.define("profile-actions", ProfileActions);
 
 export class ProfileInfo extends HTMLElement {
-  constructor(user, scores, status=false) {
+  constructor(user, scores) {
     super();
     this.user = user;
     this.classList.add("profile_left_items");
-    this.status = status;
+    this.status = this.user.online_status;
     this.scores = scores;
   }
 

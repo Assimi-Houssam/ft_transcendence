@@ -7,20 +7,20 @@ from .models import FriendRequest
 class NestedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "pfp"]
+        fields = ["id", "username", "pfp", "online_status"]
 
 class UserSerializerMe(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)
     block_list = NestedUserSerializer(many=True)
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email", "matches_won", "matches_played", "xp"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email", "matches_won", "matches_played", "xp", "online_status"]
 
 class UserSerializer(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "date_joined", "matches_won", "matches_played", "xp"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "date_joined", "matches_won", "matches_played", "xp", "online_status"]
 
 class UserFriendsSerializer(serializers.ModelSerializer):
     friends = UserSerializer(many=True)

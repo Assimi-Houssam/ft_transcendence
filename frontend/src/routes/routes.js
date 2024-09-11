@@ -65,7 +65,7 @@ export const Routes = [
         component: RoomsListPage,
     },
     {
-        path: "/room/:userID",
+        path: "/room/:id",
         component: RoomPage
     },
     {

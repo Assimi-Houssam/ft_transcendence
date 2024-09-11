@@ -18,6 +18,7 @@ class User(AbstractUser):
     matches_played = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
     xp = models.IntegerField(default=0)
+    online_status = models.BooleanField(default=0)
     class Meta:
         ordering = ['id']
 

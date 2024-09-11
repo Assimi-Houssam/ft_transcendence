@@ -5,8 +5,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import FriendRequestSerializer, UserFriendsSerializer
 from .auth import JWTAuth
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
-max_friends  = 200
+max_friends = 200
 
 @api_view(['POST'])
 @authentication_classes([JWTAuth])
@@ -24,6 +26,21 @@ def send_friend_request(req, userId):
         },  status=status.HTTP_429_TOO_MANY_REQUESTS)
     data, created =  FriendRequest.objects.get_or_create(to_user=to_user, from_user=from_user)
     if created:
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            str(to_user.id),
+            {
+                "type": "notification_received",
+                "message": {
+                    "type": "ReceivedFriendRequest",
+                    "from": {
+                        "username": from_user.username,
+                        "id": from_user.id,
+                        "pfp": from_user.pfp.url
+                    },
+                },
+            }
+        )
         return Response({
             'detail' : "Friend request sent successfuly"
         }, status=status.HTTP_201_CREATED)
@@ -46,8 +63,23 @@ def accept_friend_request(req, requestId):
         friend_req.to_user.friends.add(friend_req.from_user)
         friend_req.from_user.friends.add(friend_req.to_user)
         friend_req.delete()
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            str(friend_req.from_user.id),
+            {
+                "type": "notification_received",
+                "message": {
+                    "type": "AcceptedFriendRequest",
+                    "from": {
+                        "username": friend_req.to_user.username,
+                        "id": friend_req.to_user.id,
+                        "pfp": friend_req.to_user.pfp.url
+                    },
+                },
+            }
+        )
         return Response({
-            'detail' : 'Request accepted successfuly'
+            'detail' : 'Request accepted successfully'
         }, status=status.HTTP_200_OK)
     else:
         return Response({

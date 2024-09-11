@@ -89,6 +89,16 @@ class Notification extends HTMLElement {
             switch (this.notificationType) {
                 case NotificationType.RoomInvite:
                     router.navigate("/rooms/" + this.notificationData.roomId, new RoomPage(this.roomData));
+                    break;
+                case NotificationType.ReceivedFriendRequest:
+                    router.navigate("/user/" + this.senderId);
+                    console.log("navigating to:", "/user" + this.senderId);
+                    break;
+                case NotificationType.AcceptedFriendRequest:
+                    router.navigate("/user/" + this.senderId);
+                    break;
+                default: 
+                    break;
             }
         })
     }
@@ -128,8 +138,11 @@ export class NotificationCenter extends HTMLElement {
     onNotificationReceived(evt) {
         console.log("received notification:", evt.data);
         const incommingNoti = JSON.parse(evt.data).notification;
-        this.notifications.push(new Notification(incommingNoti));
-        // this.connectedCallback();
+        const notiElem = new Notification(incommingNoti);
+        notiElem.style.opacity = '1';
+        notiElem.style.marginLeft = "0%";
+        this.notifications.push(notiElem);
+        this.connectedCallback();
     }
     connectedCallback() {
         this.innerHTML = `

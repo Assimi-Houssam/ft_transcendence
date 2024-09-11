@@ -1,32 +1,23 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
+from .models import User
 import json
 
-"""
-user = {"username": username, "id": id, "pfp": pfp_url}
-
-type: RoomInvite
-from: user
-gameMode: "pong" / "hockey"
-gameSize: 1 / 2
-roomId: roomId
-
-
-type: FriendRequest
-from: user
-
-type: AcceptedFriendRequest
-from: user
-"""
-
 class NotificationConsumer(AsyncWebsocketConsumer):
+    @database_sync_to_async
+    def update_user_status(self, user, status):
+        user.online_status = status
+        user.save()
+
     async def connect(self):
         self.user_id = self.scope["user"].id
         await self.accept()
         await self.channel_layer.group_add(str(self.user_id), self.channel_name)
+        await self.update_user_status(self.scope["user"], 1)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(str(self.user_id), self.channel_name)
-        pass
+        await self.update_user_status(self.scope["user"], 0)
     
     async def notification_received(self, event):
         await self.send(text_data=json.dumps({"notification": event["message"]}))

@@ -85,7 +85,7 @@ export class Profile extends HTMLElement {
     await this.fetchFriendRequest();
     await this.fetchUserScores();
     this.innerHTML = ``
-    this.appendChild(new ProfileInfo(this.user, this.scores, true)); //true means user onkine,  u need to get it from the sockets olla dbr krrk meaha a hbibi 
+    this.appendChild(new ProfileInfo(this.user, this.scores)); 
     this.appendChild(new ProfileFriends(this.user));
     this.setActions();
     const blockUserBtn = document.getElementById("block_user");
