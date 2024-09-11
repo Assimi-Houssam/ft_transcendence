@@ -1,22 +1,14 @@
-from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import UserRegistrationSerializer
-from .models import User
-import requests
-import random
-import os
-import uuid
-import json
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
-from .auth import JWTAuth
-from django.core.cache import cache
-from asgiref.sync import async_to_sync
+from rest_framework.decorators import api_view
 from channels.layers import get_channel_layer
+from rest_framework.response import Response
+from asgiref.sync import async_to_sync
+from django.core.cache import cache
+from rest_framework import status
+from .auth import JWTAuth
+import json
+import uuid
 
 
 @api_view(['POST'])
