@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Room
+from .models import User, Room, Notification
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
 from .models import FriendRequest
@@ -7,20 +7,20 @@ from .models import FriendRequest
 class NestedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "pfp"]
+        fields = ["id", "username", "pfp", "online_status"]
 
 class UserSerializerMe(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)
     block_list = NestedUserSerializer(many=True)
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email", "matches_won", "matches_played", "xp"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email", "matches_won", "matches_played", "xp", "online_status"]
 
 class UserSerializer(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "date_joined", "matches_won", "matches_played", "xp"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "date_joined", "matches_won", "matches_played", "xp", "online_status"]
 
 class UserFriendsSerializer(serializers.ModelSerializer):
     friends = UserSerializer(many=True)
@@ -94,3 +94,10 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ["players", 'id', 'host', 'red_team', 'blue_team', 'gamemode', 'time', 'team_size', 'customization', 'room_name', "red_team_score", "blue_team_score", "timestamp"]
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    from_user = UserScoreSerializer()
+    class Meta:
+        model = Notification
+        fields = ["type", "from_user"]

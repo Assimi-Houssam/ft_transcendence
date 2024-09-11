@@ -18,6 +18,8 @@ class User(AbstractUser):
     matches_played = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
     xp = models.IntegerField(default=0)
+    online_status = models.BooleanField(default=0)
+    unread_notifications = models.ManyToManyField('Notification', blank=True)
     class Meta:
         ordering = ['id']
 
@@ -38,3 +40,7 @@ class Room(models.Model):
 class FriendRequest(models.Model):
     from_user = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)
     to_user = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
+
+class Notification(models.Model):
+    type = models.CharField(max_length=25)
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -4,10 +4,10 @@ import { PreloaderMini } from "../Loading.js";
 import Toast from "../Toast.js";
 
 export class FriendsCard extends HTMLElement {
-  constructor(user, status=false) {
+  constructor(user) {
     super();
     this.user  = user;
-    this.status = status;
+    this.status = this.user.online_status;
   }
 
   async unfriendHandler(e) {
@@ -56,10 +56,10 @@ export class ProfileFriends extends HTMLElement {
     this.innerHTML = `
         <h1 class="profile_friends_title">Friends List</h1>
         <div id="friends_list"></div>
-    `
+    `;
     const friendsList = document.getElementById("friends_list")
     this?.user?.friends.length > 0 ?
-      this.user.friends.map(item => friendsList.appendChild(new FriendsCard(item, true))) //same as bedor true meaning user is online otherwise offline, dber krk meaha hbibi
+      this.user.friends.map(item => friendsList.appendChild(new FriendsCard(item)))
     : friendsList && (friendsList.innerHTML = '<p class="no_friends"> You have no friends right now to display</p>');
   }
 }

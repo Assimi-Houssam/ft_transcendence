@@ -1,3 +1,4 @@
+import { MessageBox } from "../components/MessageBox.js"
 export class HomePage extends HTMLElement {
   constructor() {
     super();

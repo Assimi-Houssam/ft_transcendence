@@ -1,14 +1,23 @@
+import { router } from "../../../routes/routes.js";
+import ApiWrapper from "../../../utils/ApiWrapper.js";
+import { getUserInfo } from "../../../utils/utils.js";
+
 class FriendInviteEntry extends HTMLElement {
-    constructor(username, pfp) {
+    constructor(username, pfp, userId, status) {
         super();
         this.username = username;
         this.pfp = pfp;
+        this.userId = userId;
+        this.status = status;
     }
     connectedCallback() {
         this.innerHTML = `
             <div class="FriendInviteEntryInfo">
                 <img src="${this.pfp}"></img>
-                <div class="FriendInviteEntryUsername">${this.username}</div>
+                <div class="FriendInviteEntryC">
+                    <div class="FriendInviteEntryUsername">${this.username}</div>
+                    <p class="friend_status ${this.status ? "online" : "offline"}">${this.status ? "online" : "offline"}</p>
+                </div>
             </div>
             <button class="FriendInviteButton">Invite!</button>`;
         this.querySelector(".FriendInviteButton").onclick = () => {
@@ -29,25 +38,35 @@ export class InviteFriendsPopup extends HTMLElement {
             }
         }
     }
-    sendInviteTo(username) {
-        console.log("sending invite to:", username);
-        // your code here
+    async sendInviteTo(user) {
+        const username = user.username;
+        const userId = user.userId; // currently hardcoded to 2
+        const roomId = router.route.params["id"];
+        console.log("sending invite to:", userId, " roomId:", roomId);
+        const inviteData = { userId, roomId };
+        const req = await ApiWrapper.post("/rooms/invite", inviteData);
+        const resp = await req.json();
         this.hide();
     }
     show() {
-        // here you fetch the user's friends from the server, then create FriendInviteEntries for each friend, and add them to an array
-        // example:
-        this.friendsList.push(new FriendInviteEntry("lolz", "../../../assets/images/p1.png"));
-        document.body.appendChild(this);
+        getUserInfo().then((userinfo) => {
+            const friends = userinfo.friends;
+            console.log("friends: ", friends);
+            for (let friend of friends) {
+                this.friendsList.push(new FriendInviteEntry(friend.username, ApiWrapper.getUrl() + friend.pfp, friend.id, friend.online_status));
+            }
+            document.body.appendChild(this);
+
+        })
     }
-    connectedCallback() {
+    async connectedCallback() {
         this.innerHTML = `
             <div class="InviteFriendsPopupHeader">Invite friends</div>
             <div class="InviteFriendsPopupEntries"></div>
         `;
         for (let friend of this.friendsList)
             this.querySelector(".InviteFriendsPopupEntries").append(friend);
-        this.addEventListener("friendinvite", (event) => { this.sendInviteTo(event.detail.username) })
+        this.addEventListener("friendinvite", (event) => { this.sendInviteTo(event.detail); })
         document.getElementById('root').style.pointerEvents = 'none';
         document.getElementById('root').classList.add("blur");
         anime({

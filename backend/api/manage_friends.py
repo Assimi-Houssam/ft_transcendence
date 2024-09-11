@@ -1,12 +1,14 @@
-from .models import FriendRequest, User
+from .models import FriendRequest, User, Notification
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import FriendRequestSerializer, UserFriendsSerializer
 from .auth import JWTAuth
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
-max_friends  = 200
+max_friends = 200
 
 @api_view(['POST'])
 @authentication_classes([JWTAuth])
@@ -24,6 +26,27 @@ def send_friend_request(req, userId):
         },  status=status.HTTP_429_TOO_MANY_REQUESTS)
     data, created =  FriendRequest.objects.get_or_create(to_user=to_user, from_user=from_user)
     if created:
+        if (to_user.online_status == 0):
+            print("user is offline, appending to his unread notis")
+            notification = Notification.objects.create(type="AcceptedFriendRequest", from_user=from_user)
+            to_user.unread_notifications.add(notification)
+            to_user.save()
+        else:
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                str(to_user.id),
+                {
+                    "type": "notification_received",
+                    "message": {
+                        "type": "ReceivedFriendRequest",
+                        "from_user": {
+                            "username": from_user.username,
+                            "id": from_user.id,
+                            "pfp": from_user.pfp.url
+                        },
+                    },
+                }
+            )
         return Response({
             'detail' : "Friend request sent successfuly"
         }, status=status.HTTP_201_CREATED)
@@ -46,8 +69,29 @@ def accept_friend_request(req, requestId):
         friend_req.to_user.friends.add(friend_req.from_user)
         friend_req.from_user.friends.add(friend_req.to_user)
         friend_req.delete()
+        if (friend_req.from_user.online_status == 0):
+            print("user is offline, appending to his unread notis")
+            notification = Notification.objects.create(type="AcceptedFriendRequest", from_user=friend_req.to_user)
+            friend_req.from_user.unread_notifications.add(notification)
+            friend_req.from_user.save()
+        else:
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                str(friend_req.from_user.id),
+                {
+                    "type": "notification_received",
+                    "message": {
+                        "type": "AcceptedFriendRequest",
+                        "from_user": {
+                            "username": friend_req.to_user.username,
+                            "id": friend_req.to_user.id,
+                            "pfp": friend_req.to_user.pfp.url
+                        },
+                    },
+                }
+            )
         return Response({
-            'detail' : 'Request accepted successfuly'
+            'detail' : 'Request accepted successfully'
         }, status=status.HTTP_200_OK)
     else:
         return Response({

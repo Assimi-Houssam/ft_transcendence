@@ -37,7 +37,8 @@ export class RoomPage extends HTMLElement {
             router.navigate("/home");
             return;
         }
-        this.roomData = roomData
+        console.log("room page ctor called");
+        this.roomData = roomData;
         this.roomId = roomData.id;
         this.chat = new ChatGame();
         this.infoCard = new RoomInfoCard(this.roomData);
@@ -69,7 +70,7 @@ export class RoomPage extends HTMLElement {
         }
     
         const openPromise = new Promise(resolve => {
-            this.socket.onopen = (evt) => { resolve(); };
+            this.socket.onopen = (evt) => { console.log("connected!"); resolve(); };
         });
     
         this.socket.addEventListener("message", (event) => {

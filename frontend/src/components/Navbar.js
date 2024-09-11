@@ -2,11 +2,13 @@ import ApiWrapper from "../utils/ApiWrapper.js"
 import { Search } from "./Search.js";
 import { getUserInfo } from "../utils/utils.js";
 
+import { NotificationCenter } from "./NotificationCenter.js";
 
 export class Navbar extends HTMLElement {
   constructor() {
     super();
     this.userInfo = null;
+    this.notificationCenter = new NotificationCenter();
   }
   async load() {
     const userInfo = await getUserInfo();
@@ -34,7 +36,13 @@ export class Navbar extends HTMLElement {
                 </p>
                 <img src="${"http://localhost:8000" + this.userInfo.pfp}" />
               </a>
-          </div>`;
+          </div>
+      `;
+      const noti_btn = this.querySelector(".navbar_notification_btn");
+      // todo: make sure this cant be clickable once its clicked
+      noti_btn.addEventListener("click", () => {
+        this.notificationCenter.show();
+      })
   }
 }
 customElements.define('navbar-component', Navbar);

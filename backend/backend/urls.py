@@ -39,7 +39,8 @@ urlpatterns = [
     path("unfriend/<int:userID>", manage_friends.unfriend),
     path("rooms/create", rooms.create_room),
     path("rooms/list", rooms.list_rooms),
-    path("scores/<int:user_id>", scores.get_user_scores)
+    path("rooms/invite", rooms.invite_user),
+    path("scores/<int:user_id>", scores.get_user_scores),
 ]
 # add the static files url
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
