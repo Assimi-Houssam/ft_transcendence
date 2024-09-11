@@ -75,7 +75,7 @@ def invite_user(request):
             "type": "notification_received",
             "message": {
                 "type": "RoomInvite",
-                "from": {
+                "from_user": {
                     "username": request.user.username,
                     "id": request.user.id,
                     "pfp": request.user.pfp.url

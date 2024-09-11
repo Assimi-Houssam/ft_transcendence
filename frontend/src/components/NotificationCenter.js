@@ -37,9 +37,9 @@ class Notification extends HTMLElement {
         console.log("notification data:", notificationData);
         this.notificationType = notificationData.type;
 
-        this.senderUsername = notificationData.from.username;
-        this.senderPfp = "http://localhost:8000" + notificationData.from.pfp;
-        this.senderId = notificationData.from.id;
+        this.senderUsername = notificationData.from_user.username;
+        this.senderPfp = "http://localhost:8000" + notificationData.from_user.pfp;
+        this.senderId = notificationData.from_user.id;
         
         if (this.notificationType === NotificationType.RoomInvite) {
             this.roomData = notificationData.roomData;
