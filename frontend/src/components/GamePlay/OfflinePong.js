@@ -247,6 +247,7 @@ export function game(ctx, canvas, gameData, bracket) {
       }
     }
   }
+  let elapsedTime;
   function pauseAprove() {
     if (pause == 1) {
       pause = 2;
