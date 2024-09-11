@@ -1,18 +1,20 @@
 import ApiWrapper from '../utils/ApiWrapper.js'
 import Toast from './Toast.js';
+import { langSearch } from '../utils/translate/gameTranslate.js';
 
 export class Search extends HTMLElement {
     constructor() {
         super();
         this.delayTime = 80;
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
+        this.lang = localStorage.getItem("lang");
     }
 
     onInputFocus(e) {
         const searchResult = document.getElementsByClassName("nav_search_result")[0];
         if (searchResult.classList.contains("show_search_result"))
             return;
-        searchResult.innerHTML = `<p class="serach_disc_text">Please enter somthing to start searching.</p>`
+        searchResult.innerHTML = `<p class="serach_disc_text">${langSearch[this.lang]["EnterSomthing"]}</p>`
         anime({
             targets: '.nav_search_result',
             opacity: [0, 1],
@@ -52,7 +54,7 @@ export class Search extends HTMLElement {
         `
         setTimeout( async () => {
             if (e.target.value.length === 0) {
-                show_search_result.innerHTML = `<p class="serach_disc_text">Please enter somthing to start searching.</p>`
+                show_search_result.innerHTML = `<p class="serach_disc_text">${langSearch[this.lang]["EnterSomthing"]}</p>`
                 return;
             }
             const res = await ApiWrapper.get(`/users/filter?query=${e.target.value}`);
@@ -82,11 +84,11 @@ export class Search extends HTMLElement {
                         `
                 }else {
                     show_search_result.innerHTML = `<p class="serach_disc_no_result">
-                        No results match your search.
+                        ${langSearch[this.lang]["NoResults"]}
                     </p>`
                 }
             }else {
-                show_search_result.innerHTML = `<p class="serach_disc_error">faild to load data</p>`
+                show_search_result.innerHTML = `<p class="serach_disc_error">${langSearch[this.lang]["FaildLoadData"]}</p>`
             }
         }, 200);
     }
@@ -99,7 +101,7 @@ export class Search extends HTMLElement {
                     id="searchBox"
                     type="text" 
                     autocomplete="off"
-                    placeholder="Search for user by email or username"
+                    placeholder="${langSearch[this.lang]["PlaceHolder"]}"
                 />
             </div>
             <div class="nav_search_result"></div>

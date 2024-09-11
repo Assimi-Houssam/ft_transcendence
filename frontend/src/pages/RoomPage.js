@@ -11,9 +11,15 @@ import { router } from "../routes/routes.js";
 import Toast from "../components/Toast.js";
 import { getUserInfo } from "../utils/utils.js";
 import { GamePage } from "../components/GamePlay/GamePage.js";
+import { langOfflineGame } from "../utils/translate/gameTranslate.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
+    constructor() {
+        super();
+        this.lang = localStorage.getItem("lang");
+    }
+
     connectedCallback() {
         this.innerHTML = `
             <div class="ContainerFooter">
@@ -21,7 +27,7 @@ class RoomPageFooter extends HTMLElement {
                     <p style="display:none;" class="ContainerFooter_reminder">Unable to start the game: not enough players in the room</p>
                 </div>
                 <div class="BtnStartGame">
-                    <button type="button" id="BtnStartGame">Start game!</button>
+                    <button type="button" id="BtnStartGame">${langOfflineGame[this.lang]["BtnStartGame"]}</button>
                 </div>
             </div>`;
     }

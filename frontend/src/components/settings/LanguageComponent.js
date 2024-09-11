@@ -1,4 +1,3 @@
-
 const icons = {
     english : "../../../assets/icons/usa.png",
     espagnol : "../../../assets/icons/es.png",
@@ -17,10 +16,24 @@ const data = [
     {slug : "French",},
 ]
 
+const shortcutNames = {
+    english : "en",
+    espagnol : "es",
+    french : "fr"
+}
+
 export class LanguageComponent extends HTMLElement {
     constructor() {
         super();
-        this.selectedItem = "English"
+        if (localStorage.getItem("lang") === null) //need to ove to somwhere were the automatic check if the lang in localstorage
+            localStorage.setItem("lang", "en");
+        const local =  localStorage.getItem("lang");
+        for (let key in shortcutNames) {
+            if (shortcutNames[key] === local) {
+                this.selectedItem = key;
+                break;
+            }
+        }
     }
 
     closeDropmMenu(selectChildItems, arrowIcon) {
@@ -57,7 +70,7 @@ export class LanguageComponent extends HTMLElement {
                 item.addEventListener("click", (e) => {
                     const slug = item.getAttribute("value");
                     this.selectedItem = slug;
-                    localStorage.setItem("lang", slug.toLowerCase())
+                    localStorage.setItem("lang", shortcutNames[slug.toLowerCase()])
                     const beforIcon = document.getElementById("lang_icon");
                     const selectedLangSlug = document.getElementById("selected_lang_slug");
                     beforIcon.src = icons[slug.toLowerCase()]
@@ -71,8 +84,8 @@ export class LanguageComponent extends HTMLElement {
         this.innerHTML = `
             <div id="select_items_btn" class="select_items">
                 <div class="lang_desc">
-                    <img id="lang_icon" class="lang_icon" src="${icons["english"]}">
-                    <p id="selected_lang_slug">English</p>
+                    <img id="lang_icon" class="lang_icon" src="${icons[this.selectedItem]}">
+                    <p id="selected_lang_slug">${data.find(item => item.slug.toLowerCase() === this.selectedItem).slug}</p>
                 </div>
                 <img id="arrow_icon" class="arrow_down" src="../../../assets/icons/arrow_down.png">
             </div>

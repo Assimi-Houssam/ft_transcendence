@@ -1,6 +1,7 @@
 import { router } from "../../../routes/routes.js";
 import ApiWrapper from "../../../utils/ApiWrapper.js";
 import { getUserInfo } from "../../../utils/utils.js";
+import { langInviteFriendsPopup } from "../../../utils/translate/gameTranslate.js";
 
 class FriendInviteEntry extends HTMLElement {
     constructor(username, pfp, userId, status) {
@@ -9,6 +10,7 @@ class FriendInviteEntry extends HTMLElement {
         this.pfp = pfp;
         this.userId = userId;
         this.status = status;
+        this.lang = localStorage.getItem("lang");
     }
     connectedCallback() {
         this.innerHTML = `
@@ -16,10 +18,10 @@ class FriendInviteEntry extends HTMLElement {
                 <img src="${this.pfp}"></img>
                 <div class="FriendInviteEntryC">
                     <div class="FriendInviteEntryUsername">${this.username}</div>
-                    <p class="friend_status ${this.status ? "online" : "offline"}">${this.status ? "online" : "offline"}</p>
+                    <p class="friend_status ${this.status ? "online" : "offline"}">${this.status ? langInviteFriendsPopup[this.lang]["Online"] : langInviteFriendsPopup[this.lang]["Offline"]}</p>
                 </div>
             </div>
-            <button class="FriendInviteButton">Invite!</button>`;
+            <button class="FriendInviteButton">${langInviteFriendsPopup[this.lang]["invite"]}</button>`;
         this.querySelector(".FriendInviteButton").onclick = () => {
             this.dispatchEvent(new CustomEvent("friendinvite", { detail: this, bubbles: true }));
         }
@@ -37,6 +39,7 @@ export class InviteFriendsPopup extends HTMLElement {
                 this.hide();
             }
         }
+        this.lang = localStorage.getItem("lang");
     }
     async sendInviteTo(user) {
         const username = user.username;
@@ -61,7 +64,7 @@ export class InviteFriendsPopup extends HTMLElement {
     }
     async connectedCallback() {
         this.innerHTML = `
-            <div class="InviteFriendsPopupHeader">Invite friends</div>
+            <div class="InviteFriendsPopupHeader">${langInviteFriendsPopup[this.lang]["inviteFriends"]}</div>
             <div class="InviteFriendsPopupEntries"></div>
         `;
         for (let friend of this.friendsList)

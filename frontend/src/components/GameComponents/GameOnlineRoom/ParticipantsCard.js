@@ -1,4 +1,5 @@
 import { ParticipantEntry, EmptySlot } from "./ParticipantEntry.js";
+import { langParticipants } from "../../../utils/translate/gameTranslate.js";
 
 export class ParticipantsCard extends HTMLElement {
     constructor(roomData, locked = false) {
@@ -15,6 +16,7 @@ export class ParticipantsCard extends HTMLElement {
             this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId, this.locked) : new EmptySlot());
         }
         this.participantsCount = roomData.users.length;
+        this.lang = localStorage.getItem("lang");
     }
     updateTeams(message) {
         this.redTeam = [];
@@ -62,12 +64,12 @@ export class ParticipantsCard extends HTMLElement {
         this.innerHTML = `
             <div class="CardParticipants">
                 <div class="ParticipantsText">
-                    <h4>Participants</h4>
+                    <h4>${langParticipants[this.lang]["participants"]}</h4>
                 </div>
                 <div class="ParticipantsTeam">
                 ${this.teamSize === 2 ? (`
                     <div class="TeamTitle">
-                        <p>Red team</p>
+                        <p>${langParticipants[this.lang]["RedTeam"]}</p>
                     </div>`) : ""}
                 <div class="RedTeam"></div>
                 ${this.teamSize === 1 ? (`
@@ -76,7 +78,7 @@ export class ParticipantsCard extends HTMLElement {
                     </div>`) : ""}
                 ${this.teamSize === 2 ?( `
                     <div class="TeamTitle">
-                        <p>Blue team</p>
+                        <p>${langParticipants[this.lang]["BlueTeam"]}</p>
                     </div>`): ""}
                     <div class="BlueTeam"></div>
                 </div>
