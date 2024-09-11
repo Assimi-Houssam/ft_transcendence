@@ -407,7 +407,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
 
         if (startGame) {
             for (let i = 0; i < paddles.length; i++) {
-                if (data.minute) {
+                if (data.minute || data.second) {
                     minutes = data.minute;
                     seconds = data.second;
                     distance = data.distance;
@@ -466,5 +466,4 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
 
     before_evrything()
 
-    // evrything broke  work hard for it motherfucker
 }
