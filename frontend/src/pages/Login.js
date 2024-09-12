@@ -25,7 +25,6 @@ export class LoginPage extends HTMLElement {
 		}
 		const login_data = { username, password };
 		try {
-			// todo: display some sort of loading animation here
 			const req = await ApiWrapper.post("/login", login_data);
 			const data = await req.json();
 			event.target.disabled = false;
@@ -65,11 +64,15 @@ export class LoginPage extends HTMLElement {
 					<p class="paragraph">Please enter your credentials to continue</p>
 					<form class="login-form">
 						<div>
-							Username
+							<label>Username</label>
 							<input class="input" id="email" type="text" name="email" placeholder="username">
 						</div>
 						<div>
-							<p class="password"><span>Password</span><span><a href="/reset-password" class="forgot-password-link">Forgot password?</a></span></p>
+							<div class="password_label">
+								<span>Password</span>
+									<span><a href="/reset-password" class="forgot-password-link">Forgot password?</a>
+								</span>
+							</div>
 							<input class="input" id="password" type="password" name="password" placeholder="************">
 						</div>
 						<div class="buttons">
