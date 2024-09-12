@@ -3,6 +3,7 @@ import { genRandomString } from "../utils/utils.js";
 import { OAuthIntercept } from "../utils/utils.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js"
+import { PreloaderMini } from "../components/Loading.js";
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -12,11 +13,14 @@ export class LoginPage extends HTMLElement {
 		this.err = "";
 	}
 	async loginUser(event) {
-		// todo: block button input with animations after this is called
+		event.target.innerHTML = new PreloaderMini().outerHTML;
+		event.target.disabled = true;
 		event.preventDefault();
 		const username = this.username_elem.value;
 		const password = this.password_elem.value;
 		if (!username || !password) {
+			event.target.innerHTML = "Login";
+			event.target.disabled = false;
 			return;
 		}
 		const login_data = { username, password };
@@ -24,6 +28,8 @@ export class LoginPage extends HTMLElement {
 			// todo: display some sort of loading animation here
 			const req = await ApiWrapper.post("/login", login_data);
 			const data = await req.json();
+			event.target.disabled = false;
+			event.target.innerHTML = "Login";
 			if (!req.ok) {
 				Toast.error(data.detail);
 				return;
@@ -31,8 +37,9 @@ export class LoginPage extends HTMLElement {
 			router.navigate("/home");
 		}
 		catch (error) {
-			// display some toast notification here
-			console.log("[LoginPage]: an exception has occured:", error);
+			event.target.innerHTML = "Login";
+			event.target.disabled = false;
+			Toast.err("Error : an error has occured, please try again later");
 		}
 	}
 	OAuthLogin(event) {
@@ -66,7 +73,7 @@ export class LoginPage extends HTMLElement {
 							<input class="input" id="password" type="password" name="password" placeholder="************">
 						</div>
 						<div class="buttons">
-							<button class="primary-btn" data="Login"></button>
+							<button class="primary-btn">Login</button>
 							<p class="space">OR</p>
 							<button class="secondary-btn"><span><img src="../../assets/images/42.svg" alt="42" class="fortyTwo"></span><span>Login with Intranet</span></button>
 						</div>
