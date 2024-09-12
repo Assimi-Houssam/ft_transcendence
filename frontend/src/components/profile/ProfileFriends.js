@@ -2,12 +2,15 @@ import { router } from "../../routes/routes.js";
 import ApiWrapper from "../../utils/ApiWrapper.js";
 import { PreloaderMini } from "../Loading.js";
 import Toast from "../Toast.js";
+import { langSuccess } from "../../utils/translate/gameTranslate.js";
+import { langProfileFriends } from "../../utils/translate/gameTranslate.js";
 
 export class FriendsCard extends HTMLElement {
   constructor(user) {
     super();
     this.user  = user;
     this.status = this.user.online_status;
+    this.lang = localStorage.getItem("lang");
   }
 
   async unfriendHandler(e) {
@@ -15,11 +18,11 @@ export class FriendsCard extends HTMLElement {
     const res = await ApiWrapper.post(`/unfriend/${this.user.id}`);
     const json = await res.json();
     if (res.status === 200) {
-      Toast.success(this.user.username + " Has been removed from your friend list");
+      Toast.success(this.user.username + langSuccess[this.lang]["SuccessRemoved"]);
       const parrent = document.getElementById("friends_list")
       parrent.removeChild(this);
       if (parrent.children.length === 0)
-        parrent.innerHTML = `<p class="no_friends"> You have no friends right now to display</p>`
+        parrent.innerHTML = `<p class="no_friends">${langProfileFriends[this.lang]["NoFriends"]}</p>`
     } else {
       Toast.success(json.detail);
     }
@@ -31,7 +34,7 @@ export class FriendsCard extends HTMLElement {
         <img src="${ApiWrapper.getUrl()}${this.user.pfp}" >
         <div>
           <h2>${this.user.username}</h2>
-          <p class="friend_status ${this.status ? "online" : "offline"}">${this.status ? "online" : "offline"}</p>
+          <p class="friend_status ${this.status ? "online" : "offline"}">${this.status ? langProfileFriends[this.lang]["Online"] : langProfileFriends[this.lang]["Offline"]}</p>
         </div>
       </a>
       <button id="unfriend_btn">
@@ -50,17 +53,18 @@ export class ProfileFriends extends HTMLElement {
   constructor(user) {
     super();
     this.user = user;
+    this.lang = localStorage.getItem("lang");
   }
 
   connectedCallback() {
     this.innerHTML = `
-        <h1 class="profile_friends_title">Friends List</h1>
+        <h1 class="profile_friends_title">${langProfileFriends[this.lang]["FriendsList"]}</h1>
         <div id="friends_list"></div>
     `;
     const friendsList = document.getElementById("friends_list")
     this?.user?.friends.length > 0 ?
       this.user.friends.map(item => friendsList.appendChild(new FriendsCard(item)))
-    : friendsList && (friendsList.innerHTML = '<p class="no_friends"> You have no friends right now to display</p>');
+    : friendsList && (friendsList.innerHTML = `<p class="no_friends">${langProfileFriends[this.lang]["NoFriends"]}</p>`);
   }
 }
 

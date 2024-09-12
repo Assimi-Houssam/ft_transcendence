@@ -2,6 +2,7 @@ import { router } from "../../../routes/routes.js";
 import Toast from "../../Toast.js";
 import { RoomPage } from "../../../pages/RoomPage.js";
 import { langRoomCard } from "../../../utils/translate/gameTranslate.js";
+import { langErrors } from "../../../utils/translate/gameTranslate.js";
 
 export class RoomInfoCard extends HTMLElement {
     constructor(roomData, enabled = false) {
@@ -52,11 +53,11 @@ export class RoomInfoCard extends HTMLElement {
                 if (!this.enabled)
                     return;
                 if (this.roomData.users.length === Number(this.roomData.teamSize) * 2) {
-                    Toast.error(langRoomCard[this.lang]["ErrorFull"]);
+                    Toast.error(langErrors[this.lang]["ErrorFull"]);
                     return;
                 }
                 if (this.roomData.started === "true") {
-                    Toast.error(langRoomCard[this.lang]["ErrorStarted"]);
+                    Toast.error(langErrors[this.lang]["ErrorStarted"]);
                     return;
                 }
                 router.navigate("/room/" + this.roomData.id, new RoomPage(this.roomData));

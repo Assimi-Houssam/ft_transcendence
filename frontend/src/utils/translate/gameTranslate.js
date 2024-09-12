@@ -1,42 +1,3 @@
-export const langGameOptions = {
-    en : {
-        gameMode : "Game Mode",
-        gameTime : "Time",
-        teamSize : "Team Size",
-        customizations : "Customizations",
-    },
-    fr : {
-        gameMode : "Mode de jeu",
-        gameTime : "Temps",
-        teamSize : "Taille de l'équipe",
-        customizations : "Personnalisations",
-    },
-    es : {
-        gameMode : "Modo de juego",
-        gameTime : "Hora",
-        teamSize : "Tamaño del equipo",
-        customizations : "Personalizaciones",
-    }
-}
-
-export const langRoomPage = {
-    en : {
-        startGame : "Start game!",
-        notEnoughPlayers : "Unable to start the game: not enough players in the room",
-    },
-    fr : {
-        startGame : "Commencer le jeu!",
-        notEnoughPlayers : "Impossible de démarrer le jeu: pas assez de joueurs dans la salle",
-    },
-    es : {
-        startGame : "¡Comienza el juego!",
-        notEnoughPlayers : "No se pueden iniciar el juego: no hay suficientes jugadores en la sala",
-    }
-}
-
-
-
-// ////////////////////////////////////////////////////////////////////////////////////
 export const langOfflineMode = {
     en : {
         BtnOfflineMode : "Offline Mode",
@@ -56,41 +17,30 @@ export const langOfflineGame = {
     en : {
         BtnStartGame : "Start game!",
         notEnoughPlayers : "Unable to start the game: not enough players in the room",
-        ErrorEmpty : "Some fields are empty",
-        ErrorUnique : "Usernames should be unique",
         OfflineTournament : "Offline Tournament",
-        Success : "Game started!",
+
     },
     fr : {
         BtnStartGame : "Commencer le jeu!",
         notEnoughPlayers : "Impossible de démarrer le jeu: pas assez de joueurs dans la salle",
-        ErrorEmpty : "Certains champs sont vides",
-        ErrorUnique : "Les noms d'utilisateur doivent être uniques",
         OfflineTournament : "Tournoi hors ligne",
-        Success : "Jeu commencé!",
     },
     es : {
         BtnStartGame : "¡Comienza el juego!",
         notEnoughPlayers : "No se pueden iniciar el juego: no hay suficientes jugadores en la sala",
-        ErrorEmpty : "Algunos campos están vacíos",
-        ErrorUnique : "Los nombres de usuario deben ser únicos",
         OfflineTournament : "Torneo fuera de línea",
-        Success : "¡Juego comenzado!",
     }
 }
 
 export const langTournament = {
     en : {
         PlaceHolder : "player name",
-
     },
     fr : {
         PlaceHolder : "nom du joueur",
-
     },
     es : {
         PlaceHolder : "nombre del jugador",
-
     }
 }
 
@@ -152,18 +102,12 @@ export const langEditRoomName = {
 
     en : {
         editRoomName : "Edit Room Name",
-        ErrorNameLen : "You can't set a name more than 25 characters",
-        ErrorEmpty : "You can't set an empty name",
     },
     fr : {
         editRoomName : "Modifier le nom de la salle",
-        ErrorNameLen : "Vous ne pouvez pas définir un nom de plus de 25 caractères",
-        ErrorEmpty : "Vous ne pouvez pas définir un nom vide",
     },
     es : {
         editRoomName : "Editar nombre de la sala",
-        ErrorNameLen : "No puedes establecer un nombre de más de 25 caracteres",
-        ErrorEmpty : "No puedes establecer un nombre vacío",
     }
 }
 
@@ -203,7 +147,6 @@ export const langInviteFriendsPopup = {
     }
 }
 
-
 export const langParticipants = {
     en : {
         participants : "Participants",
@@ -232,20 +175,14 @@ export const langRoomCard = {
     en : {
         players : "Players",
         hostedBy : "hosted by",
-        ErrorFull : "This room is full",
-        ErrorStarted : "This room has already started",
     },
     fr : {
         players : "Joueurs",
         hostedBy : "hébergé par",
-        ErrorFull : "Cette salle est pleine",
-        ErrorStarted : "Cette salle a déjà commencé",
     },
     es : {
         players : "Jugadores",
         hostedBy : "organizado por",
-        ErrorFull : "Esta sala está llena",
-        ErrorStarted : "Esta sala ya ha comenzado",
     }
 }
 
@@ -291,33 +228,26 @@ export const langConfirmPassPopup = {
         ConfirmPass : "Please enter your password to continue",
         PlaceHolder : "Password",
         BtnConfirm : "Confirm",
-        ConfirmPassword : "Confirm Password",
     },
     fr : {
         Title : "Confirmer le mot de passe",
         ConfirmPass : "Veuillez entrer votre mot de passe pour continuer",
         PlaceHolder : "Mot de passe",
         BtnConfirm : "Confirmer",
-        ConfirmPassword : "Confirmer le mot de passe",
     },
     es : {
         Title : "Confirmar contraseña",
         ConfirmPass : "Por favor, ingrese su contraseña para continuar",
         PlaceHolder : "Contraseña",
         BtnConfirm : "Confirmar",
-        ConfirmPassword : "Confirmar contraseña",   
     }
 }
 
 export const langSettingsPage = {
     en : {
-        ErrorBanner : "Banner too long",
-        ErrorBannerType : "Banner should be an image",
         Required : "is required and can't be empty",
         PfpSizeLess : "Image size must be less than 2MB",
         TypeInvalide : "Invalid file type, only images are allowed",
-        ErrorBannerSize : "Banner should be an image",
-        ErrorFetching : "An error occured fetching user info from the server",
         bannerTitle : "Account Settings",
         BannerDesc : "Please be aware that you can only change your info twice every 12 hours",
         Authentication : "Authentication",
@@ -326,13 +256,9 @@ export const langSettingsPage = {
         Disabled : "Disabled",
     },
     fr : {
-        ErrorBanner : "Bannière trop longue",
-        ErrorBannerType : "La bannière doit être une image",
         Required : "est requis et ne peut pas être vide",
         PfpSizeLess : "La taille de l'image doit être inférieure à 2 Mo",
         TypeInvalide : "Type de fichier invalide, seules les images sont autorisées",
-        ErrorBannerSize : "La bannière doit être une image",
-        ErrorFetching : "Une erreur s'est produite lors de la récupération des informations de l'utilisateur depuis le serveur",
         bannerTitle : "Paramètres du compte",
         BannerDesc : "Veuillez noter que vous ne pouvez modifier vos informations que deux fois toutes les 12 heures",
         Authentication : "Authentification",
@@ -341,13 +267,9 @@ export const langSettingsPage = {
         Disabled : "Désactivé",
     },
     es : {
-        ErrorBanner : "Banner demasiado largo",
-        ErrorBannerType : "El banner debe ser una imagen",
         Required : "es obligatorio y no puede estar vacío",
         PfpSizeLess : "El tamaño de la imagen debe ser inferior a 2 MB",
         TypeInvalide : "Tipo de archivo no válido, solo se permiten imágenes",
-        ErrorBannerSize : "El banner debe ser una imagen",
-        ErrorFetching : "Se produjo un error al recuperar la información del usuario del servidor",
         bannerTitle : "Configuración de la cuenta",
         BannerDesc : "Tenga en cuenta que solo puede cambiar su información dos veces cada 12 horas",
         Authentication : "Autenticación",
@@ -396,5 +318,311 @@ export const langSettingUserPFP = {
         UploadAvatar : "Subir nuevo Avatar",
         DeleteAccount : "Eliminar su cuenta",
         ConfirmDelete : "Recibirá un correo electrónico para confirmar su decisión Tenga en cuenta que todos los tableros que haya creado se borrarán permanentemente.",
+    }
+}
+
+export const langLogin = {
+    en : {
+        Login : "Welcome Back",
+        Paragraph : "Please enter your credentials to continue",
+        Email : "Email",
+        EmailPlaceHold : "Username@domain.com",
+        Password : "Password",
+        ForgorPass : "Forgot password?",
+        BtnLogin : "Login",
+        secondaryBtn : "Login with Intranet",
+        Ref : "New here? create an account by clicking ",
+        Here : "here",
+    },
+    fr : {
+        Login : "Bienvenue",
+        Paragraph : "Veuillez entrer vos informations pour continuer",
+        Email : "Email",
+        EmailPlaceHold : "Name@domaine.com",
+        Password : "Mot de passe",
+        ForgorPass : "Mot de passe oublié?",
+        BtnLogin : "Connexion",
+        secondaryBtn : "Connexion avec Intranet",
+        Ref : "Nouveau ici? créez un compte en cliquant ",
+        Here : "ici",
+    },
+    es : {
+        Login : "Bienvenido de nuevo",
+        Paragraph : "Por favor ingrese sus credenciales para continuar",
+        Email : "Email",
+        EmailPlaceHold : "ombre@dominio.com",
+        Password : "Contraseña",
+        ForgorPass : "¿Olvidó su contraseña?",
+        BtnLogin : "Iniciar sesión",
+        secondaryBtn : "Iniciar sesión con Intranet",
+        Ref : "¿Nuevo aquí? cree una cuenta haciendo clic ",
+        Here : "aquí",
+    }
+}
+
+export const langRegistration = {
+    en : {
+        Registration : "Create your account",
+        Paragraph : "Please enter your data to continue",
+        Username : "Username",
+        Email : "Email",
+        EmailPlaceHold : "Username@domain.com",
+        Password : "Password",
+        RepeatPass : "Repeat Password",
+        BtnCreate : "Create Account",
+        Ref : "Already have account? login ",
+        Here : "here",
+    },
+    fr : {
+        Registration : "Créez votre compte",
+        Paragraph : "Veuillez entrer vos données pour continuer",
+        Username : "Nom d'utilisateur",
+        Email : "Email",
+        EmailPlaceHold : "Nom@domaine.com",
+        Password : "Mot de passe",
+        RepeatPass : "Répéter le mot de passe",
+        BtnCreate : "Créer un compte",
+        Ref : "Déjà un compte? connexion ",
+        Here : "ici",
+    },
+    es : {
+        Registration : "Crea tu cuenta",
+        Paragraph : "Por favor ingrese sus datos para continuar",
+        Username : "Nombre de usuario",
+        Email : "Email",
+        EmailPlaceHold : "nombre@dominio.com",
+        Password : "Contraseña",
+        RepeatPass : "Repetir contraseña",
+        BtnCreate : "Crear cuenta",
+        Ref : "¿Ya tienes una cuenta? iniciar sesión ",
+        Here : "aquí",
+    }
+}
+
+export const langForgotPassword = {
+    en : {
+        Title : "Forgot Password",
+        Paragraph : "Please enter your email address. We will send you an email to reset your password.",
+        Email : "Email",
+        EmailPlaceHold : "Username@domain.com",
+        BtnSignUp : "Sign up",
+        Ref : "Remembered your password? Login ",
+        Here : "here",
+    },
+    fr : {
+        Title : "Mot de passe oublié",
+        Paragraph : "Veuillez entrer votre adresse e-mail. Nous vous enverrons un e-mail pour réinitialiser votre mot de passe.",
+        Email : "Email",
+        EmailPlaceHold : "Nom@domaine.com",
+        BtnSignUp : "S'inscrire",
+        Ref : "Vous avez oublié votre mot de passe? Connexion ",
+        Here : "ici",
+    },
+    es : {
+        Title : "Olvidé mi contraseña",
+        Paragraph : "Por favor ingrese su dirección de correo electrónico. Le enviaremos un correo electrónico para restablecer su contraseña.",
+        Email : "Email",
+        EmailPlaceHold : "nombre@dominio.com",
+        BtnSignUp : "Regístrate",
+        Ref : "¿Recordaste tu contraseña? Iniciar sesión ",
+        Here : "aquí",
+    }
+}
+
+export const langProfileStatistics = {
+    en : {
+        Statistics : "Statistics",
+        Wins : "WINS",
+        Xp : "YOUR XP",
+        MatchesPlayed : "MATCHES PLAYED",
+    },
+    fr : {
+        Statistics : "Statistiques",
+        Wins : "VICTOIRES",
+        Xp : "VOTRE XP",
+        MatchesPlayed : "MATCHES JOUÉS",
+    },
+    es : {
+        Statistics : "Estadísticas",
+        Wins : "VICTORIAS",
+        Xp : "TU XP",
+        MatchesPlayed : "PARTIDOS JUGADOS",
+    }
+}
+
+export const langProfileInfo = {
+    en : {
+        Unblock : "Unblock",
+        Block : "Block",
+        Joined : "Joined",
+        Online : "Online",
+        Offline : "Offline",
+    },
+    fr : {
+        Unblock : "Débloquer",
+        Block : "Bloquer",
+        Joined : "Rejoint",
+        Online : "En ligne",
+        Offline : "Hors ligne",
+    },
+    es : {
+        Unblock : "Desbloquear",
+        Block : "Bloquear",
+        Joined : "Unido",
+        Online : "En línea",
+        Offline : "Desconectado",
+    }
+}
+
+export const langProfileGraph = {
+    en : {
+        ProfileTitles : "Scores graph",
+        EmptySection : "No matches played to display graph",
+    },
+    fr : {
+        ProfileTitles : "Graphique des scores",
+        EmptySection : "Aucun match joué pour afficher le graphique",
+    },
+    es : {
+        ProfileTitles : "Gráfico de puntuaciones",
+        EmptySection : "No se han jugado partidos para mostrar el gráfico",
+    }
+}
+
+export const langMatchHistory = {
+    en : {
+        MatchHistory : "Match History",
+        NoMatches : "No matches played",
+    },
+    fr : {
+        MatchHistory : "Historique des matchs",
+        NoMatches : "Aucun match joué",
+    },
+    es : {
+        MatchHistory : "Historial de partidos",
+        NoMatches : "No se han jugado partidos",
+    }
+}
+
+export const langProfileFriends = {
+    en : {
+        NoFriends : "You have no friends right now to display",
+        FriendsList : "Friends List",
+        Online : "Online",
+        Offline : "Offline",
+    },
+    fr : {
+        NoFriends : "Vous n'avez actuellement aucun ami à afficher",
+        FriendsList : "Liste d'amis",
+        Online : "En ligne",
+        Offline : "Hors ligne",
+    },
+    es : {
+        NoFriends : "No tienes amigos en este momento para mostrar",
+        FriendsList : "Lista de amigos",
+        Online : "En línea",
+        Offline : "Desconectado",
+    }
+}
+
+export const langErrors = {
+    en : {
+        //OfflineGame.js
+        ErrorEmptyOffGame : "Some fields are empty",
+        ErrorUnique : "Usernames should be unique",
+        //EditRoomName.js
+        ErrorNameLen : "You can't set a name more than 25 characters",
+        ErrorEmpty : "You can't set an empty name",
+        //RoomCard.js
+        ErrorFull : "This room is full",
+        ErrorStarted : "This room has already started",
+        //SettingsPage.js
+        ErrorBanner : "Banner too long",
+        ErrorBannerType : "Banner should be an image",
+        ErrorFetching : "An error occured fetching user info from the server",
+        //ConfirmPassPopup.js
+        ErrorConfPassword : "Confirm Password",
+        //Profile.js
+        ErrorFaildGetFriends : "Faild to get your friends requests",
+        //Registration.js
+        ErrorPassNotMatch : "Passwords do not match.",
+        ErrorInternalServer : "An internal server error occured.",
+        //RoomPage.js
+        ErrorRoomDoesntExist : "The room doesnt exist anymore",
+        ErrorKickedRoom : "You've been kicked from the room",
+        ErrorDisconnectedRoom :"You have been disconnected from the room",
+        //404.js
+        ErrorNotFound : "404 Not Found",
+    },
+    fr : {
+        //OfflineGame.js
+        ErrorEmptyOffGame : "Certains champs sont vides",
+        ErrorUnique : "Les noms d'utilisateur doivent être uniques",       
+        //EditRoomName.js
+        ErrorNameLen : "Vous ne pouvez pas définir un nom de plus de 25 caractères",
+        ErrorEmpty : "Vous ne pouvez pas définir un nom vide",
+        //RoomCard.js
+        ErrorFull : "Cette salle est pleine",
+        ErrorStarted : "Cette salle a déjà commencé",
+        //SettingsPage.js
+        ErrorBanner : "Bannière trop longue",
+        ErrorBannerType : "La bannière doit être une image",
+        ErrorFetching : "Une erreur s'est produite lors de la récupération des informations de l'utilisateur depuis le serveur",
+        //ConfirmPassPopup.js
+        ErrorConfPassword : "Confirmer le mot de passe",
+        //Profile.js
+        ErrorFaildGetFriends : "Impossible de récupérer vos demandes d'amis",
+        //Registration.js
+        ErrorPassNotMatch : "Les mots de passe ne correspondent pas.",
+        ErrorInternalServer : "Une erreur interne du serveur s'est produite.",
+        //RoomPage.js
+        ErrorRoomDoesntExist : "La salle n'existe plus",
+        ErrorKickedRoom : "Vous avez été expulsé de la salle",
+        ErrorDisconnectedRoom : "Vous avez été déconnecté de la salle",
+        //404.js
+        ErrorNotFound : "404 Not Found",
+    },
+    es : {
+        //OfflineGame.js
+        ErrorEmptyOffGame : "Algunos campos están vacíos",
+        ErrorUnique : "Los nombres de usuario deben ser únicos",
+        //EditRoomName.js
+        ErrorNameLen : "No puedes establecer un nombre de más de 25 caracteres",
+        ErrorEmpty : "No puedes establecer un nombre vacío",
+        //RoomCard.js
+        ErrorFull : "Esta sala está llena",
+        ErrorStarted : "Esta sala ya ha comenzado",
+        //SettingsPage.js
+        ErrorBanner : "Banner demasiado largo",
+        ErrorBannerType : "El banner debe ser una imagen",
+        ErrorFetching : "Se produjo un error al recuperar la información del usuario del servidor",
+        //ConfirmPassPopup.js
+        ErrorConfPassword : "Confirmar contraseña",
+        //Profile.js
+        ErrorFaildGetFriends : "Error al obtener sus solicitudes de amigos",
+        //Registration.js
+        ErrorPassNotMatch : "Las contraseñas no coinciden.",
+        ErrorInternalServer : "Se produjo un error interno del servidor.",
+        // RoomPage.js
+        ErrorRoomDoesntExist : "La sala ya no existe",
+        ErrorKickedRoom : "Has sido expulsado de la sala",
+        ErrorDisconnectedRoom : "Has sido desconectado de la sala",
+        //404.js
+        ErrorNotFound : "404 No encontrado",
+    }
+}
+
+export const langSuccess = {
+    en : {
+        SuccessRemoved : " Has been removed from your friend list",
+        SuccessStartGame : "Game started!",
+    },
+    fr : {
+        SuccessRemoved : " a été supprimé de votre liste d'amis",
+        SuccessStartGame : "Jeu commencé!",
+    },
+    es : {
+        SuccessRemoved : " Ha sido eliminado de tu lista de amigos",
+        SuccessStartGame : "¡Juego comenzado!",
     }
 }

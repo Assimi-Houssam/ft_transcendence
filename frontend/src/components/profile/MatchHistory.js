@@ -1,12 +1,15 @@
 import ApiWrapper from "../../utils/ApiWrapper.js"
 import { router } from "../../routes/routes.js";
+import { langRoomCard } from "../../utils/translate/gameTranslate.js";
+import { langMatchHistory } from "../../utils/translate/gameTranslate.js";
 
 export class MatchHistoryCard extends HTMLElement {
   constructor(roomData, userId = 0) {
     super();
     this.roomData = roomData;
     this.userId = Number(router.route.params["userID"]);
-    this.classList.add("RoomListContainerBtn")
+    this.classList.add("RoomListContainerBtn");
+    this.lang = localStorage.getItem("lang");
   }
 
   connectedCallback() {
@@ -84,7 +87,7 @@ export class MatchHistoryCard extends HTMLElement {
                       <p id="SizePlayers" style="color: ${color};">${winCondition}</p>
                   </div>
                   <div class="RoomHosted">
-                      <p>hosted by <span style="color: var(--orchid)">${this.roomData.host}<span></p>
+                      <p>${langRoomCard[this.lang]["hostedBy"]} <span style="color: var(--orchid)">${this.roomData.host}<span></p>
                   </div>
                   <div class="RoomUsers"> ${this.roomData.players.map(user => `<img src="http://localhost:8000${user.pfp}" width="20px">`).join('')}</div>
               </div>
@@ -100,17 +103,18 @@ export class MatchHistory extends HTMLElement {
   constructor(scores) {
     super();
     this.scores = scores;
+    this.lang = localStorage.getItem("lang");
   }
   async connectedCallback() {
     if (!this.scores.length) {
       this.innerHTML = `
-        <h2 class="profile_titles">Match History</h2>
-        <div class="empty-section">No matches played</div>
+        <h2 class="profile_titles">${langMatchHistory[this.lang]["MatchHistory"]}</h2>
+        <div class="empty-section">${langMatchHistory[this.lang]["NoMatches"]}</div>
       `;
       return;
     }
     this.innerHTML = `
-      <h2 class="profile_titles">Match History</h2>
+      <h2 class="profile_titles">${langMatchHistory[this.lang]["MatchHistory"]}</h2>
       <div id="match_historys"></div>`;
     const matchHistorysParrent = document.getElementById("match_historys");
     let index = 0;

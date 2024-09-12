@@ -4,6 +4,7 @@ import ApiWrapper from "../../utils/ApiWrapper.js"
 import Toast from "../Toast.js";
 import { router } from "../../routes/routes.js";
 import { ProfileGraph } from "./ProfileGraph.js";
+import { langProfileInfo } from "../../utils/translate/gameTranslate.js";
 
 export class ProfileActions extends HTMLElement {
   constructor(user, auth, requests) {
@@ -11,6 +12,7 @@ export class ProfileActions extends HTMLElement {
     this.user = user;
     this.auth = auth;
     this.friendRequest = requests;
+    this.lang = localStorage.getItem("lang");
   }
   async addFriendEven() {
     const res = await ApiWrapper.post(`/friends/send_request/${this.user.id}`);
@@ -54,8 +56,8 @@ export class ProfileActions extends HTMLElement {
       }
       ${
         this.auth.block_list.find(item => item.id === this.user.id) != undefined ? 
-          `<button id="unblock_user">Unblock</button>`
-          : `<button id="block_user">Block</button>`
+          `<button id="unblock_user">${langProfileInfo[this.lang]["Unblock"]}</button>`
+          : `<button id="block_user">${langProfileInfo[this.lang]["Block"]}</button>`
       }
     `
     const addFriendBtn = document.getElementById("add_friend");
@@ -74,6 +76,7 @@ export class ProfileInfo extends HTMLElement {
     this.classList.add("profile_left_items");
     this.status = this.user.online_status;
     this.scores = scores;
+    this.lang = localStorage.getItem("lang");
   }
 
   connectedCallback() {
@@ -83,12 +86,12 @@ export class ProfileInfo extends HTMLElement {
         id="profile_banner"> </div>
       <div class="profile_user_info">
         <div class="profile_user_info_left_items">
-            <img id="profile_pfp"  src="${ApiWrapper.getUrl() + this.user.pfp}" alt="user profile">
+            <img id="profile_pfp" src="${ApiWrapper.getUrl() + this.user.pfp}" alt="user profile">
             <div>
               <h2 id="profile_login">${this.user.username}</h2>
               <div class="profile_joined">
-                <p id="joined">Joined ${new Date(this.user.date_joined).toDateString("en-US")}</p>
-                <p id="${this.status ? "online" : "offline"}">${this.status ? "online" : "offline"}</p>
+                <p id="joined">${langProfileInfo[this.lang]["Joined"]} ${new Date(this.user.date_joined).toDateString("en-US")}</p>
+                <p id="${this.status ? "online" : "offline"}">${this.status ? langProfileInfo[this.lang]["Online"] : langProfileInfo[this.lang]["Offline"]}</p>
               </div>
             </div>
         </div>

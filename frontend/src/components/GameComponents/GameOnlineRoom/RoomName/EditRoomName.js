@@ -1,6 +1,7 @@
 import Toast from "../../../Toast.js";
 import { RoomName } from "./RoomName.js";
 import { langEditRoomName } from "../../../../utils/translate/gameTranslate.js";
+import { langErrors } from "../../../../utils/translate/gameTranslate.js";
 
 export class EditRoomName extends HTMLElement {
     constructor(name = "") {
@@ -30,10 +31,10 @@ export class EditRoomName extends HTMLElement {
 
         const saveRoomName = () => {
             if (this.roomName.length > 25) {
-                Toast.error(langEditRoomName[this.lang]["ErrorNameLen"]);
+                Toast.error(langErrors[this.lang]["ErrorNameLen"]);
                 return;
             } else if (this.roomName === "") {
-                Toast.error(langEditRoomName[this.lang]["ErrorEmpty"]);
+                Toast.error(langErrors[this.lang]["ErrorEmpty"]);
                 return;
             }
             changeTitleRoom.replaceChildren(new RoomName(this.roomName));

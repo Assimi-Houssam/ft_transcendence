@@ -1,25 +1,42 @@
+import { langErrors } from "../utils/translate/gameTranslate.js";
+
 export default class Error404 extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+        this.lang = localStorage.getItem("lang");
         this.render();
     }
 
     render() {
         this.shadowRoot.innerHTML = `
             <style>
+                @keyframes fadeInBounce {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(-50px);
+                    }
+                    70% {
+                        transform: translateY(10px);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
                 .error {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    height: 100%;
-                    font-size: 3rem;
+                    height: 94vh;
+                    font-size: 5rem;
                     color: #f00;
-                    marginTop: 20px;
+                    margin-top: 20px;
+                    animation: fadeInBounce 2s ease-out;
                 }
             </style>
             <div class="error">
-                404 Not Found
+                <p>${langErrors[this.lang]["ErrorNotFound"]}</p>
             </div>
         `;
     }

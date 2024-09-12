@@ -9,6 +9,7 @@ import { MessageBox } from "../components/MessageBox.js";
 import { forceUpdateUserInfo, getUserInfo } from "../utils/utils.js";
 import { langConfirmPassPopup } from "../utils/translate/gameTranslate.js";
 import { langSettingsPage } from "../utils/translate/gameTranslate.js";
+import { langErrors } from "../utils/translate/gameTranslate.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
@@ -170,7 +171,7 @@ export class SettingsPage extends HTMLElement {
         this.updateProfile,
         "",
         "",
-        langConfirmPassPopup[this.lang]["ConfirmPassword"], true
+        langConfirmPassPopup[this.lang]["ErrorConfPassword"], true
       ).show();
     });
   }
@@ -183,7 +184,7 @@ export class SettingsPage extends HTMLElement {
   changeBanner(e) {
     const file = e.target.files[0];
     if (file.size > 5000000) {
-      Toast.error(langConfirmPassPopup[this.lang]["ConfirmPassword"])
+      Toast.error(langConfirmPassPopup[this.lang]["ErrorBanner"])
       return;
     } else if (!file.type.includes("image")) {
       Toast.error(langSettingsPage[this.lang]["ErrorBannerSize"])

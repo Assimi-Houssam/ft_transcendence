@@ -6,6 +6,7 @@ import { Loader, PreloaderMini } from "../components/Loading.js";
 import { ProfileActions } from "../components/profile/ProfileInfo.js";
 import Toast from "../components/Toast.js";
 import { getUserInfo } from "../utils/utils.js";
+import { langErrors } from "../utils/translate/gameTranslate.js";
 
 export class Profile extends HTMLElement {
   constructor() {
@@ -37,7 +38,7 @@ export class Profile extends HTMLElement {
     if (res.status === 200)
       this.friendRequest = json;
     else
-      Toast.error("Faild to get your friends requests");
+      Toast.error(langErrors[localStorage.getItem("lang")]["ErrorFaildGetFriends"]);
   }
 
   //to set the  acions button (add as friend, send message, block)

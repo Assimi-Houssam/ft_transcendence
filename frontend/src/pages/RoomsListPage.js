@@ -7,6 +7,7 @@ import { RoomPage } from "./RoomPage.js";
 import Toast from "../components/Toast.js";
 import { PreloaderMini } from "../components/Loading.js";
 import { langRoomInfoCard } from "../utils/translate/gameTranslate.js";
+import { langErrors } from "../utils/translate/gameTranslate.js";
 
 export class RoomsListPage extends HTMLElement {
     constructor() {
@@ -48,7 +49,7 @@ export class RoomsListPage extends HTMLElement {
         this.querySelector(".CreateRoomBtn").onclick = async () => {
             const req = await ApiWrapper.post("/rooms/create");
             if (req.status === 500) {
-                Toast.error("An internal server error occured");
+                Toast.error(langErrors[localStorage.getItem("lang")]["ErrorInternalServer"]);
                 return;
             }
             if (!req.ok) {

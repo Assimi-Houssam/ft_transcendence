@@ -3,6 +3,7 @@ import { genRandomString } from "../utils/utils.js";
 import { OAuthIntercept } from "../utils/utils.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js"
+import { langLogin } from "../utils/translate/gameTranslate.js";
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -10,6 +11,7 @@ export class LoginPage extends HTMLElement {
 		this.loginUser = this.loginUser.bind(this);
 		this.OAuthLogin = this.OAuthLogin.bind(this);
 		this.err = "";
+		this.lang = localStorage.getItem("lang");
 	}
 	async loginUser(event) {
 		// todo: block button input with animations after this is called
@@ -54,24 +56,24 @@ export class LoginPage extends HTMLElement {
 			<div class="login-page">
 				<div class="login-container">
 					<img src="../../assets/images/logo.png" alt="Logo" class="logo">
-					<h1>Welcome Back</h1>
-					<p class="paragraph">Please enter your credentials to continue</p>
-					<form class="login-form">
+					<h1>${langLogin[this.lang]["Login"]}</h1>
+					<p class="paragraph">${langLogin[this.lang]["Paragraph"]}</p>
+					<form class="login-form"> 
 						<div>
-							Email
-							<input class="input" id="email" name="email" placeholder="e.g.dummy@domain.com">
+							${langLogin[this.lang]["Email"]}
+							<input class="input" id="email" name="email" placeholder="${langLogin[this.lang]["EmailPlaceHold"]}">
 						</div>
 						<div>
-							<p class="password"><span>Password</span><span><a href="/reset-password" class="forgot-password-link">Forgot password?</a></span></p>
+							<p class="password"><span>${langLogin[this.lang]["Password"]}</span><span><a href="/reset-password" class="forgot-password-link">${langLogin[this.lang]["ForgorPass"]}</a></span></p>
 							<input class="input" id="password" type="password" name="password" placeholder="************">
 						</div>
 						<div class="buttons">
-							<button class="primary-btn" data="Login"></button>
+							<button class="primary-btn" data="${langLogin[this.lang]["BtnLogin"]}"></button>
 							<p class="space">OR</p>
-							<button class="secondary-btn"><span><img src="../../assets/images/42.svg" alt="42" class="fortyTwo"></span><span>Login with Intranet</span></button>
+							<button class="secondary-btn"><span><img src="../../assets/images/42.svg" alt="42" class="fortyTwo"></span><span>${langLogin[this.lang]["secondaryBtn"]}</span></button>
 						</div>
 					</form>
-					<p class="ref">New here? create an account by clicking <a class="anchor" href="/register">here</a></p>
+					<p class="ref">${langLogin[this.lang]["Ref"]}<a class="anchor" href="/register">${langLogin[this.lang]["Here"]}</a></p>
 					</div>
 			</div>
 		`;
