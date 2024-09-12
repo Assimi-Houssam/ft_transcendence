@@ -33,11 +33,16 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def notification_received(self, event):
         await self.send(text_data=json.dumps({"notification": event["message"]}))
 
+    async def message_received(self, event):
+        await self.send(text_data=json.dumps({"message": event["message"]}))
+
     async def receive(self, text_data):
         try:
             event = json.loads(text_data)
         except:
             await self.close()
             return
-        await self.channel_layer.group_send(str(self.user_id), {"type": event["type"], "message": event["message"]})
-        pass
+        if (event["type"] == "notification_received"):
+            await self.channel_layer.group_send(str(self.user_id), {"type": event["type"], "message": event["message"]})
+        else:
+            print(f"broadcast this to: {event}")

@@ -132,9 +132,18 @@ export class NotificationCenter extends HTMLElement {
             if (!e.target.className.startsWith("notification") && !e.target.localName.startsWith("notification"))
                 this.hide();
         }
+        document.addEventListener("notiSendDM", () => {
+            console.log("notSendDm evt catched");
+        });
     }
     onNotificationReceived(evt) {
-        const incommingNoti = JSON.parse(evt.data).notification;
+        const incommingNoti = JSON.parse(evt.data);
+
+        if (incommingNoti.hasOwnProperty("message")) {
+            document.dispatchEvent(new CustomEvent("notiReceivedDm", {detail: incommingNoti, bubbles: true}));
+            return;
+        }
+
         const notiElem = new Notification(incommingNoti);
         notiElem.style.opacity = '1';
         notiElem.style.marginLeft = "0%";

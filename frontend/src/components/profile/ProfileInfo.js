@@ -62,6 +62,12 @@ export class ProfileActions extends HTMLElement {
     if (addFriendBtn) addFriendBtn.onclick = () => this.addFriendEven();
     const acceptFriendBtn = document.getElementById("accept_friend_request");
     if (acceptFriendBtn) acceptFriendBtn.onclick = () => this.acceptFriendRequest();
+    const sendDirectMessage = document.getElementById("send_message");
+    if (sendDirectMessage) sendDirectMessage.onclick = () => {
+      const evtDetail = { userId: this.user.id, username: this.user.username, pfp: this.user.pfp };
+      console.log("detail:", evtDetail);
+      document.dispatchEvent(new CustomEvent("chatDmStarted", {detail: evtDetail, bubbles: true})); 
+    }
   }
 }
 

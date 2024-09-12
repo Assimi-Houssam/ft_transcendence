@@ -1,11 +1,12 @@
 import getUserInfo from "../utils/services/userInfo.services.js";
 
 export class ChatSidebarEntry extends HTMLElement {
-    constructor(name) {
+    constructor(name, id) {
         super();
         this.name = name;
         this.message_container = new ChatMessagesContainer();
         this.addEventListener("click", this.clickEventHandler.bind(this));
+        this.id = id;
     }
     clickEventHandler() {
         this.dispatchEvent(new CustomEvent("chatEntryClick", { detail: this, bubbles: true }));
@@ -25,8 +26,7 @@ export class ChatSidebar extends HTMLElement {
     constructor() {
         super();
         this.sidebar_entries = [];
-        this.sidebar_entries.push(new ChatSidebarEntry("#general"));
-        this.sidebar_entries.push(new ChatSidebarEntry("#test"));
+        this.sidebar_entries.push(new ChatSidebarEntry("#general", -1));
         this.active_sidebar_entry = this.sidebar_entries[0];
     }
     connectedCallback() {
@@ -37,13 +37,19 @@ export class ChatSidebar extends HTMLElement {
     getActiveSidebarEntry() {
         return this.active_sidebar_entry;
     }
-    appendMessage(channel_name, msg) {
+    appendMessage(id, msg) {
         for (let sidebarEntry of this.sidebar_entries) {
-            if (channel_name === sidebarEntry.name) {
+            if (id == sidebarEntry.id) {
                 console.log(msg)
                 sidebarEntry.onMessageReceived(msg.time, msg.username, msg.message);
             }
         }
+    }
+    createSideBarEntry(userId, username, pfp) {
+        const newEntry = new ChatSidebarEntry(username, userId);
+        this.sidebar_entries.push(newEntry);
+        this.active_sidebar_entry = newEntry;
+        this.connectedCallback();
     }
 }
 
@@ -151,18 +157,41 @@ export class ChatPopup extends HTMLElement {
         this.ws.onmessage = this.handleWsMessage.bind(this);
         this.addEventListener("chatPopupInputEnter", (evt) => {
             const msg = evt.detail;
-            console.log("msg aaa:", msg);
-            this.ws.send(JSON.stringify({"message": msg}));
+            console.log("active sidebar entry:", this.sidebar.getActiveSidebarEntry().id);
+            if (this.sidebar.getActiveSidebarEntry().id == -1) {
+                console.log("msg aaa:", msg);
+                this.ws.send(JSON.stringify({"message": msg}));
+            }
+            else {
+                console.log("sending dm to notificiation");
+                const evt_detail = {
+                    message: msg,
+                    userId: this.sidebar.getActiveSidebarEntry().id
+                }
+                document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evt_detail, bubbles: true}));
+            }
         });
         this.addEventListener("chatEntryClick", (evt) => {
             const sidebar_entry = evt.detail;
             this.chatMain.replaceMessageContainer(sidebar_entry.message_container);
+            this.sidebar.active_sidebar_entry = evt.detail;
             console.log("entry clicked:", evt.detail.name);
         });
+        document.addEventListener("notiReceivedDm", this.handleDirectMessage.bind(this));
+        document.addEventListener("chatDmStarted", this.startChatDm.bind(this));
+    }
+    startChatDm(evt) {
+        const userInfo = evt.detail;
+        console.log("chat dm userinfo:", userInfo);
+        this.show();
+        this.sidebar.createSideBarEntry(userInfo.id, userInfo.username, userInfo.pfp);
+    }
+    handleDirectMessage(evt) {
+
     }
     handleWsMessage(evt) {
         const msg = JSON.parse(evt.data);
-        this.sidebar.appendMessage("#general", msg);
+        this.sidebar.appendMessage(-1, msg);
         console.log("received message from server:", msg);
         
     }
