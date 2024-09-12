@@ -7,6 +7,8 @@ import userInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import { MessageBox } from "../components/MessageBox.js";
 import { forceUpdateUserInfo, getUserInfo } from "../utils/utils.js";
+import { langConfirmPassPopup } from "../utils/translate/gameTranslate.js";
+import { langSettingsPage } from "../utils/translate/gameTranslate.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
@@ -14,6 +16,7 @@ export class SettingsPage extends HTMLElement {
     this.updateProfile = this.updateProfile.bind(this);
     this.userData = {};
     this.is2FAEnable = false; //tmp, TODO: get boolean from backedn
+    this.lang = localStorage.getItem("lang");
   }
 
   /**
@@ -128,7 +131,7 @@ export class SettingsPage extends HTMLElement {
       if (!data[key] &&  !optionKeys.find((option) => option === key)) {
         document.getElementsByClassName(
           "user_" + key + "_err"
-        )[0].innerHTML = `${key} is required and can't be empty`;
+        )[0].innerHTML = `${key} ${langSettingsPage[this.lang]["Required"]}`;
         return false;
       }
 
@@ -137,11 +140,11 @@ export class SettingsPage extends HTMLElement {
         if (!file) return true;
         if (file.size > 5000000) {
           document.getElementsByClassName("user_pfp_err")[0].innerHTML =
-            "Image size must be less than 2MB";
+            $langSettingsPage[this.lang]["PfpSizeLess"];
           return false;
         } else if (!file.type.includes("image")) {
           document.getElementsByClassName("user_pfp_err")[0].innerHTML =
-            "Invalid file type, only images are allowed";
+            langSettingsPage[this.lang]["TypeInvalide"];
           return false;
         }
       }
@@ -161,13 +164,13 @@ export class SettingsPage extends HTMLElement {
         return;
       }
       new MessageBox(
-        "Confirm password",
-        "Please enter your password",
-        "Confirm",
+        langConfirmPassPopup[this.lang]["Title"],
+        langConfirmPassPopup[this.lang]["ConfirmPass"],
+        langConfirmPassPopup[this.lang]["BtnConfirm"],
         this.updateProfile,
         "",
         "",
-        "Confirm password", true
+        langConfirmPassPopup[this.lang]["ConfirmPassword"], true
       ).show();
     });
   }
@@ -180,10 +183,10 @@ export class SettingsPage extends HTMLElement {
   changeBanner(e) {
     const file = e.target.files[0];
     if (file.size > 5000000) {
-      Toast.error("Banner too long")
+      Toast.error(langConfirmPassPopup[this.lang]["ConfirmPassword"])
       return;
     } else if (!file.type.includes("image")) {
-      Toast.error("Banner should be an image")
+      Toast.error(langSettingsPage[this.lang]["ErrorBannerSize"])
       return;
     }
     const reader = new FileReader();
@@ -196,7 +199,7 @@ export class SettingsPage extends HTMLElement {
   async connectedCallback() {
     this.userData = await getUserInfo();
     if (!this.userData)
-      throw new Error("An error occured fetching user info from the server");
+      throw new Error(langSettingsPage[this.lang]["ErrorFetching"]);
     this.innerHTML = `
       <div class="settings_">
             <div ${this.userData.banner && (`style="background-image: url(http://localhost:8000${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">
@@ -208,31 +211,31 @@ export class SettingsPage extends HTMLElement {
                 <div class="gr_bg_banner"></div>
             </div>
             <div class="settings_content_body">
-                <div class="settings_text_desc">
+                <div id="settings_text_desc" class="settings_text_desc">
                     <div>
-                      <h2 id="banner_title">Account settings</h2>
-                      <p id="banner_desc">Please be aware that you can only change your info twice every 12 hours</p>
+                      <h2 id="banner_title">${langSettingsPage[this.lang]["bannerTitle"]}</h2>
+                      <p id="banner_desc">${langSettingsPage[this.lang]["BannerDesc"]}</p>
                     </div>
-                    <language-component></language-component>
                 </div>
                 <div class="settings_form_data">
                     <user-settings-form-page ></user-settings-form-page>
                     <user-settings-pfp></user-settings-pfp>
                 </div>
                 <div class="settings_2fa_auth">
-                  <h3>Two-Factor Authentication</h3>
+                  <h3>Two-Factor ${langSettingsPage[this.lang]["Authentication"]}</h3>
                   <div class="settings_two_actor_manage">
-                      <p>Two-factor authentication is currently ${
-                        this.is2FAEnable ? "Enabled" : "Disabled"
+                      <p>Two-factor ${langSettingsPage[this.lang]["ActorManage"]} ${
+                        this.is2FAEnable ? langSettingsPage[this.lang]["Enabled"] : langSettingsPage[this.lang]["Disabled"]
                       }</p>
                       <button id="twoFactorBtn">${
-                        this.is2FAEnable ? "Disable" : "Enable"
+                        this.is2FAEnable ? langSettingsPage[this.lang]["Disabled"] : langSettingsPage[this.lang]["Enabled"]
                       }</button>
                   </div>
                 </div>
             </div>
       </div>`;
     this.setInputsValues(); 
+    document.getElementById("settings_text_desc").appendChild(new LanguageComponent());
     document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
     document.getElementById("settings_banner_upload").onchange = (e) => this.changeBanner(e);
     document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);

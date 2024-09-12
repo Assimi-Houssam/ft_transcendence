@@ -34,6 +34,7 @@ export class LanguageComponent extends HTMLElement {
                 break;
             }
         }
+        // this.callBack = callBack;
     }
 
     closeDropmMenu(selectChildItems, arrowIcon) {

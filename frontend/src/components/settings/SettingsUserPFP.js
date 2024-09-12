@@ -1,8 +1,15 @@
+import { langSettingUserPFP } from "../../utils/translate/gameTranslate.js";
+
 export class SettingsUserPFP extends HTMLElement {
+    constructor() {
+        super();
+        this.lang = localStorage.getItem("lang");
+    }
+
     connectedCallback() {
         this.innerHTML = `
             <div class="user_settings_pfp_">
-                <h2 class="user_settings_pfp_label">Upload new Avatar</h2>
+                <h2 class="user_settings_pfp_label">${langSettingUserPFP[this.lang]["UploadAvatar"]}</h2>
                 <div class="user_settings_pfp_input_box">
                     <img class="settings_pfp_image" src="../../../assets/images/mamazzal.jpg" >
                     <img class="settings_pfp_camera_upload" src="../../../assets/icons/camera.png" >
@@ -10,10 +17,8 @@ export class SettingsUserPFP extends HTMLElement {
                     <div class="settings_input_error user_pfp_err"></div>
                 </div>
                 <div class="settings_pfp_delete">
-                    <button>Delete Your Account</button>
-                    <p>You will receive an email to confirm your decision
-                    Please note, that all boards you have created will be 
-                    permanently erased.</p>
+                    <button>${langSettingUserPFP[this.lang]["DeleteAccount"]}</button>
+                    <p>${langSettingUserPFP[this.lang]["ConfirmDelete"]}</p>
                 </div>
             </div>
         `

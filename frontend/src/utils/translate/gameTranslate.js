@@ -284,3 +284,117 @@ export const langSearch = {
         EnterSomthing : "Por favor, ingrese algo para comenzar a buscar.",
     }
 }
+
+export const langConfirmPassPopup = {
+    en : {
+        Title : "Confirm Password",
+        ConfirmPass : "Please enter your password to continue",
+        PlaceHolder : "Password",
+        BtnConfirm : "Confirm",
+        ConfirmPassword : "Confirm Password",
+    },
+    fr : {
+        Title : "Confirmer le mot de passe",
+        ConfirmPass : "Veuillez entrer votre mot de passe pour continuer",
+        PlaceHolder : "Mot de passe",
+        BtnConfirm : "Confirmer",
+        ConfirmPassword : "Confirmer le mot de passe",
+    },
+    es : {
+        Title : "Confirmar contraseña",
+        ConfirmPass : "Por favor, ingrese su contraseña para continuar",
+        PlaceHolder : "Contraseña",
+        BtnConfirm : "Confirmar",
+        ConfirmPassword : "Confirmar contraseña",   
+    }
+}
+
+export const langSettingsPage = {
+    en : {
+        ErrorBanner : "Banner too long",
+        ErrorBannerType : "Banner should be an image",
+        Required : "is required and can't be empty",
+        PfpSizeLess : "Image size must be less than 2MB",
+        TypeInvalide : "Invalid file type, only images are allowed",
+        ErrorBannerSize : "Banner should be an image",
+        ErrorFetching : "An error occured fetching user info from the server",
+        bannerTitle : "Account Settings",
+        BannerDesc : "Please be aware that you can only change your info twice every 12 hours",
+        Authentication : "Authentication",
+        ActorManage : "authentication is currently",
+        Enabled : "Enabled",
+        Disabled : "Disabled",
+    },
+    fr : {
+        ErrorBanner : "Bannière trop longue",
+        ErrorBannerType : "La bannière doit être une image",
+        Required : "est requis et ne peut pas être vide",
+        PfpSizeLess : "La taille de l'image doit être inférieure à 2 Mo",
+        TypeInvalide : "Type de fichier invalide, seules les images sont autorisées",
+        ErrorBannerSize : "La bannière doit être une image",
+        ErrorFetching : "Une erreur s'est produite lors de la récupération des informations de l'utilisateur depuis le serveur",
+        bannerTitle : "Paramètres du compte",
+        BannerDesc : "Veuillez noter que vous ne pouvez modifier vos informations que deux fois toutes les 12 heures",
+        Authentication : "Authentification",
+        ActorManage : "authentification est actuellement",
+        Enabled : "Activé",
+        Disabled : "Désactivé",
+    },
+    es : {
+        ErrorBanner : "Banner demasiado largo",
+        ErrorBannerType : "El banner debe ser una imagen",
+        Required : "es obligatorio y no puede estar vacío",
+        PfpSizeLess : "El tamaño de la imagen debe ser inferior a 2 MB",
+        TypeInvalide : "Tipo de archivo no válido, solo se permiten imágenes",
+        ErrorBannerSize : "El banner debe ser una imagen",
+        ErrorFetching : "Se produjo un error al recuperar la información del usuario del servidor",
+        bannerTitle : "Configuración de la cuenta",
+        BannerDesc : "Tenga en cuenta que solo puede cambiar su información dos veces cada 12 horas",
+        Authentication : "Autenticación",
+        ActorManage : "autenticación es actualmente",
+        Enabled : "Habilitado",
+        Disabled : "Deshabilitado",
+    }
+}
+
+export const langSettingUserForm = {
+    en : {
+        Username : "Username",
+        Email : "Email",
+        Password : "Password",
+        Cancel : "Cancel",
+        Save : "Save",
+    },
+    fr : {
+        Username : "Nom d'utilisateur",
+        Email : "Email",
+        Password : "Mot de passe",
+        Cancel : "Annuler",
+        Save : "Sauvegarder",
+    },
+    es : {
+        Username : "Nombre de usuario",
+        Email : "Email",
+        Password : "Contraseña",
+        Cancel : "Cancelar",
+        Save : "Guardar",
+    }
+}
+
+export const langSettingUserPFP = {
+    en : {
+        UploadAvatar : "Upload new Avatar",
+        DeleteAccount : "Delete Your Account",
+        ConfirmDelete : "You will receive an email to confirm your decision Please note, that all boards you have created will be permanently erased.",
+    },
+    fr : {
+        UploadAvatar : "Télécharger un nouvel Avatar",
+        DeleteAccount : "Supprimer votre compte",
+        ConfirmDelete : "Vous recevrez un e-mail pour confirmer votre décision Veuillez noter que tous les tableaux que vous avez créés seront définitivement effacés.",
+    },
+    es : {
+        UploadAvatar : "Subir nuevo Avatar",
+        DeleteAccount : "Eliminar su cuenta",
+        ConfirmDelete : "Recibirá un correo electrónico para confirmar su decisión Tenga en cuenta que todos los tableros que haya creado se borrarán permanentemente.",
+    }
+}
