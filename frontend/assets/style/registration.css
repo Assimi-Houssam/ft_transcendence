@@ -21,6 +21,10 @@
 	align-items: center;
 }
 
+.registration-page input {
+	outline: none;
+}
+
 .logo
 {
 	width: 100px;
@@ -60,11 +64,6 @@
 	z-index: -1;
 } 
 
-.btn::after
-{
-	content: attr(data);
-	font-size: 16px;
-}
 
 .btn:hover::before 
 {
@@ -100,6 +99,7 @@
 .ref
 {
 	color: #697185;
-	font-size: 10px;
+	font-size: 15px;
+	margin-top: 20px;
 }
 

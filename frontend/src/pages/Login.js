@@ -75,7 +75,7 @@ export class LoginPage extends HTMLElement {
 							</div>
 							<input class="input" id="password" type="password" name="password" placeholder="************">
 						</div>
-						<div class="buttons">
+						<div style="width: 110%;" class="buttons">
 							<button class="primary-btn">Login</button>
 							<p class="space">OR</p>
 							<button class="secondary-btn"><span><img src="../../assets/images/42.svg" alt="42" class="fortyTwo"></span><span>Login with Intranet</span></button>

@@ -62,8 +62,8 @@ export class RegistrationPage extends HTMLElement {
                         Repeat Password
                         <input class = "input" id="repeat_password" type="password" name="repeat_password" placeholder="************">
                     </div>
-                    <div class="buttons">
-                        <button class="btn" data="Create Account"></button>
+                    <div style="width: 110%;" class="buttons">
+                        <button style="width: 100%;" class="btn" >Create Account</button>
                     </div>
                 </form>
                 <p class="ref">Already have account? login <a class="anchor" href="/login">here</a></p>
