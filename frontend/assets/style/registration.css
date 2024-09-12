@@ -49,6 +49,11 @@
 	cursor: pointer;
 	font-family: 'nasalization';
 	z-index:1; 
+	min-height: 50px;
+	max-height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .btn::before

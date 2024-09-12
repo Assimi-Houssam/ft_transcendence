@@ -1,6 +1,7 @@
 import { router } from "../routes/routes.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js";
+import { PreloaderMini } from "../components/Loading.js";
 
 export class RegistrationPage extends HTMLElement {
     constructor() {
@@ -9,13 +10,20 @@ export class RegistrationPage extends HTMLElement {
     }
     async registerUser(event) {
         event.preventDefault();
+        event.target.innerHTML = new PreloaderMini().outerHTML;
+		event.target.disabled = true;
         const username = this.username_elem.value;
         const email = this.email_elem.value;
         const password = this.password_elem.value;
         const repeat_password = this.repeat_password.value;
-        if (!username || !email || !password || !repeat_password)
+        if (!username || !email || !password || !repeat_password)  {
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             return;
+        }
         if (password !== repeat_password) {
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             Toast.error("Passwords do not match.");
             return;
         }
@@ -23,10 +31,14 @@ export class RegistrationPage extends HTMLElement {
         try {
             const req = await ApiWrapper.post("/register", registration_data);
             if (req.status === 500) {
+                event.target.innerHTML = "Create Account";
+                event.target.disabled = false;
                 Toast.error("An internal server error occured.");
                 return;
             }
             const data = await req.json();
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             if (!req.ok) {
                 Toast.error(data.detail[0]);
                 return;
@@ -35,6 +47,8 @@ export class RegistrationPage extends HTMLElement {
             router.navigate("/login");
         }
         catch (error) {
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             Toast.error(error);
         } 
     }
