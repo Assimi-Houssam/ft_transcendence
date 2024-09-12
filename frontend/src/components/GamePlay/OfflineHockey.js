@@ -326,7 +326,9 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
             canvas.style.filter = 'none';
             player1.move();
             player2.move();
+            if(distance <= 0){
             hockeyBall.collisions();
+            }
         }
         player2.draw();
         player1.draw();

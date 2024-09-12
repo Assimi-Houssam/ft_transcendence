@@ -220,11 +220,11 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
         let playeri = i === 0 ? player1 : player2;
         let distanceY = this.y - playeri.y;
         let distanceX = this.x - playeri.x;
-        let distance = Math.sqrt(
+        let distancee = Math.sqrt(
           Math.pow(distanceX, 2) + Math.pow(distanceY, 2)
         );
 
-        if (distance <= 32) {
+        if (distancee <= 32) {
           var angle = Math.atan2(distanceY, distanceX);
 
           const forceX = forceMagnitude * Math.cos(angle);
@@ -318,7 +318,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     ctx.closePath();
     drawTable();
     player1.move();
-    if(distance < 0);
+    if(distance > 0)
       hockeyBall.collisions();
     if (custom != "hidden")
       hockeyBall.draw();
@@ -401,7 +401,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     }
   }
 
-  let distance
+  var distance
   let minutes
   let seconds
   var now
@@ -445,7 +445,8 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
           cancelAnimationFrame(animationframe);
         }, 3000);
         if (!disconnected) {
-          ws.send(JSON.stringify({ finish: true }));
+          if (ws.readyState == 1)
+            ws.send(JSON.stringify({ finish: true }));
           setTimeout(() => {
             router.navigate("/home");
           }, 3000);
