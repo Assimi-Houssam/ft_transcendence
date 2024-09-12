@@ -8,7 +8,6 @@ export class HomePage extends HTMLElement {
     this.innerHTML = `
      <h1> home </h1>
     `;
-    this.appendChild(new ChatPopup());
   }
 };
 
