@@ -1,6 +1,7 @@
 import { router } from "../../routes/routes.js";
 
 export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
+  player_p = player_p == "player1" ? "player2" : "player1";
   time = 1;
   canvas.width = 1100;
   canvas.height = 550;
