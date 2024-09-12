@@ -1,3 +1,5 @@
+import { router } from "../../routes/routes.js";
+
 const icons = {
     english : "../../../assets/icons/usa.png",
     espagnol : "../../../assets/icons/es.png",
@@ -32,7 +34,6 @@ export class LanguageComponent extends HTMLElement {
                 break;
             }
         }
-        // this.callBack = callBack;
     }
 
     closeDropmMenu(selectChildItems, arrowIcon) {
@@ -75,6 +76,9 @@ export class LanguageComponent extends HTMLElement {
                     beforIcon.src = icons[slug.toLowerCase()]
                     selectedLangSlug.innerHTML = slug;
                     this.closeDropmMenu(selectChildItems, arrowIcon)
+                    const navbar = document.querySelector("navbar-component");
+                    navbar && navbar.connectedCallback();
+                    router.navigate("/settings")
                 })
             })
         }

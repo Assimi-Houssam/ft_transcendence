@@ -9,6 +9,8 @@ export class Navbar extends HTMLElement {
     super();
     this.userInfo = null;
     this.notificationCenter = new NotificationCenter();
+    if (localStorage.getItem("lang") === null)
+      localStorage.setItem("lang", "en");
   }
   async load() {
     const userInfo = await getUserInfo();

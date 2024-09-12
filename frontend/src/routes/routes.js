@@ -170,7 +170,4 @@ window.onpopstate = () => {
     router.navigate(window.location.pathname);
 }
 
-if (localStorage.getItem("lang") === null)
-    localStorage.setItem("lang", "en");
-
 export const router = new Router();

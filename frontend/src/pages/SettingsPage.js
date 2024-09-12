@@ -216,6 +216,7 @@ export class SettingsPage extends HTMLElement {
                       <h2 id="banner_title">${langSettingsPage[this.lang]["bannerTitle"]}</h2>
                       <p id="banner_desc">${langSettingsPage[this.lang]["BannerDesc"]}</p>
                     </div>
+                    <language-component></language-component>
                 </div>
                 <div class="settings_form_data">
                     <user-settings-form-page ></user-settings-form-page>
@@ -234,8 +235,7 @@ export class SettingsPage extends HTMLElement {
                 </div>
             </div>
       </div>`;
-    this.setInputsValues(); 
-    document.getElementById("settings_text_desc").appendChild(new LanguageComponent());
+    this.setInputsValues();
     document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
     document.getElementById("settings_banner_upload").onchange = (e) => this.changeBanner(e);
     document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);

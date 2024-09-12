@@ -35,6 +35,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         window.anime = anime;
+        if (localStorage.getItem("lang") === null)
+            localStorage.setItem("lang", "en");
     </script>
     <script type="module" src="./src/routes/index.js"></script>
     <script type="module" src="./src/components/LayoutComponent.js"></script>
