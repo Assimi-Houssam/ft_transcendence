@@ -176,7 +176,8 @@ class PongV1(AsyncWebsocketConsumer):
 
     async def update_game(self):
         distance = 5
-        chrono = time.time() + int(self.tosave[self.room_group_name]['time']) * 60
+        # chrono = time.time() + int(self.tosave[self.room_group_name]['time']) * 60
+        chrono = time.time() + 10
         self.goal = False
         self.cooldown = 0
         while True:
@@ -225,8 +226,8 @@ class PongV1(AsyncWebsocketConsumer):
                         "paddle1": paddle1["position"]["y"],
                         "paddle2": paddle2["position"]["y"],
                         "start": self.game_states[self.room_group_name]["start"],
-                        "score1": score["x"],
-                        "score2": score["y"],
+                        "score1": self.game_states[self.room_group_name]["score"]["x"],
+                        "score2": self.game_states[self.room_group_name]["score"]["y"],
                         "pause": pause,
                         "minute": minutes,
                         "second": seconds,
