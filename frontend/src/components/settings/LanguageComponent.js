@@ -25,8 +25,6 @@ const shortcutNames = {
 export class LanguageComponent extends HTMLElement {
     constructor() {
         super();
-        if (localStorage.getItem("lang") === null) //need to ove to somwhere were the automatic check if the lang in localstorage
-            localStorage.setItem("lang", "en");
         const local =  localStorage.getItem("lang");
         for (let key in shortcutNames) {
             if (shortcutNames[key] === local) {
