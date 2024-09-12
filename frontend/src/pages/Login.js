@@ -58,8 +58,8 @@ export class LoginPage extends HTMLElement {
 					<p class="paragraph">Please enter your credentials to continue</p>
 					<form class="login-form">
 						<div>
-							Email
-							<input class="input" id="email" name="email" placeholder="e.g.dummy@domain.com">
+							Username
+							<input class="input" id="email" type="text" name="email" placeholder="username">
 						</div>
 						<div>
 							<p class="password"><span>Password</span><span><a href="/reset-password" class="forgot-password-link">Forgot password?</a></span></p>
