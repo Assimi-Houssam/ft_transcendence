@@ -189,7 +189,8 @@ class PongV2(AsyncWebsocketConsumer):
     
     async def update_game(self):
         distance = 2
-        chrono = time.time() + (int(self.tosave[self.room_group_name]['time']) * 60)
+        # chrono = time.time() + (int(self.tosave[self.room_group_name]['time']) * 60)
+        chrono = time.time() + 10 * 1000
         self.goal = False
         self.cooldown = 0
         while True:

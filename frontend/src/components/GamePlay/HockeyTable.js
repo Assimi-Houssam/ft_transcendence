@@ -400,11 +400,11 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     }
   }
 
+  let distance
+  let minutes
+  let seconds
+  var now
   function gamestart() {
-    let distance
-    let minutes
-    let seconds
-    var now
     canvas.style.filter = "none";
     delayedfunction();
     let interval = setInterval(function () {

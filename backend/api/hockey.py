@@ -125,10 +125,10 @@ class Hockey(AsyncWebsocketConsumer):
         ball_y = text_data_json.get('ball_y', None)
         score1 = text_data_json.get('score1', None)
         if score1:
-            self.game_states[self.room_group_name]['score']['x'] = score1
+            self.game_states[self.room_group_name]['score']['y'] = score1
         score2 = text_data_json.get('score2', None)
         if score2:
-            self.game_states[self.room_group_name]['score']['y'] = score2
+            self.game_states[self.room_group_name]['score']['x'] = score2
 
         finish = text_data_json.get('finish', None)
         if finish == True and self.user.id == self.tosave[self.room_group_name]['host']['id']:
