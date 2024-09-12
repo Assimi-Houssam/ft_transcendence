@@ -397,7 +397,9 @@ export function game(ctx, canvas, gameData, bracket) {
             } else {
               if (timeDisplay) timeDisplay.textContent = "Time's up!";
               clearInterval(x);
-              cancelAnimationFrame(cancel);
+              setTimeout(() => {
+                cancelAnimationFrame(cancel);
+              }, 2500);
               canvas.style.filter = "blur(10px)";
               var winner = document.getElementById("winner");
               if (number1 > number2) {

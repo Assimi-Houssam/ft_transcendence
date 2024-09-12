@@ -6,7 +6,10 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
 
     canvas.width = 1100;
     canvas.height = 550;
-    const time = gameData.time;
+    // const time = gameData.time;
+    const time = 1
+    console.log("braaacket : ", bracket);
+
     const custom = gameData.customization;
     const START_X = 30
     const START_Y = 30
@@ -374,10 +377,10 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
                     timeDisplay.textContent = "over time";
                 }
                 else {
+                    clearInterval(interval);
                     setTimeout(() => {
-                        clearInterval(interval);
                         cancelAnimationFrame(animationframe);
-                    }, 3000);
+                    }, 2000);
                     timeDisplay.textContent = "time up";
                     canvas.style.fiter = 'blur(10px)';
                     countdownElement.style.display = "block"
@@ -409,7 +412,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
                     }
                     setTimeout(() => {
                         router.navigate('/next-tournament', new NextTournament(gameData, bracket));
-                    }, 1000);
+                    }, 3000);
 
                 }
 
