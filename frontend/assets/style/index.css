@@ -218,6 +218,7 @@ search-component {
     display: flex;
     align-items: center;
     gap: 20px;
+    z-index: 1;
 }
 
 .navbar_ .navbar_right_elements > .navbar_notification_btn {
