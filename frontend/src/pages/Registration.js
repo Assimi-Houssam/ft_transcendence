@@ -6,8 +6,8 @@ import { langRegistration } from "../utils/translate/gameTranslate.js";
 export class RegistrationPage extends HTMLElement {
     constructor() {
         super();
-        this.registerUser = this.registerUser.bind(this);
         this.lang = localStorage.getItem("lang");
+        this.registerUser = this.registerUser.bind(this);
     }
     async registerUser(event) {
         event.preventDefault();
@@ -18,14 +18,14 @@ export class RegistrationPage extends HTMLElement {
         if (!username || !email || !password || !repeat_password)
             return;
         if (password !== repeat_password) {
-            Toast.error(langErrors[localStorage.getItem("lang")]["ErrorPasswordsNotMatch"]);
+            Toast.error(langErrors[this.lang]["ErrorPassNotMatch"]);
             return;
         }
         const registration_data = { username, email, password };
         try {
             const req = await ApiWrapper.post("/register", registration_data);
             if (req.status === 500) {
-                Toast.error(langErrors[localStorage.getItem("lang")]["ErrorInternalServer"]);
+                Toast.error(langErrors[this.lang]["ErrorInternalServer"]);
                 return;
             }
             const data = await req.json();

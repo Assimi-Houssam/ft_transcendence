@@ -8,10 +8,10 @@ import { langLogin } from "../utils/translate/gameTranslate.js";
 export class LoginPage extends HTMLElement {
 	constructor() {
 		super();
+		this.lang = localStorage.getItem("lang");
 		this.loginUser = this.loginUser.bind(this);
 		this.OAuthLogin = this.OAuthLogin.bind(this);
 		this.err = "";
-		this.lang = localStorage.getItem("lang");
 	}
 	async loginUser(event) {
 		// todo: block button input with animations after this is called

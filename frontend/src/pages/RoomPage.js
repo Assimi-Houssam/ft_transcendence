@@ -39,8 +39,9 @@ customElements.define("room-page-footer", RoomPageFooter);
 export class RoomPage extends HTMLElement {
     constructor(roomData) {
         super();
+        this.lang = localStorage.getItem("lang");
         if (!roomData) {
-            Toast.error(langErrors[localStorage.getItem("lang")]["ErrorRoomDoesntExist"]);
+            Toast.error(langErrors[this.lang]["ErrorRoomDoesntExist"]);
             router.navigate("/home");
             return;
         }
@@ -67,11 +68,11 @@ export class RoomPage extends HTMLElement {
                 return;
             }
             if (evt.code === 4002) {
-                Toast.error(langErrors[localStorage.getItem("lang")]["ErrorKickedRoom"]);
+                Toast.error(langErrors[this.lang]["ErrorKickedRoom"]);
                 router.navigate("/rooms");
                 return;
             }
-            Toast.error(langErrors[localStorage.getItem("lang")]["ErrorDisconnectedRoom"]);
+            Toast.error(langErrors[this.lang]["ErrorDisconnectedRoom"]);
             router.navigate("/rooms");
         }
     

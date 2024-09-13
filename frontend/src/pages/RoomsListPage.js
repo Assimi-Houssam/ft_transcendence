@@ -12,9 +12,9 @@ import { langErrors } from "../utils/translate/gameTranslate.js";
 export class RoomsListPage extends HTMLElement {
     constructor() {
         super();
+        this.lang =localStorage.getItem("lang");
         this.rooms = [];
         this.fetchLoop = null;
-        this.lang =localStorage.getItem("lang");
     }
     async fetchRooms() {
         const resp = await ApiWrapper.get("/rooms/list");
@@ -49,7 +49,7 @@ export class RoomsListPage extends HTMLElement {
         this.querySelector(".CreateRoomBtn").onclick = async () => {
             const req = await ApiWrapper.post("/rooms/create");
             if (req.status === 500) {
-                Toast.error(langErrors[localStorage.getItem("lang")]["ErrorInternalServer"]);
+                Toast.error(langErrors[this.lang]["ErrorInternalServer"]);
                 return;
             }
             if (!req.ok) {

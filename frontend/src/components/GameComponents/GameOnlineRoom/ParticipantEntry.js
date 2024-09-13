@@ -4,8 +4,8 @@ import { langParticipants } from "../../../utils/translate/gameTranslate.js";
 export class EmptySlot extends HTMLElement {
     constructor() {
         super();
-        this.classList.add("undraggable");
         this.lang = localStorage.getItem("lang");
+        this.classList.add("undraggable");
     }
     connectedCallback() {
         this.innerHTML = `

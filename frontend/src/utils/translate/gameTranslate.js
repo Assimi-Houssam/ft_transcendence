@@ -227,19 +227,19 @@ export const langConfirmPassPopup = {
         Title : "Confirm Password",
         ConfirmPass : "Please enter your password to continue",
         PlaceHolder : "Password",
-        BtnConfirm : "Confirm",
+        BtnConfirm : "Confirm Password",
     },
     fr : {
         Title : "Confirmer le mot de passe",
         ConfirmPass : "Veuillez entrer votre mot de passe pour continuer",
         PlaceHolder : "Mot de passe",
-        BtnConfirm : "Confirmer",
+        BtnConfirm : "Confirmer le mot de passe",
     },
     es : {
         Title : "Confirmar contraseña",
         ConfirmPass : "Por favor, ingrese su contraseña para continuar",
         PlaceHolder : "Contraseña",
-        BtnConfirm : "Confirmar",
+        BtnConfirm : "Confirmar contraseña",
     }
 }
 
@@ -525,6 +525,18 @@ export const langProfileFriends = {
     }
 }
 
+export const langNotificationCenter = {
+    en : {
+        NotifHeadline : "All Notifications",
+    },
+    fr : {
+        NotifHeadline : "Toutes les notifications",
+    },
+    es : {
+        NotifHeadline : "Todas las notificaciones",
+    }
+}
+
 export const langErrors = {
     en : {
         //OfflineGame.js
@@ -540,8 +552,6 @@ export const langErrors = {
         ErrorBanner : "Banner too long",
         ErrorBannerType : "Banner should be an image",
         ErrorFetching : "An error occured fetching user info from the server",
-        //ConfirmPassPopup.js
-        ErrorConfPassword : "Confirm Password",
         //Profile.js
         ErrorFaildGetFriends : "Faild to get your friends requests",
         //Registration.js
@@ -568,8 +578,6 @@ export const langErrors = {
         ErrorBanner : "Bannière trop longue",
         ErrorBannerType : "La bannière doit être une image",
         ErrorFetching : "Une erreur s'est produite lors de la récupération des informations de l'utilisateur depuis le serveur",
-        //ConfirmPassPopup.js
-        ErrorConfPassword : "Confirmer le mot de passe",
         //Profile.js
         ErrorFaildGetFriends : "Impossible de récupérer vos demandes d'amis",
         //Registration.js
@@ -596,8 +604,6 @@ export const langErrors = {
         ErrorBanner : "Banner demasiado largo",
         ErrorBannerType : "El banner debe ser una imagen",
         ErrorFetching : "Se produjo un error al recuperar la información del usuario del servidor",
-        //ConfirmPassPopup.js
-        ErrorConfPassword : "Confirmar contraseña",
         //Profile.js
         ErrorFaildGetFriends : "Error al obtener sus solicitudes de amigos",
         //Registration.js

@@ -3,9 +3,9 @@ import { langTournament } from "../../../../utils/translate/gameTranslate.js";
 class SingleBracket extends HTMLElement {
     constructor() {
         super();
+        this.lang = localStorage.getItem("lang");
         this.inputOne = null;
         this.inputTwo = null;
-        this.lang = localStorage.getItem("lang");
     }
     connectedCallback() {
         this.innerHTML = `
@@ -181,9 +181,9 @@ class SingleBracket extends HTMLElement {
 class SingleBracketMini extends HTMLElement {
     constructor() {
         super();
+        this.lang = localStorage.getItem("lang");
         this.inputOne = null;
         this.inputTwo = null;
-        this.lang = localStorage.getItem("lang");
     }
     connectedCallback() {
         this.innerHTML = `

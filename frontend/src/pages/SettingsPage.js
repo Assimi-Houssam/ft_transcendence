@@ -9,15 +9,16 @@ import { MessageBox } from "../components/MessageBox.js";
 import { forceUpdateUserInfo, getUserInfo } from "../utils/utils.js";
 import { langConfirmPassPopup } from "../utils/translate/gameTranslate.js";
 import { langSettingsPage } from "../utils/translate/gameTranslate.js";
+import { langSettingUserForm } from "../utils/translate/gameTranslate.js";
 import { langErrors } from "../utils/translate/gameTranslate.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
     super();
+    this.lang = localStorage.getItem("lang");
     this.updateProfile = this.updateProfile.bind(this);
     this.userData = {};
     this.is2FAEnable = false; //tmp, TODO: get boolean from backedn
-    this.lang = localStorage.getItem("lang");
   }
 
   /**
@@ -158,7 +159,7 @@ export class SettingsPage extends HTMLElement {
       if (!isValid) return;
       if (this.userData.intra_id) {
         this.updateProfile(null).then(() => {
-          document.getElementById("save_setting_btn").innerHTML = "Save";
+          document.getElementById("save_setting_btn").innerHTML = langSettingUserForm[this.lang]["Save"];
           document.getElementById("save_setting_btn").onclick = (e) =>
           this.updateEvent(e);
         });
@@ -171,7 +172,7 @@ export class SettingsPage extends HTMLElement {
         this.updateProfile,
         "",
         "",
-        langConfirmPassPopup[this.lang]["ErrorConfPassword"], true
+        langConfirmPassPopup[this.lang]["BtnConfirm"], true
       ).show();
     });
   }
@@ -184,10 +185,10 @@ export class SettingsPage extends HTMLElement {
   changeBanner(e) {
     const file = e.target.files[0];
     if (file.size > 5000000) {
-      Toast.error(langConfirmPassPopup[this.lang]["ErrorBanner"])
+      Toast.error(langErrors[this.lang]["ErrorBanner"])
       return;
     } else if (!file.type.includes("image")) {
-      Toast.error(langSettingsPage[this.lang]["ErrorBannerSize"])
+      Toast.error(langErrors[this.lang]["ErrorBannerType"])
       return;
     }
     const reader = new FileReader();
@@ -198,9 +199,10 @@ export class SettingsPage extends HTMLElement {
     reader.readAsDataURL(file);
   }
   async connectedCallback() {
-    this.userData = await getUserInfo();
+    this.userData = await forceUpdateUserInfo();
+    console.log(this.userData)
     if (!this.userData)
-      throw new Error(langSettingsPage[this.lang]["ErrorFetching"]);
+      throw new Error(langErrors[this.lang]["ErrorFetching"]);
     this.innerHTML = `
       <div class="settings_">
             <div ${this.userData.banner && (`style="background-image: url(http://localhost:8000${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">

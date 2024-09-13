@@ -33,13 +33,13 @@ customElements.define("friend-invite-entry", FriendInviteEntry);
 export class InviteFriendsPopup extends HTMLElement {
     constructor() {
         super();
+        this.lang = localStorage.getItem("lang");
         this.friendsList = [];
         this.outerClickHandler = (event) => {
             if (!this.contains(event.target)) {
                 this.hide();
             }
         }
-        this.lang = localStorage.getItem("lang");
     }
     async sendInviteTo(user) {
         const username = user.username;

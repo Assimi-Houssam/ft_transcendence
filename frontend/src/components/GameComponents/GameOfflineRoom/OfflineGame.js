@@ -31,6 +31,7 @@ customElements.define("tournament-footer", TournamentFooter);
 export class OfflineGame extends HTMLElement {
     constructor() {
         super();
+        this.lang =localStorage.getItem("lang");
         this.bracketSize = 1;
         this.time = 3;
         this.gameMode = "pong";
@@ -42,7 +43,6 @@ export class OfflineGame extends HTMLElement {
             gameMode: this.gameMode,
             customization: this.customization
         };
-        this.lang =localStorage.getItem("lang");
     }
 
     validateBracketsFields(brackts) {

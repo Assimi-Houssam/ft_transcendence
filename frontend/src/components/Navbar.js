@@ -7,10 +7,10 @@ import { NotificationCenter } from "./NotificationCenter.js";
 export class Navbar extends HTMLElement {
   constructor() {
     super();
-    this.userInfo = null;
-    this.notificationCenter = new NotificationCenter();
     if (localStorage.getItem("lang") === null)
       localStorage.setItem("lang", "en");
+    this.userInfo = null;
+    this.notificationCenter = new NotificationCenter();
   }
   async load() {
     const userInfo = await getUserInfo();

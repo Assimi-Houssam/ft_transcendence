@@ -5,9 +5,9 @@ import { langSearch } from '../utils/translate/gameTranslate.js';
 export class Search extends HTMLElement {
     constructor() {
         super();
+        this.lang = localStorage.getItem("lang");
         this.delayTime = 80;
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
-        this.lang = localStorage.getItem("lang");
     }
 
     onInputFocus(e) {

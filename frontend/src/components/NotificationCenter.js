@@ -21,6 +21,7 @@ notes:
 
 import { RoomPage } from "../pages/RoomPage.js";
 import { router } from "../routes/routes.js";
+import { langNotificationCenter } from "../utils/translate/gameTranslate.js";
 
 const anime = window.anime;
 
@@ -123,7 +124,6 @@ customElements.define("notification-item", Notification);
 export class NotificationCenter extends HTMLElement {
     constructor() {
         super();
-        
         this.ws = new WebSocket("ws://localhost:8000/ws/cable/");
         this.notifications = [];
         this.ws.onmessage = this.onNotificationReceived.bind(this);
@@ -142,9 +142,10 @@ export class NotificationCenter extends HTMLElement {
         this.connectedCallback();
     }
     connectedCallback() {
+        this.lang = localStorage.getItem("lang");
         this.innerHTML = `
             <div class="notification-center-header">
-                <div class="notification-headline">All Notifications (<a class="notification-count">${this.notifications.length}</a>)</div>
+                <div class="notification-headline">${langNotificationCenter[this.lang]["NotifHeadline"]} (<a class="notification-count">${this.notifications.length}</a>)</div>
                 <div class="notification-clear">Clear All</div>
             </div>
             <div class="notifications-list"></div>`;

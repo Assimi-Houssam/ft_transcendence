@@ -3,8 +3,8 @@ import { langErrors } from "../utils/translate/gameTranslate.js";
 export default class Error404 extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
         this.lang = localStorage.getItem("lang");
+        this.attachShadow({ mode: 'open' });
         this.render();
     }
 

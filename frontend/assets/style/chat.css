@@ -530,10 +530,11 @@ message-input {
 
 .sidebar-chatbox{
     display: flex;
+    align-items: flex-end;
     gap: 10px;
-    padding-left: 10px;
-	padding-top: 1.2vh;
-	align-items: baseline;
+    padding: 5px;
+    padding-left: 2vh;
+    width: 11%;
 }
 
 .user-chat
@@ -574,8 +575,8 @@ message-input {
 
 .container-msg
 {
-	padding-top: 1.2vh;
-	max-width: 80%;
+	padding-top: 0.3vh;
+	max-width: 79%;
     overflow-wrap: break-word;
 }
 /* 
