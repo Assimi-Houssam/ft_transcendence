@@ -1,7 +1,7 @@
 import { router } from "../../routes/routes.js"
 
 export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
-    var interval;
+    let interval;
     var animationframe;
     var KEY_UP = "w";
     var KEY_DOWN = "s";
@@ -281,7 +281,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             countdownElement.textContent = "game paused for 10 seconds";
             countdownElement.style.display = 'block';
         }
-        else if (pause === false) {
+        else if (pause === false && distance > 0) {
             canvas.style.filter = 'none';
             countdownElement.style.display = 'none';
         }
@@ -345,27 +345,25 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                         clearInterval(interval);
                         cancelAnimationFrame(animationframe);
                     }
-                    if (distance < 0 || gamefinsihed || disconneted) {
+                    if (distance <= 0 || gamefinsihed || disconneted) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            cancelAnimationFrame(animationframe);
+                        } , 4000);
+                        countdownElement.style.display = 'block';
+                        canvas.style.filter = 'blur(10px)';
                         let timeSelector = document.querySelector(".time-display");
                         if (disconneted) {
-                            canvas.style.filter = 'blur(10px)';
                             countdownElement.textContent = "Opponent disconnected";
-                            countdownElement.style.display = 'block';
+                            timeSelector.textContent = "oppnent disconnected";
                             setTimeout(() => {
                                 router.navigate("/home");
-                            }, 3000);
+                            }, 4000);
                         }
                         else {
                             timeSelector.textContent = "Time's up!";
                         }
                         canvas.style.filter = 'blur(10px)';
-                        setTimeout(() => {
-                            clearInterval(interval);
-                            cancelAnimationFrame(animationframe);
-                        }, 3000);
-                        setTimeout(() => {
-                            ws.send(JSON.stringify({ 'finish': true }));
-                        }, 100);
                         if (!disconneted) {
                             if (number1 < number2) {
                                 countdownElement.textContent = "Blue Team Wins!";
@@ -378,9 +376,12 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                             else {
                                 countdownElement.textContent = "Draw!";
                             }
+                            setTimeout(() => {
+                                    router.navigate("/home");
+                            } , 4500);
                         }
                     }
-                }, 100);
+                }, 900);
             }
             remaining--;
         }, 1000);
@@ -388,6 +389,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     function before_evrything() {
 
         drawInitialCanvas();
+        canvas.style.filter = 'blur(10px)';
         const cool = setInterval(() => {
             if (ws.readyState === 1)
                 ws.send(JSON.stringify({
@@ -418,20 +420,21 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                 if (data[paddleNames[i]])
                     paddles[i].pos.y = data[paddleNames[i]];
             }
-            if (data.score1 && data.score2) {
                 if (data.score1 != number1 || data.score2 != number2) {
-                    number1 = data.score1;
-                    number2 = data.score2;
                     trigerx = bal.pos.x
                     trigery = bal.pos.y
                     trigerbool = true
                 }
-            }
+                if(data.score1)
+                    number1 = data.score1;
+                if(data.score2)
+                    number2 = data.score2;
+
             if (data.positionx && data.positiony) {
                 bal.pos.x = data.positionx;
                 bal.pos.y = data.positiony;
             }
-            if (data.finish) {
+            if (data.finish == true) {
                 gamefinsihed = true;
             }
             pause = data.pause;

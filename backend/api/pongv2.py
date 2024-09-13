@@ -190,7 +190,7 @@ class PongV2(AsyncWebsocketConsumer):
     async def update_game(self):
         distance = 2
         # chrono = time.time() + (int(self.tosave[self.room_group_name]['time']) * 60)
-        chrono = time.time() + 10 * 1000
+        chrono = time.time() + 30
         self.goal = False
         self.cooldown = 0
         while True:
@@ -210,7 +210,6 @@ class PongV2(AsyncWebsocketConsumer):
                 self.game_states[self.room_group_name]["finish"] = True
                 await self.save_state()
                 await asyncio.sleep(1)
-                break
             state = self.game_states[self.room_group_name]
             ball_state = state["ball_state"]
             paddle1 = state["paddle1"]
@@ -278,7 +277,7 @@ class PongV2(AsyncWebsocketConsumer):
             elif posx + BALL_RADIUS >= BOUNDARY_RIGHT:
                 ball_state["position"]["x"] = BALL_RESET_X
                 ball_state["position"]["y"] = BALL_RESET_Y
-                self.game_states[self.room_group_name]["score"]["x"] += 1
+                self.game_states[self.room_group_name]["score"]["y"] += 1
                 self.handle_pause_request("blue_pause_time","blue_pause",self.room_group_name)
                 self.handle_pause_request("red_pause_time","red_pause",self.room_group_name)
                 self.goal = True
