@@ -22,9 +22,7 @@ export function game(ctx, canvas, gameData, bracket) {
     ballcolor = "rgba(242,94,94,1)";
     paddveolicty = 13;
   }
-  // status: "quarter" / "semi" / "final" / "ended",
 
-  /* Initialize particle array */
   let particles = [];
   let explosionTriggered = false;
 
@@ -54,9 +52,8 @@ export function game(ctx, canvas, gameData, bracket) {
     }
   }
 
-  /* Function to initialize particles */
   function initializeParticles(x, y) {
-    particles = []; // Reset particles array
+    particles = []; 
     for (let i = 0; i <= 150; i++) {
       let dx = (Math.random() - 0.5) * (Math.random() * 6);
       let dy = (Math.random() - 0.5) * (Math.random() * 6);
@@ -66,7 +63,6 @@ export function game(ctx, canvas, gameData, bracket) {
     }
   }
 
-  /* Particle explosion function */
   function explode() {
     drawInitialCanvas();
     paddle1.draw();
@@ -82,11 +78,10 @@ export function game(ctx, canvas, gameData, bracket) {
     if (particles.length > 0) {
       requestAnimationFrame(explode);
     } else {
-      explosionTriggered = false; // Reset the trigger flag
+      explosionTriggered = false; 
     }
   }
 
-  /* Function to trigger explosion effect */
   function triggerExplosion(x, y) {
     if (!explosionTriggered) {
       initializeParticles(x, y);
@@ -130,7 +125,7 @@ export function game(ctx, canvas, gameData, bracket) {
       return this.width / 2;
     };
     this.gethalfheight = function () {
-      return this.height / 2;
+      return (this.height / 2) - 11;
     };
     this.getcenter = function () {
       return vec(
@@ -334,7 +329,7 @@ export function game(ctx, canvas, gameData, bracket) {
       countdownElement.style.display = "block";
       countdownElement.textContent = "Game Paused!";
       canvas.style.filter = "blur(10px)";
-    } else {
+    } else if (distance > 0) {
       countdownElement.style.display = "none";
       canvas.style.filter = "none";
       gameupdate();
@@ -447,7 +442,6 @@ export function game(ctx, canvas, gameData, bracket) {
   drawInitialCanvas();
   startCountdown(3);
   function startGame() {
-    // Game start logic here
     gameloop();
   }
 }
