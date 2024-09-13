@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from .serializers import NotificationSerializer
+import time
 import json
 
 class NotificationConsumer(AsyncWebsocketConsumer):
@@ -34,7 +35,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({"notification": event["message"]}))
 
     async def message_received(self, event):
-        await self.send(text_data=json.dumps({"message": event["message"]}))
+        print(f"sending dm: {event}")
+        message_info = event["message"]
+        await self.send(text_data=json.dumps({"from": message_info["from"], "message": message_info["message"]}))
 
     async def receive(self, text_data):
         try:
@@ -42,7 +45,16 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         except:
             await self.close()
             return
-        if (event["type"] == "notification_received"):
+        if (event.get("type") == "notification_received"):
             await self.channel_layer.group_send(str(self.user_id), {"type": event["type"], "message": event["message"]})
-        else:
-            print(f"broadcast this to: {event}")
+        if (event.get("message")):
+            message = {
+                "from": {
+                    "id": self.scope["user"].id,
+                    "username": self.scope["user"].username
+                },
+                "message": event["message"],
+                "time": int(time.time())
+            }
+            print("broadcasting message..")
+            await self.channel_layer.group_send(str(event.get("userId")), {"type": "message_received", "message": message})

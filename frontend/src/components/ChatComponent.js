@@ -42,8 +42,17 @@ export class ChatSidebar extends HTMLElement {
             if (id == sidebarEntry.id) {
                 console.log(msg)
                 sidebarEntry.onMessageReceived(msg.time, msg.username, msg.message);
+                return;
             }
         }
+    }
+    getSidebarEntry(id) {
+        for (let sidebarEntry of this.sidebar_entries) {
+            if (id == sidebarEntry.id) {
+                return sidebarEntry;
+            }
+        }
+        return null;
     }
     createSideBarEntry(userId, username, pfp) {
         const newEntry = new ChatSidebarEntry(username, userId);
@@ -65,7 +74,6 @@ export class ChatMessageEntry extends HTMLElement {
 
         const now = new Date(this.time * 1000);
         this.hours = now.getHours();
-        console.log("hours:", now.getHours());
         this.minutes = now.getMinutes();
         this.seconds = now.getSeconds();
         this.websocket = null;
@@ -111,13 +119,9 @@ export class ChatMain extends HTMLElement {
                 <input type="text" placeholder="Type something..." class="chat-message-input" id="chat-message-input">
             </div>`;
 
-        // console.log(this.innerHTML);
-
         const message = this.querySelector(".chat-message-input");
-        console.log('Message input field:', message);
 
         if (!message) {
-            console.error("Message input field not found!");
             return;
         }
 
@@ -125,13 +129,12 @@ export class ChatMain extends HTMLElement {
             if (evt.key.toLowerCase() === "enter") {
                if(String(message.value).trim().length === 0)
                    return;
-                console.log('Sending message:', message.value);
                 this.dispatchEvent(new CustomEvent("chatPopupInputEnter", {detail: message.value, bubbles: true}));
                 message.value = "";
             }
         });
+
         if (this.current_message_container) {
-            console.log("message cont: ", this.current_message_container);
             this.appendChild(this.current_message_container);
         }
     }
@@ -150,52 +153,64 @@ export class ChatPopup extends HTMLElement {
         this.sidebar = new ChatSidebar();
         this.chatMain = new ChatMain();
         this.ws = new WebSocket("ws://localhost:8000/ws/chat/");
-        this.ws.onopen = () => {
-            console.log("connected to server");
+        this.user = null;
+        
+        this.ws.onopen = async () => {
             this.chatMain.replaceMessageContainer(this.sidebar.getActiveSidebarEntry().message_container);
+            this.user = await getUserInfo();
         }
         this.ws.onmessage = this.handleWsMessage.bind(this);
-        this.addEventListener("chatPopupInputEnter", (evt) => {
-            const msg = evt.detail;
-            console.log("active sidebar entry:", this.sidebar.getActiveSidebarEntry().id);
-            if (this.sidebar.getActiveSidebarEntry().id == -1) {
-                console.log("msg aaa:", msg);
-                this.ws.send(JSON.stringify({"message": msg}));
-            }
-            else {
-                console.log("sending dm to notificiation");
-                const evt_detail = {
-                    message: msg,
-                    userId: this.sidebar.getActiveSidebarEntry().id
-                }
-                document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evt_detail, bubbles: true}));
-            }
-        });
+        
         this.addEventListener("chatEntryClick", (evt) => {
             const sidebar_entry = evt.detail;
             this.chatMain.replaceMessageContainer(sidebar_entry.message_container);
             this.sidebar.active_sidebar_entry = evt.detail;
-            console.log("entry clicked:", evt.detail.name);
         });
+        this.addEventListener("chatPopupInputEnter", this.handleInputEnter.bind(this));
         document.addEventListener("notiReceivedDm", this.handleDirectMessage.bind(this));
         document.addEventListener("chatDmStarted", this.startChatDm.bind(this));
+    }
+    handleInputEnter(evt) {
+        const msg = evt.detail;
+        console.log("active sidebar entry:", this.sidebar.getActiveSidebarEntry().id);
+        if (this.sidebar.getActiveSidebarEntry().id == -1) {
+            console.log("msg aaa:", msg);
+            this.ws.send(JSON.stringify({"message": msg}));
+        }
+        else {
+            console.log("sending dm to notificiation");
+            const evt_detail = {
+                message: msg,
+                userId: this.sidebar.getActiveSidebarEntry().id
+            }
+            console.log("detail:", evt_detail);
+            document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evt_detail, bubbles: true}));
+            this.sidebar.appendMessage(evt_detail.userId, {message: msg, username: this.user.username, time: null});
+        }
     }
     startChatDm(evt) {
         const userInfo = evt.detail;
         console.log("chat dm userinfo:", userInfo);
         this.show();
-        this.sidebar.createSideBarEntry(userInfo.id, userInfo.username, userInfo.pfp);
+        this.sidebar.createSideBarEntry(userInfo.userId, userInfo.username, userInfo.pfp);
     }
     handleDirectMessage(evt) {
-
+        const messageDetails = evt.detail;
+        const sidebarEntry = this.sidebar.getSidebarEntry(messageDetails.from.id);
+        if (!sidebarEntry)
+            this.sidebar.createSideBarEntry(messageDetails.from.id, messageDetails.from.username);
+        const messageEntryRaw = {
+            message: messageDetails.message,
+            username: messageDetails.from.username,
+            time: messageDetails.time
+        }
+        this.sidebar.appendMessage(messageDetails.from.id, messageEntryRaw);
     }
     handleWsMessage(evt) {
         const msg = JSON.parse(evt.data);
         this.sidebar.appendMessage(-1, msg);
-        console.log("received message from server:", msg);
-        
     }
-    async connectedCallback() {
+    connectedCallback() {
         this.innerHTML = `
             <div class="chat-popup-header">
                 <img src="../../assets/icons/chat.png">
