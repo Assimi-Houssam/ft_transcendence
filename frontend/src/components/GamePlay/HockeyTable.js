@@ -1,7 +1,6 @@
 import { router } from "../../routes/routes.js";
 
 export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
-  time = 1;
   player_p = player_p == "player1" ? "player2" : "player1";
   canvas.width = 1100;
   canvas.height = 550;
@@ -30,7 +29,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     COLOR = 'rgba(242,94,94,1)';
   }
   let pause = false;
-  /* Initialize particle array */
+
   let particles = [];
   let explosionTriggered = false;
 
@@ -60,9 +59,8 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     }
   }
 
-  /* Function to initialize particles */
   function initializeParticles(x, y) {
-    particles = []; // Reset particles array
+    particles = []; 
     for (let i = 0; i <= 80; i++) {
       let dx = (Math.random() - 0.5) * (Math.random() * 6);
       let dy = (Math.random() - 0.5) * (Math.random() * 6);
@@ -72,7 +70,6 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     }
   }
 
-  /* Particle explosion function */
   function explode() {
     particles = particles.filter(particle => {
       if (particle.alpha > 0) {
@@ -85,11 +82,10 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
     if (particles.length > 0) {
       requestAnimationFrame(explode);
     } else {
-      explosionTriggered = false; // Reset the trigger flag
+      explosionTriggered = false; 
     }
   }
 
-  /* Function to trigger explosion effect */
   function triggerExplosion(x, y) {
     if (!explosionTriggered) {
       initializeParticles(x, y);
