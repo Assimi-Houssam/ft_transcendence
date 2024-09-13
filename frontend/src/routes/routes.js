@@ -16,11 +16,16 @@ import { OfflineGamePage } from "../components/GamePlay/OfflineGamePage.js";
 import { NextTournament } from "../components/GameComponents/GameOfflineRoom/tournament/NextTournament.js";
 
 import { Profile } from "../pages/Profile.js";
+import Error500 from "../error/500.js";
 
 export const Routes = [
     {
         path: '/404',
         component: Error404,
+    },
+    {
+        path: '/500',
+        component: Error500,
     },
     {
         path: '/home',
