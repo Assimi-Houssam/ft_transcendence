@@ -6,7 +6,7 @@ export class HomePage extends HTMLElement {
     this.innerHTML = `
 		<div class="Container_Home">
 			<div class="container gradient-purple-blue">
-				<div class="under-container bubble" style="height:100vh;">
+				<div class="under-container bubble" style="height:85vh;">
 					<div class="line">
 						<div class="square" id="square">W</div>
 						<div class="square" >e</div>
@@ -38,7 +38,7 @@ export class HomePage extends HTMLElement {
 					<div class="chevron"></div>
 					<div class="chevron"></div>
 				</div>
-				<div class="under-container">
+				<div class="under-container" style="margin-top: 15vh;">
 					<div class="Contributeurs">
 						<div class="line">
 							<div class="square" >C</div>
