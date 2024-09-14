@@ -51,7 +51,8 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             message = {
                 "from": {
                     "id": self.scope["user"].id,
-                    "username": self.scope["user"].username
+                    "username": self.scope["user"].username,
+                    "pfp": self.scope["user"].pfp.url
                 },
                 "message": event["message"],
                 "time": int(time.time())

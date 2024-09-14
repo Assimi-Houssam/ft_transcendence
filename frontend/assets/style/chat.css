@@ -41,7 +41,6 @@ chat-sidebar {
 	width: 14%;
 	height: 100%;
 	display: flex;
-	/* justify-content: center; */
 	align-items: center;
 	flex-direction: column;
 	gap: 10px;
@@ -59,6 +58,13 @@ chat-sidebar-entry {
 	padding-left: 15px;
 	background-color: #252F42;
 	border-radius: 10px;
+	gap: 5px;
+}
+
+chat-sidebar-entry > img {
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
 }
 
 .chat-main-container {

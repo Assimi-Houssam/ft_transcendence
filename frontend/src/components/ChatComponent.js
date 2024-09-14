@@ -1,18 +1,20 @@
 import getUserInfo from "../utils/services/userInfo.services.js";
+import ApiWrapper from "../utils/ApiWrapper.js";
 
 export class ChatSidebarEntry extends HTMLElement {
-    constructor(name, id) {
+    constructor(name, id, pfp) {
         super();
         this.name = name;
         this.message_container = new ChatMessagesContainer();
         this.addEventListener("click", this.clickEventHandler.bind(this));
         this.id = id;
+        this.pfp = pfp;
     }
     clickEventHandler() {
         this.dispatchEvent(new CustomEvent("chatEntryClick", { detail: this, bubbles: true }));
     }
     connectedCallback() {
-        this.innerHTML = `${this.name}`;
+        this.innerHTML = `${this.pfp ? `<img src="${ApiWrapper.getUrl() + this.pfp}">` : ""} </img> ${this.name}`;
     }
     onMessageReceived(time, username, message) {
         if (!time)
@@ -30,7 +32,6 @@ export class ChatSidebar extends HTMLElement {
         this.sidebar_entries.push(new ChatSidebarEntry("#general", -1));
         this.active_sidebar_entry = this.sidebar_entries[0];
         this.active_sidebar_entry.style.border = '2px solid white';
-        // this.active_sidebar_entry = this.sidebar_entries[0];
     }
     connectedCallback() {
         for (let sidebarEntry of this.sidebar_entries) {
@@ -64,7 +65,7 @@ export class ChatSidebar extends HTMLElement {
     createSideBarEntry(userId, username, pfp) {
         if (this.getSidebarEntry(userId))
             return;
-        const newEntry = new ChatSidebarEntry(username, userId);
+        const newEntry = new ChatSidebarEntry(username, userId, pfp);
         this.sidebar_entries.push(newEntry);
         this.setActiveSidebarEntry(newEntry);
         this.connectedCallback();
@@ -214,7 +215,7 @@ export class ChatPopup extends HTMLElement {
         const messageDetails = evt.detail;
         const sidebarEntry = this.sidebar.getSidebarEntry(messageDetails.from.id);
         if (!sidebarEntry)
-            this.sidebar.createSideBarEntry(messageDetails.from.id, messageDetails.from.username);
+            this.sidebar.createSideBarEntry(messageDetails.from.id, messageDetails.from.username, messageDetails.from.pfp);
         const messageEntryRaw = {
             message: messageDetails.message,
             username: messageDetails.from.username,
