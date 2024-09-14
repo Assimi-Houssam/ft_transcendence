@@ -318,6 +318,7 @@ export function game(ctx, canvas, gameData, bracket) {
   }
 
   var cancel;
+  let overTime = false;
   function gameloop() {
     if (goal == true) {
       if (new Date().getTime() > couldown) goal = false;
@@ -330,7 +331,7 @@ export function game(ctx, canvas, gameData, bracket) {
       countdownElement.style.display = "block";
       countdownElement.textContent = "Game Paused!";
       canvas.style.filter = "blur(10px)";
-    } else if (distance > 0) {
+    } else if (distance > 0 || overTime == true) {
       countdownElement.style.display = "none";
       canvas.style.filter = "none";
       gameupdate();
@@ -382,7 +383,7 @@ export function game(ctx, canvas, gameData, bracket) {
             clearInterval(x);
             cancelAnimationFrame(cancel);
           }
-          if (distance < 0) {
+          if (distance <= 0) {
             let timeDisplay = document.querySelector(".time-display");
             if (number1 == number2) {
               if (timeDisplay) timeDisplay.textContent = "Overtime!";
@@ -390,21 +391,24 @@ export function game(ctx, canvas, gameData, bracket) {
               else bal.veo.x = -19;
               if (bal.veo.y > 0) bal.veo.y = 13;
               else bal.veo.y = -13;
+              overTime = true;
             } else {
+              overTime = false
               if (timeDisplay) timeDisplay.textContent = "Time's up!";
               clearInterval(x);
               setTimeout(() => {
                 cancelAnimationFrame(cancel);
               }, 1000);
-              canvas.style.filter = "blur(10px)";
               countdownElement.style.display = "block";
               var winner = document.getElementById("winner");
               if (number1 > number2) {
+                canvas.style.filter = "blur(10px)";
                 countdownElement.textContent = "Blue Team Wins!";
                 countdownElement.style.color = "#4496D4";
                 bracket.groups[bracket.status][0].status = 1;
                 bracket.groups[bracket.status][1].status = 0;
               } else if (number1 < number2) {
+                canvas.style.filter = "blur(10px)";
                 countdownElement.textContent = "Red Team Wins!";
                 countdownElement.style.color = "#FF6666";
                 bracket.groups[bracket.status][0].status = 0;
