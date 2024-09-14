@@ -13,6 +13,7 @@ import { getUserInfo } from "../utils/utils.js";
 import { GamePage } from "../components/GamePlay/GamePage.js";
 import { langOfflineGame } from "../utils/translate/gameTranslate.js";
 import { langErrors } from "../utils/translate/gameTranslate.js";
+import { langSuccess } from "../utils/translate/gameTranslate.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
