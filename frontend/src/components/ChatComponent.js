@@ -15,8 +15,9 @@ export class ChatSidebarEntry extends HTMLElement {
         this.innerHTML = `${this.name}`;
     }
     onMessageReceived(time, username, message) {
+        if (!time)
+            time = Math.floor(Date.now() / 1000);
         this.message_container.addMessage(new ChatMessageEntry(time, username, message));
-        this.message_container.connectedCallback();
     }
 }
 
@@ -28,6 +29,8 @@ export class ChatSidebar extends HTMLElement {
         this.sidebar_entries = [];
         this.sidebar_entries.push(new ChatSidebarEntry("#general", -1));
         this.active_sidebar_entry = this.sidebar_entries[0];
+        this.active_sidebar_entry.style.border = '2px solid white';
+        // this.active_sidebar_entry = this.sidebar_entries[0];
     }
     connectedCallback() {
         for (let sidebarEntry of this.sidebar_entries) {
@@ -37,10 +40,14 @@ export class ChatSidebar extends HTMLElement {
     getActiveSidebarEntry() {
         return this.active_sidebar_entry;
     }
+    setActiveSidebarEntry(newEntry) {
+        this.active_sidebar_entry.style.border = '';
+        this.active_sidebar_entry = newEntry;
+        this.active_sidebar_entry.style.border = '2px solid white';
+    }
     appendMessage(id, msg) {
         for (let sidebarEntry of this.sidebar_entries) {
             if (id == sidebarEntry.id) {
-                console.log(msg)
                 sidebarEntry.onMessageReceived(msg.time, msg.username, msg.message);
                 return;
             }
@@ -55,9 +62,11 @@ export class ChatSidebar extends HTMLElement {
         return null;
     }
     createSideBarEntry(userId, username, pfp) {
+        if (this.getSidebarEntry(userId))
+            return;
         const newEntry = new ChatSidebarEntry(username, userId);
         this.sidebar_entries.push(newEntry);
-        this.active_sidebar_entry = newEntry;
+        this.setActiveSidebarEntry(newEntry);
         this.connectedCallback();
     }
 }
@@ -97,12 +106,11 @@ export class ChatMessagesContainer extends HTMLElement {
         this.messages = [];
     }
     connectedCallback() {
-        for (let message of this.messages) {
-            this.appendChild(message);
-        }
+        this.messages.slice().reverse().forEach(msg => {this.appendChild(msg)});
     }
     addMessage(message) {
         this.messages.push(message);
+        this.connectedCallback();
     }
 };
 
@@ -154,7 +162,7 @@ export class ChatPopup extends HTMLElement {
         this.chatMain = new ChatMain();
         this.ws = new WebSocket("ws://localhost:8000/ws/chat/");
         this.user = null;
-        
+        this.popped = false;
         this.ws.onopen = async () => {
             this.chatMain.replaceMessageContainer(this.sidebar.getActiveSidebarEntry().message_container);
             this.user = await getUserInfo();
@@ -164,8 +172,12 @@ export class ChatPopup extends HTMLElement {
         this.addEventListener("chatEntryClick", (evt) => {
             const sidebar_entry = evt.detail;
             this.chatMain.replaceMessageContainer(sidebar_entry.message_container);
-            this.sidebar.active_sidebar_entry = evt.detail;
+            this.sidebar.setActiveSidebarEntry(evt.detail);
         });
+        this.outerClickHandler = (e) => {
+            if (!e.target.className.startsWith("chat") && !e.target.localName.startsWith("chat"))
+                this.pop();        
+        };
         this.addEventListener("chatPopupInputEnter", this.handleInputEnter.bind(this));
         document.addEventListener("notiReceivedDm", this.handleDirectMessage.bind(this));
         document.addEventListener("chatDmStarted", this.startChatDm.bind(this));
@@ -185,14 +197,18 @@ export class ChatPopup extends HTMLElement {
             }
             console.log("detail:", evt_detail);
             document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evt_detail, bubbles: true}));
-            this.sidebar.appendMessage(evt_detail.userId, {message: msg, username: this.user.username, time: null});
+            const ts = Math.floor(Date.now() / 1000);
+            console.log("ts:", ts);
+            this.sidebar.appendMessage(evt_detail.userId, { message: msg, username: this.user.username, time: null });
         }
     }
     startChatDm(evt) {
         const userInfo = evt.detail;
         console.log("chat dm userinfo:", userInfo);
-        this.show();
+        if (!this.popped)
+            this.pop();
         this.sidebar.createSideBarEntry(userInfo.userId, userInfo.username, userInfo.pfp);
+        this.chatMain.replaceMessageContainer(this.sidebar.getActiveSidebarEntry().message_container);
     }
     handleDirectMessage(evt) {
         const messageDetails = evt.detail;
@@ -222,11 +238,48 @@ export class ChatPopup extends HTMLElement {
         this.querySelector(".chat-main-container").appendChild(this.chatMain);
     
     }
+    pop() {
+        if (this.popped) {
+            this.popped = false;
+            this.hide();
+        }
+        else {
+            this.popped = true;
+            this.show();
+        }
+    }
     show() {
         document.body.appendChild(this);
+        document.getElementById('root').style.pointerEvents = 'none';
+        anime({
+            targets: this,
+            top: ["100%", "55%"],
+            opacity: 1,
+            duration: 450,
+            easing: 'easeOutQuint',
+            complete: () => {
+                document.body.addEventListener("click", this.outerClickHandler);
+            }
+        });
     }
     hide() {
-        document.body.removeChild(this);
+        document.getElementById('root').style.pointerEvents = 'auto';
+        document.body.removeEventListener("click", this.outerClickHandler);
+        anime({
+            targets: this,
+            top: ["55%", "100%"],
+            opacity: 0,
+            duration: 500,
+            easing: 'easeOutQuint',
+            complete: () => {
+                try {
+                    if (!this.popped) {
+                        document.body.removeChild(this);
+                    }
+                }
+                catch (e) { }
+            }
+        });
     }
 }
 

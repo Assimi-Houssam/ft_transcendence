@@ -11,7 +11,6 @@ export class Navbar extends HTMLElement {
     this.userInfo = null;
     this.notificationCenter = new NotificationCenter();
     this.chat = new ChatPopup();
-    this.ishow = false;
   }
   async load() {
     const userInfo = await getUserInfo();
@@ -46,23 +45,15 @@ export class Navbar extends HTMLElement {
       noti_btn.addEventListener("click", () => {
         this.notificationCenter.show();
       });
-      document.addEventListener('keydown', (evt) =>{
-        if(evt.target.nodeName === 'INPUT') {
+      document.addEventListener('keydown', (evt) => {
+        if (evt.target.nodeName === 'INPUT') {
           return;
         }
-        console.log("keydown evt triggered");
-        if (evt.ctrlKey && evt.key === 'p' && this.ishow === false)
-          {
-            this.chat.show();
-            this.ishow = true;
-          }
-        else if(evt.ctrlKey && evt.key === 'p' && this.ishow === true)
-          {
-            this.chat.hide();
-            this.ishow = false;
-          }
-          
-      })
+        if (evt.ctrlKey && evt.key === 'p') {
+          console.log("chat pop req");
+          this.chat.pop();
+        }
+      });
   }
 }
 customElements.define('navbar-component', Navbar);
