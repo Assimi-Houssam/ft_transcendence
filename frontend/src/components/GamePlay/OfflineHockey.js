@@ -23,6 +23,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
     let ballcolor = 'rgba(255,255,255,1)';
     let forceMagnitude = 4;
     let pause = 0
+    let overTime = false;
     const keypress = [];
     if (custom == "fastForword") {
         veolicity = 9
@@ -30,7 +31,6 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         forceMagnitude = 6;
     }
 
-     /* Initialize particle array */
      let particles = [];
      let explosionTriggered = false;
  
@@ -60,9 +60,8 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
          }
      }
  
-     /* Function to initialize particles */
      function initializeParticles(x, y) {
-         particles = []; // Reset particles array
+         particles = []; 
          for (let i = 0; i <= 150; i++) {
              let dx = (Math.random() - 0.5) * (Math.random() * 6);
              let dy = (Math.random() - 0.5) * (Math.random() * 6);
@@ -72,7 +71,6 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
          }
      }
  
-     /* Particle explosion function */
      function explode() {
          particles = particles.filter(particle => {
              if (particle.alpha > 0) {
@@ -85,11 +83,10 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
          if (particles.length > 0) {
              requestAnimationFrame(explode);
          } else {
-             explosionTriggered = false; // Reset the trigger flag
+             explosionTriggered = false;
          }
      }
  
-     /* Function to trigger explosion effect */
      function triggerExplosion(x, y) {
          if (!explosionTriggered) {
              initializeParticles(x, y);
@@ -326,7 +323,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
             canvas.style.filter = 'none';
             player1.move();
             player2.move();
-            if(distance <= 0){
+            if(distance > 0 || overTime == true){
             hockeyBall.collisions();
             }
         }
@@ -377,8 +374,10 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
             if (distance <= 0) {
                 if (number1 == number2) {
                     timeDisplay.textContent = "over time";
+                    overTime = true;
                 }
                 else {
+                    overTime = false;
                     clearInterval(interval);
                     setTimeout(() => {
                         cancelAnimationFrame(animationframe);

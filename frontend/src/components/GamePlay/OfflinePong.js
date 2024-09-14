@@ -4,7 +4,8 @@ import { NextTournament } from "../GameComponents/GameOfflineRoom/tournament/Nex
 export function game(ctx, canvas, gameData, bracket) {
   var number1 = 0;
   var number2 = 0;
-  const time = gameData.time;
+  // const time = gameData.time;
+  const time = 1;
   const custom = gameData.customization;
   canvas.width = 1635;
   canvas.height = 585;
@@ -334,6 +335,7 @@ export function game(ctx, canvas, gameData, bracket) {
       canvas.style.filter = "none";
       gameupdate();
     }
+    console.log("distance : ", distance);
     gamedraw();
     cancel = window.requestAnimationFrame(gameloop);
   }
@@ -394,17 +396,16 @@ export function game(ctx, canvas, gameData, bracket) {
               clearInterval(x);
               setTimeout(() => {
                 cancelAnimationFrame(cancel);
-              }, 2500);
+              }, 1000);
               canvas.style.filter = "blur(10px)";
+              countdownElement.style.display = "block";
               var winner = document.getElementById("winner");
               if (number1 > number2) {
-                countdownElement.style.display = "block";
                 countdownElement.textContent = "Blue Team Wins!";
                 countdownElement.style.color = "#4496D4";
                 bracket.groups[bracket.status][0].status = 1;
                 bracket.groups[bracket.status][1].status = 0;
               } else if (number1 < number2) {
-                countdownElement.style.display = "block";
                 countdownElement.textContent = "Red Team Wins!";
                 countdownElement.style.color = "#FF6666";
                 bracket.groups[bracket.status][0].status = 0;
