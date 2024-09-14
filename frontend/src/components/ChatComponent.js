@@ -5,7 +5,7 @@ export class ChatSidebarEntry extends HTMLElement {
     constructor(name, id, pfp) {
         super();
         this.name = name;
-        this.message_container = new ChatMessagesContainer();
+        this.messageContainer = new ChatMessagesContainer();
         this.addEventListener("click", this.clickEventHandler.bind(this));
         this.id = id;
         this.pfp = pfp;
@@ -19,7 +19,7 @@ export class ChatSidebarEntry extends HTMLElement {
     onMessageReceived(time, username, message) {
         if (!time)
             time = Math.floor(Date.now() / 1000);
-        this.message_container.addMessage(new ChatMessageEntry(time, username, message));
+        this.messageContainer.addMessage(new ChatMessageEntry(time, username, message));
     }
 }
 
@@ -28,26 +28,26 @@ customElements.define("chat-sidebar-entry", ChatSidebarEntry);
 export class ChatSidebar extends HTMLElement {
     constructor() {
         super();
-        this.sidebar_entries = [];
-        this.sidebar_entries.push(new ChatSidebarEntry("#general", -1));
-        this.active_sidebar_entry = this.sidebar_entries[0];
-        this.active_sidebar_entry.style.border = '2px solid white';
+        this.sidebarEntries = [];
+        this.sidebarEntries.push(new ChatSidebarEntry("#general", -1));
+        this.activeSidebarEntry = this.sidebarEntries[0];
+        this.activeSidebarEntry.style.border = '2px solid white';
     }
     connectedCallback() {
-        for (let sidebarEntry of this.sidebar_entries) {
+        for (let sidebarEntry of this.sidebarEntries) {
             this.appendChild(sidebarEntry);
         }
     }
     getActiveSidebarEntry() {
-        return this.active_sidebar_entry;
+        return this.activeSidebarEntry;
     }
     setActiveSidebarEntry(newEntry) {
-        this.active_sidebar_entry.style.border = '';
-        this.active_sidebar_entry = newEntry;
-        this.active_sidebar_entry.style.border = '2px solid white';
+        this.activeSidebarEntry.style.border = '';
+        this.activeSidebarEntry = newEntry;
+        this.activeSidebarEntry.style.border = '2px solid white';
     }
     appendMessage(id, msg) {
-        for (let sidebarEntry of this.sidebar_entries) {
+        for (let sidebarEntry of this.sidebarEntries) {
             if (id == sidebarEntry.id) {
                 sidebarEntry.onMessageReceived(msg.time, msg.username, msg.message);
                 return;
@@ -55,7 +55,7 @@ export class ChatSidebar extends HTMLElement {
         }
     }
     getSidebarEntry(id) {
-        for (let sidebarEntry of this.sidebar_entries) {
+        for (let sidebarEntry of this.sidebarEntries) {
             if (id == sidebarEntry.id) {
                 return sidebarEntry;
             }
@@ -66,8 +66,7 @@ export class ChatSidebar extends HTMLElement {
         if (this.getSidebarEntry(userId))
             return;
         const newEntry = new ChatSidebarEntry(username, userId, pfp);
-        this.sidebar_entries.push(newEntry);
-        this.setActiveSidebarEntry(newEntry);
+        this.sidebarEntries.push(newEntry);
         this.connectedCallback();
     }
 }
@@ -120,7 +119,7 @@ customElements.define("chat-messages-container", ChatMessagesContainer);
 export class ChatMain extends HTMLElement {
     constructor() {
         super();
-        this.current_message_container = null;
+        this.currentMessageContainer = null;
     }
     async connectedCallback() {
         this.innerHTML = `
@@ -143,13 +142,13 @@ export class ChatMain extends HTMLElement {
             }
         });
 
-        if (this.current_message_container) {
-            this.appendChild(this.current_message_container);
+        if (this.currentMessageContainer) {
+            this.appendChild(this.currentMessageContainer);
         }
     }
 
     replaceMessageContainer(new_message_container) {
-        this.current_message_container = new_message_container;
+        this.currentMessageContainer = new_message_container;
         this.connectedCallback();
     }
 };
@@ -165,14 +164,14 @@ export class ChatPopup extends HTMLElement {
         this.user = null;
         this.popped = false;
         this.ws.onopen = async () => {
-            this.chatMain.replaceMessageContainer(this.sidebar.getActiveSidebarEntry().message_container);
+            this.chatMain.replaceMessageContainer(this.sidebar.getActiveSidebarEntry().messageContainer);
             this.user = await getUserInfo();
         }
         this.ws.onmessage = this.handleWsMessage.bind(this);
         
         this.addEventListener("chatEntryClick", (evt) => {
-            const sidebar_entry = evt.detail;
-            this.chatMain.replaceMessageContainer(sidebar_entry.message_container);
+            const sidebarEntry = evt.detail;
+            this.chatMain.replaceMessageContainer(sidebarEntry.messageContainer);
             this.sidebar.setActiveSidebarEntry(evt.detail);
         });
         this.outerClickHandler = (e) => {
@@ -192,15 +191,15 @@ export class ChatPopup extends HTMLElement {
         }
         else {
             console.log("sending dm to notificiation");
-            const evt_detail = {
+            const evtDetail = {
                 message: msg,
                 userId: this.sidebar.getActiveSidebarEntry().id
             }
-            console.log("detail:", evt_detail);
-            document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evt_detail, bubbles: true}));
+            console.log("detail:", evtDetail);
+            document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evtDetail, bubbles: true}));
             const ts = Math.floor(Date.now() / 1000);
             console.log("ts:", ts);
-            this.sidebar.appendMessage(evt_detail.userId, { message: msg, username: this.user.username, time: null });
+            this.sidebar.appendMessage(evtDetail.userId, { message: msg, username: this.user.username, time: null });
         }
     }
     startChatDm(evt) {
@@ -209,7 +208,8 @@ export class ChatPopup extends HTMLElement {
         if (!this.popped)
             this.pop();
         this.sidebar.createSideBarEntry(userInfo.userId, userInfo.username, userInfo.pfp);
-        this.chatMain.replaceMessageContainer(this.sidebar.getActiveSidebarEntry().message_container);
+        this.sidebar.setActiveSidebarEntry(this.sidebar.getSidebarEntry(userInfo.userId));
+        this.chatMain.replaceMessageContainer(this.sidebar.getActiveSidebarEntry().messageContainer);
     }
     handleDirectMessage(evt) {
         const messageDetails = evt.detail;

@@ -62,8 +62,8 @@ chat-sidebar-entry {
 }
 
 chat-sidebar-entry > img {
-	width: 30px;
-	height: 30px;
+	width: 1.5rem;
+	height: 1.5rem;
 	border-radius: 100%;
 }
 
