@@ -162,9 +162,15 @@ export class ChatMain extends HTMLElement {
 
 customElements.define("chat-main", ChatMain);
 
+let haxx = false;
+
 export class ChatPopup extends HTMLElement {
     constructor() {
         super();
+        if (!haxx)
+            haxx = true;
+        else
+            return;
         console.log("chat ctor called");
         this.sidebar = new ChatSidebar();
         this.chatMain = new ChatMain();
@@ -211,6 +217,7 @@ export class ChatPopup extends HTMLElement {
             return;
         }
         const resp = await req.json();
+        console.log("resp:", resp);
         Toast.success(resp.detail);
     }
     handleInputEnter(evt) {
