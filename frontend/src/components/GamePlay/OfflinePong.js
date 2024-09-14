@@ -335,7 +335,6 @@ export function game(ctx, canvas, gameData, bracket) {
       canvas.style.filter = "none";
       gameupdate();
     }
-    console.log("distance : ", distance);
     gamedraw();
     cancel = window.requestAnimationFrame(gameloop);
   }
@@ -416,15 +415,12 @@ export function game(ctx, canvas, gameData, bracket) {
                 for (let i = 0; i < 2; i++) {
                   if (bracket.status == 2) break;
                   if (bracket.groups[bracket.status][i].status == 1) {
-                    console.log(r);
                     bracket.groups[2][r].username =
                       bracket.groups[bracket.status][i].username;
                     break;
                   }
                 }
-                console.log("bracket : ", bracket);
                 bracket.status += 1;
-                console.log("bracketlvl : ", bracket.status);
               }
               setTimeout(() => {
                 router.navigate(
