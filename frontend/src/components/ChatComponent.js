@@ -1,5 +1,7 @@
 import getUserInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
+import Toast from "./Toast.js";
+import { router } from "../routes/routes.js";
 
 export class ChatSidebarEntry extends HTMLElement {
     constructor(name, id, pfp) {
@@ -106,7 +108,7 @@ export class ChatMessagesContainer extends HTMLElement {
         this.messages = [];
     }
     connectedCallback() {
-        this.messages.slice().reverse().forEach(msg => {this.appendChild(msg)});
+        this.messages.slice().reverse().forEach(msg => { this.appendChild(msg); });
     }
     addMessage(message) {
         this.messages.push(message);
@@ -128,7 +130,7 @@ export class ChatMain extends HTMLElement {
             </div>`;
 
         const message = this.querySelector(".chat-message-input");
-
+        
         if (!message) {
             return;
         }
@@ -137,7 +139,12 @@ export class ChatMain extends HTMLElement {
             if (evt.key.toLowerCase() === "enter") {
                if(String(message.value).trim().length === 0)
                    return;
-                this.dispatchEvent(new CustomEvent("chatPopupInputEnter", {detail: message.value, bubbles: true}));
+                if (message.value === "/invite") {
+                    console.log("dispatching chatSendInvite event");
+                    this.dispatchEvent(new CustomEvent("chatSendInvite", { detail: null, bubbles: true }));
+                }
+                else
+                    this.dispatchEvent(new CustomEvent("chatPopupInputEnter", { detail: message.value, bubbles: true }));
                 message.value = "";
             }
         });
@@ -158,6 +165,7 @@ customElements.define("chat-main", ChatMain);
 export class ChatPopup extends HTMLElement {
     constructor() {
         super();
+        console.log("chat ctor called");
         this.sidebar = new ChatSidebar();
         this.chatMain = new ChatMain();
         this.ws = new WebSocket("ws://localhost:8000/ws/chat/");
@@ -179,8 +187,31 @@ export class ChatPopup extends HTMLElement {
                 this.pop();        
         };
         this.addEventListener("chatPopupInputEnter", this.handleInputEnter.bind(this));
+        this.addEventListener("chatSendInvite", this.handleInviteEvent.bind(this));
         document.addEventListener("notiReceivedDm", this.handleDirectMessage.bind(this));
         document.addEventListener("chatDmStarted", this.startChatDm.bind(this));
+    }
+    async handleInviteEvent(evt) {
+        const userId = this.sidebar.getActiveSidebarEntry().id;
+        if (userId == -1) {
+            Toast.error("Cant send an invite in general");
+            return;
+        }
+        console.log("pathname:", window.location.pathname);
+        if (window.location.pathname === "/rooms" || !window.location.pathname.includes("room")) {
+            Toast.error("You're not in a room");
+            return;
+        }
+        const roomId = router.route.params["id"];
+        console.log("sending invite to:", userId, " roomId:", roomId);
+        const inviteData = { userId, roomId };
+        const req = await ApiWrapper.post("/rooms/invite", inviteData);
+        if (!req.ok) {
+            Toast.error("An error has occured");
+            return;
+        }
+        const resp = await req.json();
+        Toast.success(resp.detail);
     }
     handleInputEnter(evt) {
         const msg = evt.detail;
@@ -237,7 +268,6 @@ export class ChatPopup extends HTMLElement {
             </div>`;
         this.querySelector(".chat-main-container").appendChild(this.sidebar);
         this.querySelector(".chat-main-container").appendChild(this.chatMain);
-    
     }
     pop() {
         if (this.popped) {

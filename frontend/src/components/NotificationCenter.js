@@ -123,7 +123,6 @@ customElements.define("notification-item", Notification);
 export class NotificationCenter extends HTMLElement {
     constructor() {
         super();
-        
         this.ws = new WebSocket("ws://localhost:8000/ws/cable/");
         this.notifications = [];
         this.ws.onmessage = this.onNotificationReceived.bind(this);
@@ -133,21 +132,19 @@ export class NotificationCenter extends HTMLElement {
                 this.hide();
         }
         document.addEventListener("notiSendDM", (evt) => {
-            // console.log("notSendDm evt catched");
             const detail = evt.detail;
-            this.ws.send(JSON.stringify({message: detail.message, userId: detail.userId}));
+            this.ws.send(JSON.stringify({ message: detail.message, userId: detail.userId }));
         });
     }
     onNotificationReceived(evt) {
         const incommingNoti = JSON.parse(evt.data);
-        console.log("incoming ws message:", incommingNoti);
         if (incommingNoti.hasOwnProperty("message")) {
             console.log("dispatching dm received event");
             document.dispatchEvent(new CustomEvent("notiReceivedDm", {detail: incommingNoti, bubbles: true}));
             return;
         }
 
-        const notiElem = new Notification(incommingNoti);
+        const notiElem = new Notification(incommingNoti.notification);
         notiElem.style.opacity = '1';
         notiElem.style.marginLeft = "0%";
         this.notifications.push(notiElem);
