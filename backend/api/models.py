@@ -15,6 +15,8 @@ class User(AbstractUser):
     can_update_on  = models.IntegerField(default=0)
     friends = models.ManyToManyField("self", symmetrical=True, related_name="friends_list", blank=True)
     block_list = models.ManyToManyField("self", symmetrical=False, related_name="blocked_list", blank=True)
+    mfa_enabled = models.BooleanField(default=0)
+    totp_secret = models.CharField(max_length=32, blank=True, null=True)
     matches_played = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
     xp = models.IntegerField(default=0)
