@@ -3,6 +3,7 @@ import { genRandomString } from "../utils/utils.js";
 import { OAuthIntercept } from "../utils/utils.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js"
+import { PreloaderMini } from "../components/Loading.js";
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -12,18 +13,22 @@ export class LoginPage extends HTMLElement {
 		this.err = "";
 	}
 	async loginUser(event) {
-		// todo: block button input with animations after this is called
+		event.target.innerHTML = new PreloaderMini().outerHTML;
+		event.target.disabled = true;
 		event.preventDefault();
 		const username = this.username_elem.value;
 		const password = this.password_elem.value;
 		if (!username || !password) {
+			event.target.innerHTML = "Login";
+			event.target.disabled = false;
 			return;
 		}
 		const login_data = { username, password };
 		try {
-			// todo: display some sort of loading animation here
 			const req = await ApiWrapper.post("/login", login_data);
 			const data = await req.json();
+			event.target.disabled = false;
+			event.target.innerHTML = "Login";
 			if (!req.ok) {
 				Toast.error(data.detail);
 				return;
@@ -31,8 +36,9 @@ export class LoginPage extends HTMLElement {
 			router.navigate("/home");
 		}
 		catch (error) {
-			// display some toast notification here
-			console.log("[LoginPage]: an exception has occured:", error);
+			event.target.innerHTML = "Login";
+			event.target.disabled = false;
+			Toast.err("Error : an error has occured, please try again later");
 		}
 	}
 	OAuthLogin(event) {
@@ -58,15 +64,19 @@ export class LoginPage extends HTMLElement {
 					<p class="paragraph">Please enter your credentials to continue</p>
 					<form class="login-form">
 						<div>
-							Email
-							<input class="input" id="email" name="email" placeholder="e.g.dummy@domain.com">
+							<label>Username</label>
+							<input class="input" id="email" type="text" name="email" placeholder="username">
 						</div>
 						<div>
-							<p class="password"><span>Password</span><span><a href="/reset-password" class="forgot-password-link">Forgot password?</a></span></p>
+							<div class="password_label">
+								<span>Password</span>
+									<span><a href="/reset-password" class="forgot-password-link">Forgot password?</a>
+								</span>
+							</div>
 							<input class="input" id="password" type="password" name="password" placeholder="************">
 						</div>
-						<div class="buttons">
-							<button class="primary-btn" data="Login"></button>
+						<div style="width: 110%;" class="buttons">
+							<button class="primary-btn">Login</button>
 							<p class="space">OR</p>
 							<button class="secondary-btn"><span><img src="../../assets/images/42.svg" alt="42" class="fortyTwo"></span><span>Login with Intranet</span></button>
 						</div>

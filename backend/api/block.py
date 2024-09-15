@@ -3,8 +3,10 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import FriendRequestSerializer, UserFriendsSerializer
+from .models import FriendRequest
+from .serializers import FriendRequestSerializer, UserFriendsSerializer, UserSerializerMe
 from .auth import JWTAuth
+from django.db.models import Q
 
 @api_view(["POST"])
 @authentication_classes([JWTAuth])
@@ -15,6 +17,12 @@ def block(req, userID):
     return Response({
       "detail" : "faild to block this user"
     }, status=status.HTTP_208_ALREADY_REPORTED)
+  blocked_user_reqs = FriendRequest.objects.filter(from_user=user_to_block)
+  user_reqs = FriendRequest.objects.filter(from_user=req.user)
+  if blocked_user_reqs.exists() :
+    blocked_user_reqs.delete()
+  if user_reqs.exists() :
+      user_reqs.delete()
   req.user.friends.remove(user_to_block)
   req.user.block_list.add(user_to_block)
   return Response({

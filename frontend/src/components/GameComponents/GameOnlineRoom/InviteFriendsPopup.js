@@ -1,6 +1,6 @@
 import { router } from "../../../routes/routes.js";
 import ApiWrapper from "../../../utils/ApiWrapper.js";
-import { getUserInfo } from "../../../utils/utils.js";
+import { forceUpdateUserInfo, getUserInfo } from "../../../utils/utils.js";
 import Toast from "../../Toast.js";
 
 class FriendInviteEntry extends HTMLElement {
@@ -54,7 +54,7 @@ export class InviteFriendsPopup extends HTMLElement {
         this.hide();
     }
     show() {
-        getUserInfo().then((userinfo) => {
+        forceUpdateUserInfo().then((userinfo) => {
             const friends = userinfo.friends;
             console.log("friends: ", friends);
             for (let friend of friends) {

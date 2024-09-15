@@ -1,6 +1,6 @@
 .login-form 
 {
-    width: 400px;
+    width: 100%;
 }
 
 .registration-page 
@@ -21,23 +21,14 @@
 	align-items: center;
 }
 
+.registration-page input {
+	outline: none;
+}
+
 .logo
 {
 	width: 100px;
 	margin-bottom: 10px;
-}
-
-.input
-{
-	display: block;
-    width: 100%;
-    padding: 15px 20px 15px 20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-    border-radius: 15px;
-    border: none;
-    background: linear-gradient(to top, #1E293A, #242735);
-	color: white;
 }
 
 .registration-container
@@ -58,6 +49,11 @@
 	cursor: pointer;
 	font-family: 'nasalization';
 	z-index:1; 
+	min-height: 50px;
+	max-height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .btn::before
@@ -73,11 +69,6 @@
 	z-index: -1;
 } 
 
-.btn::after
-{
-	content: attr(data);
-	font-size: 16px;
-}
 
 .btn:hover::before 
 {
@@ -102,7 +93,6 @@
 .paragraph
 {
     color: #697185;
-	font-size: x-large;
 }
 
 .registration-error-message {
@@ -114,6 +104,7 @@
 .ref
 {
 	color: #697185;
-	font-size: 10px;
+	font-size: 15px;
+	margin-top: 20px;
 }
 
