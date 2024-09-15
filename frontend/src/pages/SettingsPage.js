@@ -7,6 +7,7 @@ import userInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import { MessageBox } from "../components/MessageBox.js";
 import { forceUpdateUserInfo, getUserInfo } from "../utils/utils.js";
+import { router } from "../routes/routes.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
@@ -25,26 +26,7 @@ export class SettingsPage extends HTMLElement {
     const data = this.userData;
     document.getElementById("username").value = data.username;
     document.getElementById("email").value = data.email;
-    // todo: make the server return the full url instead of generating it locally?
-    document.getElementsByClassName("settings_pfp_image")[0].src =
-      "http://localhost:8000" + data.pfp;
-  }
-
-  /**
-   * @function fetchUserInfo
-   * @returns {void}
-   * @description fetch the user info from the server
-   * @returns {object} user data
-   */
-  async fetchUserInfo() {
-    const req = await ApiWrapper.get("/me");
-    if (req.ok) {
-      const data = await req.json();
-      this.userData = data;
-    } else {
-      // todo: save server error message somewhere and display it in a toast
-      this.userData = null;
-    }
+    document.getElementsByClassName("settings_pfp_image")[0].src = `${ApiWrapper.getUrl()}${data.pfp}`;
   }
 
   /**
@@ -155,8 +137,7 @@ export class SettingsPage extends HTMLElement {
       if (this.userData.intra_id) {
         this.updateProfile(null).then(() => {
           document.getElementById("save_setting_btn").innerHTML = "Save";
-          document.getElementById("save_setting_btn").onclick = (e) =>
-          this.updateEvent(e);
+          document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
         });
         return;
       }
@@ -194,12 +175,14 @@ export class SettingsPage extends HTMLElement {
     reader.readAsDataURL(file);
   }
   async connectedCallback() {
-    this.userData = await getUserInfo();
-    if (!this.userData)
-      throw new Error("An error occured fetching user info from the server");
+    this.userData = await forceUpdateUserInfo();
+    if (!this.userData) {
+      Toast.error("Faild to get your settings data please try again later, sorry");
+      router.navigate("/500")
+    }
     this.innerHTML = `
       <div class="settings_">
-            <div ${this.userData.banner && (`style="background-image: url(http://localhost:8000${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">
+            <div ${this.userData.banner && (`style="background-image: url(${ApiWrapper.getUrl()}${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">
               <div class="upload_banner_btn" id="upload_banner_btn">
                 <div class="user_banner_err"></div>
                 <img src="../../assets/icons/camra.png" />

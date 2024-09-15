@@ -5,7 +5,7 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import { Loader, PreloaderMini } from "../components/Loading.js";
 import { ProfileActions } from "../components/profile/ProfileInfo.js";
 import Toast from "../components/Toast.js";
-import { getUserInfo } from "../utils/utils.js";
+import { forceUpdateUserInfo, getUserInfo } from "../utils/utils.js";
 
 export class Profile extends HTMLElement {
   constructor() {
@@ -52,10 +52,12 @@ export class Profile extends HTMLElement {
     const res = await ApiWrapper.post(`/user/block/${this.user.id}`);
     const json  = await res.json();
     if (res.status === 201) {
+      this.auth = await forceUpdateUserInfo();
       Toast.success(json.detail);
       this.connectedCallback();
     }else {
       Toast.error(json.detail);
+      e.target.innerHTML = "Block"
     }
   }
 
@@ -64,10 +66,12 @@ export class Profile extends HTMLElement {
     const res = await ApiWrapper.post(`/user/unblock/${this?.user?.id}`);
     const json = await res.json();
     if (res.status === 200) {
+      this.auth = await forceUpdateUserInfo();
       Toast.success(json.detail)
       this.connectedCallback();
     } else {
       Toast.error(json.detail)
+      e.target.innerHTML = "Unblock"
     }
   }
   async fetchUserScores(){
