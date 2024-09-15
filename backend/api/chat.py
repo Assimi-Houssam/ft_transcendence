@@ -1,7 +1,8 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .serializers import NotificationSerializer
+from .serializers import NotificationSerializer, UserScoreSerializer
 import json
 import time
+from channels.db import database_sync_to_async
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -48,13 +49,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'time': msg_time
             }
         )
-
+    @database_sync_to_async
+    def check_user_block(self, receiver, sender_username):
+        block_list = receiver.block_list.all()
+        for user in block_list:
+            if (user.username == sender_username):
+                return True
+        return False
     # Receive message from the group
     async def chat_message(self, event):
         message = event['message']
         username = event['username']
         time = event['time']
-        print(f"chat message handler called")
+
+        # check if the user is blocked
+        is_blocked = await self.check_user_block(self.scope["user"], username)
+        if is_blocked:
+            print(f"not broadcasting message to: {self.scope['user'].username} since he has {username} blocked")
+            return
+
         #Send the message to the websocket
         await self.send(text_data=json.dumps(
             {
