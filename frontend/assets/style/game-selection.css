@@ -933,7 +933,6 @@ friend-invite-entry > button:hover {
 }
 
 game-selection {
-    z-index: 999;
     position: relative;
 }
 
