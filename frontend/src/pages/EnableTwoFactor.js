@@ -29,7 +29,7 @@ export class EnableTwoFactor extends HTMLElement {
             langConfirmPassPopup[this.lang]["Title"],
             langConfirmPassPopup[this.lang]["ConfirmPass"],
             langConfirmPassPopup[this.lang]["BtnConfirm"],
-            this.updateUserInfo,
+            this.updateUserInfo.bind(this),
             "",
             "",
             langConfirmPassPopup[this.lang]["PlaceHolder"], true).show();

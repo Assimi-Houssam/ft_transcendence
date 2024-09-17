@@ -63,7 +63,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if all(value is None for value in data.values()):
             raise serializers.ValidationError("Empty form")
-        if (is_valid_input(data["username"]) == False):
+        if ("username" in data and is_valid_input(data["username"]) == False):
             raise serializers.ValidationError("Username contains invalid characters")
         if ("username" in data and len(data["username"]) < 5):
             raise serializers.ValidationError("Username cannot have less than 5 characters.")
