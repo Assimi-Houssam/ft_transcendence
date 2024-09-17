@@ -4,7 +4,8 @@ import { NextTournament } from "../GameComponents/GameOfflineRoom/tournament/Nex
 export function game(ctx, canvas, gameData, bracket) {
   var number1 = 0;
   var number2 = 0;
-  const time = gameData.time;
+  // const time = gameData.time;
+  const time = 1;
   const custom = gameData.customization;
   canvas.width = 1635;
   canvas.height = 585;
@@ -22,9 +23,7 @@ export function game(ctx, canvas, gameData, bracket) {
     ballcolor = "rgba(242,94,94,1)";
     paddveolicty = 13;
   }
-  // status: "quarter" / "semi" / "final" / "ended",
 
-  /* Initialize particle array */
   let particles = [];
   let explosionTriggered = false;
 
@@ -54,9 +53,8 @@ export function game(ctx, canvas, gameData, bracket) {
     }
   }
 
-  /* Function to initialize particles */
   function initializeParticles(x, y) {
-    particles = []; // Reset particles array
+    particles = []; 
     for (let i = 0; i <= 150; i++) {
       let dx = (Math.random() - 0.5) * (Math.random() * 6);
       let dy = (Math.random() - 0.5) * (Math.random() * 6);
@@ -66,7 +64,6 @@ export function game(ctx, canvas, gameData, bracket) {
     }
   }
 
-  /* Particle explosion function */
   function explode() {
     drawInitialCanvas();
     paddle1.draw();
@@ -82,11 +79,10 @@ export function game(ctx, canvas, gameData, bracket) {
     if (particles.length > 0) {
       requestAnimationFrame(explode);
     } else {
-      explosionTriggered = false; // Reset the trigger flag
+      explosionTriggered = false; 
     }
   }
 
-  /* Function to trigger explosion effect */
   function triggerExplosion(x, y) {
     if (!explosionTriggered) {
       initializeParticles(x, y);
@@ -130,7 +126,7 @@ export function game(ctx, canvas, gameData, bracket) {
       return this.width / 2;
     };
     this.gethalfheight = function () {
-      return this.height / 2;
+      return (this.height / 2) - 11;
     };
     this.getcenter = function () {
       return vec(
@@ -247,6 +243,7 @@ export function game(ctx, canvas, gameData, bracket) {
       }
     }
   }
+  let elapsedTime;
   function pauseAprove() {
     if (pause == 1) {
       pause = 2;
@@ -321,6 +318,7 @@ export function game(ctx, canvas, gameData, bracket) {
   }
 
   var cancel;
+  let overTime = false;
   function gameloop() {
     if (goal == true) {
       if (new Date().getTime() > couldown) goal = false;
@@ -333,7 +331,7 @@ export function game(ctx, canvas, gameData, bracket) {
       countdownElement.style.display = "block";
       countdownElement.textContent = "Game Paused!";
       canvas.style.filter = "blur(10px)";
-    } else {
+    } else if (distance > 0 || overTime == true) {
       countdownElement.style.display = "none";
       canvas.style.filter = "none";
       gameupdate();
@@ -385,7 +383,7 @@ export function game(ctx, canvas, gameData, bracket) {
             clearInterval(x);
             cancelAnimationFrame(cancel);
           }
-          if (distance < 0) {
+          if (distance <= 0) {
             let timeDisplay = document.querySelector(".time-display");
             if (number1 == number2) {
               if (timeDisplay) timeDisplay.textContent = "Overtime!";
@@ -393,20 +391,24 @@ export function game(ctx, canvas, gameData, bracket) {
               else bal.veo.x = -19;
               if (bal.veo.y > 0) bal.veo.y = 13;
               else bal.veo.y = -13;
+              overTime = true;
             } else {
+              overTime = false
               if (timeDisplay) timeDisplay.textContent = "Time's up!";
               clearInterval(x);
-              cancelAnimationFrame(cancel);
-              canvas.style.filter = "blur(10px)";
+              setTimeout(() => {
+                cancelAnimationFrame(cancel);
+              }, 1000);
+              countdownElement.style.display = "block";
               var winner = document.getElementById("winner");
               if (number1 > number2) {
-                countdownElement.style.display = "block";
+                canvas.style.filter = "blur(10px)";
                 countdownElement.textContent = "Blue Team Wins!";
                 countdownElement.style.color = "#4496D4";
                 bracket.groups[bracket.status][0].status = 1;
                 bracket.groups[bracket.status][1].status = 0;
               } else if (number1 < number2) {
-                countdownElement.style.display = "block";
+                canvas.style.filter = "blur(10px)";
                 countdownElement.textContent = "Red Team Wins!";
                 countdownElement.style.color = "#FF6666";
                 bracket.groups[bracket.status][0].status = 0;
@@ -417,15 +419,12 @@ export function game(ctx, canvas, gameData, bracket) {
                 for (let i = 0; i < 2; i++) {
                   if (bracket.status == 2) break;
                   if (bracket.groups[bracket.status][i].status == 1) {
-                    console.log(r);
                     bracket.groups[2][r].username =
                       bracket.groups[bracket.status][i].username;
                     break;
                   }
                 }
-                console.log("bracket : ", bracket);
                 bracket.status += 1;
-                console.log("bracketlvl : ", bracket.status);
               }
               setTimeout(() => {
                 router.navigate(
@@ -444,7 +443,6 @@ export function game(ctx, canvas, gameData, bracket) {
   drawInitialCanvas();
   startCountdown(3);
   function startGame() {
-    // Game start logic here
     gameloop();
   }
 }
