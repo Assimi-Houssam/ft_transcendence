@@ -1,4 +1,5 @@
 import { router } from "../../routes/routes.js";
+import { langGame } from "../../utils/translate/gameTranslate.js";
 
 export function PongTable(ctx, canvas, ws, time, custom, player) {
   let animationframe;
@@ -29,6 +30,8 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
   let particles = [];
   let explosionTriggered = false;
 
+  let lang = localStorage.getItem("lang");
+  
   class Particle {
     constructor(x, y, radius, dx, dy) {
       this.x = x;
@@ -266,7 +269,7 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
     }
     if (pause === true) {
       canvas.style.filter = "blur(10px)";
-      countdownElement.textContent = "Game paused for 10 seconds";
+      countdownElement.textContent = langGame[lang]["GamePause"];
       countdownElement.style.display = "block";
     } else if (pause === false) {
       canvas.style.filter = "none";
@@ -334,13 +337,13 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
             let timeSelector = document.querySelector(".time-display");
             if (disconneted) {
               canvas.style.filter = "blur(10px)";
-              countdownElement.textContent = "Opponent disconnected";
+              countdownElement.textContent = langGame[lang]["OpponentDisconnected"];
               countdownElement.style.display = "block";
               setTimeout(() => {
                 router.navigate("/home");
               }, 3000);
             } else {
-              timeSelector.textContent = "Time's up!";
+              timeSelector.textContent = langGame[lang]["TimesUp"];
             }
             clearInterval(interval);
             setTimeout(() => {
@@ -354,13 +357,13 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
               countdownElement.style.display = "block";
               console.log(number1, number2);
               if (number1 < number2) {
-                countdownElement.textContent = "Blue Team Wins!";
+                countdownElement.textContent = langGame[lang]["BlueTeamWon"];
                 countdownElement.style.color = "#4496D4";
               } else if (number1 > number2) {
-                countdownElement.textContent = "Red Team Wins!";
+                countdownElement.textContent = langGame[lang]["RedTeamWon"];
                 countdownElement.style.color = "#FF6666";
               } else {
-                countdownElement.textContent = "Draw!";
+                countdownElement.textContent = langGame[lang]["Draw"];
               }
             }
           }

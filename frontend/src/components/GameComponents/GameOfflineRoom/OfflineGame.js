@@ -3,16 +3,24 @@ import { router } from "../../../routes/routes.js";
 import { RoomOptions } from "../GameOnlineRoom/RoomOptions.js";
 import { TournamentBracket } from "./tournament/Tournament.js";
 import { OfflineGamePage } from "../../GamePlay/OfflineGamePage.js";
+import { langOfflineGame } from "../../../utils/translate/gameTranslate.js";
+import { langErrors } from "../../../utils/translate/gameTranslate.js";
+import { langSuccess } from "../../../utils/translate/gameTranslate.js";
 
 class TournamentFooter extends HTMLElement {
+    constructor() {
+        super();
+        this.lang =localStorage.getItem("lang");
+    }
+
     connectedCallback() {
         this.innerHTML = `
         <div class="ContainerFooter">
             <div>
-                <p style="display:none;" class="ContainerFooter_reminder">Unable to start the game: not enough players in the room</p>
+                <p style="display:none;" class="ContainerFooter_reminder">${langOfflineGame[this.lang]["notEnoughPlayers"]}</p>
             </div>
             <div class="BtnStartGame">
-                <button type="button" id="BtnStartGame">Start game!</button>
+                <button type="button" id="BtnStartGame">${langOfflineGame[this.lang]["BtnStartGame"]}</button>
             </div>
         </div>`;
     }
@@ -23,6 +31,7 @@ customElements.define("tournament-footer", TournamentFooter);
 export class OfflineGame extends HTMLElement {
     constructor() {
         super();
+        this.lang =localStorage.getItem("lang");
         this.bracketSize = 1;
         this.time = 3;
         this.gameMode = "pong";
@@ -38,7 +47,7 @@ export class OfflineGame extends HTMLElement {
 
     validateBracketsFields(brackts) {
         if (!brackts || !brackts.groups) {
-            Toast.error("Some fields are empty")
+            Toast.error(langErrors[this.lang]["ErrorEmptyOffGame"])
             return false;
         }
         const groups = brackts.groups;
@@ -49,7 +58,7 @@ export class OfflineGame extends HTMLElement {
             }
             const arr = groups[i];
             if (arr[0].username.toLowerCase() === arr[1].username.toLowerCase()) {
-                Toast.error("usernames should be unique")
+                Toast.error(langErrors[this.lang]["ErrorUnique"])
                 return false;
             } else {
                 const first = arr[0];
@@ -59,7 +68,7 @@ export class OfflineGame extends HTMLElement {
                         const arr_ = groups[j];
                         for (let a = 0; a < arr_.length; a++ ) {
                             if (arr_[a].username.toLowerCase() === first.username.toLowerCase() || arr_[a].username.toLowerCase() === sec.username.toLowerCase()) {
-                                Toast.error("usernames should be unique");
+                                Toast.error(langErrors[this.lang]["ErrorUnique"]);
                                 return false;
                             }
                         }
@@ -74,7 +83,7 @@ export class OfflineGame extends HTMLElement {
         this.innerHTML = `
         <div>
             <div class="OfflineTournamentTitle">
-                <h2>Offline tournament</h2>
+                <h2>${langOfflineGame[this.lang]["OfflineTournament"]}</h2>
             </div>
             <div class="content_line">
                 <div class="line_x"></div>
@@ -106,7 +115,7 @@ export class OfflineGame extends HTMLElement {
             const bracket = this.bracket.generateBracket();
             if (!this.validateBracketsFields(bracket)) 
                 return;
-            Toast.success("Game started");
+            Toast.success(langSuccess[this.lang]["SuccessStartGame"]);
             router.navigate("/OfflineGame", new OfflineGamePage(this.gameData, bracket));
         });
     }

@@ -1,16 +1,19 @@
 import Toast from "../../../Toast.js";
 import { RoomName } from "./RoomName.js";
+import { langEditRoomName } from "../../../../utils/translate/gameTranslate.js";
+import { langErrors } from "../../../../utils/translate/gameTranslate.js";
 
 export class EditRoomName extends HTMLElement {
     constructor(name = "") {
         super();
         this.roomName = name;
+        this.lang = localStorage.getItem("lang");
     }
 
     connectedCallback() {
         this.innerHTML = `
             <div class="TitleRoom" id="TitleRoom">
-                <input value="${this.roomName}" class="gradient-dark-bg gradient-dark-border" id="roomeNameInput" type="text" placeholder="Edit room name" >
+                <input value="${this.roomName}" class="gradient-dark-bg gradient-dark-border" id="roomeNameInput" type="text" placeholder="${langEditRoomName[this.lang]["editRoomName"]}" >
                 <button id="saveRoomName">
                     <img src="../../../../../assets/icons/check.png" />
                 </button>
@@ -28,10 +31,10 @@ export class EditRoomName extends HTMLElement {
 
         const saveRoomName = () => {
             if (this.roomName.length > 25) {
-                Toast.error("You can't set a name more than 25 characters");
+                Toast.error(langErrors[this.lang]["ErrorNameLen"]);
                 return;
             } else if (this.roomName === "") {
-                Toast.error("You can't set an empty name");
+                Toast.error(langErrors[this.lang]["ErrorEmpty"]);
                 return;
             }
             changeTitleRoom.replaceChildren(new RoomName(this.roomName));

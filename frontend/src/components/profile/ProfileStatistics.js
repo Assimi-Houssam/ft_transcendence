@@ -1,3 +1,5 @@
+import { langProfileStatistics } from "../../utils/translate/gameTranslate.js";
+
 export class StatisticCard extends HTMLElement {
   constructor(icon, title, counter) {
     super();
@@ -24,17 +26,18 @@ export class ProfileStatistics extends HTMLElement {
   constructor(userInfo) {
     super();
     this.userInfo = userInfo;
+    this.lang = localStorage.getItem("lang");
   }
 
   connectedCallback() {
     this.innerHTML = `
-      <h2 class="profile_titles">Statistics</h2>
+      <h2 class="profile_titles">${langProfileStatistics[this.lang]["Statistics"]}</h2>
       <div id="statistics_cards"></div>
     `
     const statisticsCards = document.getElementById("statistics_cards");
-    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/cup.png", "WINS", this.userInfo.matches_won))
-    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/xp.png", "YOUR XP", this.userInfo.xp))
-    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/controle.png", "MATCHES PLAYED", this.userInfo.matches_played))
+    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/cup.png", langProfileStatistics[this.lang]["Wins"], this.userInfo.matches_won))
+    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/xp.png", langProfileStatistics[this.lang]["Xp"], this.userInfo.xp))
+    statisticsCards.appendChild(new StatisticCard("../../../assets/icons/controle.png", langProfileStatistics[this.lang]["MatchesPlayed"], this.userInfo.matches_played))
   }
 }
 

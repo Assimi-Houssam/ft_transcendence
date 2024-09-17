@@ -1,13 +1,15 @@
 import { InviteFriendsPopup } from "./InviteFriendsPopup.js";
+import { langParticipants } from "../../../utils/translate/gameTranslate.js";
 
 export class EmptySlot extends HTMLElement {
     constructor() {
         super();
+        this.lang = localStorage.getItem("lang");
         this.classList.add("undraggable");
     }
     connectedCallback() {
         this.innerHTML = `
-            <p>Empty Slot</p>
+            <p>${langParticipants[this.lang]["emptySlot"]}</p>
             <img src="../../../../assets/icons/friends.png">
         `;
         this.onclick = () => { new InviteFriendsPopup().show(); }
@@ -22,6 +24,7 @@ export class ParticipantEntry extends HTMLElement {
         this.userInfo = userInfo;
         this.isHost = isHost;
         this.locked = locked;
+        this.lang = localStorage.getItem("lang");
     }
     getUserInfo() {
         return this.userInfo;
@@ -31,7 +34,7 @@ export class ParticipantEntry extends HTMLElement {
             <div class="ParticipantEntryInfo">
                 <img src="${this.userInfo.pfp}">
                 <div class="ParticipantUsername">
-                    <p>${this.userInfo.username} ${this.isHost ? `<span style="color: var(--orchid); font-size: 65% ;">(Host)</span>` : ""}</p>
+                    <p>${this.userInfo.username} ${this.isHost ? `<span style="color: var(--orchid); font-size: 65% ;">(${langParticipants[this.lang]["host"]})</span>` : ""}</p>
                 </div>
             </div>
             <img class="ParticipantKick" src="../../../../assets/icons/circle-x.svg">`;

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./assets/style/profile.css">
     <link rel="stylesheet" href="./assets/style/gamestyle.css">
     <link rel="stylesheet" href="./assets/style/bracket.css">
+    <link rel="stylesheet" href="./assets/style/home.css">
     <link rel="stylesheet" href="./assets/style/mfa.css">
 
 </head>
@@ -36,6 +37,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         window.anime = anime;
+        if (localStorage.getItem("lang") === null)
+            localStorage.setItem("lang", "en");
     </script>
     <script type="module" src="./src/routes/index.js"></script>
     <script type="module" src="./src/components/LayoutComponent.js"></script>

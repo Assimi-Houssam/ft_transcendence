@@ -11,17 +11,25 @@ import { router } from "../routes/routes.js";
 import Toast from "../components/Toast.js";
 import { getUserInfo } from "../utils/utils.js";
 import { GamePage } from "../components/GamePlay/GamePage.js";
+import { langOfflineGame } from "../utils/translate/gameTranslate.js";
+import { langErrors } from "../utils/translate/gameTranslate.js";
+import { langSuccess } from "../utils/translate/gameTranslate.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
+    constructor() {
+        super();
+        this.lang = localStorage.getItem("lang");
+    }
+
     connectedCallback() {
         this.innerHTML = `
             <div class="ContainerFooter">
                 <div>
-                    <p style="display:none;" class="ContainerFooter_reminder">Unable to start the game: not enough players in the room</p>
+                    <p style="display:none;" class="ContainerFooter_reminder">${langOfflineGame[this.lang]["notEnoughPlayers"]}</p>
                 </div>
                 <div class="BtnStartGame">
-                    <button type="button" id="BtnStartGame">Start game!</button>
+                    <button type="button" id="BtnStartGame">${langOfflineGame[this.lang]["BtnStartGame"]}</button>
                 </div>
             </div>`;
     }
@@ -32,12 +40,12 @@ customElements.define("room-page-footer", RoomPageFooter);
 export class RoomPage extends HTMLElement {
     constructor(roomData) {
         super();
+        this.lang = localStorage.getItem("lang");
         if (!roomData) {
-            Toast.error("The room doesnt exist anymore");
+            Toast.error(langErrors[this.lang]["ErrorRoomDoesntExist"]);
             router.navigate("/home");
             return;
         }
-        console.log("room page ctor called");
         this.roomData = roomData;
         this.roomId = roomData.id;
         this.chat = new ChatGame();
@@ -55,17 +63,17 @@ export class RoomPage extends HTMLElement {
         this.socket.onclose = async (evt) => {
             console.log("socket connection CLOSED, error code:", evt.code, " reason: ", evt.reason);
             if (evt.code === 4001) {
-                Toast.success("Game started!");
+                Toast.success(langSuccess[this.lang]["SuccessStartGame"]);
                 this.user = await getUserInfo();
                 router.navigate("/game/" + this.roomId + "/", new GamePage(this.roomData, this.user));
                 return;
             }
             if (evt.code === 4002) {
-                Toast.error("You've been kicked from the room");
+                Toast.error(langErrors[this.lang]["ErrorKickedRoom"]);
                 router.navigate("/rooms");
                 return;
             }
-            Toast.error("You have been disconnected from the room");
+            Toast.error(langErrors[this.lang]["ErrorDisconnectedRoom"]);
             router.navigate("/rooms");
         }
     

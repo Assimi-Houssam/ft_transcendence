@@ -6,17 +6,20 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import { RoomPage } from "./RoomPage.js";
 import Toast from "../components/Toast.js";
 import { PreloaderMini } from "../components/Loading.js";
+import { langRoomInfoCard } from "../utils/translate/gameTranslate.js";
+import { langErrors } from "../utils/translate/gameTranslate.js";
 
 export class RoomsListPage extends HTMLElement {
     constructor() {
         super();
+        this.lang =localStorage.getItem("lang");
         this.rooms = [];
         this.fetchLoop = null;
     }
     async fetchRooms() {
         const resp = await ApiWrapper.get("/rooms/list");
         if (!resp.ok) {
-            console.log("an error has occured fetching");
+            console.log("an error has occured fetching"); // consile.log
             return;
         }
         const json = await resp.json();
@@ -33,10 +36,10 @@ export class RoomsListPage extends HTMLElement {
             <div class="ContainerOnlineRoom">
                 <div class="BtnCreateRoom">
                     <div class="OnlineRoomsContainer">
-                        <h1>Online rooms</h1>
+                        <h1>${langRoomInfoCard[this.lang]["Title"]}</h1>
                         <preloader-mini></preloader-mini>
                     </div>
-                    <button name="CreateRoom" id="Room" class="CreateRoomBtn">Create room</button>
+                    <button name="CreateRoom" id="Room" class="CreateRoomBtn">${langRoomInfoCard[this.lang]["BtnCreateRoom"]}</button>
                 </div>
                 <div class="content_line">
                     <div class="line_x"></div>
@@ -46,7 +49,7 @@ export class RoomsListPage extends HTMLElement {
         this.querySelector(".CreateRoomBtn").onclick = async () => {
             const req = await ApiWrapper.post("/rooms/create");
             if (req.status === 500) {
-                Toast.error("An internal server error occured");
+                Toast.error(langErrors[this.lang]["ErrorInternalServer"]);
                 return;
             }
             if (!req.ok) {

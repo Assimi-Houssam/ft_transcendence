@@ -1,12 +1,15 @@
 import { router } from "../../../routes/routes.js";
 import Toast from "../../Toast.js";
 import { RoomPage } from "../../../pages/RoomPage.js";
+import { langRoomCard } from "../../../utils/translate/gameTranslate.js";
+import { langErrors } from "../../../utils/translate/gameTranslate.js";
 
 export class RoomInfoCard extends HTMLElement {
     constructor(roomData, enabled = false) {
         super();
         this.roomData = roomData;
         this.enabled = enabled;
+        this.lang = localStorage.getItem("lang");
     }
     update(roomData) {
         this.roomData = roomData;
@@ -34,10 +37,10 @@ export class RoomInfoCard extends HTMLElement {
                             </div>
                             <div class="RoomContentCard_flex">
                                 <div class="RoomPlayer">
-                                    <p id="SizePlayers">${this.roomData.users.length}/${this.roomData.teamSize === "1" ? "2" : "4"} Players</p>
+                                    <p id="SizePlayers">${this.roomData.users.length}/${this.roomData.teamSize === "1" ? "2" : "4"} ${langRoomCard[this.lang]["players"]}</p>
                                 </div>
                                 <div class="RoomHosted">
-                                    <p>hosted by <span style="color: var(--orchid)">${this.roomData.host.username}<span></p>
+                                    <p>${langRoomCard[this.lang]["hostedBy"]} <span style="color: var(--orchid)">${this.roomData.host.username}<span></p>
                                 </div>
                                 <div class="RoomUsers">
                                 ${this.roomData.users.map(user => `<img src="${user.pfp}" width="20px">`).join('')}</div>
@@ -50,11 +53,11 @@ export class RoomInfoCard extends HTMLElement {
                 if (!this.enabled)
                     return;
                 if (this.roomData.users.length === Number(this.roomData.teamSize) * 2) {
-                    Toast.error("This room is full");
+                    Toast.error(langErrors[this.lang]["ErrorFull"]);
                     return;
                 }
                 if (this.roomData.started === "true") {
-                    Toast.error("This room has already started");
+                    Toast.error(langErrors[this.lang]["ErrorStarted"]);
                     return;
                 }
                 router.navigate("/room/" + this.roomData.id, new RoomPage(this.roomData));

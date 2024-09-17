@@ -1,14 +1,17 @@
+import { langTournament } from "../../../../utils/translate/gameTranslate.js";
+
 class SingleBracket extends HTMLElement {
     constructor() {
         super();
+        this.lang = localStorage.getItem("lang");
         this.inputOne = null;
         this.inputTwo = null;
     }
     connectedCallback() {
         this.innerHTML = `
             <div class="single-bracket">
-                <input type="text" class="player_bracket_name_1" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required> 
-                <input type="text" class="player_bracket_name_2" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>             
+                <input type="text" class="player_bracket_name_1" id="player_bracket_name" placeholder="${langTournament[this.lang]["PlaceHolder"]}" minlength="3" maxlength="10" required> 
+                <input type="text" class="player_bracket_name_2" id="player_bracket_name" placeholder="${langTournament[this.lang]["PlaceHolder"]}" minlength="3" maxlength="10" required>             
             </div>
             <div class="bracket-lines">
                 <svg class="top-path" fill="none" viewBox="0 0 54 83">
@@ -178,14 +181,15 @@ class SingleBracket extends HTMLElement {
 class SingleBracketMini extends HTMLElement {
     constructor() {
         super();
+        this.lang = localStorage.getItem("lang");
         this.inputOne = null;
         this.inputTwo = null;
     }
     connectedCallback() {
         this.innerHTML = `
             <div class="single-bracket-mini">
-                <input type="text" class="player_bracket_name_1" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required> 
-                <input type="text" class="player_bracket_name_2" id="player_bracket_name" placeholder="player name" minlength="3" maxlength="10" required>             
+                <input type="text" class="player_bracket_name_1" id="player_bracket_name" placeholder="${langTournament[this.lang]["PlaceHolder"]}" minlength="3" maxlength="10" required> 
+                <input type="text" class="player_bracket_name_2" id="player_bracket_name" placeholder="${langTournament[this.lang]["PlaceHolder"]}" minlength="3" maxlength="10" required>             
             </div>
             <div class="bracket-lines">
                 <svg class="top-path-mini" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 70">

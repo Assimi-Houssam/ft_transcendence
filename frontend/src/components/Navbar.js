@@ -8,6 +8,8 @@ import { ChatPopup } from "./ChatComponent.js";
 export class Navbar extends HTMLElement {
   constructor() {
     super();
+    if (localStorage.getItem("lang") === null)
+      localStorage.setItem("lang", "en");
     this.userInfo = null;
     this.notificationCenter = new NotificationCenter();
     this.chat = new ChatPopup();

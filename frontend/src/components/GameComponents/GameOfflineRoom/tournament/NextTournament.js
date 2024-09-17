@@ -1,12 +1,14 @@
 import { router } from "../../../../routes/routes.js";
 import { TournamentBracket } from "./Tournament.js";
 import { OfflineGamePage } from "../../../GamePlay/OfflineGamePage.js";
+import { langNextTournament } from "../../../../utils/translate/gameTranslate.js";
 
 export class NextTournament extends HTMLElement {
     constructor(gameData = null, bracketInfo) {
         super();
         this.gameData = gameData;
         this.bracketInfo = bracketInfo;
+        this.lang = localStorage.getItem("lang");
     }
     
     connectedCallback() {
@@ -35,7 +37,7 @@ export class NextTournament extends HTMLElement {
         this.innerHTML = `
             <div>
                 <div class="OfflineTournamentTitleNextUp">
-                    <h2>${hasReachedFinals === true ? "Results" : "Next Up!"}</h2>
+                    <h2>${hasReachedFinals === true ? langNextTournament[this.lang]["Results"] : langNextTournament[this.lang]["NextUpTitle"]}</h2>
                 </div>
                 <div class="content_line">
                     <div class="line_x"></div>
@@ -47,17 +49,17 @@ export class NextTournament extends HTMLElement {
                 <div class="line_x"></div>
             </div>
             <div class="OfflineTournamentTitleWinner">
-                <h2 style="font-size: 3.5vh;">${this.bracketInfo ? "The Winner Is" : ""} <span style="color: #24CE90;">${winner}</span></h2>
+                <h2 style="font-size: 3.5vh;">${this.bracketInfo ? langNextTournament[this.lang]["TheWinnerIs"] : ""} <span style="color: #24CE90;">${winner}</span></h2>
             </div>
             ${
                 this.bracketInfo.status != 3 && this.bracketInfo.groups.length > 1 ?
                     `<div class="OfflineTournamentTitleNextMatch">
-                        <h2>Next Up: <span style="color: #24CE90;">${nextBracket[0].username}</span> vs <span style="color: #24CE90;">${nextBracket[1].username}</span></h2>
+                        <h2>${langNextTournament[this.lang]["NextUp"]}: <span style="color: #24CE90;">${nextBracket[0].username}</span> vs <span style="color: #24CE90;">${nextBracket[1].username}</span></h2>
                     </div>` : ""
             }
             <div class="NextTournamentBtn">
                 <div class="BtnTournament">
-                    <button type="button" id="BtnTournamentGame">${hasReachedFinals === true ? "Go Home" : "Next Game!"}</button>
+                    <button type="button" id="BtnTournamentGame">${hasReachedFinals === true ? langNextTournament[this.lang]["GoHome"] : langNextTournament[this.lang]["NextGame"]}</button>
                 </div>
             </div>`;
         this.querySelector(".tournament_node").appendChild(this.bracket);

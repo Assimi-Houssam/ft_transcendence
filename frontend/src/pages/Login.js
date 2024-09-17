@@ -5,10 +5,12 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js"
 import { PreloaderMini } from "../components/Loading.js";
 import TwoFactorAuth from "./TwoFactorAuth.js";
+import { langErrors, langLogin } from "../utils/translate/gameTranslate.js";
 
 export class LoginPage extends HTMLElement {
 	constructor() {
 		super();
+		this.lang = localStorage.getItem("lang");
 		this.loginUser = this.loginUser.bind(this);
 		this.OAuthLogin = this.OAuthLogin.bind(this);
 		this.err = "";
@@ -20,7 +22,7 @@ export class LoginPage extends HTMLElement {
 		const username = this.username_elem.value;
 		const password = this.password_elem.value;
 		if (!username || !password) {
-			event.target.innerHTML = "Login";
+			event.target.innerHTML = langLogin[this.lang]["BtnLogin"];
 			event.target.disabled = false;
 			return;
 		}
@@ -34,7 +36,7 @@ export class LoginPage extends HTMLElement {
 			}
 			const data = await req.json();
 			event.target.disabled = false;
-			event.target.innerHTML = "Login";
+			event.target.innerHTML = langLogin[this.lang]["BtnLogin"];
 			if (!req.ok) {
 				Toast.error(data.detail);
 				return;
@@ -42,9 +44,9 @@ export class LoginPage extends HTMLElement {
 			router.navigate("/home");
 		}
 		catch (error) {
-			event.target.innerHTML = "Login";
+			event.target.innerHTML = langLogin[this.lang]["BtnLogin"];
 			event.target.disabled = false;
-			Toast.err("Error : an error has occured, please try again later");
+			Toast.err(langErrors[this.lang]["ErrorTryAgain"]);
 		}
 	}
 	OAuthLogin(event) {
@@ -66,28 +68,28 @@ export class LoginPage extends HTMLElement {
 			<div class="login-page">
 				<div class="login-container">
 					<img src="../../assets/images/logo.png" alt="Logo" class="logo">
-					<h1>Welcome Back</h1>
-					<p class="paragraph">Please enter your credentials to continue</p>
-					<form class="login-form">
+					<h1>${langLogin[this.lang]["Login"]}</h1>
+					<p class="paragraph">${langLogin[this.lang]["Paragraph"]}</p>
+					<form class="login-form"> 
 						<div>
-							<label>Username</label>
-							<input class="input" id="email" type="text" name="email" placeholder="username">
+							${langLogin[this.lang]["Email"]}
+							<input class="input" id="email" name="email" placeholder="${langLogin[this.lang]["EmailPlaceHold"]}">
 						</div>
 						<div>
 							<div class="password_label">
-								<span>Password</span>
-									<span><a href="/reset-password" class="forgot-password-link">Forgot password?</a>
+								<span>${langLogin[this.lang]["Password"]}</span>
+									<span><a href="/reset-password" class="forgot-password-link">${langLogin[this.lang]["ForgorPass"]}</a>
 								</span>
 							</div>
 							<input class="input" id="password" type="password" name="password" placeholder="************">
 						</div>
 						<div style="width: 110%;" class="buttons">
-							<button class="primary-btn">Login</button>
+							<button class="primary-btn">${langLogin[this.lang]["BtnLogin"]}</button>
 							<p class="space">OR</p>
-							<button class="secondary-btn"><span><img src="../../assets/images/42.svg" alt="42" class="fortyTwo"></span><span>Login with Intranet</span></button>
+							<button class="secondary-btn"><span><img src="../../assets/images/42.svg" alt="42" class="fortyTwo"></span><span>${langLogin[this.lang]["secondaryBtn"]}</span></button>
 						</div>
 					</form>
-					<p class="ref">New here? create an account by clicking <a class="anchor" href="/register">here</a></p>
+					<p class="ref">${langLogin[this.lang]["Ref"]}<a class="anchor" href="/register">${langLogin[this.lang]["Here"]}</a></p>
 					</div>
 			</div>
 		`;

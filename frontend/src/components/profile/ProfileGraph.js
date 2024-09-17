@@ -1,9 +1,11 @@
 import { router } from "../../routes/routes.js";
+import { langProfileGraph } from "../../utils/translate/gameTranslate.js";
 
 export class ProfileGraph extends HTMLElement {
     constructor(matches) {
         super();
         this.matches = matches;
+        this.lang = localStorage.getItem("lang");
     }
     filterUserScores() {
         const currentUserId = Number(router.route.params["userID"]);
@@ -21,13 +23,13 @@ export class ProfileGraph extends HTMLElement {
     async connectedCallback() {
         if (!this.matches.length) {
             this.innerHTML = `
-                <h2 class="profile_titles" style="padding-top: 25px">Scores graph</h2>
-                <div class="empty-section">No matches played to display graph</div>
+                <h2 class="profile_titles" style="padding-top: 25px">${langProfileGraph[this.lang]["ProfileTitles"]}</h2>
+                <div class="empty-section">${langProfileGraph[this.lang]["EmptySection"]}</div>
             `;
             return;
         }
         this.innerHTML = `
-            <h2 class="profile_titles" style="padding-top: 25px">Scores graph</h2>
+            <h2 class="profile_titles" style="padding-top: 25px">${langProfileGraph[this.lang]["ProfileTitles"]}</h2>
             <canvas class="player-chart"></canvas>
         `;
         const scores = this.filterUserScores();

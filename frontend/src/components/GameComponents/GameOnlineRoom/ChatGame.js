@@ -1,6 +1,9 @@
+import { langChatGame } from "../../../utils/translate/gameTranslate.js";
+
 export class ContainerChat extends HTMLElement {
   constructor(){
     super();
+    this.lang = localStorage.getItem("lang");
   }
 
   connectedCallback(){
@@ -11,7 +14,7 @@ export class ContainerChat extends HTMLElement {
               </div>
           </div>
           <div class="input_msg">
-              <input type="text" placeholder="Type something..." class="chat-input" id="chat-input">
+              <input type="text" placeholder="${langChatGame[this.lang]["Placeholder"]}" class="chat-input" id="chat-input">
           </div>
       </div>
     `
@@ -35,7 +38,7 @@ class SingleMessage extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
             <div class ="sidebar-chatbox">
-                <span class="timestamp">${this.hours}:${this.minutes < 10 ? `0${this.minutes}` : `${this.minutes}`}:${this.seconds < 10 ? `0${this.seconds}` : `${this.seconds}`}</span>
+                <span class="timestamp">${this.hours < 10 ? `0${this.hours}` : `${this.hours}`}:${this.minutes < 10 ? `0${this.minutes}` : `${this.minutes}`}:${this.seconds < 10 ? `0${this.seconds}` : `${this.seconds}`}</span>
                 <span class="username" ${this.username === "rouali" ? `style="color: purple;"` : `style="color: green;"`}>${this.username}</span>
             </div>
             <div id="container-msg" class="container-msg">
@@ -52,13 +55,14 @@ export class ChatGame extends HTMLElement {
     super();
     this.username = username;
     this.message = message;
+    this.lang = localStorage.getItem("lang");
   }
 
   connectedCallback() {
     this.innerHTML = `
             <div class = "chat-container">
                 <div class="chat-container-content">
-                    <div class="chat-header">Room Chat</div>
+                    <div class="chat-header">${langChatGame[this.lang]["chatTitle"]}</div>
                     <container-chat></container-chat>
                 </div>
             </div>

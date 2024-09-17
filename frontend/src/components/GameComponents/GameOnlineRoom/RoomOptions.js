@@ -1,3 +1,5 @@
+import { langRoomOptions } from "../../../utils/translate/gameTranslate.js";
+
 class RoomOption extends HTMLElement {
     constructor(name, color, options, optionsImgs, evtName, optional = false, locked = false) {
         super();
@@ -71,13 +73,13 @@ customElements.define("room-option", RoomOption);
 export class RoomOptions extends HTMLElement {
     constructor(isOffline, roomData = null, locked = false) {
         super();
+        this.lang = localStorage.getItem("lang");
         this.isOffline = isOffline;
-        this.gameModeOpt = new RoomOption("Gamemode", "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange", false, locked);
-        this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange", false, locked);
-        this.bracketSize = new RoomOption("Bracket size", "#FAE744", ["1", "2"], [], "bracketChange", false, locked);
-        this.timeOpt = new RoomOption("Time", "#24CE90", ["3", "5"], [], "timeChange", false, locked);
-        this.teamSizeOpt = new RoomOption("Team size", "#FAE744", ["1", "2"], [], "teamSizeChange", false, locked);
-        this.customizationsOpt = new RoomOption("Customizations", "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true, locked);
+        this.gameModeOpt = new RoomOption(langRoomOptions[this.lang]["GameMode"], "#581352", ["pong", "hockey"], ["../../../assets/images/pong.png", "../../../assets/images/hockey.png"], "gameModeChange", false, locked);
+        this.timeOpt = new RoomOption(langRoomOptions[this.lang]["Time"], "#24CE90", ["3", "5"], [], "timeChange", false, locked);
+        this.bracketSize = new RoomOption(langRoomOptions[this.lang]["BracketSize"], "#FAE744", ["1", "2"], [], "bracketChange", false, locked);
+        this.teamSizeOpt = new RoomOption(langRoomOptions[this.lang]["TeamSize"], "#FAE744", ["1", "2"], [], "teamSizeChange", false, locked);
+        this.customizationsOpt = new RoomOption(langRoomOptions[this.lang]["Customization"], "#FF6666", ["hidden", "fastForward"], ["../../../../assets/icons/half.png", "../assets/icons/forward.png"], "customizationChange", true, locked);
         this.roomData = roomData;
     }
     connectedCallback() {
