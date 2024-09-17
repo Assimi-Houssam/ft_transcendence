@@ -90,8 +90,8 @@ two-factor-page  .two_factor_card_header {
 }
 
 .qr_code img {
-    width: 224px;
-    height: 224px;
+    width: 450px;
+    height: 450px;
     object-fit: contain;
 }
 
