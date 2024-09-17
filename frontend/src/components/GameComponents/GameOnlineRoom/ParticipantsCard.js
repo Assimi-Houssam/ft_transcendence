@@ -1,5 +1,6 @@
 import { ParticipantEntry, EmptySlot } from "./ParticipantEntry.js";
 import { langParticipants } from "../../../utils/translate/gameTranslate.js";
+import { getUserInfo } from "../../../utils/utils.js";
 
 export class ParticipantsCard extends HTMLElement {
     constructor(roomData, locked = false) {
@@ -16,6 +17,7 @@ export class ParticipantsCard extends HTMLElement {
             this.blueTeam.push(Object.keys(blueEntry).length ? new ParticipantEntry(blueEntry, blueEntry.id === this.hostId, this.locked) : new EmptySlot());
         }
         this.participantsCount = roomData.users.length;
+        this.userInfo = null;
         this.lang = localStorage.getItem("lang");
     }
     updateTeams(message) {
@@ -47,7 +49,6 @@ export class ParticipantsCard extends HTMLElement {
         }
         return {redTeam: rt, blueTeam: bt};
     }
-    // TODO: if all the team spots were already full, display a messagebox to tell the host that switching team sizes would kick other participants
     switchTeamSize(newTeamSize) {
         if (this.teamSize == newTeamSize)
             return;
@@ -60,7 +61,8 @@ export class ParticipantsCard extends HTMLElement {
         this.updateTeams(roomData);
     }
 
-    connectedCallback() {
+    async connectedCallback() {
+        this.userInfo = await getUserInfo();
         this.innerHTML = `
             <div class="CardParticipants">
                 <div class="ParticipantsText">
@@ -90,9 +92,9 @@ export class ParticipantsCard extends HTMLElement {
             this.querySelector(".RedTeam").appendChild(this.redTeam[i]);
             this.querySelector(".BlueTeam").appendChild(this.blueTeam[i]);
         }
-
+        
         // yeah i fw with early returns way too much lol
-        if (this.teamSize === 1)
+        if (this.teamSize === 1 || this.hostId !== this.userInfo.id)
             return;
 
         new Sortable(this.querySelector(".RedTeam"), {

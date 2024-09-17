@@ -14,6 +14,7 @@ import { GamePage } from "../components/GamePlay/GamePage.js";
 import { langOfflineGame } from "../utils/translate/gameTranslate.js";
 import { langErrors } from "../utils/translate/gameTranslate.js";
 import { langSuccess } from "../utils/translate/gameTranslate.js";
+import { MessageBox } from "../components/MessageBox.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
@@ -130,6 +131,12 @@ export class RoomPage extends HTMLElement {
             this.socket.send(JSON.stringify({"type": "time_change", "message": evt.detail}));
         });
         this.addEventListener("teamSizeChange", (evt) => {
+            if (evt.detail === "1" && this.roomData.users.length > 2) {
+                console.log("tws errorot!");
+                new MessageBox("Notice", "You have more players than the team size can support, kick players before you can switch team sizes", "Ok", () => {}).show();
+                this.roomOptions.enableOption("Teamsize", "2");
+                return;
+            }
             this.socket.send(JSON.stringify({"type": "team_size_change", "message": evt.detail}));
         });
         this.addEventListener("customizationChange", (evt) => {
