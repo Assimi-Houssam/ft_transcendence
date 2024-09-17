@@ -314,3 +314,13 @@ empty-slot > img {
     height: 2vh;
     margin-right: 5%;
 }
+
+.chat-box-content {
+    width: 100%;
+}
+
+.user-chat {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}

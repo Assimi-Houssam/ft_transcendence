@@ -39,12 +39,11 @@ class SingleMessage extends HTMLElement {
     this.innerHTML = `
             <div class ="sidebar-chatbox">
                 <span class="timestamp">${this.hours < 10 ? `0${this.hours}` : `${this.hours}`}:${this.minutes < 10 ? `0${this.minutes}` : `${this.minutes}`}:${this.seconds < 10 ? `0${this.seconds}` : `${this.seconds}`}</span>
-                <span class="username" ${this.username === "rouali" ? `style="color: purple;"` : `style="color: green;"`}>${this.username}</span>
+                <span class="username" style="color: purple;">${this.username}</span>
             </div>
             <div id="container-msg" class="container-msg">
                 <span class="message">${this.message}</span>
-            </div>
-        `;
+            </div>`;
   }
 }
 
@@ -75,16 +74,22 @@ export class ChatGame extends HTMLElement {
 
     this.addEventListener("keypress", (e) => {
       if (e.key.toLowerCase() == "enter") {
-        if (htmlTagPattern.test(message.value)) {
+        if (htmlTagPattern.test(message.value) || message.value.length > 120) {
           message.value = "";
         } else {
           if (String(message.value).trim().length === 0) return;
-          chats.appendChild(new SingleMessage(message.value));
+          // chats.appendChild(new SingleMessage(message.value));
+          this.dispatchEvent(new CustomEvent("roomChatSend", {detail: message.value, bubbles: true}));
           message.value = "";
           chats.scrollTop = chats.scrollHeight;
         }
       }
     });
+  }
+  appendMessage(username, message) {
+    let chats = this.querySelector(".chat-box-content");
+    console.log("chats: ", chats);
+    chats.appendChild(new SingleMessage(message, username));
   }
 }
 

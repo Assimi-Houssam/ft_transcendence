@@ -81,11 +81,16 @@ export class RoomPage extends HTMLElement {
     
         this.socket.addEventListener("message", (event) => {
             const parsed_json = JSON.parse(event.data);
-            if (parsed_json.hasOwnProperty("message") && parsed_json.message == "start_game") {
-                const room_data_s = parsed_json.room_data;
-                console.log(room_data_s);
+            if (parsed_json.hasOwnProperty("content")) {
+                this.chat.appendMessage(parsed_json.username, parsed_json.content);
+                console.log("received room msg:", parsed_json.content);
                 return;
             }
+            if (parsed_json.hasOwnProperty("message") && parsed_json.message == "start_game") {
+                this.roomData = parsed_json.room_data;
+                return;
+            }
+            if (parsed_json)
             if (parsed_json.hasOwnProperty("room_data")) {
                 this.roomData = parsed_json.room_data;
                 this.participantsCard.update(this.roomData);
@@ -152,6 +157,10 @@ export class RoomPage extends HTMLElement {
         });
         this.addEventListener("participantkick", (evt) => {
             this.socket.send(JSON.stringify({"type": "team_kick", "message": {"user": evt.detail.getUserInfo()}}));
+        });
+        this.addEventListener("roomChatSend", (evt) => {
+            console.log("sending message:", evt.detail);
+            this.socket.send(JSON.stringify({"type": "broadcast_msg", "message": evt.detail}))
         });
         // im so sick of this, i dont care anymore
         document.addEventListener("roomNameChange", (evt) => {
