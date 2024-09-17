@@ -78,7 +78,6 @@ export class ChatGame extends HTMLElement {
           message.value = "";
         } else {
           if (String(message.value).trim().length === 0) return;
-          // chats.appendChild(new SingleMessage(message.value));
           this.dispatchEvent(new CustomEvent("roomChatSend", {detail: message.value, bubbles: true}));
           message.value = "";
           chats.scrollTop = chats.scrollHeight;

@@ -2,7 +2,8 @@ import { router } from "../routes/routes.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js";
 import { PreloaderMini } from "../components/Loading.js";
-import { langRegistration } from "../utils/translate/gameTranslate.js";
+import { langRegistration, langErrors } from "../utils/translate/gameTranslate.js";
+import { isValidInput } from "../utils/utils.js";
 
 export class RegistrationPage extends HTMLElement {
     constructor() {
@@ -21,6 +22,12 @@ export class RegistrationPage extends HTMLElement {
         if (!username || !email || !password || !repeat_password)  {
             event.target.innerHTML = langRegistration[this.lang]["BtnCreate"];
             event.target.disabled = false;
+            return;
+        }
+        if (!isValidInput(username)) {
+            event.target.innerHTML = langRegistration[this.lang]["BtnCreate"];
+            event.target.disabled = false;
+            Toast.error(langErrors[this.lang]["ErrorInvalidChars"]);
             return;
         }
         if (password !== repeat_password) {
@@ -79,14 +86,14 @@ export class RegistrationPage extends HTMLElement {
                         <input class = "input" id="repeat_password" type="password" name="repeat_password" placeholder="************">
                     </div>
                     <div class="buttons">
-                        <button class="btn"></button>
+                        <button class="btn">${langRegistration[this.lang]["BtnCreate"]}</button>
                     </div>
                 </form>
                 <p class="ref">${langRegistration[this.lang]["Ref"]}<a class="anchor" href="/login">${langRegistration[this.lang]["Here"]}</a></p>
                 <p id="registration-error-message" class="registration-error-message"></p>
             </div>
         </div>`;
-        this.querySelector(".btn").addEventListener("click", this.registerUser);
+        this.querySelector(".btn").addEventListener("click", this.registerUser.bind(this));
         this.username_elem = document.getElementById('name');
         this.email_elem = document.getElementById('email');
         this.password_elem = document.getElementById('password');

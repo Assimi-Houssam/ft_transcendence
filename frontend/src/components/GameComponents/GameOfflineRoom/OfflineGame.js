@@ -6,6 +6,7 @@ import { OfflineGamePage } from "../../GamePlay/OfflineGamePage.js";
 import { langOfflineGame } from "../../../utils/translate/gameTranslate.js";
 import { langErrors } from "../../../utils/translate/gameTranslate.js";
 import { langSuccess } from "../../../utils/translate/gameTranslate.js";
+import { isValidInput } from "../../../utils/utils.js";
 
 class TournamentFooter extends HTMLElement {
     constructor() {
@@ -57,6 +58,10 @@ export class OfflineGame extends HTMLElement {
                     break;
             }
             const arr = groups[i];
+            if (!isValidInput(arr[0].username) || !isValidInput(arr[1].username)) {
+                Toast.error(langErrors[this.lang]["ErrorInvalidChars"]);
+                return false;
+            }
             if (arr[0].username.toLowerCase() === arr[1].username.toLowerCase()) {
                 Toast.error(langErrors[this.lang]["ErrorUnique"])
                 return false;
@@ -69,6 +74,10 @@ export class OfflineGame extends HTMLElement {
                         for (let a = 0; a < arr_.length; a++ ) {
                             if (arr_[a].username.toLowerCase() === first.username.toLowerCase() || arr_[a].username.toLowerCase() === sec.username.toLowerCase()) {
                                 Toast.error(langErrors[this.lang]["ErrorUnique"]);
+                                return false;
+                            }
+                            if (!isValidInput(arr_[a].username)) {
+                                Toast.error(langErrors[this.lang]["ErrorInvalidChars"]);
                                 return false;
                             }
                         }

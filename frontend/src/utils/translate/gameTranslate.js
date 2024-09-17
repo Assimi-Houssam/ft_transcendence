@@ -593,6 +593,7 @@ export const langErrors = {
         ErrorDisconnectedRoom :"You have been disconnected from the room",
         //404.js
         ErrorNotFound : "404 Not Found",
+        ErrorInvalidChars: "Username contains invalid characters"
     },
     fr : {
         //OfflineGame.js
@@ -620,6 +621,7 @@ export const langErrors = {
         ErrorDisconnectedRoom : "Vous avez été déconnecté de la salle",
         //404.js
         ErrorNotFound : "404 Not Found",
+        ErrorInvalidChars: "Le nom d'utilisateur contient des caractères non valides",
     },
     es : {
         //OfflineGame.js
@@ -647,6 +649,7 @@ export const langErrors = {
         ErrorDisconnectedRoom : "Has sido desconectado de la sala",
         //404.js
         ErrorNotFound : "404 No encontrado",
+        ErrorInvalidChars: "El nombre de usuario contiene caracteres no válidos",
     }
 }
 
