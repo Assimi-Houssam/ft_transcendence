@@ -1,24 +1,3 @@
-/*
-notification types:
-- fr sent
-- fr accepted
-- game invite
-- tournament invite
-
-system:
-- notifications are stored on the server side
-- each time the user logs in, we fetch his new unread notifications (if any)
-- clicking in an invite notification would display a messagebox asking if the user wants to join the game
-- clicking in an incoming friend request noti would redirect to the profile page with the option to selected whether to accept or not inplace of the send fr button
-- clicking in an accepted friend request noti would redirect to the profile page
-- clicking on the username in the notification would redirect to the profile page of said user
-
-notes:
-- fix overflow when a messagebox is displayed
-- add notification type enum
-- should make links that has a user's profile page automatically redirect to the profile page
-*/
-
 import { RoomPage } from "../pages/RoomPage.js";
 import { router } from "../routes/routes.js";
 
