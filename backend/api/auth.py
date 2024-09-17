@@ -6,9 +6,11 @@ from rest_framework.decorators import api_view
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import UserRegistrationSerializer
 from .models import User
+from .otp import *
 import requests
 import random
 import os
+
 
 @api_view(['POST'])
 def register(request):
@@ -30,6 +32,8 @@ def login(request):
     user = authenticate(username=username, password=password)
     if user == None:
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
+    if (user.totp_enabled):
+        return Response({"detail": "mfa enabled"}, status=status.HTTP_202_ACCEPTED)
     # once a token is generated for a user, it'll always be able to log the user in, even if the user changes the password etc
     # todo: possibly start blacklisting tokens on logout/password change (but that kind of breaks jwt's purpose)
     token = AccessToken.for_user(user)

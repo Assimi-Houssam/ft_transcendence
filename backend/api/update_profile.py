@@ -36,7 +36,7 @@ def update_profile(req):
             'detail': 'Incorrect password',
         }, status=status.HTTP_400_BAD_REQUEST)
     data = {}
-    fields = ["username", "email", "password"]
+    fields = ["username", "email", "password", "mfa_enabled"]
     for field in fields :
         if req.POST.get(field):
             data[field] = req.POST.get(field)
