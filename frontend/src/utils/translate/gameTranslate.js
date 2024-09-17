@@ -13,6 +13,36 @@ export const langOfflineMode = {
     }
 }
 
+export const langGame = {
+    en: {
+        GamePauseOff: "Game paused",
+        GamePause: "Game paused for 10 seconds",
+        OpponentDisconnected: "Opponent disconnected",
+        BlueTeamWon: "Blue Team Won!",
+        RedTeamWon: "Red Team Won!",
+        Draw: "Draw!",
+        TimesUp: "Time's up!"
+    },
+    fr: {
+        GamePauseOff: "Le jeu est en pause",
+        GamePause: "Le jeu est en pause pendant 10 secondes",
+        OpponentDisconnected: "Adversaire déconnecté",
+        BlueTeamWon: "L'équipe bleu a gagné!",
+        RedTeamWon: "L'équipe rouge a gagné!",
+        Draw: "Égalité!",
+        TimesUp: "Le temps est écoulé!"
+    },
+    es: {
+        GamePauseOff: "El juego se detuvo",
+        GamePause: "El juego se detuvo durante 10 segundos",
+        OpponentDisconnected: "Oponente desconectado",
+        BlueTeamWon: "¡Ganó el equipo azul!",
+        RedTeamWon: "¡Ganó el equipo rojo!",
+        Draw: "¡Igualdad!",
+        TimesUp: "¡Se acabó el tiempo!"
+    }
+}
+
 export const langOfflineGame = {
     en : {
         BtnStartGame : "Start game!",
@@ -85,7 +115,7 @@ export const langNextTournament = {
         NextUpTitle : "Prochain!",
         TheWinnerIs : "Le gagnant est",
         NextUp : "Prochain",
-        GoHome : "Rentrez à la maison",
+        GoHome : "Retour à l'accueil",
         NextGame : "Prochain jeu!",
     },
     es : {

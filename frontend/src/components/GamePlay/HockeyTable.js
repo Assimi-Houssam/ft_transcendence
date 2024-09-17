@@ -1,4 +1,5 @@
 import { router } from "../../routes/routes.js";
+import { langGame } from "../../utils/translate/gameTranslate.js";
 
 export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
   player_p = player_p == "player1" ? "player2" : "player1";
@@ -32,6 +33,8 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
 
   let particles = [];
   let explosionTriggered = false;
+
+  let lang = localStorage.getItem("lang");
 
   class Particle {
     constructor(x, y, radius, dx, dy) {
@@ -408,7 +411,7 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
       if (pauseApprove == true) {
         distance = new Date().getTime() + distance;
         canvas.style.filter = "blur(10px)";
-        countdownElement.textContent = "game paused for 10 seconds";
+        countdownElement.textContent = langGame[lang]["GamePause"];
         countdownElement.style.display = 'block';
       }
       else {
@@ -428,13 +431,13 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
         canvas.style.filter = 'blur(10px)';
         let timeSelector = document.querySelector(".time-display");
         if (disconnected) {
-          countdownElement.textContent = "Opponent disconnected";
+          countdownElement.textContent = langGame[lang]["OpponentDisconnected"];
           setTimeout(() => {
             router.navigate("/home");
           }, 3000);
         }
         else {
-          timeSelector.textContent = "Time's up!";
+          timeSelector.textContent = langGame[lang]["TimesUp"];
         }
         setTimeout(() => {
           clearInterval(interval);
@@ -447,15 +450,15 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
             router.navigate("/home");
           }, 3000);
           if (number1 < number2) {
-            countdownElement.textContent = "Blue Team Wins!";
+            countdownElement.textContent = langGame[lang]["BlueTeamWon"];
             countdownElement.style.color = '#4496D4';
           }
           else if (number1 > number2) {
-            countdownElement.textContent = "Red Team Wins!";
+            countdownElement.textContent = langGame[lang]["RedTeamWon"];
             countdownElement.style.color = '#FF6666';
           }
           else {
-            countdownElement.textContent = "Draw!";
+            countdownElement.textContent = langGame[lang]["Draw"];
           }
         }
       }

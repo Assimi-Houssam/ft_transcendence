@@ -1,5 +1,6 @@
 import { router } from "../../routes/routes.js";
 import { NextTournament } from "../GameComponents/GameOfflineRoom/tournament/NextTournament.js";
+import { langGame } from "../../utils/translate/gameTranslate.js";
 
 export function hockeygame(ctx, canvas, gameData, bracket) {
   canvas.width = 1100;
@@ -30,6 +31,8 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
 
   let particles = [];
   let explosionTriggered = false;
+  
+  let lang = localStorage.getItem("lang");
 
   class Particle {
     constructor(x, y, radius, dx, dy) {
@@ -327,7 +330,7 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
       let countDownDate = new Date().getTime() + time * 60000;
       let interval = setInterval(() => {
         if (pause == 2) {
-          countdownElement.textContent = "game Paused";
+          countdownElement.textContent = langGame[lang]["GamePauseOff"];
           countdownElement.style.display = "block";
           distance = new Date().getTime() + distance;
         } else {
@@ -345,10 +348,10 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
         }
         if (distance <= 0) {
           if (number1 == number2) {
-            timeDisplay.textContent = "over time";
+            timeDisplay.textContent = "Overtime!";
             overTime = true;
           } else {
-            timeDisplay.textContent = "time up";
+            timeDisplay.textContent = langGame[lang]["TimesUp"];
             countdownElement.style.display = "block";
             overTime = false;
             clearInterval(interval);
@@ -357,13 +360,13 @@ export function hockeygame(ctx, canvas, gameData, bracket) {
             }, 2000);
             if (number1 > number2) {
               canvas.style.filter = "blur(10px)";
-              countdownElement.textContent = "Red Team Wins!";
+              countdownElement.textContent = langGame[lang]["RedTeamWon"];
               countdownElement.style.color = "#FF6666";
               bracket.groups[bracket.status][0].status = 0;
               bracket.groups[bracket.status][1].status = 1;
             } else {
               canvas.style.filter = "blur(10px)";
-              countdownElement.textContent = "Blue Team Wins!";
+              countdownElement.textContent = langGame[lang]["BlueTeamWon"];
               countdownElement.style.color = "#4496D4";
               bracket.groups[bracket.status][0].status = 1;
               bracket.groups[bracket.status][1].status = 0;

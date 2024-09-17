@@ -1,4 +1,6 @@
 import { router } from "../../routes/routes.js"
+import { langGame } from "../../utils/translate/gameTranslate.js";
+
 
 export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     let interval;
@@ -27,6 +29,8 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     }
     let particles = [];
     let explosionTriggered = false;
+
+    let lang = localStorage.getItem("lang");
 
     class Particle {
         constructor(x, y, radius, dx, dy) {
@@ -278,7 +282,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         }
         if (pause === true) {
             canvas.style.filter = 'blur(10px)';
-            countdownElement.textContent = "game paused for 10 seconds";
+            countdownElement.textContent = langGame[lang]["GamePause"];
             countdownElement.style.display = 'block';
         }
         else if (pause === false && distance > 0) {
@@ -354,27 +358,27 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                         canvas.style.filter = 'blur(10px)';
                         let timeSelector = document.querySelector(".time-display");
                         if (disconneted) {
-                            countdownElement.textContent = "Opponent disconnected";
-                            timeSelector.textContent = "oppnent disconnected";
+                            countdownElement.textContent = langGame[lang]["OpponentDisconnected"];
+                            timeSelector.textContent = langGame[lang]["OpponentDisconnected"];
                             setTimeout(() => {
                                 router.navigate("/home");
                             }, 4000);
                         }
                         else {
-                            timeSelector.textContent = "Time's up!";
+                            timeSelector.textContent = langGame[lang]["TimesUp"];
                         }
                         canvas.style.filter = 'blur(10px)';
                         if (!disconneted) {
                             if (number1 < number2) {
-                                countdownElement.textContent = "Blue Team Wins!";
+                                countdownElement.textContent = langGame[lang]["BlueTeamWon"];
                                 countdownElement.style.color = '#4496D4';
                             }
                             else if (number1 > number2) {
-                                countdownElement.textContent = "Red Team Wins!";
+                                countdownElement.textContent = langGame[lang]["RedTeamWon"];
                                 countdownElement.style.color = '#FF6666';
                             }
                             else {
-                                countdownElement.textContent = "Draw!";
+                                countdownElement.textContent = langGame[lang]["Draw"];
                             }
                             setTimeout(() => {
                                     router.navigate("/home");
