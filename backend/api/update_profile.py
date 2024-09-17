@@ -46,10 +46,10 @@ def update_profile(req):
     if req.FILES.get("pfp"):
         data["pfp"] = req.FILES.get("pfp")
     serializer = UpdateProfileSerializer(user, data=data, partial=True)
-    if not limit_user_updates(user):
-        return Response({
-            'detail': 'You have reached the maximum number of updates for today',
-        }, status=status.HTTP_400_BAD_REQUEST)
+    # if not limit_user_updates(user):
+    #     return Response({
+    #         'detail': 'You have reached the maximum number of updates for today',
+    #     }, status=status.HTTP_400_BAD_REQUEST)
     if serializer.is_valid():
         serializer.save()
         return Response({

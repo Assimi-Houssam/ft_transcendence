@@ -9,7 +9,7 @@ from rest_framework import status
 from .auth import JWTAuth
 import json
 import uuid
-
+import time
 
 @api_view(['POST'])
 @authentication_classes([JWTAuth])
@@ -57,6 +57,8 @@ def invite_user(request):
     rooms = cache.get("rooms", {})
     room_id = request.data["roomId"]
     user_id = request.data["userId"]
+    if (int(user_id) == int(request.user.id)):
+        return Response(json.dumps({"detail": "Can't send an invite to yourself"}), status=status.HTTP_400_BAD_REQUEST)
     if (rooms.get(room_id) is None):
         return Response(json.dumps({"detail": "Room does not exist!"}), status=status.HTTP_400_BAD_REQUEST)
     room = rooms[room_id]
@@ -72,7 +74,8 @@ def invite_user(request):
                     "id": request.user.id,
                     "pfp": request.user.pfp.url
                 },
-                "roomData": room
+                "timestamp": int(time.time()),
+                "roomData": room,
             },
         }
     )
