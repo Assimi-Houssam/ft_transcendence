@@ -9,7 +9,7 @@ from rest_framework import status
 from .auth import JWTAuth
 import json
 import uuid
-
+import time
 
 @api_view(['POST'])
 @authentication_classes([JWTAuth])
@@ -74,7 +74,8 @@ def invite_user(request):
                     "id": request.user.id,
                     "pfp": request.user.pfp.url
                 },
-                "roomData": room
+                "timestamp": int(time.time()),
+                "roomData": room,
             },
         }
     )

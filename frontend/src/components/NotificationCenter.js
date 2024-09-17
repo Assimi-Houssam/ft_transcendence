@@ -40,7 +40,7 @@ class Notification extends HTMLElement {
         this.senderUsername = notificationData.from_user.username;
         this.senderPfp = "http://localhost:8000" + notificationData.from_user.pfp;
         this.senderId = notificationData.from_user.id;
-        
+        this.date = this.convertTsToDate(notificationData.timestamp);
         if (this.notificationType === NotificationType.RoomInvite) {
             this.roomData = notificationData.roomData;
 
@@ -54,6 +54,23 @@ class Notification extends HTMLElement {
         console.log("noti content:", this.content);
         this.addEventListener("click", this.onClickHandler.bind(this));
     }
+    convertTsToDate(epoch) {
+        let date = new Date(epoch * 1000);
+    
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+    
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+    
+        day = (day < 10) ? '0' + day : day;
+        month = (month < 10) ? '0' + month : month;
+        hours = (hours < 10) ? '0' + hours : hours;
+        minutes = (minutes < 10) ? '0' + minutes : minutes;
+    
+        return `${day}-${month}-${year} ${hours}:${minutes}`;
+    }
     getNotificationContent() {
         switch (this.notificationType) {
             case NotificationType.ReceivedFriendRequest:
@@ -61,7 +78,7 @@ class Notification extends HTMLElement {
             case NotificationType.AcceptedFriendRequest:
                 return "accepted your friend request";
             case NotificationType.RoomInvite:
-                return `challenged you on ${this.gamemode} (${this.teamSize})`;
+                return `challenged you on ${this.gamemode} (${this.teamSize === "1" ? "1v1" : "2v2"})`;
             default:
                 return "";
         }
@@ -92,7 +109,7 @@ class Notification extends HTMLElement {
                 <img class="notification-img" src="${this.senderPfp}"></img>
                 <div class="notification-content-container">
                     <div class="notification-content"><a class="notification-src">${this.senderUsername}</a> ${this.content}</div>
-                    <div class="notification-date">22-7-2024 8:28</div>
+                    <div class="notification-date">${this.date}</div>
                 </div>
             </div>
             <img class="notification-delete" src="../../assets/icons/circle-x.svg"></img>
