@@ -132,9 +132,13 @@ export class RoomPage extends HTMLElement {
         });
         this.addEventListener("teamSizeChange", (evt) => {
             if (evt.detail === "1" && this.roomData.users.length > 2) {
-                console.log("tws errorot!");
                 new MessageBox("Notice", "You have more players than the team size can support, kick players before you can switch team sizes", "Ok", () => {}).show();
                 this.roomOptions.enableOption("Teamsize", "2");
+                return;
+            }
+            if (evt.detail === "2" && this.roomData.gamemode === "hockey") {
+                new MessageBox("Notice", "Hockey does not support 2v2", "Ok", () => {}).show();
+                this.roomOptions.enableOption("Teamsize", "1");
                 return;
             }
             this.socket.send(JSON.stringify({"type": "team_size_change", "message": evt.detail}));
@@ -158,7 +162,8 @@ export class RoomPage extends HTMLElement {
         }
     }
     disconnectedCallback() {
-        this.socket.close();
+        if (this.roomData)
+            this.socket.close();
     }
 }
 
