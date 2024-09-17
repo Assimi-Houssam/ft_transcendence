@@ -61,7 +61,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.room_id, {"type": "user_join"})
     
     async def disconnect_everyone(self, event):
-        await self.close()
+        await self.close(4002)
 
     async def disconnect_user(self, event):
         rooms = cache.get("rooms", {})
@@ -210,7 +210,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
         red_team = event["message"]["redTeam"]
         blue_team = event["message"]["blueTeam"]
 
-        # todo: on close, cleanup the room
         if (len(red_team) > 2 or len(blue_team) > 2):
             await self.close()
         
@@ -286,6 +285,9 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.close(4002, "nuh uh")
             return
 
+        if (event["type"] not in ["start_game", "room_name_change", "team_kick", "team_change", "team_size_change", "customization_change", "time_change", "gamemode_change"]):
+            await self.close(4002, "nuh uh")
+            return
         rooms = cache.get("rooms", {})
         if (self.scope["user"].id != rooms[self.room_id]["host"]["id"]):
             return

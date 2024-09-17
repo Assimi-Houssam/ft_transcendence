@@ -41,11 +41,8 @@ export class RoomPage extends HTMLElement {
     constructor(roomData) {
         super();
         this.lang = localStorage.getItem("lang");
-        if (!roomData) {
-            Toast.error(langErrors[this.lang]["ErrorRoomDoesntExist"]);
-            router.navigate("/home");
+        if (!roomData)
             return;
-        }
         this.roomData = roomData;
         this.roomId = roomData.id;
         this.chat = new ChatGame();
@@ -74,7 +71,7 @@ export class RoomPage extends HTMLElement {
                 return;
             }
             Toast.error(langErrors[this.lang]["ErrorDisconnectedRoom"]);
-            router.navigate("/rooms");
+            // router.navigate("/rooms");
         }
     
         const openPromise = new Promise(resolve => {
@@ -100,6 +97,11 @@ export class RoomPage extends HTMLElement {
         await openPromise;
     }
     async connectedCallback() {
+        if (!this.roomData) {
+            Toast.error(langErrors[this.lang]["ErrorRoomDoesntExist"]);
+            router.navigate("/home");
+            return;
+        }
         this.innerHTML = new Loader().outerHTML;
         await this.connectToRoom();
         this.innerHTML = `
@@ -145,8 +147,6 @@ export class RoomPage extends HTMLElement {
             this.socket.send(JSON.stringify({"type": "room_name_change", "message": evt.detail}));
         });
         this.querySelector(".BtnStartGame").onclick = (e) => {
-            console.log("game start! | room data: ", this.roomData);
-            // todo: check if the host is the same as the current logged in user
             this.socket.send(JSON.stringify({"type": "start_game", "message": ""}));
         }
     }
