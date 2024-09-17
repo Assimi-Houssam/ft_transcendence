@@ -58,12 +58,11 @@ export class SettingsPage extends HTMLElement {
       password: document.getElementById("password").value,
       pfp: document.getElementById("pfp").files[0],
       banner: document.getElementById("settings_banner_upload").files[0],
-      mfa_enabled: this.mfaStatus
     };
     return data;
   }
 
-  async updateProfile(e) {
+  async updateProfile(newPassword) {
     if (this.userData.intra_id) {
       document.getElementById("save_setting_btn").innerHTML =
         "<preloader-mini></preloader-mini>";
@@ -79,8 +78,7 @@ export class SettingsPage extends HTMLElement {
     formData.append("user_id", this.userData.id);
     formData.append("mfa_enabled", this.mfaStatus);
     if (!this.userData.intra_id) {
-      const confirmPassword = document.querySelector(".msg-box-input").value;
-      formData.append("confirm_password", confirmPassword);
+      formData.append("confirm_password", newPassword);
     }
     try {
       const res = await ApiWrapper.post("/user/update", formData, false);
@@ -89,6 +87,7 @@ export class SettingsPage extends HTMLElement {
         Toast.success(data.detail);
         const newUserInfo = await forceUpdateUserInfo();
         document.querySelector("navbar-component").update(newUserInfo);
+        this.connectedCallback();
       } else {
         Toast.error(Array.isArray(data.detail) ? data.detail[0] : data.detail);
       }
@@ -157,9 +156,13 @@ export class SettingsPage extends HTMLElement {
   }
 
   async handle2FA() {
-    this.mfaStatus = !this.mfaStatus;
-    await this.updateProfile();    
-    await this.connectedCallback();
+    if (!this.mfaStatus) {
+      router.navigate("/mfa-enable");
+    }
+    else {
+      this.mfaStatus = !this.mfaStatus;
+      this.updateEvent();
+    }
   }
 
   changeBanner(e) {

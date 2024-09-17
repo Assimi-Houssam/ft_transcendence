@@ -1,18 +1,37 @@
+import Toast from "../components/Toast.js";
+import { router } from "../routes/routes.js";
+import ApiWrapper from "../utils/ApiWrapper.js";
+
 export default class TwoFactorAuth extends HTMLElement {
-    constructor() {
+    constructor(username, password) {
         super();
+        this.username = username;
+        this.password = password;
+    }
+    async validateOtp(otp) {
+        if (otp.length !== 6) {
+            return;
+        }
+        const req = await ApiWrapper.post("/login/mfa", {username: this.username, password: this.password, otp: otp});
+        const resp = await req.json();
+        if (!req.ok) {
+            Toast.error(resp.detail);
+            return;
+        }
+        router.navigate("/home");
     }
     connectedCallback() {
+        if (!this.username || !this.password) {
+            router.navigate("/login");
+            return;
+        }
         this.innerHTML = `
             <div class="two_factor_card_header">
                 <img src="../../assets/icons/twofa.webp" alt="two factor icon" />
                 <h3> 2FA Authentication </h3>
-                <p>Please scan the QR code and enter the 6 digits to ferify</p>
+                <p>Please scan the QR code and enter the 6 digits to verify</p>
             </div>
             <div class="twofactor_code">
-                <div class="qr_code">
-                    <img src="../../assets/images/qr.png">
-                </div>
                 <div class="two_factor">
                     <p>Enter 6 digits code</p>
                     <div id="twofa_inputs" class="twofa_inputs">
@@ -51,7 +70,20 @@ export default class TwoFactorAuth extends HTMLElement {
                 if (prev)
                     prev.focus();
             }
-        })
+        });
+
+        this.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                let haxx = this.querySelector(".twofa_inputs");
+                let otp = Array.from(haxx.children).map(input => input.value).join("");
+                this.validateOtp(otp);
+            }
+        });
+        this.querySelector("button").onclick = (e) => {
+            let haxx = this.querySelector(".twofa_inputs");
+            let otp = Array.from(haxx.children).map(input => input.value).join("");
+            this.validateOtp(otp);
+        }
     }
 }
 

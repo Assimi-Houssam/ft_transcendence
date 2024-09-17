@@ -1,9 +1,11 @@
 import { router } from "../routes/routes.js";
-import { genRandomString } from "../utils/utils.js";
+import { genRandomString, getUserInfo, isAuthenticated } from "../utils/utils.js";
 import { OAuthIntercept } from "../utils/utils.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js"
 import { PreloaderMini } from "../components/Loading.js";
+import TwoFactorAuth from "./TwoFactorAuth.js";
+import { logout } from "../utils/logout.js";
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -26,6 +28,11 @@ export class LoginPage extends HTMLElement {
 		const login_data = { username, password };
 		try {
 			const req = await ApiWrapper.post("/login", login_data);
+			if (req.status === 202) {
+				console.log("user has mfa enabled, redirecting to mfa page");
+				router.navigate("/mfa", new TwoFactorAuth(username, password));
+				return;
+			}
 			const data = await req.json();
 			event.target.disabled = false;
 			event.target.innerHTML = "Login";

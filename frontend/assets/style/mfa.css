@@ -112,3 +112,19 @@ two-factor-page .two_factor .btn_not_active {
     background: #63656F;
     cursor:not-allowed;
 }
+
+.mfa-enable-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 85vh;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.mfa-enable-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

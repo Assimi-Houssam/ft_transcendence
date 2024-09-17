@@ -18,6 +18,7 @@ import { NextTournament } from "../components/GameComponents/GameOfflineRoom/tou
 import { Profile } from "../pages/Profile.js";
 import Error500 from "../error/500.js";
 import TwoFactorAuth from "../pages/TwoFactorAuth.js";
+import { EnableTwoFactor } from "../pages/EnableTwoFactor.js";
 
 export const Routes = [
     {
@@ -78,6 +79,10 @@ export const Routes = [
         path: '/logout',
         component: null,
         service: logout,
+    },
+    {
+        path: "/mfa-enable",
+        component: EnableTwoFactor
     },
     {
         path: "/mfa",
@@ -141,7 +146,7 @@ class Router {
         if (!this.active_page)
             this.active_page = new this.route.component();
         if (this.public_routes.includes(this.route.path)) {
-            root.innerHTML = this.active_page.outerHTML;
+            root.replaceChildren(this.active_page);
             return;
         }
         let layout = document.querySelector("layout-wrapper");
