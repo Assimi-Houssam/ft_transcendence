@@ -38,6 +38,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
         
         username = self.scope['user'].username
+        user_id = self.scope['user'].id
         msg_time = int(time.time())
 
         #send message to the group
@@ -46,6 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message' : message,
                 'username': username,
+                'user_id': user_id,
                 'time': msg_time
             }
         )
@@ -61,11 +63,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event['message']
         username = event['username']
         time = event['time']
+        id = event["user_id"]
 
         # check if the user is blocked
         is_blocked = await self.check_user_block(self.scope["user"], username)
         if is_blocked:
-            print(f"not broadcasting message to: {self.scope['user'].username} since he has {username} blocked")
             return
 
         #Send the message to the websocket
@@ -74,5 +76,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'time': time,
                 'username': username,
                 'message': message,
+                "user_id": id
             }
         ))

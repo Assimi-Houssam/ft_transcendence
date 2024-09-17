@@ -49,7 +49,7 @@ export class Navbar extends HTMLElement {
         if (evt.target.nodeName === 'INPUT') {
           return;
         }
-        if (evt.ctrlKey && evt.key === 'l') {
+        if (evt.ctrlKey && evt.key === 'y') {
           console.log("chat pop req");
           this.chat.pop();
         }

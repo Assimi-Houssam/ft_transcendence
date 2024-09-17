@@ -7,6 +7,7 @@ import json
 class NotificationConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def update_user_status(self, user, status):
+        user.refresh_from_db()
         user.online_status = status
         user.save()
 
@@ -21,7 +22,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         self.user_id = self.scope["user"].id
         await self.accept()
         await self.channel_layer.group_add(str(self.user_id), self.channel_name)
-        self.update_user_status(self.scope["user"], 1)
+        await self.update_user_status(self.scope["user"], 1)
 
         notifications = await self.get_and_clear_unread_notifications(self.scope["user"])
         for notification in notifications:
@@ -29,7 +30,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(str(self.user_id), self.channel_name)
-        self.update_user_status(self.scope["user"], 0)
+        await self.update_user_status(self.scope["user"], 0)
     
     async def notification_received(self, event):
         await self.send(text_data=json.dumps({"notification": event["message"]}))

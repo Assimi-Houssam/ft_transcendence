@@ -18,10 +18,10 @@ export class ChatSidebarEntry extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `${this.pfp ? `<img src="${ApiWrapper.getUrl() + this.pfp}">` : ""} </img> ${this.name}`;
     }
-    onMessageReceived(time, username, message) {
+    onMessageReceived(time, username, message, id) {
         if (!time)
             time = Math.floor(Date.now() / 1000);
-        this.messageContainer.addMessage(new ChatMessageEntry(time, username, message));
+        this.messageContainer.addMessage(new ChatMessageEntry(time, username, message, id));
     }
 }
 
@@ -51,7 +51,7 @@ export class ChatSidebar extends HTMLElement {
     appendMessage(id, msg) {
         for (let sidebarEntry of this.sidebarEntries) {
             if (id == sidebarEntry.id) {
-                sidebarEntry.onMessageReceived(msg.time, msg.username, msg.message);
+                sidebarEntry.onMessageReceived(msg.time, msg.username, msg.message, msg.user_id);
                 return;
             }
         }
@@ -76,12 +76,12 @@ export class ChatSidebar extends HTMLElement {
 customElements.define("chat-sidebar", ChatSidebar);
 
 export class ChatMessageEntry extends HTMLElement {
-    constructor(time, username, message, isRoomHost) {
+    constructor(time, username, message, id) {
         super();
         this.time = time;
         this.username = username;
         this.message = message;
-        this.isRoomHost = isRoomHost;
+        this.id = id;
 
         const now = new Date(this.time * 1000);
         this.hours = now.getHours();
@@ -97,6 +97,9 @@ export class ChatMessageEntry extends HTMLElement {
             <span class="chat-username" ${this.isRoomHost ? `style="color: purple;"` : `style="color: green;"`}>${this.username}</span>            </div>
             <span class="chat-message">${this.message}</span>
         `;
+        this.querySelector(".chat-username").onclick = (e) => {
+            router.navigate("/user/" + this.id);
+        }
     }
 }
 
@@ -237,12 +240,11 @@ export class ChatPopup extends HTMLElement {
             document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evtDetail, bubbles: true}));
             const ts = Math.floor(Date.now() / 1000);
             console.log("ts:", ts);
-            this.sidebar.appendMessage(evtDetail.userId, { message: msg, username: this.user.username, time: null });
+            this.sidebar.appendMessage(evtDetail.userId, { message: msg, username: this.user.username, time: null, user_id: this.user.id });
         }
     }
     startChatDm(evt) {
         const userInfo = evt.detail;
-        console.log("chat dm userinfo:", userInfo);
         if (!this.popped)
             this.pop();
         this.sidebar.createSideBarEntry(userInfo.userId, userInfo.username, userInfo.pfp);
@@ -257,12 +259,14 @@ export class ChatPopup extends HTMLElement {
         const messageEntryRaw = {
             message: messageDetails.message,
             username: messageDetails.from.username,
-            time: messageDetails.time
+            time: messageDetails.time,
+            user_id: messageDetails.from.id
         }
         this.sidebar.appendMessage(messageDetails.from.id, messageEntryRaw);
     }
     handleWsMessage(evt) {
         const msg = JSON.parse(evt.data);
+        console.log(msg);
         this.sidebar.appendMessage(-1, msg);
     }
     connectedCallback() {
