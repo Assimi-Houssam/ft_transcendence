@@ -3,6 +3,7 @@ from .models import User, Room, Notification
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
 from .models import FriendRequest
+from .otp import *
 
 class NestedUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +15,7 @@ class UserSerializerMe(serializers.ModelSerializer):
     block_list = NestedUserSerializer(many=True)
     class Meta:
         model = User
-        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email", "matches_won", "matches_played", "xp", "online_status"]
+        fields = ["id", "username", "banner", "pfp", "intra_id", "friends", "block_list", "date_joined", "email", "matches_won", "matches_played", "xp", "online_status", "mfa_enabled"]
 
 class UserSerializer(serializers.ModelSerializer):
     friends = NestedUserSerializer(many=True)
@@ -48,6 +49,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data["password"] = make_password(validated_data.get("password"))
+        validated_data["totp_secret"] = gen_b32secret()
         return super(UserRegistrationSerializer, self).create(validated_data)
 
     class Meta:
@@ -72,14 +74,15 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'pfp', 'banner']
+        fields = ['email', 'username', 'password', 'pfp', 'banner', "mfa_enabled"]
         write_only_fields = ['password']
         extra_kwargs = {
             'username': {'required': False},
             'email': {'required': False},
             'password': {'required': False},
             'pfp': {'required': False},
-            'banner': {'required': False}
+            'banner': {'required': False},
+            "mfa_enabled": {'required': False}
         }
 
 class UserScoreSerializer(serializers.ModelSerializer):

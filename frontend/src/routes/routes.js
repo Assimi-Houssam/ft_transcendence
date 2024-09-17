@@ -17,6 +17,8 @@ import { NextTournament } from "../components/GameComponents/GameOfflineRoom/tou
 
 import { Profile } from "../pages/Profile.js";
 import Error500 from "../error/500.js";
+import TwoFactorAuth from "../pages/TwoFactorAuth.js";
+import { EnableTwoFactor } from "../pages/EnableTwoFactor.js";
 
 export const Routes = [
     {
@@ -79,6 +81,14 @@ export const Routes = [
         service: logout,
     },
     {
+        path: "/mfa-enable",
+        component: EnableTwoFactor
+    },
+    {
+        path: "/mfa",
+        component: TwoFactorAuth,
+    },
+    {
         path: "/user/:userID",
         component : Profile
     },
@@ -101,7 +111,7 @@ class Router {
         this.routes = Routes;
         this.active_path = window.location.pathname;
         this.route  = this.routes.find(route => route.path === this.active_path);
-        this.public_routes = ["/login", "/register", "/reset-password"];
+        this.public_routes = ["/login", "/register", "/reset-password", "/mfa"];
         this.active_page = null;
     }
 
@@ -136,7 +146,7 @@ class Router {
         if (!this.active_page)
             this.active_page = new this.route.component();
         if (this.public_routes.includes(this.route.path)) {
-            root.innerHTML = this.active_page.outerHTML;
+            root.replaceChildren(this.active_page);
             return;
         }
         let layout = document.querySelector("layout-wrapper");

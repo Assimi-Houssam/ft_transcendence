@@ -1,10 +1,6 @@
 import ApiWrapper from "./ApiWrapper.js";
 
-/** TODO: complete implementation of this function
- * Check if the user is authenticated
- * @returns {boolean} true if the user is authenticated, false otherwise
- * token need to be also checked if it's expired or not and if it's valid
- */
+
 export async function isAuthenticated() {
     const req = await ApiWrapper.get("/me");
     return req;
@@ -42,6 +38,10 @@ export async function OAuthIntercept() {
 }
 
 let userInfo = null;
+
+export function getRawUserInfo() {
+    return userInfo;
+}
 
 export async function getUserInfo() {
     if (userInfo)
