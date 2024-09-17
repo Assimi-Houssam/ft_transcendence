@@ -14,6 +14,7 @@ import { GamePage } from "../components/GamePlay/GamePage.js";
 import { langOfflineGame } from "../utils/translate/gameTranslate.js";
 import { langErrors } from "../utils/translate/gameTranslate.js";
 import { langSuccess } from "../utils/translate/gameTranslate.js";
+import { MessageBox } from "../components/MessageBox.js";
 
 // todo: take care of this
 class RoomPageFooter extends HTMLElement {
@@ -41,11 +42,8 @@ export class RoomPage extends HTMLElement {
     constructor(roomData) {
         super();
         this.lang = localStorage.getItem("lang");
-        if (!roomData) {
-            Toast.error(langErrors[this.lang]["ErrorRoomDoesntExist"]);
-            router.navigate("/home");
+        if (!roomData)
             return;
-        }
         this.roomData = roomData;
         this.roomId = roomData.id;
         this.chat = new ChatGame();
@@ -74,7 +72,7 @@ export class RoomPage extends HTMLElement {
                 return;
             }
             Toast.error(langErrors[this.lang]["ErrorDisconnectedRoom"]);
-            router.navigate("/rooms");
+            // router.navigate("/rooms");
         }
     
         const openPromise = new Promise(resolve => {
@@ -83,11 +81,16 @@ export class RoomPage extends HTMLElement {
     
         this.socket.addEventListener("message", (event) => {
             const parsed_json = JSON.parse(event.data);
-            if (parsed_json.hasOwnProperty("message") && parsed_json.message == "start_game") {
-                const room_data_s = parsed_json.room_data;
-                console.log(room_data_s);
+            if (parsed_json.hasOwnProperty("content")) {
+                this.chat.appendMessage(parsed_json.username, parsed_json.content);
+                console.log("received room msg:", parsed_json.content);
                 return;
             }
+            if (parsed_json.hasOwnProperty("message") && parsed_json.message == "start_game") {
+                this.roomData = parsed_json.room_data;
+                return;
+            }
+            if (parsed_json)
             if (parsed_json.hasOwnProperty("room_data")) {
                 this.roomData = parsed_json.room_data;
                 this.participantsCard.update(this.roomData);
@@ -100,6 +103,11 @@ export class RoomPage extends HTMLElement {
         await openPromise;
     }
     async connectedCallback() {
+        if (!this.roomData) {
+            Toast.error(langErrors[this.lang]["ErrorRoomDoesntExist"]);
+            router.navigate("/home");
+            return;
+        }
         this.innerHTML = new Loader().outerHTML;
         await this.connectToRoom();
         this.innerHTML = `
@@ -128,6 +136,16 @@ export class RoomPage extends HTMLElement {
             this.socket.send(JSON.stringify({"type": "time_change", "message": evt.detail}));
         });
         this.addEventListener("teamSizeChange", (evt) => {
+            if (evt.detail === "1" && this.roomData.users.length > 2) {
+                new MessageBox("Notice", "You have more players than the team size can support, kick players before you can switch team sizes", "Ok", () => {}).show();
+                this.roomOptions.enableOption("Teamsize", "2");
+                return;
+            }
+            if (evt.detail === "2" && this.roomData.gamemode === "hockey") {
+                new MessageBox("Notice", "Hockey does not support 2v2", "Ok", () => {}).show();
+                this.roomOptions.enableOption("Teamsize", "1");
+                return;
+            }
             this.socket.send(JSON.stringify({"type": "team_size_change", "message": evt.detail}));
         });
         this.addEventListener("customizationChange", (evt) => {
@@ -140,18 +158,21 @@ export class RoomPage extends HTMLElement {
         this.addEventListener("participantkick", (evt) => {
             this.socket.send(JSON.stringify({"type": "team_kick", "message": {"user": evt.detail.getUserInfo()}}));
         });
+        this.addEventListener("roomChatSend", (evt) => {
+            console.log("sending message:", evt.detail);
+            this.socket.send(JSON.stringify({"type": "broadcast_msg", "message": evt.detail}))
+        });
         // im so sick of this, i dont care anymore
         document.addEventListener("roomNameChange", (evt) => {
             this.socket.send(JSON.stringify({"type": "room_name_change", "message": evt.detail}));
         });
         this.querySelector(".BtnStartGame").onclick = (e) => {
-            console.log("game start! | room data: ", this.roomData);
-            // todo: check if the host is the same as the current logged in user
             this.socket.send(JSON.stringify({"type": "start_game", "message": ""}));
         }
     }
     disconnectedCallback() {
-        this.socket.close();
+        if (this.roomData)
+            this.socket.close();
     }
 }
 

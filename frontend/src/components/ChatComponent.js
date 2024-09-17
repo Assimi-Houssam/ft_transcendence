@@ -2,6 +2,7 @@ import getUserInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "./Toast.js";
 import { router } from "../routes/routes.js";
+import { isValidInput } from "../utils/utils.js";
 
 export class ChatSidebarEntry extends HTMLElement {
     constructor(name, id, pfp) {
@@ -220,6 +221,8 @@ export class ChatPopup extends HTMLElement {
     }
     handleInputEnter(evt) {
         const msg = evt.detail;
+        if (!isValidInput(msg))
+            return;
         if (this.sidebar.getActiveSidebarEntry().id == -1) {
             this.ws.send(JSON.stringify({"message": msg}));
         }
@@ -229,7 +232,6 @@ export class ChatPopup extends HTMLElement {
                 userId: this.sidebar.getActiveSidebarEntry().id
             }
             document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evtDetail, bubbles: true}));
-            const ts = Math.floor(Date.now() / 1000);
             this.sidebar.appendMessage(evtDetail.userId, { message: msg, username: this.user.username, time: null, user_id: this.user.id });
         }
     }

@@ -4,6 +4,7 @@ from django.core.validators import validate_email
 from django.contrib.auth.hashers import make_password
 from .models import FriendRequest
 from .otp import *
+from .utils import is_valid_input
 
 class NestedUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,11 +39,12 @@ class FriendRequestSerializer(serializers.ModelSerializer):
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, data):
+        if (is_valid_input(data["username"]) == False):
+            raise serializers.ValidationError("Username contains invalid characters")
         if (len(data["username"]) < 5):
             raise serializers.ValidationError("Username cannot have less than 5 characters.")
         if (len(data["username"]) > 20):
             raise serializers.ValidationError("Username cannot have more than 20 characeters.")
-        # todo: add more password checks
         if (len(data["password"]) < 10):
             raise serializers.ValidationError("Password cannot have less than 10 characters")
         return data
@@ -61,6 +63,8 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if all(value is None for value in data.values()):
             raise serializers.ValidationError("Empty form")
+        if (is_valid_input(data["username"]) == False):
+            raise serializers.ValidationError("Username contains invalid characters")
         if ("username" in data and len(data["username"]) < 5):
             raise serializers.ValidationError("Username cannot have less than 5 characters.")
         if ("username" in data and len(data["username"]) > 20):
