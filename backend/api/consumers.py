@@ -41,7 +41,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 rooms[self.room_id]["redTeam"][0] = user 
             else:
                 rooms[self.room_id]["blueTeam"][0] = user
-        else: # todo: fix this since it adds users to the redteam first then blue team
+        else:
             for i, member in enumerate(rooms[self.room_id]["redTeam"]):
                 if not member:
                     rooms[self.room_id]["redTeam"][i] = user
@@ -254,7 +254,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
             return
         name = event["message"]
-        
+
         if (len(name) > 25 or is_valid_input(name) == False):
             return
         

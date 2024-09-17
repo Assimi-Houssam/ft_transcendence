@@ -16,7 +16,6 @@ import { langErrors } from "../utils/translate/gameTranslate.js";
 import { langSuccess } from "../utils/translate/gameTranslate.js";
 import { MessageBox } from "../components/MessageBox.js";
 
-// todo: take care of this
 class RoomPageFooter extends HTMLElement {
     constructor() {
         super();
@@ -25,14 +24,9 @@ class RoomPageFooter extends HTMLElement {
 
     connectedCallback() {
         this.innerHTML = `
-            <div class="ContainerFooter">
-                <div>
-                    <p style="display:none;" class="ContainerFooter_reminder">${langOfflineGame[this.lang]["notEnoughPlayers"]}</p>
-                </div>
-                <div class="BtnStartGame">
-                    <button type="button" id="BtnStartGame">${langOfflineGame[this.lang]["BtnStartGame"]}</button>
-                </div>
-            </div>`;
+        <div class="BtnStartGame">
+            <button type="button" id="BtnStartGame">${langOfflineGame[this.lang]["BtnStartGame"]}</button>
+        </div>`;
     }
 }
 
