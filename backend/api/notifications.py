@@ -3,6 +3,7 @@ from channels.db import database_sync_to_async
 from .serializers import NotificationSerializer
 import time
 import json
+from .utils import is_valid_input
 
 class NotificationConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
@@ -47,6 +48,8 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     async def message_received(self, event):
         message_info = event["message"]
+        if (is_valid_input(message_info["message"]) == False):
+            return
         is_blocked = await self.check_user_block(self.scope["user"], message_info["from"]["username"])
         if is_blocked:
             return
