@@ -115,12 +115,23 @@ two-factor-page .two_factor .btn_not_active {
 
 .mfa-enable-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    width: 100%;
+    /* width: 100%; */
+    max-width: 500px;
+    margin: auto;
     height: 85vh;
-    flex-direction: row;
+    /* flex-direction: row; */
     gap: 10px;
+    gap: 20px;
+}
+
+.mfa-enable-title h1 {
+    font-size: 50px;
+}
+.mfa-enable-title p {
+    font-size: 20px;
+    color: #63656F;
 }
 
 .mfa-enable-footer {
@@ -128,3 +139,10 @@ two-factor-page .two_factor .btn_not_active {
     align-items: center;
     justify-content: flex-end;
 }
+
+/* enable-two-factor:not(.mfa-enable-footer) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+} */

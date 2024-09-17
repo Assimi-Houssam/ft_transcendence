@@ -43,10 +43,13 @@ export class EnableTwoFactor extends HTMLElement {
         await this.getProvisioningQr();
         this.innerHTML = `
         <div class="mfa-enable-container">
+            <div class="mfa-enable-title">
+                <h1>Scan QR code </h1>
+                <p>Scan using any authenticator app, once done, press the next button</p>
+            </div>
             <div class="qr_code">
                 <img src="data:image/png;base64, ${this.qr}">
             </div>
-            Scan this qr code using any authenticator app, once done, press the next button
         </div>
         <div class="mfa-enable-footer">
             <div class="BtnStartGame">
