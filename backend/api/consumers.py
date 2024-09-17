@@ -254,9 +254,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
             return
         name = event["message"]
-        if (len(name) > 25):
-            return
-        if (name.isascii() == False):
+        
+        if (len(name) > 25 or is_valid_input(name) == False):
             return
         
         rooms[self.room_id]["name"] = name
