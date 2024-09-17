@@ -35,9 +35,21 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def notification_received(self, event):
         await self.send(text_data=json.dumps({"notification": event["message"]}))
 
+
+    @database_sync_to_async
+    def check_user_block(self, receiver, sender_username):
+        user.refresh_from_db()
+        block_list = receiver.block_list.all()
+        for user in block_list:
+            if (user.username == sender_username):
+                return True
+        return False
+
     async def message_received(self, event):
-        print(f"sending dm: {event}")
         message_info = event["message"]
+        is_blocked = await self.check_user_block(self.scope["user"], message_info["from"]["username"])
+        if is_blocked:
+            return
         await self.send(text_data=json.dumps({"from": message_info["from"], "message": message_info["message"]}))
 
     async def receive(self, text_data):

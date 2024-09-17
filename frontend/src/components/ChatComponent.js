@@ -277,8 +277,11 @@ export class ChatPopup extends HTMLElement {
             </div>
             <div class="chat-main-container">
             </div>`;
-        this.querySelector(".chat-main-container").appendChild(this.sidebar);
-        this.querySelector(".chat-main-container").appendChild(this.chatMain);
+        try {
+            this.querySelector(".chat-main-container").appendChild(this.sidebar);
+            this.querySelector(".chat-main-container").appendChild(this.chatMain);
+        }
+        catch (e) {}
     }
     pop() {
         if (this.popped) {
@@ -300,7 +303,7 @@ export class ChatPopup extends HTMLElement {
             duration: 450,
             easing: 'easeOutQuint',
             complete: () => {
-                document.body.addEventListener("click", this.outerClickHandler);
+                    document.body.addEventListener("click", this.outerClickHandler);
             }
         });
     }
