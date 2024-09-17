@@ -5,8 +5,7 @@ import { langGame } from "../../utils/translate/gameTranslate.js";
 export function game(ctx, canvas, gameData, bracket) {
   var number1 = 0;
   var number2 = 0;
-  // const time = gameData.time;
-  const time = 1;
+  const time = gameData.time;
   const custom = gameData.customization;
   canvas.width = 1635;
   canvas.height = 585;
