@@ -7,6 +7,7 @@ from asgiref.sync import async_to_sync
 from django.core.cache import cache
 from rest_framework import status
 from .auth import JWTAuth
+from .models import User
 import json
 import uuid
 import time
@@ -31,8 +32,8 @@ def create_room(request):
         "customization": "",
         "host": host_dict,
         "users": [],
-        "redTeam": [{}] * 4,
-        "blueTeam": [{}] * 4,
+        "redTeam": [{}] * 2,
+        "blueTeam": [{}] * 2,
         "started": "false"
     }
     rooms[room_id] = room_data
@@ -58,6 +59,12 @@ def invite_user(request):
     rooms = cache.get("rooms", {})
     room_id = request.data["roomId"]
     user_id = request.data["userId"]
+    
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"detail": "User does not exist!"}, status=status.HTTP_400_BAD_REQUEST)
+    
     if (int(user_id) == int(request.user.id)):
         return Response(json.dumps({"detail": "Can't send an invite to yourself"}), status=status.HTTP_400_BAD_REQUEST)
     if (rooms.get(room_id) is None):
