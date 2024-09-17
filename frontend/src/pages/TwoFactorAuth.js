@@ -1,12 +1,15 @@
 import Toast from "../components/Toast.js";
 import { router } from "../routes/routes.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
+import { langMFA } from "../utils/translate/gameTranslate.js";
+
 
 export default class TwoFactorAuth extends HTMLElement {
     constructor(username, password) {
         super();
         this.username = username;
         this.password = password;
+        this.lang = localStorage.getItem("lang");
     }
     async validateOtp(otp) {
         if (otp.length !== 6) {
@@ -28,12 +31,12 @@ export default class TwoFactorAuth extends HTMLElement {
         this.innerHTML = `
             <div class="two_factor_card_header">
                 <img src="../../assets/icons/twofa.webp" alt="two factor icon" />
-                <h3> 2FA Authentication </h3>
-                <p>Please scan the QR code and enter the 6 digits to verify</p>
+                <h3>${langMFA[this.lang]["Title"]}</h3>
+                <p>${langMFA[this.lang]["InputTotp"]}</p>
             </div>
             <div class="twofactor_code">
                 <div class="two_factor">
-                    <p>Enter 6 digits code</p>
+                    <p>${langMFA[this.lang]["EnterCode"]}e</p>
                     <div id="twofa_inputs" class="twofa_inputs">
                         <input type="text" />
                         <input type="text" />
@@ -42,7 +45,7 @@ export default class TwoFactorAuth extends HTMLElement {
                         <input type="text" />
                         <input type="text" />
                     </div>
-                    <button>Verify 2FA code</button>
+                    <button>${langMFA[this.lang]["VerifyTotp"]}</button>
                 </div>
             </div>
         `
