@@ -45,7 +45,8 @@ def create_room(request):
 @permission_classes([IsAuthenticated])
 def list_rooms(request):
     rooms = cache.get('rooms', {})
-    return Response(json.dumps(list(rooms.values())))
+    filtered_rooms = [room for room in rooms.values() if room.get('started') == "false"]
+    return Response(json.dumps(filtered_rooms))
 
 
 # todo: check if the user exists
