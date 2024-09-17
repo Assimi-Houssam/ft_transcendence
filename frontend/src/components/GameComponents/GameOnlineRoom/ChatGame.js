@@ -3,7 +3,7 @@ import { langChatGame } from "../../../utils/translate/gameTranslate.js";
 export class ContainerChat extends HTMLElement {
   constructor(){
     super();
-    this.lang =localStorage.getItem("lang");
+    this.lang = localStorage.getItem("lang");
   }
 
   connectedCallback(){

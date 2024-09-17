@@ -19,12 +19,12 @@ export class RegistrationPage extends HTMLElement {
         const password = this.password_elem.value;
         const repeat_password = this.repeat_password.value;
         if (!username || !email || !password || !repeat_password)  {
-            event.target.innerHTML = "Create Account";
+            event.target.innerHTML = langRegistration[this.lang]["BtnCreate"];
             event.target.disabled = false;
             return;
         }
         if (password !== repeat_password) {
-            event.target.innerHTML = "Create Account";
+            event.target.innerHTML = langRegistration[this.lang]["BtnCreate"];
             event.target.disabled = false;
             Toast.error(langErrors[this.lang]["ErrorPassNotMatch"]);
             return;
@@ -33,13 +33,13 @@ export class RegistrationPage extends HTMLElement {
         try {
             const req = await ApiWrapper.post("/register", registration_data);
             if (req.status === 500) {
-                event.target.innerHTML = "Create Account";
+                event.target.innerHTML = langRegistration[this.lang]["BtnCreate"];
                 event.target.disabled = false;
                 Toast.error(langErrors[this.lang]["ErrorInternalServer"]);
                 return;
             }
             const data = await req.json();
-            event.target.innerHTML = "Create Account";
+            event.target.innerHTML = langRegistration[this.lang]["BtnCreate"];
             event.target.disabled = false;
             if (!req.ok) {
                 Toast.error(data.detail[0]);
@@ -49,9 +49,9 @@ export class RegistrationPage extends HTMLElement {
             router.navigate("/login");
         }
         catch (error) {
-            event.target.innerHTML = "Create Account";
+            event.target.innerHTML = langRegistration[this.lang]["BtnCreate"];
             event.target.disabled = false;
-            Toast.error(error);
+            Toast.error(langErrors[this.lang]["ErrorTryAgain"]);
         } 
     }
     connectedCallback() {
@@ -78,8 +78,8 @@ export class RegistrationPage extends HTMLElement {
                         ${langRegistration[this.lang]["RepeatPass"]}
                         <input class = "input" id="repeat_password" type="password" name="repeat_password" placeholder="************">
                     </div>
-                    <div style="width: 110%;" class="buttons">
-                        <button style="width: 100%;" class="btn" >${langRegistration[this.lang]["BtnCreate"]}</button>
+                    <div class="buttons">
+                        <button class="btn"></button>
                     </div>
                 </form>
                 <p class="ref">${langRegistration[this.lang]["Ref"]}<a class="anchor" href="/login">${langRegistration[this.lang]["Here"]}</a></p>

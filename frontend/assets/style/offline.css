@@ -1,28 +1,3 @@
-* {
-    user-select: none;
-}
-
-:root {
-    --bg-button_: #222838;
-    --orchid: #CA33FF;
-    --bg: #181B26;
-    --bg1_: #191C28;
-    --bg2_: #363B4F;
-    --bg3_: #2B2F40;
-    --white_: #FFFFFF;
-    --title: #A8A8A8;
-    --text: #63656F;
-    --shamrock: #24CE90;
-    --byzantium: #581352;
-    --byzanitumnew: #321A3E;
-    --box: #2E3345;
-    --yellow: #FAE744;
-    --red: #FF6666;
-    --blue: #4496D4;
-    --btn_slot: #373739;
-    
-}
-
 .OfflineTournamentTitle
 {
     display: flex;

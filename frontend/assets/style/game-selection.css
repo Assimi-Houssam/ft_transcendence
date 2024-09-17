@@ -1,28 +1,3 @@
-* {
-    user-select: none;
-}
-
-:root {
-    --bg-button_: #222838;
-    --orchid: #CA33FF;
-    --bg: #181B26;
-    --bg1_: #191C28;
-    --bg2_: #363B4F;
-    --bg3_: #2B2F40;
-    --white_: #FFFFFF;
-    --title: #A8A8A8;
-    --text: #63656F;
-    --shamrock: #24CE90;
-    --byzantium: #581352;
-    --byzanitumnew: #321A3E;
-    --box: #2E3345;
-    --yellow: #FAE744;
-    --red: #FF6666;
-    --blue: #4496D4;
-    --btn_slot: #373739;
-    
-}
-
 .ContainerGameSelection
 {
     display: flex;
@@ -279,6 +254,14 @@ button.RoomListContainerBtn {
 {
     border-radius: 15px;
     background-size: cover;
+}
+
+.ContainerCardParticipants
+{
+    display: flex;
+    justify-content: space-around;
+    margin: 25px;
+    height: 40vh;
 }
 
 .fade-in {
@@ -545,6 +528,15 @@ empty-slot > img {
     font-size: 2.8vh;
 }
 
+participants-card {
+    width: 45vh;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0.38;
+}
+
 .BtnStartGame
 {
     width: 235px;
@@ -702,6 +694,15 @@ in-room-1vs1, in-room-2vs2 {
     height: 85%;
 }
 
+.sidebar-chatbox {
+    display:flex;
+    align-items: flex-end;
+    overflow-y: auto;
+    gap: 10px;
+    padding: 20px;
+    width: 30%;
+}
+
 .chat-content{
     display: flex;
     flex-direction: row;
@@ -759,6 +760,15 @@ in-room-1vs1, in-room-2vs2 {
     padding: 10px;
     outline: none;
 
+}
+
+.ContainerChat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 83%;
+    padding-top: 10px;
 }
 
 .chat-container-content {

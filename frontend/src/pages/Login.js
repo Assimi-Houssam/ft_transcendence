@@ -5,7 +5,7 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js"
 import { PreloaderMini } from "../components/Loading.js";
 import TwoFactorAuth from "./TwoFactorAuth.js";
-import { langLogin } from "../utils/translate/gameTranslate.js";
+import { langErrors, langLogin } from "../utils/translate/gameTranslate.js";
 
 export class LoginPage extends HTMLElement {
 	constructor() {
@@ -22,7 +22,7 @@ export class LoginPage extends HTMLElement {
 		const username = this.username_elem.value;
 		const password = this.password_elem.value;
 		if (!username || !password) {
-			event.target.innerHTML = "Login";
+			event.target.innerHTML = langLogin[this.lang]["BtnLogin"];
 			event.target.disabled = false;
 			return;
 		}
@@ -36,7 +36,7 @@ export class LoginPage extends HTMLElement {
 			}
 			const data = await req.json();
 			event.target.disabled = false;
-			event.target.innerHTML = "Login";
+			event.target.innerHTML = langLogin[this.lang]["BtnLogin"];
 			if (!req.ok) {
 				Toast.error(data.detail);
 				return;
@@ -44,9 +44,9 @@ export class LoginPage extends HTMLElement {
 			router.navigate("/home");
 		}
 		catch (error) {
-			event.target.innerHTML = "Login";
+			event.target.innerHTML = langLogin[this.lang]["BtnLogin"];
 			event.target.disabled = false;
-			Toast.err("Error : an error has occured, please try again later");
+			Toast.err(langErrors[this.lang]["ErrorTryAgain"]);
 		}
 	}
 	OAuthLogin(event) {

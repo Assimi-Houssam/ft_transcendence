@@ -583,6 +583,7 @@ export const langErrors = {
         //Registration.js
         ErrorPassNotMatch : "Les mots de passe ne correspondent pas.",
         ErrorInternalServer : "Une erreur interne du serveur s'est produite.",
+        ErrorTryAgain: "Une erreur s'est produite, veuillez réessayer ultérieurement",
         //RoomPage.js
         ErrorRoomDoesntExist : "La salle n'existe plus",
         ErrorKickedRoom : "Vous avez été expulsé de la salle",
@@ -609,6 +610,7 @@ export const langErrors = {
         //Registration.js
         ErrorPassNotMatch : "Las contraseñas no coinciden.",
         ErrorInternalServer : "Se produjo un error interno del servidor.",
+        ErrorTryAgain: "Se ha producido un error, inténtalo de nuevo más tarde.",
         // RoomPage.js
         ErrorRoomDoesntExist : "La sala ya no existe",
         ErrorKickedRoom : "Has sido expulsado de la sala",
