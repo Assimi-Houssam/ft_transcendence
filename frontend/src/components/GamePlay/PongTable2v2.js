@@ -1,7 +1,7 @@
 import { router } from "../../routes/routes.js"
 
 export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
-    var interval;
+    let interval;
     var animationframe;
     var KEY_UP = "w";
     var KEY_DOWN = "s";
@@ -123,22 +123,22 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         this.update = function (player) {
             if (keypresss[KEY_UP]) {
                 if (this.pos.y > 50) {
-                    if(player == 'paddle2' && this.pos.y > paddle1.pos.y +70 )
+                    if (player == 'paddle2' && this.pos.y > paddle1.pos.y + 70)
                         this.pos.y -= this.veo.y
-                    else if(player == 'paddle4' && this.pos.y > paddle3.pos.y +70 )
+                    else if (player == 'paddle4' && this.pos.y > paddle3.pos.y + 70)
                         this.pos.y -= this.veo.y
-                    else if(player == 'paddle1' || player == 'paddle3')
+                    else if (player == 'paddle1' || player == 'paddle3')
                         this.pos.y -= this.veo.y
 
                 }
             }
             else if (keypresss[KEY_DOWN]) {
                 if (this.pos.y < heightcanva - 50 - 30) {
-                    if(player == 'paddle1' && this.pos.y + 70 < paddle2.pos.y )
+                    if (player == 'paddle1' && this.pos.y + 70 < paddle2.pos.y)
                         this.pos.y += this.veo.y
-                    else if(player == 'paddle3' && this.pos.y + 70 < paddle4.pos.y )
+                    else if (player == 'paddle3' && this.pos.y + 70 < paddle4.pos.y)
                         this.pos.y += this.veo.y
-                    else if(player == 'paddle2' || player == 'paddle4')
+                    else if (player == 'paddle2' || player == 'paddle4')
                         this.pos.y += this.veo.y
                 }
             }
@@ -234,7 +234,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             }
         });
     }
-    
+
 
     // hna fine khassak tfade 9lawi 
     function gamedraw() {
@@ -272,8 +272,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         ctx.closePath();
         gameupdate();
         gamedraw();
-        if(trigerbool)
-        {
+        if (trigerbool) {
             triggerExplosion(trigerx, trigery)
             trigerbool = false
         }
@@ -282,7 +281,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             countdownElement.textContent = "game paused for 10 seconds";
             countdownElement.style.display = 'block';
         }
-        else if (pause === false) {
+        else if (pause === false && distance > 0) {
             canvas.style.filter = 'none';
             countdownElement.style.display = 'none';
         }
@@ -346,25 +345,25 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                         clearInterval(interval);
                         cancelAnimationFrame(animationframe);
                     }
-                    if (distance < 0 || gamefinsihed || disconneted) {
+                    if (distance <= 0 || gamefinsihed || disconneted) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            cancelAnimationFrame(animationframe);
+                        } , 4000);
+                        countdownElement.style.display = 'block';
+                        canvas.style.filter = 'blur(10px)';
                         let timeSelector = document.querySelector(".time-display");
                         if (disconneted) {
-                            canvas.style.filter = 'blur(10px)';
                             countdownElement.textContent = "Opponent disconnected";
-                            countdownElement.style.display = 'block';
+                            timeSelector.textContent = "oppnent disconnected";
                             setTimeout(() => {
                                 router.navigate("/home");
-                            }, 3000);
+                            }, 4000);
                         }
                         else {
                             timeSelector.textContent = "Time's up!";
                         }
                         canvas.style.filter = 'blur(10px)';
-                        clearInterval(interval);
-                        cancelAnimationFrame(animationframe);
-                        setTimeout(() => {
-                            ws.send(JSON.stringify({ 'finish': true }));
-                        }, 100);
                         if (!disconneted) {
                             if (number1 < number2) {
                                 countdownElement.textContent = "Blue Team Wins!";
@@ -377,9 +376,12 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                             else {
                                 countdownElement.textContent = "Draw!";
                             }
+                            setTimeout(() => {
+                                    router.navigate("/home");
+                            } , 4500);
                         }
                     }
-                }, 100);
+                }, 900);
             }
             remaining--;
         }, 1000);
@@ -387,6 +389,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
     function before_evrything() {
 
         drawInitialCanvas();
+        canvas.style.filter = 'blur(10px)';
         const cool = setInterval(() => {
             if (ws.readyState === 1)
                 ws.send(JSON.stringify({
@@ -407,7 +410,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
 
         if (startGame) {
             for (let i = 0; i < paddles.length; i++) {
-                if (data.minute) {
+                if (data.minute || data.second) {
                     minutes = data.minute;
                     seconds = data.second;
                     distance = data.distance;
@@ -417,18 +420,21 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
                 if (data[paddleNames[i]])
                     paddles[i].pos.y = data[paddleNames[i]];
             }
-            if (data.score1 != number1 || data.score2 != number2) {
-                number1 = data.score1;
-                number2 = data.score2;
-                trigerx = bal.pos.x
-                trigery = bal.pos.y
-                trigerbool = true
-            }
+                if (data.score1 != number1 || data.score2 != number2) {
+                    trigerx = bal.pos.x
+                    trigery = bal.pos.y
+                    trigerbool = true
+                }
+                if(data.score1)
+                    number1 = data.score1;
+                if(data.score2)
+                    number2 = data.score2;
+
             if (data.positionx && data.positiony) {
                 bal.pos.x = data.positionx;
                 bal.pos.y = data.positiony;
             }
-            if (data.finish) {
+            if (data.finish == true) {
                 gamefinsihed = true;
             }
             pause = data.pause;
@@ -466,5 +472,4 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
 
     before_evrything()
 
-    // evrything broke  work hard for it motherfucker
 }

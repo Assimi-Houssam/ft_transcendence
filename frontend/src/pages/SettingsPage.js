@@ -8,13 +8,14 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import { MessageBox } from "../components/MessageBox.js";
 import { forceUpdateUserInfo, getUserInfo } from "../utils/utils.js";
 import { router } from "../routes/routes.js";
+import { Loader } from "../components/Loading.js";
 
 export class SettingsPage extends HTMLElement {
   constructor() {
     super();
     this.updateProfile = this.updateProfile.bind(this);
     this.userData = {};
-    this.is2FAEnable = false; //tmp, TODO: get boolean from backedn
+    this.mfaStatus = null;
   }
 
   /**
@@ -61,7 +62,7 @@ export class SettingsPage extends HTMLElement {
     return data;
   }
 
-  async updateProfile(e) {
+  async updateProfile(newPassword) {
     if (this.userData.intra_id) {
       document.getElementById("save_setting_btn").innerHTML =
         "<preloader-mini></preloader-mini>";
@@ -75,9 +76,9 @@ export class SettingsPage extends HTMLElement {
         formData.append(key, data[key]);
     }
     formData.append("user_id", this.userData.id);
+    formData.append("mfa_enabled", this.mfaStatus);
     if (!this.userData.intra_id) {
-      const confirmPassword = document.querySelector(".msg-box-input").value;
-      formData.append("confirm_password", confirmPassword);
+      formData.append("confirm_password", newPassword);
     }
     try {
       const res = await ApiWrapper.post("/user/update", formData, false);
@@ -86,6 +87,7 @@ export class SettingsPage extends HTMLElement {
         Toast.success(data.detail);
         const newUserInfo = await forceUpdateUserInfo();
         document.querySelector("navbar-component").update(newUserInfo);
+        this.connectedCallback();
       } else {
         Toast.error(Array.isArray(data.detail) ? data.detail[0] : data.detail);
       }
@@ -153,9 +155,14 @@ export class SettingsPage extends HTMLElement {
     });
   }
 
-  handle2FA() {
-    this.is2FAEnable = !this.is2FAEnable; //tmp, TODO: set the boolean to backedn
-    this.connectedCallback();
+  async handle2FA() {
+    if (!this.mfaStatus) {
+      router.navigate("/mfa-enable");
+    }
+    else {
+      this.mfaStatus = !this.mfaStatus;
+      this.updateEvent();
+    }
   }
 
   changeBanner(e) {
@@ -175,11 +182,13 @@ export class SettingsPage extends HTMLElement {
     reader.readAsDataURL(file);
   }
   async connectedCallback() {
+    this.innerHTML = new Loader().outerHTML;
     this.userData = await forceUpdateUserInfo();
     if (!this.userData) {
-      Toast.error("Faild to get your settings data please try again later, sorry");
-      router.navigate("/500")
+      Toast.error("An error occured fetching your informations, try again later");
+      router.navigate("/home");
     }
+    this.mfaStatus = this.userData.mfa_enabled;
     this.innerHTML = `
       <div class="settings_">
             <div ${this.userData.banner && (`style="background-image: url(${ApiWrapper.getUrl()}${this.userData.banner})"`)} id="settings_bg_" class="settings_bg_">
@@ -206,10 +215,10 @@ export class SettingsPage extends HTMLElement {
                   <h3>Two-Factor Authentication</h3>
                   <div class="settings_two_actor_manage">
                       <p>Two-factor authentication is currently ${
-                        this.is2FAEnable ? "Enabled" : "Disabled"
+                        this.mfaStatus ? "Enabled" : "Disabled"
                       }</p>
                       <button id="twoFactorBtn">${
-                        this.is2FAEnable ? "Disable" : "Enable"
+                        this.mfaStatus ? "Disable" : "Enable"
                       }</button>
                   </div>
                 </div>
@@ -219,7 +228,7 @@ export class SettingsPage extends HTMLElement {
     document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
     document.getElementById("settings_banner_upload").onchange = (e) => this.changeBanner(e);
     document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
-    document.getElementById("twoFactorBtn").onclick = (e) => this.handle2FA(e);
+    document.getElementById("twoFactorBtn").onclick = async (e) => this.handle2FA(e);
   }
 }
 

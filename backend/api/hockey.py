@@ -52,9 +52,21 @@ class Hockey(AsyncWebsocketConsumer):
     
     async def disconnect_evryone(self, event):
         await self.close(4500)
+
+    def is_winner(self, user_id, red_team, blue_team, red_team_score, blue_team_score):
+        red_team_ids = [player['id'] for player in red_team if player]
+        blue_team_ids = [player['id'] for player in blue_team if player]
+
+        if red_team_score > blue_team_score:
+            winning_team_ids = red_team_ids
+        elif blue_team_score > red_team_score:
+            winning_team_ids = blue_team_ids
+        else:
+            return False
+        return user_id in winning_team_ids
         
     async def save_state(self):
-        self.game_states[self.room_group_name]["finish"] = True
+        print("Saving state")
         state = self.game_states[self.room_group_name]
         room = self.tosave[self.room_group_name]
         host_user = room['host']['username']
@@ -112,7 +124,12 @@ class Hockey(AsyncWebsocketConsumer):
         ball_x = text_data_json.get('ball_x', None)
         ball_y = text_data_json.get('ball_y', None)
         score1 = text_data_json.get('score1', None)
+        if score1:
+            self.game_states[self.room_group_name]['score']['x'] = score1
         score2 = text_data_json.get('score2', None)
+        if score2:
+            self.game_states[self.room_group_name]['score']['y'] = score2
+
         finish = text_data_json.get('finish', None)
         if finish == True and self.user.id == self.tosave[self.room_group_name]['host']['id']:
             await self.channel_layer.group_send(

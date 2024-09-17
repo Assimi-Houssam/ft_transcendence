@@ -6,6 +6,7 @@ from rest_framework import status
 from .serializers import UpdateProfileSerializer
 from .auth import JWTAuth
 import time
+from .otp import *
 
 
 def limit_user_updates(user):
@@ -36,7 +37,7 @@ def update_profile(req):
             'detail': 'Incorrect password',
         }, status=status.HTTP_400_BAD_REQUEST)
     data = {}
-    fields = ["username", "email", "password"]
+    fields = ["username", "email", "password", "mfa_enabled"]
     for field in fields :
         if req.POST.get(field):
             data[field] = req.POST.get(field)
@@ -59,3 +60,9 @@ def update_profile(req):
         for err in serializer.errors:
             errs['detail'].extend(serializer.errors[err])
         return Response(errs, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@authentication_classes([JWTAuth])
+@permission_classes([IsAuthenticated])
+def get_mfa_qr(req):
+    return Response({"provisioning_qr": gen_qrcode(gen_provisioning_uri(req.user.totp_secret, req.user.username))})
