@@ -38,16 +38,19 @@ export class ProfileActions extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = `
-      ${this.user.friends.find(item => item.id === this.auth.id) === undefined ?
-        this.friendRequest.find(item => item.from_user.id === this.user.id) != undefined ? (`
-            <button id="accept_friend_request">
-              <img src="../../../assets/icons/accept_user.png" >
-            </button>
-          `) : (`
-            <button id="add_friend">
-              <img src="../../../assets/icons/add_friend.png" >
-            </button>
-        `) : ""
+      ${
+        this.auth.block_list.find(item => item.id === this.user.id) === undefined ? (
+          this.user.friends.find(item => item.id === this.auth.id) === undefined ?
+            this.friendRequest.find(item => item.from_user.id === this.user.id) != undefined ? (`
+                <button id="accept_friend_request">
+                  <img src="../../../assets/icons/accept_user.png" >
+                </button>
+              `) : (`
+                <button id="add_friend">
+                  <img src="../../../assets/icons/add_friend.png" >
+                </button>
+            `) : ""
+        ) : ""
       }
       ${
         this.auth.block_list.find(item => item.id === this.user.id) != undefined ? "" : `<button id="send_message">
@@ -64,6 +67,12 @@ export class ProfileActions extends HTMLElement {
     if (addFriendBtn) addFriendBtn.onclick = () => this.addFriendEven();
     const acceptFriendBtn = document.getElementById("accept_friend_request");
     if (acceptFriendBtn) acceptFriendBtn.onclick = () => this.acceptFriendRequest();
+    const sendDirectMessage = document.getElementById("send_message");
+    if (sendDirectMessage) sendDirectMessage.onclick = () => {
+      const evtDetail = { userId: this.user.id, username: this.user.username, pfp: this.user.pfp };
+      console.log("detail:", evtDetail);
+      document.dispatchEvent(new CustomEvent("chatDmStarted", {detail: evtDetail, bubbles: true})); 
+    }
   }
 }
 

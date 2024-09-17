@@ -1,6 +1,7 @@
 import { router } from "../routes/routes.js";
 import { Sidebar } from "./Sidebar.js";
 import { Navbar } from "./Navbar.js";
+import { ChatPopup } from "./ChatComponent.js";
 
 /*
 * if the element is fetching data from the server (which is the case 99% of the time) => isLoaded shoudl return the fetch promise

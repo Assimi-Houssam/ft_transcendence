@@ -7,6 +7,7 @@ from .serializers import FriendRequestSerializer, UserFriendsSerializer
 from .auth import JWTAuth
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+import time
 
 max_friends = 200
 
@@ -44,6 +45,7 @@ def send_friend_request(req, userId):
                             "id": from_user.id,
                             "pfp": from_user.pfp.url
                         },
+                        "timestamp": int(time.time())
                     },
                 }
             )
@@ -87,6 +89,7 @@ def accept_friend_request(req, requestId):
                             "id": friend_req.to_user.id,
                             "pfp": friend_req.to_user.pfp.url
                         },
+                        "timestamp": int(time.time())
                     },
                 }
             )

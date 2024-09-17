@@ -3,6 +3,7 @@ import { Search } from "./Search.js";
 import { getUserInfo } from "../utils/utils.js";
 
 import { NotificationCenter } from "./NotificationCenter.js";
+import { ChatPopup } from "./ChatComponent.js";
 
 export class Navbar extends HTMLElement {
   constructor() {
@@ -11,6 +12,7 @@ export class Navbar extends HTMLElement {
       localStorage.setItem("lang", "en");
     this.userInfo = null;
     this.notificationCenter = new NotificationCenter();
+    this.chat = new ChatPopup();
   }
   async load() {
     const userInfo = await getUserInfo();
@@ -44,7 +46,16 @@ export class Navbar extends HTMLElement {
       // todo: make sure this cant be clickable once its clicked
       noti_btn.addEventListener("click", () => {
         this.notificationCenter.show();
-      })
+      });
+      document.addEventListener('keydown', (evt) => {
+        if (evt.target.nodeName === 'INPUT') {
+          return;
+        }
+        if (evt.ctrlKey && evt.key === 'y') {
+          console.log("chat pop req");
+          this.chat.pop();
+        }
+      });
   }
 }
 customElements.define('navbar-component', Navbar);

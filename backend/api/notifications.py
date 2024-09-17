@@ -1,11 +1,13 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from .serializers import NotificationSerializer
+import time
 import json
 
 class NotificationConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def update_user_status(self, user, status):
+        user.refresh_from_db()
         user.online_status = status
         user.save()
 
@@ -33,11 +35,40 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def notification_received(self, event):
         await self.send(text_data=json.dumps({"notification": event["message"]}))
 
+
+    @database_sync_to_async
+    def check_user_block(self, receiver, sender_username):
+        user.refresh_from_db()
+        block_list = receiver.block_list.all()
+        for user in block_list:
+            if (user.username == sender_username):
+                return True
+        return False
+
+    async def message_received(self, event):
+        message_info = event["message"]
+        is_blocked = await self.check_user_block(self.scope["user"], message_info["from"]["username"])
+        if is_blocked:
+            return
+        await self.send(text_data=json.dumps({"from": message_info["from"], "message": message_info["message"]}))
+
     async def receive(self, text_data):
         try:
             event = json.loads(text_data)
         except:
             await self.close()
             return
-        await self.channel_layer.group_send(str(self.user_id), {"type": event["type"], "message": event["message"]})
-        pass
+        if (event.get("type") == "notification_received"):
+            await self.channel_layer.group_send(str(self.user_id), {"type": event["type"], "message": event["message"]})
+        if (event.get("message")):
+            message = {
+                "from": {
+                    "id": self.scope["user"].id,
+                    "username": self.scope["user"].username,
+                    "pfp": self.scope["user"].pfp.url
+                },
+                "message": event["message"],
+                "time": int(time.time())
+            }
+            print("broadcasting message..")
+            await self.channel_layer.group_send(str(event.get("userId")), {"type": "message_received", "message": message})

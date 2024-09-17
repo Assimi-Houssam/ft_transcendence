@@ -47,6 +47,7 @@ export class Search extends HTMLElement {
 
     async handleOnChange (e) {
         const  show_search_result = document.getElementsByClassName("show_search_result")[0];
+        if (!show_search_result) return;
         show_search_result.innerHTML = `
             <div class="search_result_loading">
                 <img src="../../assets/icons/loading.gif" />
@@ -100,13 +101,13 @@ export class Search extends HTMLElement {
                 <input
                     id="searchBox"
                     type="text" 
-                    autocomplete="off"
                     placeholder="${langSearch[this.lang]["PlaceHolder"]}"
                 />
             </div>
             <div class="nav_search_result"></div>
         `;
         const searchBox = document.getElementById("searchBox");
+        this.addEventListener("click", () => searchBox.focus())
         searchBox.onfocus = (e) => this.onInputFocus(e);
         searchBox.addEventListener("keyup", (e) => {
             this.handleOnChange(e)

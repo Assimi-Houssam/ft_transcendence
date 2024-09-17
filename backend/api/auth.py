@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import UserRegistrationSerializer
 from .models import User
+from .otp import *
 import requests
 import random
 import os
@@ -30,8 +31,33 @@ def login(request):
     user = authenticate(username=username, password=password)
     if user == None:
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
+    if (user.mfa_enabled):
+        return Response({"detail": "MFA enabled"}, status=status.HTTP_202_ACCEPTED)
     # once a token is generated for a user, it'll always be able to log the user in, even if the user changes the password etc
     # todo: possibly start blacklisting tokens on logout/password change (but that kind of breaks jwt's purpose)
+    token = AccessToken.for_user(user)
+    resp = Response({"detail": "Logged in successfully"})
+    resp.set_cookie("access_token", str(token), httponly=True)
+    return resp
+
+@api_view(["POST"])
+def mfa_login(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+    otp = request.data.get("otp")
+    
+    user = authenticate(username=username, password=password)
+    if user == None:
+        return Response({"detail": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
+    
+    otp_secret = user.totp_secret
+    
+    curr_otp = gen_otp(otp_secret)
+    print(f"curr_otp: {curr_otp} | user otp: {otp}")
+
+    if (curr_otp != otp):
+        return Response({"detail": "Invalid OTP"}, status=status.HTTP_403_FORBIDDEN)
+    
     token = AccessToken.for_user(user)
     resp = Response({"detail": "Logged in successfully"})
     resp.set_cookie("access_token", str(token), httponly=True)

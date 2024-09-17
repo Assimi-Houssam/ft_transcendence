@@ -16,15 +16,24 @@
 	align-items: center;
 }
 
+.login-page input {
+	outline: none;
+}
+
 .login-container
 {
 	margin: 15vh auto;
 	padding: 10vh;
+	max-width: 500px;
 }
 
 .login-form 
 {
-    width: 350px;
+    width: 100%;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }
 
 .logo, .fortyTwo 
@@ -48,12 +57,11 @@
 	color: #004e98;
 }
 
-.password
+.password_label
 {
 	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
 	justify-content: space-between;
+	width: 100%;
 	align-items: center;
 	color:white;
 	margin-bottom: 0;
@@ -113,32 +121,26 @@
     width: 100%;
     padding: 15px 20px 15px 20px;
 	margin-top: 10px;
-	margin-bottom: 15px;
-    border-radius: 15px;
+	margin-bottom: 10px;
+    border-radius: 10px;
     border: none;
     background: linear-gradient(to top, #1E293A, #242735);
 }
 
-
-
 .buttons 
 {
     display: flex;
-	flex-direction: row;
-    justify-content: space-between;
 	align-items: center;
+	gap: 10px;
+	width: 100%;
 
 }
 
 
 .primary-btn
 {
-	color: white;
-	padding-top: 15px;
-	padding-bottom: 15px;
-	padding-right: 40px;
-	padding-left:40px;
-	border:none;
+	all: unset;
+	flex: 0.8;
 	outline: none;
 	position: relative;
 	background: linear-gradient(to right,#5232B2 ,#1675BD);
@@ -146,7 +148,12 @@
 	cursor: pointer;
 	font-family: 'nasalization';
 	font-weight: bold;
-	z-index:1; 
+	z-index:1;
+	min-height: 50px;
+	max-height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .primary-btn::before
@@ -160,11 +167,6 @@
 	border-radius: 10px;
 	background: linear-gradient(to right, #242735, #1E293A);
 	z-index: -1;
-} 
-
-.primary-btn::after
-{
-	content: attr(data);
 }
 
 .primary-btn:hover::before 
@@ -185,12 +187,7 @@
 {
 	color: #697185;
 	font-size: smaller;
-	white-space: nowrap;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	padding-right: 20px;
-	padding-left: 20px;
-	border:none;
+	all: unset;
 	border-radius: 10px;
 	outline: none;
 	position: relative;
@@ -202,6 +199,10 @@
 	justify-content: center;
 	align-items: center;
 	z-index:1;
+	min-height: 50px;
+	max-height: 50px;
+	flex: 1.5;
+	width: 100%;
 }
 
 .secondary-btn::before
@@ -246,14 +247,12 @@
 .paragraph
 {
 	color: #697185;
-	font-size: large;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	font-size: 20px;
 }
 
 .space
 {
-	margin: 20px;
+	flex: 0.1;
 }
 
 /* todo: make this cleaner */

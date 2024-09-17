@@ -1,6 +1,7 @@
 import { router } from "../../../routes/routes.js";
 import ApiWrapper from "../../../utils/ApiWrapper.js";
-import { getUserInfo } from "../../../utils/utils.js";
+import { forceUpdateUserInfo, getUserInfo } from "../../../utils/utils.js";
+import Toast from "../../Toast.js";
 import { langInviteFriendsPopup } from "../../../utils/translate/gameTranslate.js";
 
 class FriendInviteEntry extends HTMLElement {
@@ -42,17 +43,21 @@ export class InviteFriendsPopup extends HTMLElement {
         }
     }
     async sendInviteTo(user) {
-        const username = user.username;
-        const userId = user.userId; // currently hardcoded to 2
+        const userId = user.userId;
         const roomId = router.route.params["id"];
         console.log("sending invite to:", userId, " roomId:", roomId);
         const inviteData = { userId, roomId };
         const req = await ApiWrapper.post("/rooms/invite", inviteData);
+        if (!req.ok) {
+            console.log("failed to send invite to user");
+            return;
+        }
         const resp = await req.json();
+        Toast.success(resp.detail);
         this.hide();
     }
     show() {
-        getUserInfo().then((userinfo) => {
+        forceUpdateUserInfo().then((userinfo) => {
             const friends = userinfo.friends;
             console.log("friends: ", friends);
             for (let friend of friends) {

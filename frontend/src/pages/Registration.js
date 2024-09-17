@@ -1,6 +1,7 @@
 import { router } from "../routes/routes.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "../components/Toast.js";
+import { PreloaderMini } from "../components/Loading.js";
 import { langRegistration } from "../utils/translate/gameTranslate.js";
 
 export class RegistrationPage extends HTMLElement {
@@ -11,13 +12,20 @@ export class RegistrationPage extends HTMLElement {
     }
     async registerUser(event) {
         event.preventDefault();
+        event.target.innerHTML = new PreloaderMini().outerHTML;
+		event.target.disabled = true;
         const username = this.username_elem.value;
         const email = this.email_elem.value;
         const password = this.password_elem.value;
         const repeat_password = this.repeat_password.value;
-        if (!username || !email || !password || !repeat_password)
+        if (!username || !email || !password || !repeat_password)  {
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             return;
+        }
         if (password !== repeat_password) {
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             Toast.error(langErrors[this.lang]["ErrorPassNotMatch"]);
             return;
         }
@@ -25,10 +33,14 @@ export class RegistrationPage extends HTMLElement {
         try {
             const req = await ApiWrapper.post("/register", registration_data);
             if (req.status === 500) {
+                event.target.innerHTML = "Create Account";
+                event.target.disabled = false;
                 Toast.error(langErrors[this.lang]["ErrorInternalServer"]);
                 return;
             }
             const data = await req.json();
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             if (!req.ok) {
                 Toast.error(data.detail[0]);
                 return;
@@ -37,6 +49,8 @@ export class RegistrationPage extends HTMLElement {
             router.navigate("/login");
         }
         catch (error) {
+            event.target.innerHTML = "Create Account";
+            event.target.disabled = false;
             Toast.error(error);
         } 
     }
@@ -64,8 +78,8 @@ export class RegistrationPage extends HTMLElement {
                         ${langRegistration[this.lang]["RepeatPass"]}
                         <input class = "input" id="repeat_password" type="password" name="repeat_password" placeholder="************">
                     </div>
-                    <div class="buttons">
-                        <button class="btn" data="${langRegistration[this.lang]["BtnCreate"]}"></button>
+                    <div style="width: 110%;" class="buttons">
+                        <button style="width: 100%;" class="btn" >${langRegistration[this.lang]["BtnCreate"]}</button>
                     </div>
                 </form>
                 <p class="ref">${langRegistration[this.lang]["Ref"]}<a class="anchor" href="/login">${langRegistration[this.lang]["Here"]}</a></p>
