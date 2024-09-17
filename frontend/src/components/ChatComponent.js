@@ -143,7 +143,6 @@ export class ChatMain extends HTMLElement {
                if(String(message.value).trim().length === 0)
                    return;
                 if (message.value === "/invite") {
-                    console.log("dispatching chatSendInvite event");
                     this.dispatchEvent(new CustomEvent("chatSendInvite", { detail: null, bubbles: true }));
                 }
                 else
@@ -174,7 +173,6 @@ export class ChatPopup extends HTMLElement {
             haxx = true;
         else
             return;
-        console.log("chat ctor called");
         this.sidebar = new ChatSidebar();
         this.chatMain = new ChatMain();
         this.ws = new WebSocket("ws://localhost:8000/ws/chat/");
@@ -206,13 +204,11 @@ export class ChatPopup extends HTMLElement {
             Toast.error("Cant send an invite in general");
             return;
         }
-        console.log("pathname:", window.location.pathname);
         if (window.location.pathname === "/rooms" || !window.location.pathname.includes("room")) {
             Toast.error("You're not in a room");
             return;
         }
         const roomId = router.route.params["id"];
-        console.log("sending invite to:", userId, " roomId:", roomId);
         const inviteData = { userId, roomId };
         const req = await ApiWrapper.post("/rooms/invite", inviteData);
         if (!req.ok) {
@@ -220,26 +216,20 @@ export class ChatPopup extends HTMLElement {
             return;
         }
         const resp = await req.json();
-        console.log("resp:", resp);
         Toast.success(resp.detail);
     }
     handleInputEnter(evt) {
         const msg = evt.detail;
-        console.log("active sidebar entry:", this.sidebar.getActiveSidebarEntry().id);
         if (this.sidebar.getActiveSidebarEntry().id == -1) {
-            console.log("msg aaa:", msg);
             this.ws.send(JSON.stringify({"message": msg}));
         }
         else {
-            console.log("sending dm to notificiation");
             const evtDetail = {
                 message: msg,
                 userId: this.sidebar.getActiveSidebarEntry().id
             }
-            console.log("detail:", evtDetail);
             document.dispatchEvent(new CustomEvent("notiSendDM", {detail: evtDetail, bubbles: true}));
             const ts = Math.floor(Date.now() / 1000);
-            console.log("ts:", ts);
             this.sidebar.appendMessage(evtDetail.userId, { message: msg, username: this.user.username, time: null, user_id: this.user.id });
         }
     }
@@ -266,7 +256,6 @@ export class ChatPopup extends HTMLElement {
     }
     handleWsMessage(evt) {
         const msg = JSON.parse(evt.data);
-        console.log(msg);
         this.sidebar.appendMessage(-1, msg);
     }
     connectedCallback() {
