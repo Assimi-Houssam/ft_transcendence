@@ -58,9 +58,8 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         }
     }
 
-    /* Function to initialize particles */
     function initializeParticles(x, y) {
-        particles = []; // Reset particles array
+        particles = [];
         for (let i = 0; i <= 150; i++) {
             let dx = (Math.random() - 0.5) * (Math.random() * 6);
             let dy = (Math.random() - 0.5) * (Math.random() * 6);
@@ -70,7 +69,6 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         }
     }
 
-    /* Particle explosion function */
     function explode() {
         particles = particles.filter(particle => {
             if (particle.alpha > 0) {
@@ -83,11 +81,9 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         if (particles.length > 0) {
             requestAnimationFrame(explode);
         } else {
-            explosionTriggered = false; // Reset the trigger flag
+            explosionTriggered = false; 
         }
     }
-
-    /* Function to trigger explosion effect */
     function triggerExplosion(x, y) {
         if (!explosionTriggered) {
             initializeParticles(x, y);
@@ -239,8 +235,6 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
         });
     }
 
-
-    // hna fine khassak tfade 9lawi 
     function gamedraw() {
         drawtable();
         paddle1.draw();
@@ -285,7 +279,7 @@ export function PongTable2v2(ctx, canvas, ws, time, custom, player) {
             countdownElement.textContent = langGame[lang]["GamePause"];
             countdownElement.style.display = 'block';
         }
-        else if (pause === false && distance > 0) {
+        else if (pause === false && distance > 0 && disconneted === false) {
             canvas.style.filter = 'none';
             countdownElement.style.display = 'none';
         }
