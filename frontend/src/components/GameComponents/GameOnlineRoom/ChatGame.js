@@ -1,7 +1,7 @@
 import { langChatGame } from "../../../utils/translate/gameTranslate.js";
 
 export class ContainerChat extends HTMLElement {
-  constructor(){
+  constructor() {
     super();
     this.lang = localStorage.getItem("lang");
   }

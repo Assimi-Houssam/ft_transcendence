@@ -204,8 +204,11 @@ export class NotificationCenter extends HTMLElement {
             duration: 500,
             easing: 'easeOutQuint',
             complete: () => {
-                document.body.removeChild(this);
-                document.body.removeEventListener("click", this.outerClickHandler);
+                try {
+                    document.body.removeChild(this);
+                    document.body.removeEventListener("click", this.outerClickHandler);
+                }
+                catch (e) {}
             }
         });
     }
