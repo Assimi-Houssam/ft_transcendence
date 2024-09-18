@@ -1,5 +1,6 @@
 import { RoomPage } from "../pages/RoomPage.js";
 import { router } from "../routes/routes.js";
+import ApiWrapper from "../utils/ApiWrapper.js";
 import { langNotificationCenter } from "../utils/translate/gameTranslate.js";
 
 const anime = window.anime;
@@ -18,7 +19,7 @@ class Notification extends HTMLElement {
         this.notificationType = notificationData.type;
 
         this.senderUsername = notificationData.from_user.username;
-        this.senderPfp = "http://localhost:8000" + notificationData.from_user.pfp;
+        this.senderPfp = ApiWrapper.getUrl() + notificationData.from_user.pfp;
         this.senderId = notificationData.from_user.id;
         this.date = this.convertTsToDate(notificationData.timestamp);
         if (this.notificationType === NotificationType.RoomInvite) {

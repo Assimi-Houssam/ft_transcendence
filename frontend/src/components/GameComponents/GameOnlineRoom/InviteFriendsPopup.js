@@ -16,7 +16,7 @@ class FriendInviteEntry extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="FriendInviteEntryInfo">
-                <img src="${this.pfp}"></img>
+                <img src="${ApiWrapper.getUrl() + this.pfp}"></img>
                 <div class="FriendInviteEntryC">
                     <div class="FriendInviteEntryUsername">${this.username}</div>
                     <p class="friend_status ${this.status ? "online" : "offline"}">${this.status ? langInviteFriendsPopup[this.lang]["Online"] : langInviteFriendsPopup[this.lang]["Offline"]}</p>

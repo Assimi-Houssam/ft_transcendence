@@ -71,7 +71,7 @@ export class Search extends HTMLElement {
                                             <div>
                                                 <img 
                                                     class="search_result_user_card_pfp"
-                                                    src="http://localhost:8000${user?.pfp}"
+                                                    src="${ApiWrapper.getUrl() + user?.pfp}"
                                                     alt="${user?.pfp}"
                                                 />
                                             </div>

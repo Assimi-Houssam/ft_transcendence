@@ -89,7 +89,7 @@ export class MatchHistoryCard extends HTMLElement {
                   <div class="RoomHosted">
                       <p>${langRoomCard[this.lang]["hostedBy"]} <span style="color: var(--orchid)">${this.roomData.host}<span></p>
                   </div>
-                  <div class="RoomUsers"> ${this.roomData.players.map(user => `<img src="http://localhost:8000${user.pfp}" width="20px">`).join('')}</div>
+                  <div class="RoomUsers"> ${this.roomData.players.map(user => `<img src="${ApiWrapper.getUrl() + user.pfp}" width="20px">`).join('')}</div>
               </div>
           </div>
       </div>

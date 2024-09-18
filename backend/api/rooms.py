@@ -21,7 +21,7 @@ def create_room(request):
     for room in rooms.values():
         if (room["host"]["id"] == user.id):
             return Response({"detail": "User has already created a room"}, status=status.HTTP_403_FORBIDDEN)
-    host_dict = {"id": user.id, "username": user.username, "pfp": "http://localhost:8000" + user.pfp.url, "banner": "http://localhost:8000" + user.banner.url}
+    host_dict = {"id": user.id, "username": user.username, "pfp": user.pfp.url, "banner": user.banner.url}
     room_id = str(uuid.uuid4()).replace("-", "")
     room_data = {
         "id": room_id,

@@ -1,6 +1,7 @@
 import { PongTable } from "./PongTable.js";
 import { PongTable2v2 } from "./PongTable2v2.js";
 import { HockeyTable } from "./HockeyTable.js";
+import ApiWrapper from "../../utils/ApiWrapper.js";
 
 export class GamePage extends HTMLElement {
     constructor(Data = null, User = null) {
@@ -52,7 +53,7 @@ export class GamePage extends HTMLElement {
                         <div class="pingpongProfile">
                             <p id="blueplayer">${blueTeam.username}</p>
                             <div id="blueteam" style="display: flex; ">
-                                <img class="profile-pic" src="${blueTeam.pfp}" alt="Profile picture"
+                                <img class="profile-pic" src="${ApiWrapper.getUrl() + blueTeam.pfp}" alt="Profile picture"
                                     style="border: 3px solid blue; border-radius: 10px;">
                             </div>
                             <p id="player1" style="color: white; font-size:40px;">0</p>
@@ -63,7 +64,7 @@ export class GamePage extends HTMLElement {
                         <div class="pingpongProfile">
                             <p id="player2" style="color: white; font-size: 40px;">0</p>
                             <div id="readteam" style="display: flex; flex-direction: row;">
-                                <img class="profile-pic" src="${redTeam.pfp}" alt="Profile picture"
+                                <img class="profile-pic" src="${ApiWrapper.getUrl() + redTeam.pfp}" alt="Profile picture"
                                     style="border: 3px solid red; border-radius: 10px;">
                             </div>
                             <p id="redplayer">${redTeam.username}</p>
@@ -98,7 +99,7 @@ export class GamePage extends HTMLElement {
                                 let blueimg = document.getElementById('blueteam');
                                 let newImg = document.createElement('img');
                                 newImg.className = "profile-pic";
-                                newImg.src = this.roomData.blueTeam[1].pfp;
+                                newImg.src = ApiWrapper.getUrl() + this.roomData.blueTeam[1].pfp;
                                 newImg.alt = "Profile picture";
                                 newImg.style.border = "3px solid blue";
                                 newImg.style.borderRadius = "10px";
@@ -107,7 +108,7 @@ export class GamePage extends HTMLElement {
                                 let redimg = document.getElementById('readteam');
                                 let newImg2 = document.createElement('img');
                                 newImg2.className = "profile-pic";
-                                newImg2.src = this.roomData.redTeam[1].pfp; 
+                                newImg2.src = ApiWrapper.getUrl() + this.roomData.redTeam[1].pfp; 
                                 newImg2.alt = "Profile picture";
                                 newImg2.style.border = "3px solid red";
                                 newImg2.style.borderRadius = "10px";

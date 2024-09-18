@@ -1,5 +1,6 @@
 import { InviteFriendsPopup } from "./InviteFriendsPopup.js";
 import { langParticipants } from "../../../utils/translate/gameTranslate.js";
+import ApiWrapper from "../../../utils/ApiWrapper.js";
 
 export class EmptySlot extends HTMLElement {
     constructor() {
@@ -32,14 +33,14 @@ export class ParticipantEntry extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="ParticipantEntryInfo">
-                <img src="${this.userInfo.pfp}">
+                <img src="${ApiWrapper.getUrl() + this.userInfo.pfp}">
                 <div class="ParticipantUsername">
                     <p>${this.userInfo.username} ${this.isHost ? `<span style="color: var(--orchid); font-size: 65% ;">(${langParticipants[this.lang]["host"]})</span>` : ""}</p>
                 </div>
             </div>
             <img class="ParticipantKick" src="../../../../assets/icons/circle-x.svg">`;
         if (this.userInfo.banner) {
-            this.style.backgroundImage = `url(${this.userInfo.banner})`;
+            this.style.backgroundImage = `url(${ApiWrapper.getUrl() + this.userInfo.banner})`;
         } else {
             this.style.backgroundColor = "#212535";
         }

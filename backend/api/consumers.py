@@ -34,7 +34,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
             return
 
         await self.accept()
-        user = {"username": self.scope["user"].username, "id": self.scope["user"].id, "pfp": "http://localhost:8000" + self.scope["user"].pfp.url, "banner": "http://localhost:8000" + self.scope["user"].banner.url}
+        user = {"username": self.scope["user"].username, "id": self.scope["user"].id, "pfp": self.scope["user"].pfp.url, "banner": self.scope["user"].banner.url}
 
         if (rooms[self.room_id]["teamSize"] == "1"):
             if (len(rooms[self.room_id]["users"]) == 0):

@@ -38,7 +38,7 @@ export class Navbar extends HTMLElement {
                 <p class="nav_username_id">
                 ${this.userInfo.username}
                 </p>
-                <img src="${"http://localhost:8000" + this.userInfo.pfp}" />
+                <img src="${ApiWrapper.getUrl() + this.userInfo.pfp}" />
               </a>
           </div>
       `;

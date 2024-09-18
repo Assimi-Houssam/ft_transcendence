@@ -3,6 +3,7 @@ import Toast from "../../Toast.js";
 import { RoomPage } from "../../../pages/RoomPage.js";
 import { langRoomCard } from "../../../utils/translate/gameTranslate.js";
 import { langErrors } from "../../../utils/translate/gameTranslate.js";
+import ApiWrapper from "../../../utils/ApiWrapper.js";
 
 export class RoomInfoCard extends HTMLElement {
     constructor(roomData, enabled = false) {
@@ -43,7 +44,7 @@ export class RoomInfoCard extends HTMLElement {
                                     <p>${langRoomCard[this.lang]["hostedBy"]} <span style="color: var(--orchid)">${this.roomData.host.username}<span></p>
                                 </div>
                                 <div class="RoomUsers">
-                                ${this.roomData.users.map(user => `<img src="${user.pfp}" width="20px">`).join('')}</div>
+                                ${this.roomData.users.map(user => `<img src="${ApiWrapper.getUrl() + user.pfp}" width="20px">`).join('')}</div>
                             </div>
                         </div>
                     </div>
