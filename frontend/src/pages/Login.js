@@ -62,6 +62,7 @@ export class LoginPage extends HTMLElement {
 				router.navigate("/home");
 				return;
 			}
+			Toast.error(this.err);
 		}
 		this.innerHTML = `
 			<div class="login-page">

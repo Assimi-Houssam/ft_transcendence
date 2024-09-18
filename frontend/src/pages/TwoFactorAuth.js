@@ -48,7 +48,7 @@ export default class TwoFactorAuth extends HTMLElement {
                     <button>${langMFA[this.lang]["VerifyTotp"]}</button>
                 </div>
             </div>
-        `
+        `;
         const inputs = document.getElementById("twofa_inputs");
         inputs.addEventListener("input", (e) => {
             const input = e.target;

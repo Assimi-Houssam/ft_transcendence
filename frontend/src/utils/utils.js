@@ -1,3 +1,4 @@
+import Toast from "../components/Toast.js";
 import ApiWrapper from "./ApiWrapper.js";
 
 
@@ -17,6 +18,10 @@ export async function OAuthIntercept() {
     const local_state = localStorage.getItem('state');
     const ft_state = url.searchParams.get('state');
     const auth_code = url.searchParams.get('code');
+    const error = url.searchParams.get('error');
+    if (error) {
+        return url.searchParams.get('error_description');
+    }
     localStorage.clear();
     if (local_state != ft_state) {
         return "OAuth state mismatch";
@@ -29,7 +34,6 @@ export async function OAuthIntercept() {
             return "An internal server error occured";
         if (!req.ok)
             return data.detail;
-
     }
     catch (error) {
         return "An exception has occured";
