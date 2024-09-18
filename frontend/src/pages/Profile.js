@@ -29,10 +29,9 @@ export class Profile extends HTMLElement {
       if (res.status == 200) {
         const userJson  = await res.json();
         this.user = userJson.detail;
-      } else {
-        return false;
+        return true;
       }
-      return true;
+      return false;
     }
     catch (e) {
       return false;
