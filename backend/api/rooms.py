@@ -50,12 +50,10 @@ def list_rooms(request):
     return Response(json.dumps(filtered_rooms))
 
 
-# todo: check if the user exists
 @api_view(["POST"])
 @authentication_classes([JWTAuth])
 @permission_classes([IsAuthenticated])
 def invite_user(request):
-    print(f"req data: {request.data}")
     rooms = cache.get("rooms", {})
     room_id = request.data["roomId"]
     user_id = request.data["userId"]

@@ -170,7 +170,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 return team_entry
         return None
 
-    # todo: refactor this
     def is_team_empty(self, team):
         return all(not entry for entry in team)
 

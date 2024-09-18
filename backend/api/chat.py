@@ -28,14 +28,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
     
     #receive message from websocket
     async def receive(self, text_data):
-        print(f"text data: {text_data}")
         #Parse the message data received from the client
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
 
-        print(f"Message received: {message}")
         if (message is None) or (len(message) > 100) or (is_valid_chat_inp(message) == False):
-            print(f"Invalid message received: {message}")
             return
         
         username = self.scope['user'].username

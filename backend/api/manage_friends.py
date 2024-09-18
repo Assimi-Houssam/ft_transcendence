@@ -28,7 +28,6 @@ def send_friend_request(req, userId):
     data, created =  FriendRequest.objects.get_or_create(to_user=to_user, from_user=from_user)
     if created:
         if (to_user.online_status == 0):
-            print("user is offline, appending to his unread notis")
             notification = Notification.objects.create(type="AcceptedFriendRequest", from_user=from_user)
             to_user.unread_notifications.add(notification)
             to_user.save()
@@ -72,7 +71,6 @@ def accept_friend_request(req, requestId):
         friend_req.from_user.friends.add(friend_req.to_user)
         friend_req.delete()
         if (friend_req.from_user.online_status == 0):
-            print("user is offline, appending to his unread notis")
             notification = Notification.objects.create(type="AcceptedFriendRequest", from_user=friend_req.to_user)
             friend_req.from_user.unread_notifications.add(notification)
             friend_req.from_user.save()

@@ -1,7 +1,6 @@
 import { router } from "./routes.js";
 
 // remove the default behavior of the anchor (<a>) tags and added a event to navigate to the clicked link
-// todo: move this somewhere else
 document.body.addEventListener("click", (event) => {
   if (event.target.closest("a")) {
     event.preventDefault();

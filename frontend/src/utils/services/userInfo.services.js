@@ -8,7 +8,6 @@ import ApiWrapper from "../ApiWrapper.js";
 export default async function getUserInfo() {
     try {
         const res = await ApiWrapper.get("/me");
-        // todo: data checks
         const data = await res.json();
         return data;
     } catch(err) {

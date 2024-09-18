@@ -73,5 +73,4 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 "message": event["message"],
                 "time": int(time.time())
             }
-            print("broadcasting message..")
             await self.channel_layer.group_send(str(event.get("userId")), {"type": "message_received", "message": message})

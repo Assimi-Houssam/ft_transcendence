@@ -25,13 +25,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 AUTH_USER_MODEL = 'api.User'
 
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost"
+    "http://localhost",
+    "http://127.0.0.1"
 ]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
 
 CACHES = {
     "default": {
@@ -43,7 +48,6 @@ CACHES = {
     }
 }
 
-CORS_ALLOW_CREDENTIALS = True
 
 ASGI_APPLICATION = "backend.asgi.application"
 
@@ -51,12 +55,12 @@ ASGI_APPLICATION = "backend.asgi.application"
 INSTALLED_APPS = [
     "daphne",
     'django.contrib.admin',
+    'corsheaders',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
     'rest_framework',
     'api'
 ]
@@ -115,7 +119,7 @@ DATABASES = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=365)
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1)
 }
 
 # Password validation

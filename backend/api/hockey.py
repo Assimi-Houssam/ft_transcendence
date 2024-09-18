@@ -66,7 +66,6 @@ class Hockey(AsyncWebsocketConsumer):
         return user_id in winning_team_ids
         
     async def save_state(self):
-        print("Saving state")
         state = self.game_states[self.room_group_name]
         room = self.tosave[self.room_group_name]
         host_user = room['host']['username']

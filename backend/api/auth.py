@@ -53,7 +53,6 @@ def mfa_login(request):
     otp_secret = user.totp_secret
     
     curr_otp = gen_otp(otp_secret)
-    print(f"curr_otp: {curr_otp} | user otp: {otp}")
 
     if (curr_otp != otp):
         return Response({"detail": "Invalid OTP"}, status=status.HTTP_403_FORBIDDEN)
@@ -76,7 +75,6 @@ def logout(request):
 def oauth_login(request):
     access_token_endpoint = "https://api.intra.42.fr/oauth/token"
     me_endpoint = "https://api.intra.42.fr/v2/me"
-    print(f"code: {request.data['code']}")
     params = {
         "grant_type": "authorization_code",
         "code": request.data["code"],
@@ -96,7 +94,6 @@ def oauth_login(request):
     }
     r = requests.get(me_endpoint, headers=headers)
     if (r.status_code != requests.codes.ok):
-        print(f"an error has occured fetching user info, access_token: {access_token}")
         return Response({"detail": "An error occured fetching user info from 42"}, status=status.HTTP_400_BAD_REQUEST)
     user_info = r.json()
     intra_login = user_info['login']
@@ -107,7 +104,6 @@ def oauth_login(request):
         intra_user = User.objects.get(intra_id=intra_id)
         # user already has an account created with his intra, return his token
         token = AccessToken.for_user(intra_user)
-        print(f"intra user logging in: {intra_user.username}")
         resp = Response({"detail", "Logged in successfully"})
         resp.set_cookie("access_token", str(token), httponly=True)
         return resp
@@ -120,14 +116,11 @@ def oauth_login(request):
             user = User.objects.create(username=new_login, email=intra_email, intra_id=intra_id)
             token = AccessToken.for_user(user)
             resp = Response({"detail", "Logged in successfully"})
-            print(f"intra user registering in: {user.username}")
             resp.set_cookie("access_token", str(token), httponly=True)
             return resp
-            # return Response({"refresh": str(tokens), "access": str(tokens.access_token)})
         except User.DoesNotExist:
             # username not taken, create a normal account and return a refresh token
             user = User.objects.create(username=intra_login, email=intra_email, intra_id=intra_id)
-            print(f"intra user logging in: {user.username}")
             token = AccessToken.for_user(user)
             resp = Response({"detail", "Logged in successfully"})
             resp.set_cookie("access_token", str(token), httponly=True)
