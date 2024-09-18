@@ -14,6 +14,7 @@ class FriendInviteEntry extends HTMLElement {
         this.lang = localStorage.getItem("lang");
     }
     connectedCallback() {
+        console.log(ApiWrapper.getUrl() + this.pfp);
         this.innerHTML = `
             <div class="FriendInviteEntryInfo">
                 <img src="${ApiWrapper.getUrl() + this.pfp}"></img>
@@ -61,7 +62,7 @@ export class InviteFriendsPopup extends HTMLElement {
             const friends = userinfo.friends;
             console.log("friends: ", friends);
             for (let friend of friends) {
-                this.friendsList.push(new FriendInviteEntry(friend.username, ApiWrapper.getUrl() + friend.pfp, friend.id, friend.online_status));
+                this.friendsList.push(new FriendInviteEntry(friend.username, friend.pfp, friend.id, friend.online_status));
             }
             document.body.appendChild(this);
 

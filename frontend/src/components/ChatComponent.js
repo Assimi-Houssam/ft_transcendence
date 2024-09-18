@@ -176,7 +176,7 @@ export class ChatPopup extends HTMLElement {
             return;
         this.sidebar = new ChatSidebar();
         this.chatMain = new ChatMain();
-        this.ws = new WebSocket("ws://localhost:8000/ws/chat/");
+        this.ws = new WebSocket(ApiWrapper.getWsUrl() + "/ws/chat/");
         this.user = null;
         this.popped = false;
         this.ws.onopen = async () => {

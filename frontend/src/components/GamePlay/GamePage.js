@@ -15,12 +15,12 @@ export class GamePage extends HTMLElement {
 
             if (this.roomData.gamemode === "pong") {
                 if (this.roomData.teamSize == "1")
-                    this.ws = new WebSocket(`ws://localhost:8000/ws/game/onlinev1/${this.roomData.id}/`);
+                    this.ws = new WebSocket(ApiWrapper.getWsUrl() + `/ws/game/onlinev1/${this.roomData.id}/`);
                 else
-                    this.ws = new WebSocket(`ws://localhost:8000/ws/game/onlinev2/${this.roomData.id}/`);
+                    this.ws = new WebSocket(ApiWrapper.getWsUrl() + `/ws/game/onlinev2/${this.roomData.id}/`);
             }
             else
-                this.ws = new WebSocket(`ws://localhost:8000/ws/game/hockey/${this.roomData.id}/`);
+                this.ws = new WebSocket(ApiWrapper.getWsUrl() + `/ws/game/hockey/${this.roomData.id}/`);
         }
         catch (e) {
              router.navigate('/home');

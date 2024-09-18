@@ -121,7 +121,7 @@ customElements.define("notification-item", Notification);
 export class NotificationCenter extends HTMLElement {
     constructor() {
         super();
-        this.ws = new WebSocket("ws://localhost:8000/ws/cable/");
+        this.ws = new WebSocket(ApiWrapper.getWsUrl() + "/ws/cable/");
         this.notifications = [];
         this.ws.onmessage = this.onNotificationReceived.bind(this);
 

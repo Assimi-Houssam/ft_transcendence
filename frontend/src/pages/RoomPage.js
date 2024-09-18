@@ -51,7 +51,7 @@ export class RoomPage extends HTMLElement {
         });
     }
     async connectToRoom() {
-        this.socket = new WebSocket("ws://localhost:8000/ws/room/" + this.roomId + "/");
+        this.socket = new WebSocket(ApiWrapper.getWsUrl() + "/ws/room/" + this.roomId + "/");
         this.socket.onclose = async (evt) => {
             console.log("socket connection CLOSED, error code:", evt.code, " reason: ", evt.reason);
             if (evt.code === 4001) {
