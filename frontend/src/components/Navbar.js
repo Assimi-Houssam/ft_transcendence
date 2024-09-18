@@ -52,7 +52,6 @@ export class Navbar extends HTMLElement {
           return;
         }
         if (evt.ctrlKey && evt.key === 'y') {
-          console.log("chat pop req");
           this.chat.pop();
         }
       });

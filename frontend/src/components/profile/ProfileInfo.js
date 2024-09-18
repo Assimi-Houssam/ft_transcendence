@@ -70,7 +70,6 @@ export class ProfileActions extends HTMLElement {
     const sendDirectMessage = document.getElementById("send_message");
     if (sendDirectMessage) sendDirectMessage.onclick = () => {
       const evtDetail = { userId: this.user.id, username: this.user.username, pfp: this.user.pfp };
-      console.log("detail:", evtDetail);
       document.dispatchEvent(new CustomEvent("chatDmStarted", {detail: evtDetail, bubbles: true})); 
     }
   }

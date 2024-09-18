@@ -26,7 +26,6 @@ class ApiWrapper {
         return this.request("DELETE", endpoint, null);
     }
     async request(method, endpoint, data, json = true) {
-        console.log("[ApiWrapper]: sending a", method, "request to:", endpoint);
         let headers = {};
         if (json)
             headers["Content-Type"] = "application/json";

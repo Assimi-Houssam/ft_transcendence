@@ -30,7 +30,6 @@ export class LoginPage extends HTMLElement {
 		try {
 			const req = await ApiWrapper.post("/login", login_data);
 			if (req.status === 202) {
-				console.log("user has mfa enabled, redirecting to mfa page");
 				router.navigate("/mfa", new TwoFactorAuth(username, password));
 				return;
 			}

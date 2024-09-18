@@ -100,7 +100,6 @@ export function HockeyTable(ctx, canvas, ws, time, player_p, custom) {
   ws.onclose = function (event) {
     if (event.code === 4500) {
       disconnected = true;
-      console.log("opponent disconnected");
     }
   };
 

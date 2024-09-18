@@ -26,7 +26,6 @@ export class GameSelection extends HTMLElement {
                     this.GameSelected.id = ""
                 GameSelection.children[i].id = "gameselection";
                 this.GameSelected = GameSelection.children[i];
-                console.log("selected: ", this.GameSelected.getAttribute('name'))
             })
         }
     }

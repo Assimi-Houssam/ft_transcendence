@@ -355,7 +355,6 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
                 router.navigate("/home");
               }, 3000);
               countdownElement.style.display = "block";
-              console.log(number1, number2);
               if (number1 < number2) {
                 countdownElement.textContent = langGame[lang]["BlueTeamWon"];
                 countdownElement.style.color = "#4496D4";

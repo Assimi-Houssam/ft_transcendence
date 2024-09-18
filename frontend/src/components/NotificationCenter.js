@@ -15,7 +15,6 @@ class Notification extends HTMLElement {
     constructor(notificationData) {
         super();
         this.notificationData = notificationData;
-        console.log("notification data:", notificationData);
         this.notificationType = notificationData.type;
 
         this.senderUsername = notificationData.from_user.username;
@@ -32,7 +31,6 @@ class Notification extends HTMLElement {
         
         if (!this.content)
             return;
-        console.log("noti content:", this.content);
         this.addEventListener("click", this.onClickHandler.bind(this));
     }
     convertTsToDate(epoch) {
@@ -75,7 +73,6 @@ class Notification extends HTMLElement {
                 break;
             case NotificationType.ReceivedFriendRequest:
                 router.navigate("/user/" + this.senderId);
-                console.log("navigating to:", "/user" + this.senderId);
                 break;
             case NotificationType.AcceptedFriendRequest:
                 router.navigate("/user/" + this.senderId);
@@ -137,7 +134,6 @@ export class NotificationCenter extends HTMLElement {
     onNotificationReceived(evt) {
         const incommingNoti = JSON.parse(evt.data);
         if (incommingNoti.hasOwnProperty("message")) {
-            console.log("dispatching dm received event");
             document.dispatchEvent(new CustomEvent("notiReceivedDm", {detail: incommingNoti, bubbles: true}));
             return;
         }

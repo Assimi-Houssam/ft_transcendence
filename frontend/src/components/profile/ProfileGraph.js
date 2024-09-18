@@ -17,7 +17,6 @@ export class ProfileGraph extends HTMLElement {
                 score: userScore
             };
         });
-        console.log("userScores:", userScores);
         return userScores;
     }
     async connectedCallback() {

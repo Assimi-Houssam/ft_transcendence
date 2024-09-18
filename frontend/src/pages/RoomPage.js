@@ -53,7 +53,6 @@ export class RoomPage extends HTMLElement {
     async connectToRoom() {
         this.socket = new WebSocket(ApiWrapper.getWsUrl() + "/ws/room/" + this.roomId + "/");
         this.socket.onclose = async (evt) => {
-            console.log("socket connection CLOSED, error code:", evt.code, " reason: ", evt.reason);
             if (evt.code === 4001) {
                 Toast.success(langSuccess[this.lang]["SuccessStartGame"]);
                 this.user = await getUserInfo();
@@ -66,18 +65,16 @@ export class RoomPage extends HTMLElement {
                 return;
             }
             Toast.error(langErrors[this.lang]["ErrorDisconnectedRoom"]);
-            // router.navigate("/rooms");
         }
     
         const openPromise = new Promise(resolve => {
-            this.socket.onopen = (evt) => { console.log("connected!"); resolve(); };
+            this.socket.onopen = (evt) => { resolve(); };
         });
     
         this.socket.addEventListener("message", (event) => {
             const parsed_json = JSON.parse(event.data);
             if (parsed_json.hasOwnProperty("content")) {
                 this.chat.appendMessage(parsed_json.username, parsed_json.content);
-                console.log("received room msg:", parsed_json.content);
                 return;
             }
             if (parsed_json.hasOwnProperty("message") && parsed_json.message == "start_game") {
@@ -153,10 +150,8 @@ export class RoomPage extends HTMLElement {
             this.socket.send(JSON.stringify({"type": "team_kick", "message": {"user": evt.detail.getUserInfo()}}));
         });
         this.addEventListener("roomChatSend", (evt) => {
-            console.log("sending message:", evt.detail);
             this.socket.send(JSON.stringify({"type": "broadcast_msg", "message": evt.detail}))
         });
-        // im so sick of this, i dont care anymore
         document.addEventListener("roomNameChange", (evt) => {
             this.socket.send(JSON.stringify({"type": "room_name_change", "message": evt.detail}));
         });

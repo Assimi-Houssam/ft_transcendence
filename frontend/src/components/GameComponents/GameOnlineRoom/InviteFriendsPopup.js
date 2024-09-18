@@ -14,7 +14,6 @@ class FriendInviteEntry extends HTMLElement {
         this.lang = localStorage.getItem("lang");
     }
     connectedCallback() {
-        console.log(ApiWrapper.getUrl() + this.pfp);
         this.innerHTML = `
             <div class="FriendInviteEntryInfo">
                 <img src="${ApiWrapper.getUrl() + this.pfp}"></img>
@@ -46,11 +45,9 @@ export class InviteFriendsPopup extends HTMLElement {
     async sendInviteTo(user) {
         const userId = user.userId;
         const roomId = router.route.params["id"];
-        console.log("sending invite to:", userId, " roomId:", roomId);
         const inviteData = { userId, roomId };
         const req = await ApiWrapper.post("/rooms/invite", inviteData);
         if (!req.ok) {
-            console.log("failed to send invite to user");
             Toast.error(langErrors[this.lang]["ErrorFailedInvite"]);
             return;
         }
@@ -60,7 +57,6 @@ export class InviteFriendsPopup extends HTMLElement {
     show() {
         forceUpdateUserInfo().then((userinfo) => {
             const friends = userinfo.friends;
-            console.log("friends: ", friends);
             for (let friend of friends) {
                 this.friendsList.push(new FriendInviteEntry(friend.username, friend.pfp, friend.id, friend.online_status));
             }

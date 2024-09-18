@@ -85,7 +85,6 @@ export class ChatGame extends HTMLElement {
   }
   appendMessage(username, message) {
     let chats = this.querySelector(".chat-box-content");
-    console.log("chats: ", chats);
     chats.appendChild(new SingleMessage(message, username));
   }
 }

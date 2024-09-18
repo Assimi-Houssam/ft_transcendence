@@ -20,7 +20,6 @@ export class EnableTwoFactor extends HTMLElement {
             Toast.error(data.detail);
             return;
         }
-        console.log("2fa enabled, should redirect to /settings now");
         Toast.success(langMFA[this.lang]["MfaEnabled"]);
         router.navigate("/settings");
     }
@@ -38,7 +37,6 @@ export class EnableTwoFactor extends HTMLElement {
         const req = await ApiWrapper.get("/user/qr");
         const resp = await req.json();
         this.qr = resp.provisioning_qr;
-        console.log("qr:", resp);
     }
     async connectedCallback() {
         this.innerHTML = new Loader().outerHTML;

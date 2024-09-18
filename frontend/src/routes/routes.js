@@ -151,12 +151,10 @@ class Router {
         }
         let layout = document.querySelector("layout-wrapper");
         if (!layout) {
-            console.log("reloading...");
             root.innerHTML = "<app-loader></app-loader>";
             layout = new LayoutWrapper();
             const req = await layout.load();
             if (!req) {
-                console.log("[routes]: An error occured fetching the userinfo");
                 return;
             }
             root.replaceChildren(layout);

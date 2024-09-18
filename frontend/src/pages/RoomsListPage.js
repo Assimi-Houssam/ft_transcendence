@@ -19,7 +19,6 @@ export class RoomsListPage extends HTMLElement {
     async fetchRooms() {
         const resp = await ApiWrapper.get("/rooms/list");
         if (!resp.ok) {
-            console.log("an error has occured fetching"); // consile.log
             return;
         }
         const json = await resp.json();
@@ -59,7 +58,6 @@ export class RoomsListPage extends HTMLElement {
             }
             const json = await req.json();
             const parsed = JSON.parse(json);
-            console.log("room created!, room data:", parsed);
             router.navigate("/room/" + parsed.id, new RoomPage(parsed));
         }
         for (let room of this.rooms) {

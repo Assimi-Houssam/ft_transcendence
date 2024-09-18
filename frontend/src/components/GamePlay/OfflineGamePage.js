@@ -52,7 +52,6 @@ export class OfflineGamePage extends HTMLElement {
                 p2.textContent = "0";
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
-            console.log(this.gameData);
             if (this.gameData.gameMode === "pong")
                 game(ctx, canvas, this.gameData, this.bracket);
             else if (this.gameData.gameMode === "hockey")

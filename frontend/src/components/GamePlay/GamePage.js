@@ -27,7 +27,6 @@ export class GamePage extends HTMLElement {
         }
     }
     async connectedCallback() {
-        console.log(this.roomData);
         if (this.roomData) {
             let player;
             if (this.roomData.teamSize == "2") {
