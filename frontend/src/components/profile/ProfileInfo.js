@@ -83,7 +83,7 @@ export class ProfileInfo extends HTMLElement {
     super();
     this.user = user;
     this.classList.add("profile_left_items");
-    this.status = this.user.online_status;
+    this.status = this.user?.online_status;
     this.scores = scores;
     this.lang = localStorage.getItem("lang");
   }
