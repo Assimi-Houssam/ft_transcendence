@@ -24,12 +24,18 @@ export class Profile extends HTMLElement {
   }
 
   async fetchUser() {
-    const res = await ApiWrapper.get(`/user/` + router.route.params["userID"]);
-    if (res.status == 200) {
-      const userJson  = await res.json();
-      this.user = userJson.detail;
-    } else {
-      router.navigate("/404");
+    try {
+      const res = await ApiWrapper.get(`/user/` + router.route.params["userID"]);
+      if (res.status == 200) {
+        const userJson  = await res.json();
+        this.user = userJson.detail;
+      } else {
+        return false;
+      }
+      return true;
+    }
+    catch (e) {
+      return false;
     }
   }
 
@@ -86,7 +92,11 @@ export class Profile extends HTMLElement {
     return this.scores;
   }
   async connectedCallback() {
-    await this.fetchUser();
+    const res = await this.fetchUser();
+    if (!res) {
+      router.navigate("/404");
+      return;
+    }
     await this.getAuth();
     await this.fetchFriendRequest();
     await this.fetchUserScores();
