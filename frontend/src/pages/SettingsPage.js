@@ -216,24 +216,27 @@ export class SettingsPage extends HTMLElement {
                     <user-settings-form-page ></user-settings-form-page>
                     <user-settings-pfp></user-settings-pfp>
                 </div>
+                ${!this.userData?.intra_id && (`
                 <div class="settings_2fa_auth">
-                  <h3>Two-Factor ${langSettingsPage[this.lang]["Authentication"]}</h3>
-                  <div class="settings_two_actor_manage">
-                      <p>Two-factor ${langSettingsPage[this.lang]["ActorManage"]} ${
-                        this.mfaStatus ? langSettingsPage[this.lang]["Enabled"] : langSettingsPage[this.lang]["Disabled"]
-                      }</p>
+                <h3>Two-Factor ${langSettingsPage[this.lang]["Authentication"]}</h3>
+                    <div class="settings_two_actor_manage">
+                    <p>Two-factor ${langSettingsPage[this.lang]["ActorManage"]} ${
+                      this.mfaStatus ? langSettingsPage[this.lang]["Enabled"] : langSettingsPage[this.lang]["Disabled"]
+                    }</p>
                       <button id="twoFactorBtn">${
-                        this.mfaStatus ? langSettingsPage[this.lang]["Disabled"] : langSettingsPage[this.lang]["Enabled"]
+                      this.mfaStatus ? langSettingsPage[this.lang]["Disabled"] : langSettingsPage[this.lang]["Enabled"]
                       }</button>
-                  </div>
-                </div>
+                    </div>
+                    </div>
+                  `) || ""}
             </div>
       </div>`;
     this.setInputsValues();
     document.getElementById("pfp").onchange = (e) => this.changeImageWhenUpload(e);
     document.getElementById("settings_banner_upload").onchange = (e) => this.changeBanner(e);
     document.getElementById("save_setting_btn").onclick = (e) => this.updateEvent(e);
-    document.getElementById("twoFactorBtn").onclick = async (e) => this.handle2FA(e);
+    if (document.getElementById("twoFactorBtn"))
+      document.getElementById("twoFactorBtn").onclick = async (e) => this.handle2FA(e);
   }
 }
 

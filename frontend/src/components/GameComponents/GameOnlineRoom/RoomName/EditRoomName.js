@@ -2,6 +2,7 @@ import Toast from "../../../Toast.js";
 import { RoomName } from "./RoomName.js";
 import { langEditRoomName } from "../../../../utils/translate/gameTranslate.js";
 import { langErrors } from "../../../../utils/translate/gameTranslate.js";
+import { isValidChatInput } from "../../../../utils/utils.js";
 
 export class EditRoomName extends HTMLElement {
     constructor(name = "") {
@@ -30,6 +31,9 @@ export class EditRoomName extends HTMLElement {
         const changeTitleRoom = document.getElementById("room-name_");
 
         const saveRoomName = () => {
+            if (!isValidChatInput(this.roomName)) {
+                return;
+            }
             if (this.roomName.length > 25) {
                 Toast.error(langErrors[this.lang]["ErrorNameLen"]);
                 return;

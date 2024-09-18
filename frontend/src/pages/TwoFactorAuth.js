@@ -36,7 +36,7 @@ export default class TwoFactorAuth extends HTMLElement {
             </div>
             <div class="twofactor_code">
                 <div class="two_factor">
-                    <p>${langMFA[this.lang]["EnterCode"]}e</p>
+                    <p>${langMFA[this.lang]["EnterCode"]}</p>
                     <div id="twofa_inputs" class="twofa_inputs">
                         <input type="text" />
                         <input type="text" />

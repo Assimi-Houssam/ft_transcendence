@@ -1,10 +1,8 @@
-import { ForgotPasswordPage } from "../pages/ForgotPassword.js";
 import { LoginPage } from "../pages/Login.js";
 import { RegistrationPage } from "../pages/Registration.js";
 import { HomePage } from "../pages/Home.js"
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { logout } from "../utils/logout.js";
-import {Test} from "../pages/Test.js";
 import Error404 from "../error/404.js";
 import { LayoutWrapper } from "../components/LayoutComponent.js";
 import { GameSelection } from "../pages/GameSelectionMenu.js";
@@ -48,14 +46,6 @@ export const Routes = [
     {
         path: '/register',
         component: RegistrationPage
-    },
-    {
-        path: '/reset-password',
-        component: ForgotPasswordPage
-    },
-    {
-        path: '/test/:id',
-        component: Test,
     },
     {
         path: '/game-selection',
