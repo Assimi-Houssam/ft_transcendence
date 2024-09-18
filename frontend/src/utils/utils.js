@@ -69,3 +69,8 @@ export function isValidInput(inp) {
     let validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-|\"\"')(_*%^#@!?=][{}";
     return [...inp].every(c => validCharacters.includes(c));
 }
+
+export function isValidChatInput(inp) {
+    let validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-|\"\"')(_*%^#@!?=][{} ";
+    return [...inp].every(c => validCharacters.includes(c));
+}

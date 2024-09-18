@@ -2,7 +2,7 @@ import getUserInfo from "../utils/services/userInfo.services.js";
 import ApiWrapper from "../utils/ApiWrapper.js";
 import Toast from "./Toast.js";
 import { router } from "../routes/routes.js";
-import { isValidInput } from "../utils/utils.js";
+import { isValidChatInput } from "../utils/utils.js";
 
 export class ChatSidebarEntry extends HTMLElement {
     constructor(name, id, pfp) {
@@ -221,7 +221,7 @@ export class ChatPopup extends HTMLElement {
     }
     handleInputEnter(evt) {
         const msg = evt.detail;
-        if (!isValidInput(msg))
+        if (!isValidChatInput(msg))
             return;
         if (this.sidebar.getActiveSidebarEntry().id == -1) {
             this.ws.send(JSON.stringify({"message": msg}));

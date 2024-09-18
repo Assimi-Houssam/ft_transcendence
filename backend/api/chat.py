@@ -3,7 +3,7 @@ from .serializers import NotificationSerializer, UserScoreSerializer
 import json
 import time
 from channels.db import database_sync_to_async
-from .utils import is_valid_input
+from .utils import is_valid_chat_inp
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -34,7 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
 
         print(f"Message received: {message}")
-        if (message is None) or (len(message) > 100) or (is_valid_input(message) == False):
+        if (message is None) or (len(message) > 100) or (is_valid_chat_inp(message) == False):
             print(f"Invalid message received: {message}")
             return
         

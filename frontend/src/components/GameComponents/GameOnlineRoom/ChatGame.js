@@ -70,18 +70,16 @@ export class ChatGame extends HTMLElement {
     const message = document.getElementById("chat-input");
     const chats = document.getElementById("chats");
 
-    const htmlTagPattern = /<\/?[a-z][\s\S]*>/i;
-
     this.addEventListener("keypress", (e) => {
       if (e.key.toLowerCase() == "enter") {
-        if (htmlTagPattern.test(message.value) || message.value.length > 120) {
+        if (message.value.length > 120) {
           message.value = "";
-        } else {
-          if (String(message.value).trim().length === 0) return;
-          this.dispatchEvent(new CustomEvent("roomChatSend", {detail: message.value, bubbles: true}));
-          message.value = "";
-          chats.scrollTop = chats.scrollHeight;
+          return;
         }
+        if (String(message.value).trim().length === 0) return;
+        this.dispatchEvent(new CustomEvent("roomChatSend", {detail: message.value, bubbles: true}));
+        message.value = "";
+        chats.scrollTop = chats.scrollHeight;
       }
     });
   }

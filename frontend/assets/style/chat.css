@@ -91,7 +91,7 @@ chat-messages-container {
 	flex-direction: column-reverse;
 	padding-left: 15px;
 	padding-bottom: 10px;
-	overflow-y: hidden;
+	overflow-y: scroll;
 	z-index: 1000;
 	gap: 5px;
 }
