@@ -15,9 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from api import views, update_profile, auth, manage_friends, rooms, block, scores
-from django.conf.urls.static import static
+from django.conf.urls.static import static, serve
 from django.conf import settings
 
 urlpatterns = [
@@ -28,7 +28,6 @@ urlpatterns = [
     path("login", auth.login),
     path("login/mfa", auth.mfa_login),
     path("logout", auth.logout),
-    path('admin/', admin.site.urls),
     path("user/update", update_profile.update_profile),
     path("user/qr", update_profile.get_mfa_qr),
     path("user/<int:userID>", views.get_user),
@@ -43,6 +42,7 @@ urlpatterns = [
     path("rooms/list", rooms.list_rooms),
     path("rooms/invite", rooms.invite_user),
     path("scores/<int:user_id>", scores.get_user_scores),
+    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT})
 ]
 # add the static files url
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

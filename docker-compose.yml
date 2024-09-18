@@ -21,9 +21,11 @@ services:
     image: caddy
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs/localhost.crt:/etc/caddy/localhost.crt
+      - ./certs/localhost.key:/etc/caddy/localhost.key
       - ./frontend/:/usr/share/caddy
     ports:
-      - "80:80"
+      - "443:443"
       - "8000:8000"
     depends_on:
       - backend

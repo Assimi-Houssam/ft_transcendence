@@ -1,11 +1,13 @@
-:80 {
-  handle {
-    root * /usr/share/caddy
-    try_files {path} /index.html
-    file_server
-  }
+https://localhost {
+    tls /etc/caddy/localhost.crt /etc/caddy/localhost.key
+    handle {
+        root * /usr/share/caddy
+        try_files {path} /index.html
+        file_server
+    }
 }
 
-:8000 {
+https://localhost:8000 {
+    tls /etc/caddy/localhost.crt /etc/caddy/localhost.key
     reverse_proxy backend:8000
 }

@@ -32,9 +32,10 @@ AUTH_USER_MODEL = 'api.User'
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost",
-    "http://127.0.0.1"
+    "https://localhost",
+    "https://127.0.0.1"
 ]
+
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 

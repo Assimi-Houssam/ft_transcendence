@@ -2,8 +2,8 @@ import { router } from "../routes/routes.js";
 
 class ApiWrapper {
     constructor() {
-        this.url = "http://localhost:8000";
-        this.wsUrl = "ws://localhost:8000"
+        this.url = "https://localhost:8000";
+        this.wsUrl = "wss://localhost:8000"
         this.public_routes = ["/login", "/login/refresh", "/register", "/oauth-login"];
     }
     getUrl() {
