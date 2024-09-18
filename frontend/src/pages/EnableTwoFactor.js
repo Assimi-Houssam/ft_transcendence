@@ -45,10 +45,13 @@ export class EnableTwoFactor extends HTMLElement {
         await this.getProvisioningQr();
         this.innerHTML = `
         <div class="mfa-enable-container">
+            <div class="mfa-enable-title">
+                <h1>${langMFA[this.lang]["ScanQrTitle"]}</h1>
+                <p>${langMFA[this.lang]["ScanQr"]}</p>
+            </div>
             <div class="qr_code">
                 <img src="data:image/png;base64, ${this.qr}">
             </div>
-            ${langMFA[this.lang]["ScanQr"]}
         </div>
         <div class="mfa-enable-footer">
             <div class="BtnStartGame">
