@@ -593,7 +593,8 @@ export const langErrors = {
         ErrorDisconnectedRoom :"You have been disconnected from the room",
         //404.js
         ErrorNotFound : "404 Not Found",
-        ErrorInvalidChars: "Username contains invalid characters"
+        ErrorInvalidChars: "Username contains invalid characters",
+        ErrorFailedInvite: "Failed to send invite"
     },
     fr : {
         //OfflineGame.js
@@ -622,6 +623,7 @@ export const langErrors = {
         //404.js
         ErrorNotFound : "404 Not Found",
         ErrorInvalidChars: "Le nom d'utilisateur contient des caractères non valides",
+        ErrorFailedInvite: "Échec de l'envoi de l'invitation"
     },
     es : {
         //OfflineGame.js
@@ -650,6 +652,7 @@ export const langErrors = {
         //404.js
         ErrorNotFound : "404 No encontrado",
         ErrorInvalidChars: "El nombre de usuario contiene caracteres no válidos",
+        ErrorFailedInvite: "No se pudo enviar la invitación"
     }
 }
 
@@ -657,14 +660,17 @@ export const langSuccess = {
     en : {
         SuccessRemoved : " Has been removed from your friend list",
         SuccessStartGame : "Game started!",
+        SuccessInvite: "Invite sent!"
     },
     fr : {
         SuccessRemoved : " a été supprimé de votre liste d'amis",
         SuccessStartGame : "Jeu commencé!",
+        SuccessInvite: "Invitation envoyée !"
     },
     es : {
         SuccessRemoved : " Ha sido eliminado de tu lista de amigos",
         SuccessStartGame : "¡Juego comenzado!",
+        SuccessInvite: "¡Invitación enviada!"
     }
 }
 

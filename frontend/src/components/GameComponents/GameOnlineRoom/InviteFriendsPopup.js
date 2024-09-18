@@ -2,7 +2,7 @@ import { router } from "../../../routes/routes.js";
 import ApiWrapper from "../../../utils/ApiWrapper.js";
 import { forceUpdateUserInfo, getUserInfo } from "../../../utils/utils.js";
 import Toast from "../../Toast.js";
-import { langInviteFriendsPopup } from "../../../utils/translate/gameTranslate.js";
+import { langInviteFriendsPopup, langSuccess, langErrors } from "../../../utils/translate/gameTranslate.js";
 
 class FriendInviteEntry extends HTMLElement {
     constructor(username, pfp, userId, status) {
@@ -50,10 +50,10 @@ export class InviteFriendsPopup extends HTMLElement {
         const req = await ApiWrapper.post("/rooms/invite", inviteData);
         if (!req.ok) {
             console.log("failed to send invite to user");
+            Toast.error(langErrors[this.lang]["ErrorFailedInvite"]);
             return;
         }
-        const resp = await req.json();
-        Toast.success(resp.detail);
+        Toast.success(langSuccess[this.lang]["SuccessInvite"]);
         this.hide();
     }
     show() {
