@@ -77,8 +77,6 @@ export class LoginPage extends HTMLElement {
 						<div>
 							<div class="password_label">
 								<span>${langLogin[this.lang]["Password"]}</span>
-									<span><a href="/reset-password" class="forgot-password-link">${langLogin[this.lang]["ForgorPass"]}</a>
-								</span>
 							</div>
 							<input class="input" id="password" type="password" name="password" placeholder="************">
 						</div>

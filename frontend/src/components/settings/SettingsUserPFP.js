@@ -16,12 +16,8 @@ export class SettingsUserPFP extends HTMLElement {
                     <input type="file"  id="pfp" />
                     <div class="settings_input_error user_pfp_err"></div>
                 </div>
-                <div class="settings_pfp_delete">
-                    <button>${langSettingUserPFP[this.lang]["DeleteAccount"]}</button>
-                    <p>${langSettingUserPFP[this.lang]["ConfirmDelete"]}</p>
-                </div>
             </div>
-        `
+        `;
     }
 }
 

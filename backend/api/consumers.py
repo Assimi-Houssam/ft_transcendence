@@ -3,7 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
 import time
 import asyncio
-from .utils import is_valid_input
+from .utils import is_valid_input, is_valid_chat_inp
 
 class RoomConsumer(AsyncWebsocketConsumer):
     async def check_rooms(self):
@@ -255,7 +255,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
             return
         name = event["message"]
 
-        if (len(name) > 25 or is_valid_input(name) == False):
+        if (len(name) > 25 or is_valid_chat_inp(name) == False):
             return
         
         rooms[self.room_id]["name"] = name

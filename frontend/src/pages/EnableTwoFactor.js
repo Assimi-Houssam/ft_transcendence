@@ -4,6 +4,7 @@ import ApiWrapper from "../utils/ApiWrapper.js";
 import { router } from "../routes/routes.js";
 import { Loader } from "../components/Loading.js";
 import { langMFA, langConfirmPassPopup } from "../utils/translate/gameTranslate.js";
+import { getUserInfo } from "../utils/utils.js";
 
 export class EnableTwoFactor extends HTMLElement {
     constructor() {
@@ -40,6 +41,12 @@ export class EnableTwoFactor extends HTMLElement {
     }
     async connectedCallback() {
         this.innerHTML = new Loader().outerHTML;
+        const userData = await getUserInfo();
+        if (userData.intra_id) {
+            console.log("")
+            router.navigate("/home");
+            return;
+        }
         await this.getProvisioningQr();
         this.innerHTML = `
         <div class="mfa-enable-container">
