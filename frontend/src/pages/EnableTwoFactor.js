@@ -46,7 +46,7 @@ export class EnableTwoFactor extends HTMLElement {
         this.innerHTML = `
         <div class="mfa-enable-container">
             <div class="mfa-enable-title">
-                <h1>Scan QR code </h1>
+                <h1>${langMFA[this.lang]["ScanQrTitle"]}</h1>
                 <p>${langMFA[this.lang]["ScanQr"]}</p>
             </div>
             <div class="qr_code">

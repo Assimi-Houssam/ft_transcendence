@@ -671,6 +671,7 @@ export const langSuccess = {
 export const langMFA = {
     en: {
         Title: "2FA Authentication",
+        ScanQrTitle: "Scan QR code",
         ScanQr: "Scan this qr code using any authenticator app, once done, press the next button",
         MfaEnabled: "2FA has been enabled on your account",
         BtnNext: "Next",
@@ -680,6 +681,7 @@ export const langMFA = {
     },
     fr: {
         Title: "Authentification 2FA",
+        ScanQrTitle: "Scanner le code QR",
         ScanQr: "Scannez ce code QR à l'aide de n'importe quelle application d'authentification, une fois terminé, appuyez sur le bouton suivant",
         MfaEnabled: "L'authentification à deux facteurs a été activée sur votre compte",
         BtnNext: "Suivant",
@@ -689,6 +691,7 @@ export const langMFA = {
     },
     es: {
         Title: "2FA Authentication",
+        ScanQrTitle: "Escanear código QR",
         ScanQr: "Escanee este código qr usando cualquier aplicación de autenticación, una vez hecho esto, presione el botón siguiente",
         MfaEnabled: "La autenticación de dos factores se ha habilitado en su cuenta",
         BtnNext: "Siguiente",
