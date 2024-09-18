@@ -5,9 +5,7 @@ import { langGame } from "../../utils/translate/gameTranslate.js";
 export function hockeygame(ctx, canvas, gameData, bracket) {
   canvas.width = 1100;
   canvas.height = 550;
-  // const time = gameData.time;
-  const time = 1;
-
+  const time = gameData.time;
   const custom = gameData.customization;
   const START_X = 30;
   const START_Y = 30;

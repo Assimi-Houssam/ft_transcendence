@@ -686,21 +686,26 @@ in-room-1vs1, in-room-2vs2 {
     padding-bottom: 3px;
 }
 
-.chat-box{
+.chat-box {
     display:flex;
     width: 97%;
     background-color: rgb(21, 21, 21);
     border-radius:15px 15px 0 0;
     height: 85%;
+    overflow-y: scroll;
 }
 
 .sidebar-chatbox {
     display:flex;
     align-items: flex-end;
     overflow-y: auto;
+    overflow-x: hidden;
     gap: 10px;
-    padding: 20px;
-    width: 30%;
+    padding: 3px 45px 0px 5px;
+}
+
+.container-msg {
+    padding-top: 3px;
 }
 
 .chat-content{
@@ -735,8 +740,7 @@ in-room-1vs1, in-room-2vs2 {
     align-items: end;
     color: gray;
     word-wrap: break-word;
-    flex-grow: 1;
-    
+    word-break: break-all; 
 }
 
 .input_msg {

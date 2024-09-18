@@ -593,6 +593,7 @@ export const langErrors = {
         ErrorDisconnectedRoom :"You have been disconnected from the room",
         //404.js
         ErrorNotFound : "404 Not Found",
+        ErrorInvalidChars: "Username contains invalid characters"
     },
     fr : {
         //OfflineGame.js
@@ -620,6 +621,7 @@ export const langErrors = {
         ErrorDisconnectedRoom : "Vous avez été déconnecté de la salle",
         //404.js
         ErrorNotFound : "404 Not Found",
+        ErrorInvalidChars: "Le nom d'utilisateur contient des caractères non valides",
     },
     es : {
         //OfflineGame.js
@@ -647,6 +649,7 @@ export const langErrors = {
         ErrorDisconnectedRoom : "Has sido desconectado de la sala",
         //404.js
         ErrorNotFound : "404 No encontrado",
+        ErrorInvalidChars: "El nombre de usuario contiene caracteres no válidos",
     }
 }
 
@@ -662,5 +665,35 @@ export const langSuccess = {
     es : {
         SuccessRemoved : " Ha sido eliminado de tu lista de amigos",
         SuccessStartGame : "¡Juego comenzado!",
+    }
+}
+
+export const langMFA = {
+    en: {
+        Title: "2FA Authentication",
+        ScanQr: "Scan this qr code using any authenticator app, once done, press the next button",
+        MfaEnabled: "2FA has been enabled on your account",
+        BtnNext: "Next",
+        InputTotp: "Enter the 6 digits displayed in your authenticator app",
+        EnterCode: "Enter the 6 digits code",
+        VerifyTotp: "Verify 2FA Code"
+    },
+    fr: {
+        Title: "Authentification 2FA",
+        ScanQr: "Scannez ce code QR à l'aide de n'importe quelle application d'authentification, une fois terminé, appuyez sur le bouton suivant",
+        MfaEnabled: "L'authentification à deux facteurs a été activée sur votre compte",
+        BtnNext: "Suivant",
+        InputTotp: "Saisissez les 6 chiffres affichés dans votre application d'authentification",
+        EnterCode: "Entrez le code à 6 chiffres",
+        VerifyTotp: "Vérifier le code 2FA",
+    },
+    es: {
+        Title: "2FA Authentication",
+        ScanQr: "Escanee este código qr usando cualquier aplicación de autenticación, una vez hecho esto, presione el botón siguiente",
+        MfaEnabled: "La autenticación de dos factores se ha habilitado en su cuenta",
+        BtnNext: "Siguiente",
+        InputTotp: "Ingrese los 6 dígitos que se muestran en su aplicación de autenticación",
+        EnterCode: "Ingrese el código de 6 dígitos",
+        VerifyTotp: "Verificar el código 2FA"
     }
 }

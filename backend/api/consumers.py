@@ -3,6 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
 import time
 import asyncio
+from .utils import is_valid_input
 
 class RoomConsumer(AsyncWebsocketConsumer):
     async def check_rooms(self):
@@ -40,7 +41,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 rooms[self.room_id]["redTeam"][0] = user 
             else:
                 rooms[self.room_id]["blueTeam"][0] = user
-        else: # todo: fix this since it adds users to the redteam first then blue team
+        else:
             for i, member in enumerate(rooms[self.room_id]["redTeam"]):
                 if not member:
                     rooms[self.room_id]["redTeam"][i] = user
@@ -61,7 +62,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.room_id, {"type": "user_join"})
     
     async def disconnect_everyone(self, event):
-        await self.close()
+        await self.close(4002)
 
     async def disconnect_user(self, event):
         rooms = cache.get("rooms", {})
@@ -210,7 +211,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
         red_team = event["message"]["redTeam"]
         blue_team = event["message"]["blueTeam"]
 
-        # todo: on close, cleanup the room
         if (len(red_team) > 2 or len(blue_team) > 2):
             await self.close()
         
@@ -254,9 +254,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"room_data": rooms[self.room_id]}))
             return
         name = event["message"]
-        if (len(name) > 25):
-            return
-        if (name.isascii() == False):
+
+        if (len(name) > 25 or is_valid_input(name) == False):
             return
         
         rooms[self.room_id]["name"] = name
@@ -276,6 +275,9 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({"message": "start_game", "room_data": rooms[self.room_id]}))
         await self.close(4001)
 
+    async def broadcast_msg(self, event):
+        await self.send(text_data=json.dumps({"message": "received_msg", "content": event["message"]["message"], "username": event["message"]["username"]}))
+
     async def receive(self, text_data):
         try:
             event = json.loads(text_data)
@@ -286,7 +288,24 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.close(4002, "nuh uh")
             return
 
+        
+        if (event["type"] not in ["broadcast_msg", "start_game", "room_name_change", "team_kick", "team_change", "team_size_change", "customization_change", "time_change", "gamemode_change"]):
+            await self.close(4002, "nuh uh")
+            return
+        
+        if (event["type"] == "broadcast_msg"):
+            if (is_valid_input(event["message"]) == False):
+                return
+            msg = {
+                "message": event["message"],
+                "username": self.scope["user"].username
+            }
+            event["message"] = msg
+            await self.channel_layer.group_send(self.room_id, {"type": event["type"], "message": event["message"]})
+            return
+
         rooms = cache.get("rooms", {})
+        
         if (self.scope["user"].id != rooms[self.room_id]["host"]["id"]):
             return
         self.last_msg_timestamp = int(time.time())
