@@ -271,7 +271,7 @@ export function PongTable(ctx, canvas, ws, time, custom, player) {
       canvas.style.filter = "blur(10px)";
       countdownElement.textContent = langGame[lang]["GamePause"];
       countdownElement.style.display = "block";
-    } else if (pause === false) {
+    } else if (pause === false && distance > 0 && disconneted === false) {
       canvas.style.filter = "none";
       countdownElement.style.display = "none";
     }
