@@ -121,6 +121,11 @@ export class RoomPage extends HTMLElement {
         this.appendChild(this.roomOptions);
         this.appendChild(new RoomPageFooter());
         this.addEventListener("gameModeChange", (evt) => {
+            if (evt.detail === "hockey" && this.roomData.teamSize === "2") {
+                new MessageBox("Notice", "The team size you're on doesn't support hockey, switch team sizes for the switch to happen", "Ok", () => {}).show();
+                this.roomOptions.enableOption("Gamemode", "pong");
+                return;
+            }
             this.socket.send(JSON.stringify({"type": "gamemode_change", "message": evt.detail}));
         });
         this.addEventListener("timeChange", (evt) => {
